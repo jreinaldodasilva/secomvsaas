@@ -21,6 +21,63 @@
     "deleteConfirm": "Are you sure you want to delete?",
     "brand": "Secom"
   },
+  "landing": {
+    "nav": {
+      "features": "Features",
+      "modules": "Modules",
+      "contact": "Contact",
+      "getStarted": "Get started"
+    },
+    "hero": {
+      "title": "Modern and transparent public communication",
+      "subtitle": "Integrated platform for press relations, event management, citizen services, and social media.",
+      "cta": "Create free account",
+      "login": "I already have an account"
+    },
+    "features": {
+      "title": "Why choose Secom?",
+      "transparency": {
+        "title": "Transparency",
+        "desc": "Every action logged with full audit trail. Public communication that is accessible and traceable."
+      },
+      "agility": {
+        "title": "Agility",
+        "desc": "Publish press releases, schedule events, and manage media contacts in a single platform."
+      },
+      "security": {
+        "title": "Security",
+        "desc": "Role-based access control, secure authentication, and sensitive data protection."
+      },
+      "integration": {
+        "title": "Integration",
+        "desc": "Interconnected modules. Press releases become posts, events generate appointments automatically."
+      }
+    },
+    "modules": {
+      "title": "Platform modules",
+      "pressReleases": "Create, approve, and publish official statements with a complete approval workflow.",
+      "mediaContacts": "Manage your database of journalists, outlets, and beats for efficient distribution.",
+      "clippings": "Monitor and catalog published media coverage with sentiment analysis.",
+      "events": "Organize press conferences, inaugurations, and public events with schedule control.",
+      "appointments": "Allow citizens to book in-person appointments with the office.",
+      "citizenPortal": "Unified citizen registry for personalized service.",
+      "socialMedia": "Plan, schedule, and publish content on institutional social media."
+    },
+    "cta": {
+      "title": "Ready to modernize your communication?",
+      "desc": "Start using Secom for free and transform your public office communication.",
+      "button": "Create free account"
+    },
+    "footer": {
+      "tagline": "Public communication platform for government offices and agencies.",
+      "platform": "Platform",
+      "access": "Access",
+      "legal": "Legal",
+      "privacy": "Privacy",
+      "terms": "Terms of use",
+      "rights": "All rights reserved."
+    }
+  },
   "auth": {
     "login": "Sign in",
     "loggingIn": "Signing in...",

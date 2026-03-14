@@ -21,6 +21,63 @@
     "deleteConfirm": "Tem certeza que deseja excluir?",
     "brand": "Secom"
   },
+  "landing": {
+    "nav": {
+      "features": "Funcionalidades",
+      "modules": "Módulos",
+      "contact": "Contato",
+      "getStarted": "Começar agora"
+    },
+    "hero": {
+      "title": "Comunicação pública moderna e transparente",
+      "subtitle": "Plataforma integrada para assessoria de imprensa, gestão de eventos, atendimento ao cidadão e redes sociais.",
+      "cta": "Criar conta gratuita",
+      "login": "Já tenho conta"
+    },
+    "features": {
+      "title": "Por que escolher o Secom?",
+      "transparency": {
+        "title": "Transparência",
+        "desc": "Todas as ações registradas com auditoria completa. Comunicação pública acessível e rastreável."
+      },
+      "agility": {
+        "title": "Agilidade",
+        "desc": "Publique comunicados, agende eventos e gerencie contatos de mídia em uma única plataforma."
+      },
+      "security": {
+        "title": "Segurança",
+        "desc": "Controle de acesso por papéis, autenticação segura e proteção de dados sensíveis."
+      },
+      "integration": {
+        "title": "Integração",
+        "desc": "Módulos conectados entre si. Comunicados viram posts, eventos geram agendamentos automaticamente."
+      }
+    },
+    "modules": {
+      "title": "Módulos da plataforma",
+      "pressReleases": "Crie, aprove e publique comunicados oficiais com fluxo de aprovação completo.",
+      "mediaContacts": "Gerencie sua base de jornalistas, veículos e editorias para distribuição eficiente.",
+      "clippings": "Monitore e catalogue matérias publicadas na mídia com análise de sentimento.",
+      "events": "Organize coletivas, inaugurações e eventos públicos com controle de agenda.",
+      "appointments": "Permita que cidadãos agendem atendimentos presenciais com a Secom.",
+      "citizenPortal": "Cadastro unificado de cidadãos para atendimento personalizado.",
+      "socialMedia": "Planeje, agende e publique conteúdo nas redes sociais da instituição."
+    },
+    "cta": {
+      "title": "Pronto para modernizar sua comunicação?",
+      "desc": "Comece a usar o Secom gratuitamente e transforme a comunicação do seu órgão público.",
+      "button": "Criar conta gratuita"
+    },
+    "footer": {
+      "tagline": "Plataforma de comunicação pública para secretarias e órgãos governamentais.",
+      "platform": "Plataforma",
+      "access": "Acesso",
+      "legal": "Legal",
+      "privacy": "Privacidade",
+      "terms": "Termos de uso",
+      "rights": "Todos os direitos reservados."
+    }
+  },
   "auth": {
     "login": "Entrar",
     "loggingIn": "Entrando...",

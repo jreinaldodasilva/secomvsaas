@@ -1,7 +1,9 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { PublicLayout } from '../layouts/PublicLayout/PublicLayout';
 import { AuthLayout } from '../layouts/AuthLayout/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
+import { LandingPage } from '../pages/Landing/LandingPage';
 import { LoginPage } from '../pages/Login/LoginPage';
 import { RegisterPage } from '../pages/Register/RegisterPage';
 import { AcceptInvitePage } from '../pages/AcceptInvite/AcceptInvitePage';
@@ -23,7 +25,12 @@ import { SocialMediaPage } from '../pages/Domain/SocialMedia/SocialMediaPage';
 export function AppRoutes() {
   return (
     <Routes>
-      {/* Public routes */}
+      {/* Public site */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<LandingPage />} />
+      </Route>
+
+      {/* Auth routes */}
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -47,7 +54,6 @@ export function AppRoutes() {
       </Route>
 
       {/* Fallback */}
-      <Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
       <Route path="/unauthorized" element={<UnauthorizedPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

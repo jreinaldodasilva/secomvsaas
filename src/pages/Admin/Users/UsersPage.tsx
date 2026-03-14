@@ -99,7 +99,7 @@ export function UsersPage() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => { if (confirm(t('users.deactivateConfirm'))) deactivateUser.mutate({ id: u.id }); }}
+          onClick={() => { if (window.confirm(t('users.deactivateConfirm'))) deactivateUser.mutate({ id: u.id }); }}
         >
           {t('users.deactivate')}
         </Button>

@@ -52,7 +52,7 @@ export function MediaContactsPage() {
   };
 
   const handleDelete = (id: string) => {
-    if (confirm(t('common.deleteConfirm'))) del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
+    if (window.confirm(t('common.deleteConfirm'))) del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
   };
 
   const columns: Column<MediaContactItem>[] = [

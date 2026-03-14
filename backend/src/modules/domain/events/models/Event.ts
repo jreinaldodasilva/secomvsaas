@@ -5,8 +5,13 @@ import { IEvent } from '../types';
 
 const EventSchema = new Schema<IEvent>({
   ...tenantAwareFields,
-  name: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
-  status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active', index: true },
+  title: { type: String, required: true, trim: true, minlength: 3, maxlength: 300 },
+  description: { type: String, maxlength: 5000 },
+  location: { type: String, trim: true, maxlength: 300 },
+  startsAt: { type: Date, required: true },
+  endsAt: { type: Date },
+  isPublic: { type: Boolean, default: false },
+  status: { type: String, enum: ['scheduled', 'ongoing', 'completed', 'cancelled'], default: 'scheduled', index: true },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   ...baseSchemaFields,
@@ -16,6 +21,7 @@ const EventSchema = new Schema<IEvent>({
 });
 
 EventSchema.index({ tenantId: 1, status: 1 });
+EventSchema.index({ tenantId: 1, startsAt: 1 });
 EventSchema.index({ tenantId: 1, createdAt: -1 });
 
 applyTenantAware(EventSchema);

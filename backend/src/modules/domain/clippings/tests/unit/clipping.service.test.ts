@@ -30,8 +30,8 @@ describe('ClippingService', () => {
     TenantContext.run({ tenantId: 'tenant_test' }, fn);
 
   it('should create and emit event', async () => {
-    mockRepo.create.mockResolvedValue({ _id: 'id1', name: 'Test' });
-    const result = await runInTenant(() => service.create({ name: 'Test' }));
+    mockRepo.create.mockResolvedValue({ _id: 'id1', title: 'Matéria sobre Secom' });
+    const result = await runInTenant(() => service.create({ title: 'Matéria sobre Secom', source: 'G1' }));
     expect(result).toBeDefined();
     expect(mockRepo.create).toHaveBeenCalled();
   });

@@ -5,8 +5,13 @@ import { IAppointment } from '../types';
 
 const AppointmentSchema = new Schema<IAppointment>({
   ...tenantAwareFields,
-  name: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
-  status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active', index: true },
+  citizenName: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
+  citizenCpf: { type: String, trim: true },
+  citizenPhone: { type: String, trim: true },
+  service: { type: String, required: true, trim: true, maxlength: 200 },
+  scheduledAt: { type: Date, required: true },
+  notes: { type: String, maxlength: 2000 },
+  status: { type: String, enum: ['pending', 'confirmed', 'completed', 'cancelled', 'no_show'], default: 'pending', index: true },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   ...baseSchemaFields,
@@ -16,6 +21,7 @@ const AppointmentSchema = new Schema<IAppointment>({
 });
 
 AppointmentSchema.index({ tenantId: 1, status: 1 });
+AppointmentSchema.index({ tenantId: 1, scheduledAt: 1 });
 AppointmentSchema.index({ tenantId: 1, createdAt: -1 });
 
 applyTenantAware(AppointmentSchema);

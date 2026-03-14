@@ -128,9 +128,14 @@ export type UserRoleType = typeof UserRole[keyof typeof UserRole];
 export type PressRelease = {
   id: string;
   title: string;
+  subtitle?: string;
   content: string;
+  summary?: string;
+  category: 'nota_oficial' | 'comunicado' | 'convite' | 'esclarecimento' | 'outro';
+  tags: string[];
   status: 'draft' | 'review' | 'approved' | 'published' | 'archived';
   publishedAt?: string | Date;
+  approvedBy?: string;
   createdBy?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
@@ -143,6 +148,7 @@ export type MediaContact = {
   email?: string;
   phone?: string;
   beat?: string;
+  notes?: string;
   status: 'active' | 'inactive';
   createdAt?: string | Date;
 };
@@ -151,9 +157,11 @@ export type Clipping = {
   id: string;
   title: string;
   source: string;
-  url?: string;
+  sourceUrl?: string;
   publishedAt?: string | Date;
-  sentiment?: 'positive' | 'neutral' | 'negative';
+  sentiment: 'positive' | 'neutral' | 'negative';
+  summary?: string;
+  tags: string[];
   createdAt?: string | Date;
 };
 
@@ -164,14 +172,16 @@ export type Event = {
   location?: string;
   startsAt: string | Date;
   endsAt?: string | Date;
-  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
   isPublic: boolean;
+  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
   createdAt?: string | Date;
 };
 
 export type Appointment = {
   id: string;
-  citizenId: string;
+  citizenName: string;
+  citizenCpf?: string;
+  citizenPhone?: string;
   service: string;
   scheduledAt: string | Date;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
@@ -182,9 +192,15 @@ export type Appointment = {
 export type CitizenProfile = {
   id: string;
   userId: string;
+  fullName: string;
   cpf?: string;
   phone?: string;
+  email?: string;
   address?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  status: 'active' | 'inactive';
   createdAt?: string | Date;
 };
 
@@ -192,6 +208,7 @@ export type SocialMediaPost = {
   id: string;
   platform: 'instagram' | 'facebook' | 'twitter' | 'youtube' | 'tiktok';
   content: string;
+  mediaUrl?: string;
   scheduledAt?: string | Date;
   publishedAt?: string | Date;
   status: 'draft' | 'scheduled' | 'published' | 'failed';

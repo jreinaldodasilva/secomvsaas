@@ -30,8 +30,8 @@ describe('AppointmentService', () => {
     TenantContext.run({ tenantId: 'tenant_test' }, fn);
 
   it('should create and emit event', async () => {
-    mockRepo.create.mockResolvedValue({ _id: 'id1', name: 'Test' });
-    const result = await runInTenant(() => service.create({ name: 'Test' }));
+    mockRepo.create.mockResolvedValue({ _id: 'id1', citizenName: 'Maria Souza' });
+    const result = await runInTenant(() => service.create({ citizenName: 'Maria Souza', service: 'Atendimento geral', scheduledAt: '2025-01-20T14:00:00-03:00' }));
     expect(result).toBeDefined();
     expect(mockRepo.create).toHaveBeenCalled();
   });

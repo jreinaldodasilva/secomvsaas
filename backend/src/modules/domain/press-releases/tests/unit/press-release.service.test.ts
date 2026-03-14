@@ -30,8 +30,8 @@ describe('PressReleaseService', () => {
     TenantContext.run({ tenantId: 'tenant_test' }, fn);
 
   it('should create and emit event', async () => {
-    mockRepo.create.mockResolvedValue({ _id: 'id1', name: 'Test' });
-    const result = await runInTenant(() => service.create({ name: 'Test' }));
+    mockRepo.create.mockResolvedValue({ _id: 'id1', title: 'Nota de teste' });
+    const result = await runInTenant(() => service.create({ title: 'Nota de teste', content: 'Conteúdo da nota oficial' }));
     expect(result).toBeDefined();
     expect(mockRepo.create).toHaveBeenCalled();
   });

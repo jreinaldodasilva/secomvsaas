@@ -1,9 +1,16 @@
 import { Document } from 'mongoose';
 
+export type EventStatus = 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+
 export interface IEvent extends Document {
   tenantId: string;
-  name: string;
-  status: 'active' | 'inactive' | 'archived';
+  title: string;
+  description?: string;
+  location?: string;
+  startsAt: Date;
+  endsAt?: Date;
+  isPublic: boolean;
+  status: EventStatus;
   createdBy?: string;
   updatedBy?: string;
   isDeleted: boolean;
@@ -13,16 +20,27 @@ export interface IEvent extends Document {
 }
 
 export interface CreateEventDto {
-  name: string;
+  title: string;
+  description?: string;
+  location?: string;
+  startsAt: string;
+  endsAt?: string;
+  isPublic?: boolean;
 }
 
 export interface UpdateEventDto {
-  name?: string;
-  status?: 'active' | 'inactive' | 'archived';
+  title?: string;
+  description?: string;
+  location?: string;
+  startsAt?: string;
+  endsAt?: string;
+  isPublic?: boolean;
+  status?: EventStatus;
 }
 
 export interface EventFilters {
   status?: string;
+  isPublic?: string;
   search?: string;
   page?: number;
   limit?: number;

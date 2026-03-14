@@ -10,13 +10,17 @@ export class AppointmentRepository extends BaseRepository<IAppointment> {
   async findWithFilters(filters: AppointmentFilters) {
     const query: any = { isDeleted: false };
     if (filters.status) query.status = filters.status;
+    if (filters.service) query.service = { $regex: filters.service, $options: 'i' };
     if (filters.search) {
-      query.name = { $regex: filters.search, $options: 'i' };
+      query.$or = [
+        { citizenName: { $regex: filters.search, $options: 'i' } },
+        { service: { $regex: filters.search, $options: 'i' } },
+      ];
     }
     return this.findPaginated(query as any, {
       page: filters.page,
       limit: filters.limit,
-      sort: filters.sort || { createdAt: -1 },
+      sort: filters.sort || { scheduledAt: 1 },
     });
   }
 }

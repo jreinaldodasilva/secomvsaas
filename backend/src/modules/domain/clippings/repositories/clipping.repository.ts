@@ -9,14 +9,18 @@ export class ClippingRepository extends BaseRepository<IClipping> {
 
   async findWithFilters(filters: ClippingFilters) {
     const query: any = { isDeleted: false };
-    if (filters.status) query.status = filters.status;
+    if (filters.sentiment) query.sentiment = filters.sentiment;
+    if (filters.source) query.source = { $regex: filters.source, $options: 'i' };
     if (filters.search) {
-      query.name = { $regex: filters.search, $options: 'i' };
+      query.$or = [
+        { title: { $regex: filters.search, $options: 'i' } },
+        { source: { $regex: filters.search, $options: 'i' } },
+      ];
     }
     return this.findPaginated(query as any, {
       page: filters.page,
       limit: filters.limit,
-      sort: filters.sort || { createdAt: -1 },
+      sort: filters.sort || { publishedAt: -1 },
     });
   }
 }

@@ -2,8 +2,16 @@ import { Document } from 'mongoose';
 
 export interface ICitizenPortal extends Document {
   tenantId: string;
-  name: string;
-  status: 'active' | 'inactive' | 'archived';
+  userId: string;
+  fullName: string;
+  cpf?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  status: 'active' | 'inactive';
   createdBy?: string;
   updatedBy?: string;
   isDeleted: boolean;
@@ -13,16 +21,32 @@ export interface ICitizenPortal extends Document {
 }
 
 export interface CreateCitizenPortalDto {
-  name: string;
+  userId: string;
+  fullName: string;
+  cpf?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
 }
 
 export interface UpdateCitizenPortalDto {
-  name?: string;
-  status?: 'active' | 'inactive' | 'archived';
+  fullName?: string;
+  cpf?: string;
+  phone?: string;
+  email?: string;
+  address?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  status?: 'active' | 'inactive';
 }
 
 export interface CitizenPortalFilters {
   status?: string;
+  city?: string;
   search?: string;
   page?: number;
   limit?: number;

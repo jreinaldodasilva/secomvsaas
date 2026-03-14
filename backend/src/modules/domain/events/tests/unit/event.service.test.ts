@@ -30,8 +30,8 @@ describe('EventService', () => {
     TenantContext.run({ tenantId: 'tenant_test' }, fn);
 
   it('should create and emit event', async () => {
-    mockRepo.create.mockResolvedValue({ _id: 'id1', name: 'Test' });
-    const result = await runInTenant(() => service.create({ name: 'Test' }));
+    mockRepo.create.mockResolvedValue({ _id: 'id1', title: 'Coletiva de imprensa' });
+    const result = await runInTenant(() => service.create({ title: 'Coletiva de imprensa', startsAt: '2025-01-15T10:00:00-03:00' }));
     expect(result).toBeDefined();
     expect(mockRepo.create).toHaveBeenCalled();
   });

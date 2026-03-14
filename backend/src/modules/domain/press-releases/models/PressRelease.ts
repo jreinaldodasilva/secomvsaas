@@ -5,8 +5,15 @@ import { IPressRelease } from '../types';
 
 const PressReleaseSchema = new Schema<IPressRelease>({
   ...tenantAwareFields,
-  name: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
-  status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active', index: true },
+  title: { type: String, required: true, trim: true, minlength: 5, maxlength: 300 },
+  subtitle: { type: String, trim: true, maxlength: 300 },
+  content: { type: String, required: true, minlength: 10 },
+  summary: { type: String, trim: true, maxlength: 500 },
+  category: { type: String, enum: ['nota_oficial', 'comunicado', 'convite', 'esclarecimento', 'outro'], default: 'comunicado' },
+  tags: [{ type: String, trim: true }],
+  status: { type: String, enum: ['draft', 'review', 'approved', 'published', 'archived'], default: 'draft', index: true },
+  publishedAt: { type: Date },
+  approvedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   ...baseSchemaFields,
@@ -16,6 +23,7 @@ const PressReleaseSchema = new Schema<IPressRelease>({
 });
 
 PressReleaseSchema.index({ tenantId: 1, status: 1 });
+PressReleaseSchema.index({ tenantId: 1, category: 1 });
 PressReleaseSchema.index({ tenantId: 1, createdAt: -1 });
 
 applyTenantAware(PressReleaseSchema);

@@ -10,13 +10,17 @@ export class MediaContactRepository extends BaseRepository<IMediaContact> {
   async findWithFilters(filters: MediaContactFilters) {
     const query: any = { isDeleted: false };
     if (filters.status) query.status = filters.status;
+    if (filters.beat) query.beat = { $regex: filters.beat, $options: 'i' };
     if (filters.search) {
-      query.name = { $regex: filters.search, $options: 'i' };
+      query.$or = [
+        { name: { $regex: filters.search, $options: 'i' } },
+        { outlet: { $regex: filters.search, $options: 'i' } },
+      ];
     }
     return this.findPaginated(query as any, {
       page: filters.page,
       limit: filters.limit,
-      sort: filters.sort || { createdAt: -1 },
+      sort: filters.sort || { name: 1 },
     });
   }
 }

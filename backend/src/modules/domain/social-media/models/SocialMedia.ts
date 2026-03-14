@@ -5,8 +5,12 @@ import { ISocialMedia } from '../types';
 
 const SocialMediaSchema = new Schema<ISocialMedia>({
   ...tenantAwareFields,
-  name: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
-  status: { type: String, enum: ['active', 'inactive', 'archived'], default: 'active', index: true },
+  platform: { type: String, enum: ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'], required: true, index: true },
+  content: { type: String, required: true, maxlength: 5000 },
+  mediaUrl: { type: String, trim: true },
+  scheduledAt: { type: Date },
+  publishedAt: { type: Date },
+  status: { type: String, enum: ['draft', 'scheduled', 'published', 'failed'], default: 'draft', index: true },
   createdBy: { type: Schema.Types.ObjectId, ref: 'User' },
   updatedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   ...baseSchemaFields,
@@ -15,7 +19,8 @@ const SocialMediaSchema = new Schema<ISocialMedia>({
   collection: 'social-media',
 });
 
-SocialMediaSchema.index({ tenantId: 1, status: 1 });
+SocialMediaSchema.index({ tenantId: 1, platform: 1, status: 1 });
+SocialMediaSchema.index({ tenantId: 1, scheduledAt: 1 });
 SocialMediaSchema.index({ tenantId: 1, createdAt: -1 });
 
 applyTenantAware(SocialMediaSchema);

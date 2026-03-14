@@ -1,9 +1,16 @@
 import { Document } from 'mongoose';
 
+export type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
+
 export interface IAppointment extends Document {
   tenantId: string;
-  name: string;
-  status: 'active' | 'inactive' | 'archived';
+  citizenName: string;
+  citizenCpf?: string;
+  citizenPhone?: string;
+  service: string;
+  scheduledAt: Date;
+  notes?: string;
+  status: AppointmentStatus;
   createdBy?: string;
   updatedBy?: string;
   isDeleted: boolean;
@@ -13,16 +20,27 @@ export interface IAppointment extends Document {
 }
 
 export interface CreateAppointmentDto {
-  name: string;
+  citizenName: string;
+  citizenCpf?: string;
+  citizenPhone?: string;
+  service: string;
+  scheduledAt: string;
+  notes?: string;
 }
 
 export interface UpdateAppointmentDto {
-  name?: string;
-  status?: 'active' | 'inactive' | 'archived';
+  citizenName?: string;
+  citizenCpf?: string;
+  citizenPhone?: string;
+  service?: string;
+  scheduledAt?: string;
+  notes?: string;
+  status?: AppointmentStatus;
 }
 
 export interface AppointmentFilters {
   status?: string;
+  service?: string;
   search?: string;
   page?: number;
   limit?: number;

@@ -1,9 +1,19 @@
 import { Document } from 'mongoose';
 
+export type PressReleaseStatus = 'draft' | 'review' | 'approved' | 'published' | 'archived';
+export type PressReleaseCategory = 'nota_oficial' | 'comunicado' | 'convite' | 'esclarecimento' | 'outro';
+
 export interface IPressRelease extends Document {
   tenantId: string;
-  name: string;
-  status: 'active' | 'inactive' | 'archived';
+  title: string;
+  subtitle?: string;
+  content: string;
+  summary?: string;
+  category: PressReleaseCategory;
+  tags: string[];
+  status: PressReleaseStatus;
+  publishedAt?: Date;
+  approvedBy?: string;
   createdBy?: string;
   updatedBy?: string;
   isDeleted: boolean;
@@ -13,16 +23,27 @@ export interface IPressRelease extends Document {
 }
 
 export interface CreatePressReleaseDto {
-  name: string;
+  title: string;
+  subtitle?: string;
+  content: string;
+  summary?: string;
+  category?: PressReleaseCategory;
+  tags?: string[];
 }
 
 export interface UpdatePressReleaseDto {
-  name?: string;
-  status?: 'active' | 'inactive' | 'archived';
+  title?: string;
+  subtitle?: string;
+  content?: string;
+  summary?: string;
+  category?: PressReleaseCategory;
+  tags?: string[];
+  status?: PressReleaseStatus;
 }
 
 export interface PressReleaseFilters {
   status?: string;
+  category?: string;
   search?: string;
   page?: number;
   limit?: number;

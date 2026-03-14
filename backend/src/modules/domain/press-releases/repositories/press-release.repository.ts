@@ -10,8 +10,12 @@ export class PressReleaseRepository extends BaseRepository<IPressRelease> {
   async findWithFilters(filters: PressReleaseFilters) {
     const query: any = { isDeleted: false };
     if (filters.status) query.status = filters.status;
+    if (filters.category) query.category = filters.category;
     if (filters.search) {
-      query.name = { $regex: filters.search, $options: 'i' };
+      query.$or = [
+        { title: { $regex: filters.search, $options: 'i' } },
+        { summary: { $regex: filters.search, $options: 'i' } },
+      ];
     }
     return this.findPaginated(query as any, {
       page: filters.page,

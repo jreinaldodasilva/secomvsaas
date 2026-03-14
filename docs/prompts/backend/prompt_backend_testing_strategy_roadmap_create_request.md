@@ -1,9 +1,9 @@
 # PROMPT (Testing Strategy-Scoped Version)
 
-# Sintgesp – Testing Strategy & Quality Assurance Improvement Roadmap
+# Secom – Testing Strategy & Quality Assurance Improvement Roadmap
 
 **Source Document:**
-`docs/backend/13-Sintgesp-Testing-Strategy-Enterprise.md`
+`docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
 
 **Scope Restriction:** Testing strategy document only
 
@@ -16,7 +16,7 @@ You are generating a **strategic improvement roadmap strictly from the Testing S
 You must:
 
 * Use only findings, weaknesses, risks, coverage gaps, and recommendations explicitly described in
-  `docs/backend/13-Sintgesp-Testing-Strategy-Enterprise.md`
+  `docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
 * Not reference Architecture, API, MongoDB, Auth, Performance, Code Quality, or Integrations documents unless explicitly cited inside the testing document
 * Not invent test gaps that are not documented or clearly implied
 * Not assume coverage issues without documentation support
@@ -87,7 +87,7 @@ Criteria:
 
 * Critical flows not tested
 * Security-critical logic untested
-* Tenant isolation not validated
+* Tenant scoping not validated
 * Permission logic insufficiently tested
 * Flaky CI blocking deployments
 * Test instability masking regressions
@@ -233,7 +233,7 @@ Design a structured QA improvement roadmap.
 Focus:
 
 * Untested critical paths
-* Permission & tenant isolation testing
+* Permission & tenant scoping testing
 * Security-sensitive flow coverage
 * CI instability fixes
 * Flaky test elimination
@@ -413,7 +413,7 @@ Keep concise, executive-level, and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/09-Sintgesp-Testing-Strategy-Improvement-Roadmap.md`
+`docs/backendroadmaps/09-Secom-Testing-Strategy-Improvement-Roadmap.md`
 
 Must include:
 
@@ -428,7 +428,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/09-Sintgesp-Testing-Strategy-Quick-Wins.md`
+`docs/backendroadmaps/09-Secom-Testing-Strategy-Quick-Wins.md`
 
 Must include:
 

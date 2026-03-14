@@ -1,24 +1,24 @@
 
-# Sintgesp – Comprehensive API Architecture & Design Audit
+# Secom – Comprehensive API Architecture & Design Audit
 
-You are a **Senior Backend Architect performing a production-grade API audit** of the Sintgesp system.
+You are a **Senior Backend Architect performing a production-grade API audit** of the Secom system.
 
 Use the following documents as your primary sources of truth:
 
-* `docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part1.md`
-* `docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part2.md`
-* `docs/backendroadmaps/01-Sintgesp-Backend-Architecture-Improvement-Roadmap.md`
-* `docs/backendroadmaps/01-Sintgesp-Backend-Architecture-Quick-Wins.md`
-* `docs/backendroadmaps/01-Sintgesp-Backend-Architecture-Open-Issues.md`
+* `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`
+* `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
+* `docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
+* `docs/backendroadmaps/01-Secom-Backend-Architecture-Quick-Wins.md`
+* `docs/backendroadmaps/01-Secom-Backend-Architecture-Open-Issues.md`
 
 
 Assume:
 
-* This is a **healthcare/department management system**
+* This is a **government communications system (Assessoria de Comunicação)**
 * The API is already in production or near-production
 * The system must meet **high standards of security, scalability, data integrity, and maintainability**
 * It uses **MongoDB + Mongoose**
-* It implements **multi-tenancy at the department level**
+* It implements **single-tenant architecture with seeded default tenant**
 
 If information is missing:
 
@@ -37,7 +37,7 @@ Produce a **deep architectural analysis** of the API layer focusing on:
 2. REST design quality
 3. Consistency & predictability
 4. Scalability patterns
-5. Security & multi-tenant isolation
+5. Security & data scoping
 6. Long-term maintainability risks
 7. Developer experience
 
@@ -48,9 +48,9 @@ This is not a superficial checklist review — it is an engineering audit.
 # 📦 Required Output File
 
 ```
-docs/backend/02-Sintgesp-API-Design-Overview.md
+docs/backend/02-Secom-API-Design-Overview.md
 ```
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/02-Sintgesp-API-Design-Overview-Part1.md', 'docs/backend/02-Sintgesp-API-Design-Overview-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/02-Secom-API-Design-Overview-Part1.md', 'docs/backend/02-Secom-API-Design-Overview-Part2.md', and so on.
 
 ---
 
@@ -63,7 +63,7 @@ Obs: Consider splitting the document into multiple files due to its size. For ex
 Provide:
 
 * High-level API architecture summary
-* Domain breakdown (auth, athletes, appointments, billing, etc.)
+* Domain breakdown (auth, citizens, agendamentos, press-releases, etc.)
 * Estimated endpoint count
 * API maturity level (Prototype / MVP / Production-Ready / Enterprise-Grade)
 * Architectural strengths
@@ -174,7 +174,7 @@ Or inconsistent raw objects?
 #### Partial vs Full Updates
 
 * PUT vs PATCH usage?
-* Risk of accidental overwrites?
+* Risk of accicommunications overwrites?
 
 Deliver:
 
@@ -235,9 +235,9 @@ This is critical.
 
 Evaluate:
 
-* Department scoping enforcement
+* Tenant scoping enforcement
 * Middleware dependency risks
-* Potential cross-department leakage scenarios
+* Potential cross-boundary leakage scenarios
 * Super admin bypass rules
 * Token scoping
 * Audit logging exposure
@@ -257,7 +257,7 @@ Provide:
 Analyze:
 
 * Rate limiting existence
-* Scope (IP / user / department / token)
+* Scope (IP / user / tenant / token)
 * Headers exposed
 * Protection of heavy endpoints
 * DDoS mitigation

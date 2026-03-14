@@ -1,8 +1,8 @@
-# 🧠 Sintgesp API & Full-Stack Integration Audit (Enterprise-Level Review)
+# 🧠 Secom API & Full-Stack Integration Audit (Enterprise-Level Review)
 
 ## 🎯 Mission
 
-Perform a **deep, systematic, end-to-end technical audit** of the Sintgesp platform covering:
+Perform a **deep, systematic, end-to-end technical audit** of the Secom platform covering:
 
 * REST API architecture and design quality
 * Backend implementation standards
@@ -76,7 +76,7 @@ This section is mandatory and must include **UI-level verification**, not just A
 Compare:
 
 * Backend DTOs
-* Shared types (`@sintgesp/shared`)
+* Shared types (`@vsaas/types`)
 * Frontend imports
 
 ### Required Table
@@ -150,7 +150,7 @@ You must verify not only that the API works — but that the **visual representa
 
 ## 1. Data Accuracy Verification
 
-For each major domain entity (User, Appointment, Payment, Athlete, etc.):
+For each major domain entity (User, Agendamento, Payment, CitizenProfile, etc.):
 
 * Compare backend response JSON
 * Compare shared DTO
@@ -282,12 +282,12 @@ Organize by:
 
 Generate:
 
-1. `docs/fullstack/Sintgesp-comprehensive-API-Audit-Report.md`
-2. `docs/fullstack/Sintgesp-comprehensive-Integration-Drift-Report.md`
-3. `docs/fullstack/Sintgesp-comprehensive-UI-Data-Rendering-Report.md`
-4. `docs/fullstack/Sintgesp-comprehensive-Security-Risk-Assessment.md`
-5. `docs/fullstack/Sintgesp-comprehensive-Performance-Assessment.md`
-6. `docs/fullstack/Sintgesp-comprehensive-API-Improvement-Roadmap.md`
+1. `docs/fullstack/Secom-comprehensive-API-Audit-Report.md`
+2. `docs/fullstack/Secom-comprehensive-Integration-Drift-Report.md`
+3. `docs/fullstack/Secom-comprehensive-UI-Data-Rendering-Report.md`
+4. `docs/fullstack/Secom-comprehensive-Security-Risk-Assessment.md`
+5. `docs/fullstack/Secom-comprehensive-Performance-Assessment.md`
+6. `docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md`
 
 Each finding must include:
 

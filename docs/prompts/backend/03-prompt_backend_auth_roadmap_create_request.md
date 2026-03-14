@@ -1,10 +1,10 @@
 # PROMPT (Auth & Security-Scoped Version)
 
-# Sintgesp – Authentication & Security Improvement Roadmap
+# Secom – Authentication & Security Improvement Roadmap
 
 **Primary Source Document:**
-`docs/backend/03-Sintgesp-Auth-Security-Overview-Part1.md`
-`docs/backend/03-Sintgesp-Auth-Security-Overview-Part2.md`
+`docs/backend/03-Secom-Auth-Security-Overview-Part1.md`
+`docs/backend/03-Secom-Auth-Security-Overview-Part2.md`
 
 **Scope Rule:**
 Use the Auth & Security Overview as the primary source of truth.
@@ -18,7 +18,7 @@ You are generating a **strategic security and authentication improvement roadmap
 
 You must:
 
-* Use all findings, risks, and recommendations explicitly described in `docs/backend/03-Sintgesp-Auth-Security-Overview-Part1.md` and `docs/backend/03-Sintgesp-Auth-Security-Overview-Part2.md`
+* Use all findings, risks, and recommendations explicitly described in `docs/backend/03-Secom-Auth-Security-Overview-Part1.md` and `docs/backend/03-Secom-Auth-Security-Overview-Part2.md`
 * Follow cross-document references mentioned inside it
 * Not assume security issues outside what is stated or referenced
 * Not invent vulnerabilities not implied in the documentation
@@ -65,7 +65,7 @@ Extract every issue related to:
 
 * Role-based access control (RBAC)
 * Permission model consistency
-* Department-level isolation
+* Tenant-level isolation
 * Tenant boundary enforcement
 * Privilege escalation risk
 * Middleware enforcement gaps
@@ -77,12 +77,12 @@ Extract every issue related to:
 
 ### Multi-Tenancy Security
 
-* Tenant isolation enforcement
-* Cross-tenant data access risks
+* Tenant scoping enforcement
+* Cross-boundary data access risks
 * Query filtering guarantees
 * IDOR risks
 * Data scoping consistency
-* Department ID validation strategy
+* Tenant ID validation strategy
 
 ---
 
@@ -148,7 +148,7 @@ Extract every issue related to:
 
 ### Severity Criteria
 
-* 🟥 Data breach, tenant escape, privilege escalation, authentication bypass
+* 🟥 Data breach, data boundary violation, privilege escalation, authentication bypass
 * 🟧 Significant exposure risk or lateral movement possibility
 * 🟨 Structural hardening improvements
 * 🟩 Strategic or compliance enhancements
@@ -168,7 +168,7 @@ Identify low-effort security improvements mentioned or implied in the documentat
 Examples may include:
 
 * Adding rate limiting middleware
-* Enforcing clinic_id validation
+* Enforcing tenantId validation
 * Standardizing auth middleware usage
 * Strengthening password hashing configuration
 * Masking sensitive logs
@@ -211,7 +211,7 @@ Break down only authentication and security-related debt.
 
 * Authentication architecture debt
 * Authorization model debt
-* Multi-tenant isolation debt
+* Data scoping debt
 * API protection debt
 * Secrets management debt
 * Encryption gaps
@@ -247,7 +247,7 @@ Design a roadmap focused purely on authentication and security hardening.
 Focus:
 
 * Authentication bypass risks
-* Tenant escape risks
+* Data boundary violation risks
 * Privilege escalation exposure
 * Critical secret leakage risks
 * Missing authorization enforcement
@@ -313,7 +313,7 @@ Examples:
 
 | Metric                       | Current State | Target                 | Measurement      |
 | ---------------------------- | ------------- | ---------------------- | ---------------- |
-| Tenant isolation breaches    | ?             | 0                      | Audit            |
+| Tenant scoping breaches    | ?             | 0                      | Audit            |
 | Auth bypass vectors          | ?             | 0                      | Security testing |
 | Privilege escalation vectors | ?             | 0                      | Role review      |
 | JWT expiration policy        | ?             | Hardened standard      | Code audit       |
@@ -333,7 +333,7 @@ Breakdown:
 
 * Authentication robustness
 * Authorization enforcement
-* Tenant isolation safety
+* Tenant scoping safety
 * Secret management maturity
 * Encryption coverage
 * Monitoring & detection capability
@@ -390,7 +390,7 @@ Keep concise, strategic, and board-ready.
 
 ## File 1:
 
-`docs/backendroadmaps/03-Sintgesp-Auth-Security-Improvement-Roadmap.md`
+`docs/backendroadmaps/03-Secom-Auth-Security-Improvement-Roadmap.md`
 
 Must include:
 
@@ -405,7 +405,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/03-Sintgesp-Auth-Security-Quick-Wins.md`
+`docs/backendroadmaps/03-Secom-Auth-Security-Quick-Wins.md`
 
 Must include:
 
@@ -423,7 +423,7 @@ Must include:
 * No invented vulnerabilities
 * Clear traceability
 * Executive-level clarity
-* Focus on breach prevention and tenant isolation
+* Focus on breach prevention and tenant scoping
 * Prioritize production safety and data protection
 * Avoid non-security architectural analysis unless security-related
 

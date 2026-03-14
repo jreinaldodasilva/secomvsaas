@@ -1,12 +1,12 @@
 # PROMPT (Performance & Infrastructure-Scoped Version)
 
-# Sintgesp – Performance & Infrastructure Improvement Roadmap
+# Secom – Performance & Infrastructure Improvement Roadmap
 
 **Source Documents:**
 
-* `docs/backend/11-Sintgesp-Performance-Infrastructure-Part1.md`
-* `docs/backend/11-Sintgesp-Performance-Infrastructure-Part2.md`
-* `docs/backend/11-Sintgesp-Performance-Infrastructure-Part3.md`
+* `docs/backend/11-Secom-Performance-Infrastructure-Part1.md`
+* `docs/backend/11-Secom-Performance-Infrastructure-Part2.md`
+* `docs/backend/11-Secom-Performance-Infrastructure-Part3.md`
 
 **Scope Restriction:** Performance & Infrastructure documents only
 
@@ -397,7 +397,7 @@ Keep concise, strategic, and executive-oriented (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/07-Sintgesp-Performance-Infrastructure-Improvement-Roadmap.md`
+`docs/backendroadmaps/07-Secom-Performance-Infrastructure-Improvement-Roadmap.md`
 
 Must include:
 
@@ -412,7 +412,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/07-Sintgesp-Performance-Infrastructure-Quick-Wins.md`
+`docs/backendroadmaps/07-Secom-Performance-Infrastructure-Quick-Wins.md`
 
 Must include:
 

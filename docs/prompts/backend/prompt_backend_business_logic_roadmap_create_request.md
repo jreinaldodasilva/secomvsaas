@@ -1,9 +1,9 @@
 # PROMPT (Business-Logic-Scoped Version)
 
-# Sintgesp – Business Logic Improvement Roadmap
+# Secom – Business Logic Improvement Roadmap
 
 **Primary Source Document:**
-`docs/backend/09-Sintgesp-Business-Logic-Index.md`
+`docs/backend/09-Secom-Business-Logic-Index.md`
 
 **Scope Restriction:** Business Logic document only
 
@@ -16,7 +16,7 @@ You are generating a **strategic business-logic improvement roadmap strictly fro
 You must:
 
 * Use only findings, risks, inconsistencies, and recommendations explicitly described in
-  `docs/backend/09-Sintgesp-Business-Logic-Index.md`
+  `docs/backend/09-Secom-Business-Logic-Index.md`
 * Not reference other backend documents unless explicitly referenced inside this document
 * Not assume architectural, API, or database issues unless directly tied to business rules
 * Not invent domain rules not implied in the document
@@ -70,9 +70,9 @@ Extract every issue related to:
 
 ### Workflow & Process Logic
 
-* Appointment lifecycle
+* Agendamento lifecycle
 * Payment lifecycle
-* Treatment workflow
+* Action workflow
 * Status transitions
 * Approval flows
 * Cancellation rules
@@ -83,8 +83,8 @@ Extract every issue related to:
 
 ### Multi-Tenant Business Rules
 
-* Department-scoped logic enforcement
-* Cross-department rule consistency
+* Tenant-scoped logic enforcement
+* Cross-boundary rule consistency
 * Ownership validation
 * Business isolation guarantees
 
@@ -388,7 +388,7 @@ Keep strategic, concise, and decision-oriented.
 
 ## File 1:
 
-`docs/backendroadmaps/05-Sintgesp-Business-Logic-Improvement-Roadmap.md`
+`docs/backendroadmaps/05-Secom-Business-Logic-Improvement-Roadmap.md`
 
 Must include:
 
@@ -403,7 +403,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/05-Sintgesp-Business-Logic-Quick-Wins.md`
+`docs/backendroadmaps/05-Secom-Business-Logic-Quick-Wins.md`
 
 Must include:
 

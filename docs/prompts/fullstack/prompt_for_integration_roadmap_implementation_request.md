@@ -1,7 +1,7 @@
 Here is the **priority-driven execution prompt** for:
 
 ```
-docs/fullstack/Sintgesp-Integration-Remediation-Roadmap-Phase2.md
+docs/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md
 ```
 
 This mirrors the structure and strictness of the previous prompts and enforces **P1 → P4 priority order**, single-issue execution, and contract-first discipline.
@@ -12,7 +12,7 @@ This mirrors the structure and strictness of the previous prompts and enforces *
 
 Carefully review and implement the fixes described in:
 
-`docs/fullstack/Sintgesp-Integration-Remediation-Roadmap-Phase2.md`
+`docs/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md`
 
 ---
 
@@ -73,7 +73,7 @@ For each issue:
 
    * Frontend (services, hooks, schemas, components)
    * Backend (routes, middleware)
-   * Shared package (`@sintgesp/types`)
+   * Shared package (`@secom/types`)
 2. Inspect:
 
    * DTO types

@@ -6,14 +6,14 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following frontend roadmap documents:
 
-* `docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Quick-Wins.md`
+* `docs/frontendroadmaps/01-Secom-Frontend-Architecture-Improvement-Roadmap.md`
+* `docs/frontendroadmaps/01-Secom-Frontend-Architecture-Quick-Wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation file so it accurately reflects all **implemented frontend architectural fixes, structural improvements, and refactors**:
 
-   * `docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+   * `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented frontend architecture issues**, including a structured and prioritized execution plan.
 
@@ -57,7 +57,7 @@ Extract changes affecting:
 
 ---
 
-# Step 2 – Update `01-Sintgesp-Frontend-Architecture-Overview.md`
+# Step 2 – Update `01-Secom-Frontend-Architecture-Overview.md`
 
 The document must:
 
@@ -110,9 +110,9 @@ Ensure alignment with:
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Remaining-Roadmap.md`
+`docs/frontendroadmaps/01-Secom-Frontend-Architecture-Remaining-Roadmap.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Remaining-Roadmap-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/01-Secom-Frontend-Architecture-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/01-Secom-Frontend-Architecture-Remaining-Roadmap-Part2.md', and so on.
 
 ---
 
@@ -191,7 +191,7 @@ Organize into:
 
 After completing both phases, provide:
 
-1. Summary of updates made to `01-Sintgesp-Frontend-Architecture-Overview.md`
+1. Summary of updates made to `01-Secom-Frontend-Architecture-Overview.md`
 2. Sections added, modified, or removed
 3. List of roadmap items reflected as completed
 4. Structured summary of the new Remaining Roadmap

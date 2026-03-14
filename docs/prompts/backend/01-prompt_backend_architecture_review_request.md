@@ -1,10 +1,10 @@
-# Sintgesp Backend Review
+# Secom Backend Review
 
 ## Initial Setup & Architecture Analysis
 
 ### Objective
 
-Perform a **comprehensive architectural and technical analysis of the Sintgesp backend codebase**. The goal is to document the current backend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
+Perform a **comprehensive architectural and technical analysis of the Secom backend codebase**. The goal is to document the current backend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
 
 Assume you have **full read access to the backend repository**, including source code, configuration files, migrations, tests, and documentation.
 
@@ -243,9 +243,9 @@ Architecture documentation including:
 ### Output File
 
 **File Name:**
-`docs/backend/01-Sintgesp-Backend-Architecture-Overview.md`
+`docs/backend/01-Secom-Backend-Architecture-Overview.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part1.md', 'docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md', 'docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md', and so on.
 
 ---
 

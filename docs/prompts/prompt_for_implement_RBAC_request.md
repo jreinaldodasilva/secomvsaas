@@ -1,13 +1,13 @@
 Here is a **structured, execution-controlled implementation prompt** specifically for starting:
 
-`docs/backendroadmaps/04-Sintgesp-Auth-Security-Remaining-Roadmap-Part2.md`
+`docs/backendroadmaps/04-Secom-Auth-Security-Remaining-Roadmap-Part2.md`
 → **Domain 3: RBAC & Authorisation Model**
 
 This prompt is optimized for safe architectural implementation, strict scope control, and regression prevention.
 
 ---
 
-# 🔐 Sintgesp — Domain 3: RBAC & Authorisation Model
+# 🔐 Secom — Domain 3: RBAC & Authorisation Model
 
 ## Controlled Implementation Prompt
 
@@ -16,7 +16,7 @@ This prompt is optimized for safe architectural implementation, strict scope con
 Begin the implementation of:
 
 ```
-docs/backendroadmaps/04-Sintgesp-Auth-Security-Remaining-Roadmap-Part2.md
+docs/backendroadmaps/04-Secom-Auth-Security-Remaining-Roadmap-Part2.md
 ```
 
 Specifically:
@@ -99,7 +99,7 @@ After approval:
 
 Implement:
 
-* Clear role definitions (e.g., ADMIN, DOCTOR, STAFF, etc.)
+* Clear role definitions (e.g., ADMIN, assessor, atendente, etc.)
 * Permission matrix abstraction
 * Centralized permission configuration
 * Strongly typed role/permission enums

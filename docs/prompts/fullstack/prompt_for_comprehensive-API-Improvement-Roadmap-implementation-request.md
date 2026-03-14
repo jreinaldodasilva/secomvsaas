@@ -2,7 +2,7 @@ Understood — this is **not analysis or refactoring**, but **controlled executi
 
 Below is a properly structured implementation prompt designed specifically for:
 
-`docs/fullstack/Sintgesp-comprehensive-API-Improvement-Roadmap.md`
+`docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md`
 
 It enforces:
 
@@ -15,7 +15,7 @@ It enforces:
 
 ---
 
-# 🚀 Sintgesp Comprehensive API Improvement Roadmap
+# 🚀 Secom Comprehensive API Improvement Roadmap
 
 ## Controlled Implementation Protocol
 
@@ -24,7 +24,7 @@ It enforces:
 Execute the implementation of:
 
 ```
-docs/fullstack/Sintgesp-comprehensive-API-Improvement-Roadmap.md
+docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md
 ```
 
 strictly following:

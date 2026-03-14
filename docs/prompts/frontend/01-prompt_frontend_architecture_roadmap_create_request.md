@@ -2,15 +2,15 @@ Excellent — here is the **frontend-equivalent version** of your backend archit
 
 This version is tailored specifically for:
 
-`docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+`docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 
 ---
 
 # PROMPT (Architecture-Scoped Version)
 
-# Sintgesp – Frontend Architecture Improvement Roadmap
+# Secom – Frontend Architecture Improvement Roadmap
 
-**Source Document:** `docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+**Source Document:** `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -22,7 +22,7 @@ You are generating a **strategic frontend architecture improvement roadmap stric
 You must:
 
 * Use only findings, gaps, risks, and recommendations explicitly described in
-  `docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+  `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 * Not reference any other frontend documents
 * Not assume issues from UX audits, accessibility audits, performance audits, or testing strategy documents
 * Not invent technical debt outside what is implied in the architecture review
@@ -344,7 +344,7 @@ Keep concise, strategic, and traceable to document findings (1–2 pages equival
 
 ## File 1:
 
-`docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Improvement-Roadmap.md`
+`docs/frontendroadmaps/01-Secom-Frontend-Architecture-Improvement-Roadmap.md`
 
 Must include:
 
@@ -359,7 +359,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/01-Sintgesp-Frontend-Architecture-Quick-Wins.md`
+`docs/frontendroadmaps/01-Secom-Frontend-Architecture-Quick-Wins.md`
 
 Must include:
 

@@ -13,9 +13,9 @@ It enforces:
 
 ---
 
-# 🔎 Sintgesp – Request/Response Interface & UI Data Integrity Audit
+# 🔎 Secom – Request/Response Interface & UI Data Integrity Audit
 
-You are a **Senior Fullstack Architect performing a deep integration audit** of the Sintgesp system.
+You are a **Senior Fullstack Architect performing a deep integration audit** of the Secom system.
 
 This is **not a documentation review**.
 This is an **implementation-driven, end-to-end interface validation audit**.
@@ -51,7 +51,7 @@ Perform a deep, implementation-level validation of:
 2. API response shape consistency
 3. DTO ↔ Model ↔ UI alignment
 4. UI rendering completeness and correctness
-5. Registration workflows (department, staff, athlete)
+5. Registration workflows (tenant, staff, citizen)
 6. Update/edit workflows
 7. Data mutation side effects
 8. Error handling & user feedback correctness
@@ -65,14 +65,14 @@ This must read like a **formal internal architecture validation report**, not a 
 # 📁 Required Output Location
 
 ```
-docs/fullstack/04-Sintgesp-Request-Response-Interface-Audit.md
+docs/fullstack/04-Secom-Request-Response-Interface-Audit.md
 ```
 
 If necessary, split into:
 
 ```
-docs/fullstack/04-Sintgesp-Request-Response-Interface-Audit-Part1.md
-docs/fullstack/04-Sintgesp-Request-Response-Interface-Audit-Part2.md
+docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part1.md
+docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part2.md
 ...
 ```
 
@@ -112,11 +112,11 @@ Each section must include:
 
 For each major entity:
 
-* Department
+* Tenant
 * Staff
-* Athlete
-* Appointments
-* Billing (if applicable)
+* CitizenProfile
+* Agendamentos
+* PressReleases (if applicable)
 
 Verify:
 
@@ -174,11 +174,11 @@ Deliver:
 For each major UI view:
 
 * Dashboard
-* Department settings
+* Tenant settings
 * Staff management
-* Athlete records
-* Appointment management
-* Billing view (if exists)
+* CitizenProfile records
+* Agendamento management
+* PressReleases view (if exists)
 
 Verify:
 
@@ -209,7 +209,7 @@ Deliver:
 
 # 3️⃣ Registration Workflow Validation
 
-## 3.1 New Department Registration Flow
+## 3.1 New Tenant Registration Flow
 
 Trace:
 
@@ -218,19 +218,19 @@ Frontend form → Validation → API call → Backend validation → DB write �
 Verify:
 
 * Required fields enforced consistently
-* Tenant isolation correctly initialized
+* Tenant scoping correctly initialized
 * Default roles created correctly
 * Admin user created correctly
 * Password flow correct
-* No orphaned department possible
+* No orphaned tenant possible
 * Atomicity of operation (transaction or compensation)
 
 Identify:
 
 * Partial registration risk
-* Duplicate department risk
+* Duplicate tenant risk
 * Privilege escalation risk
-* Cross-tenant contamination risk
+* Cross-boundary contamination risk
 
 Deliver:
 
@@ -244,7 +244,7 @@ Deliver:
 Verify:
 
 * Role assignment validation
-* Department scoping enforcement
+* Tenant scoping enforcement
 * Email uniqueness handling
 * Password handling security
 * Invitation vs direct creation logic
@@ -253,7 +253,7 @@ Verify:
 Detect:
 
 * Over-privilege defaults
-* Cross-department assignment risk
+* Cross-boundary assignment risk
 * Broken update logic
 
 Deliver:
@@ -262,32 +262,32 @@ Deliver:
 
 ---
 
-## 3.3 Athlete Registration
+## 3.3 Citizen Profile Registration
 
 Verify:
 
-* Required medical fields validation
+* Required profile fields validation
 * CPF uniqueness (if applicable)
-* Department scoping enforcement
-* Assigned instructor enforcement
+* Tenant scoping enforcement
+* Assigned assessor enforcement
 * Sensitive field handling
 * Data normalization
 
 Detect:
 
-* Duplicate athlete risk
+* Duplicate citizen risk
 * Orphan records risk
-* Cross-tenant data insertion risk
+* Cross-boundary data insertion risk
 
 Deliver:
 
-* Athlete Registration Integrity Rating
+* Citizen Profile Registration Integrity Rating
 
 ---
 
 # 4️⃣ Update & Modification Workflows
 
-For each entity (Department, Staff, Athlete):
+For each entity (Tenant, Staff, CitizenProfile):
 
 Verify:
 
@@ -295,7 +295,7 @@ Verify:
 * PATCH vs PUT correctness
 * Immutable field protection
 * Role change restrictions
-* Department change restrictions
+* Tenant change restrictions
 * Audit trail on modifications
 * Concurrency issues
 * Lost update risk
@@ -342,15 +342,15 @@ Deliver:
 
 Verify:
 
-* All list endpoints filtered by department
-* All create endpoints attach clinicId correctly
-* All update/delete enforce department ownership
-* Frontend never requests cross-tenant data
+* All list endpoints filtered by tenant
+* All create endpoints attach tenantId correctly
+* All update/delete enforce tenant ownership
+* Frontend never requests cross-boundary data
 * No tenantId controlled by frontend input
 
 Simulate:
 
-* Cross-tenant request tampering
+* Cross-boundary request tampering
 * Role manipulation in request payload
 
 Deliver:
@@ -405,8 +405,8 @@ Classify overall maturity as:
 * If missing validation → classify as risk
 * If frontend expects fields not returned → classify as contract violation
 * If backend returns fields not used → classify as unnecessary exposure
-* Treat healthcare data as high integrity requirement
-* Prioritize athlete data correctness over UI convenience
+* Treat government communications data as high integrity requirement
+* Prioritize citizen data correctness over UI convenience
 * No vague recommendations
 * No generic advice
 * Tie every finding to architectural impact

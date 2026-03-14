@@ -1,6 +1,6 @@
 Below is the **improved, document-scoped roadmap prompt**, tailored specifically for:
 
-* `docs/frontend/07-Sintgesp-Performance-Quality-Security.md`
+* `docs/frontend/07-Secom-Performance-Quality-Security.md`
 
 This version ensures the roadmap and quick wins are created **exclusively from this document**, not the entire frontend folder.
 
@@ -12,7 +12,7 @@ This version ensures the roadmap and quick wins are created **exclusively from t
 
 Using **only** the content from:
 
-* `docs/frontend/07-Sintgesp-Performance-Quality-Security.md`
+* `docs/frontend/07-Secom-Performance-Quality-Security.md`
 
 Create a **prioritized, actionable improvement roadmap** focused strictly on:
 
@@ -302,7 +302,7 @@ Audience:
 
 ## File 1:
 
-`docs/frontendroadmaps/07-Sintgesp-Performance-Quality-Security-Roadmap.md`
+`docs/frontendroadmaps/07-Secom-Performance-Quality-Security-Roadmap.md`
 
 Must include:
 
@@ -317,7 +317,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/07-Sintgesp-Performance-Quality-Security-Quick-Wins.md`
+`docs/frontendroadmaps/07-Secom-Performance-Quality-Security-Quick-Wins.md`
 
 Must include:
 
@@ -331,7 +331,7 @@ Must include:
 
 # 🚨 Important Constraints
 
-* Use only `07-Sintgesp-Performance-Quality-Security.md`.
+* Use only `07-Secom-Performance-Quality-Security.md`.
 * Do not mix architecture, UX, state management, or component issues unless explicitly referenced in this document.
 * Avoid generic recommendations — every item must trace back to documented gaps.
 * Be realistic with effort estimates.

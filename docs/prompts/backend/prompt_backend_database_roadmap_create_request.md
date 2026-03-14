@@ -1,8 +1,8 @@
 # PROMPT (MongoDB-Architecture-Scoped Version)
 
-# Sintgesp – MongoDB Architecture Improvement Roadmap
+# Secom – MongoDB Architecture Improvement Roadmap
 
-**Source Document:** `docs/backend/02-Sintgesp-MongoDB-Architecture.md`
+**Source Document:** `docs/backend/02-Secom-MongoDB-Architecture.md`
 **Scope Restriction:** MongoDB Architecture document only
 
 ---
@@ -14,7 +14,7 @@ You are generating a **strategic database improvement roadmap strictly from the 
 You must:
 
 * Use only findings, risks, gaps, and recommendations explicitly described in
-  `docs/backend/02-Sintgesp-MongoDB-Architecture.md`
+  `docs/backend/02-Secom-MongoDB-Architecture.md`
 * Not reference any other backend documents
 * Not assume issues from API, testing, security, or backend architecture audits
 * Not invent database technical debt outside what is implied in the MongoDB architecture review
@@ -94,7 +94,7 @@ Extract every issue related to:
 
 ### Severity Criteria
 
-* 🟥 Data leakage, tenant isolation risk, corruption risk, unindexed critical queries
+* 🟥 Data leakage, tenant scoping risk, corruption risk, unindexed critical queries
 * 🟧 High latency risk, scaling blockers, inefficient data patterns
 * 🟨 Modeling refinements, structural optimization
 * 🟩 Strategic improvements or long-term enhancements
@@ -118,7 +118,7 @@ Examples may include:
 * Enforcing compound index alignment
 * Adding TTL indexes
 * Removing unused indexes
-* Enforcing clinic_id index for multi-tenancy
+* Enforcing tenantId index for multi-tenancy
 * Enabling query profiling
 * Minor schema refinements
 * Improving projection usage
@@ -158,7 +158,7 @@ Break down only database-architecture-related debt.
 
 * Data modeling debt
 * Indexing debt
-* Multi-tenant isolation debt
+* Data scoping debt
 * Query performance debt
 * Transaction usage debt
 * Aggregation complexity debt
@@ -192,7 +192,7 @@ Design a roadmap focused purely on database improvements.
 
 Focus:
 
-* Tenant isolation enforcement
+* Tenant scoping enforcement
 * Unique constraints
 * Critical index gaps
 * Transaction safeguards
@@ -261,7 +261,7 @@ Examples:
 | Indexed query coverage       | ?             | 100% critical queries indexed | Query plan audit      |
 | Avg query latency            | ?             | <50ms                         | Performance profiling |
 | Collection scan count        | ?             | 0 on critical paths           | MongoDB profiler      |
-| Tenant isolation enforcement | ?             | 100%                          | Query review          |
+| Tenant scoping enforcement | ?             | 100%                          | Query review          |
 | Write conflict rate          | ?             | <0.5%                         | Monitoring            |
 | Backup success rate          | ?             | 100% automated                | Backup logs           |
 | Aggregation runtime (P95)    | ?             | <100ms                        | APM                   |
@@ -280,7 +280,7 @@ Breakdown:
 * Index strategy maturity
 * Performance optimization
 * Transaction safety
-* Multi-tenant isolation robustness
+* Data scoping robustness
 * Scalability readiness
 * Backup & recovery maturity
 * Observability coverage
@@ -333,7 +333,7 @@ Keep concise and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/02-Sintgesp-MongoDB-Architecture-Improvement-Roadmap.md`
+`docs/backendroadmaps/02-Secom-MongoDB-Architecture-Improvement-Roadmap.md`
 
 Must include:
 
@@ -348,7 +348,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/02-Sintgesp-MongoDB-Architecture-Quick-Wins.md`
+`docs/backendroadmaps/02-Secom-MongoDB-Architecture-Quick-Wins.md`
 
 Must include:
 

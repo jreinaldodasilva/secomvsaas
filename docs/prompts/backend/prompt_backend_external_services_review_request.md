@@ -1,18 +1,18 @@
-# Sintgesp – Comprehensive Integration & External Services Architecture Audit
+# Secom – Comprehensive Integration & External Services Architecture Audit
 
-You are a **Senior Backend Architect performing a production-grade integration architecture audit** of the Sintgesp system.
+You are a **Senior Backend Architect performing a production-grade integration architecture audit** of the Secom system.
 
 Use the following documents as primary sources of truth:
 
-* `01-Sintgesp-Backend-Architecture-Overview.md`
-* `02-Sintgesp-MongoDB-Architecture.md`
-* `03-Sintgesp-API-Design.md`
-* `04-Sintgesp-Auth-Security-Overview.md`
-* `09-Sintgesp-Business-Logic-Index.md` 
+* `01-Secom-Backend-Architecture-Overview.md`
+* `02-Secom-MongoDB-Architecture.md`
+* `03-Secom-API-Design.md`
+* `04-Secom-Auth-Security-Overview.md`
+* `09-Secom-Business-Logic-Index.md` 
 
 Assume:
 
-* This is a **healthcare / department management system**
+* This is a **government communications system (Assessoria de Comunicação)**
 * The system is **production or near-production**
 * It uses **Node.js + TypeScript + MongoDB**
 * It integrates with Brazilian services (CEP, PIX, etc.)
@@ -24,7 +24,7 @@ If information is missing:
 * Explicitly state assumptions
 * Identify documentation gaps
 * Flag integration risk
-* Do NOT fabricate instructors or flows without labeling assumptions
+* Do NOT fabricate assessors or flows without labeling assumptions
 
 ---
 
@@ -50,7 +50,7 @@ This is a **resilience, security, and operational risk audit**.
 # 📦 Required Output File
 
 ```
-docs/backend/06-Sintgesp-Integrations.md
+docs/backend/06-Secom-Integrations.md
 ```
 
 ## Important
@@ -69,7 +69,7 @@ Produce a structured inventory of all third-party integrations.
 
 ### Required Table:
 
-| Service | Purpose | Instructor | Integration Type | Criticality | Data Sensitivity | Fallback | Observability |
+| Service | Purpose | Assessor | Integration Type | Criticality | Data Sensitivity | Fallback | Observability |
 | ------- | ------- | -------- | ---------------- | ----------- | ---------------- | -------- | ------------- |
 
 Include:
@@ -82,7 +82,7 @@ Include:
 * CEP lookup
 * Monitoring
 * Analytics
-* Any background job instructor
+* Any background job assessor
 * Queue system (if external)
 * Backup services
 
@@ -117,8 +117,8 @@ Analyze integration implementation patterns:
 
 * Consistency of patterns
 * Coupling between services and vendors
-* Abstraction layers (are instructors wrapped?)
-* Replaceability (can instructor be swapped easily?)
+* Abstraction layers (are assessors wrapped?)
+* Replaceability (can assessor be swapped easily?)
 * Centralized integration gateway vs scattered logic
 * Retry strategies
 * Timeout configuration discipline
@@ -129,7 +129,7 @@ Analyze integration implementation patterns:
 ### Identify Anti-Patterns:
 
 * Hardcoded API keys
-* Direct instructor calls inside controllers
+* Direct assessor calls inside controllers
 * Missing retry logic
 * Blocking external calls in request cycle
 * No timeout configuration
@@ -147,7 +147,7 @@ Deliver:
 
 Analyze:
 
-* Instructor abstraction
+* Assessor abstraction
 * Template version control
 * Language consistency (PT-BR primary?)
 * Retry mechanism
@@ -185,7 +185,7 @@ Deliver:
 
 Evaluate:
 
-* SMS instructor abstraction
+* SMS assessor abstraction
 * Cost control mechanisms
 * Rate limiting
 * Delivery tracking
@@ -197,7 +197,7 @@ Evaluate:
 ### Identify:
 
 * SMS flood risk
-* No per-department rate control
+* No per-tenant rate control
 * No delivery status reconciliation
 * No cost visibility tracking
 
@@ -239,8 +239,8 @@ Evaluate:
 
 ### Multi-Tenant Implications
 
-* Department-level payment separation?
-* Instructor account mapping?
+* Tenant-level payment separation?
+* Assessor account mapping?
 * Revenue leakage risk?
 
 ### Critical Risk Flags:
@@ -260,9 +260,9 @@ Deliver:
 
 ---
 
-## 6️⃣ File Storage & Medical Data Handling
+## 6️⃣ File Storage & Government Data Handling
 
-This is highly sensitive (healthcare context).
+This is highly sensitive (government communications context).
 
 Evaluate:
 
@@ -280,7 +280,7 @@ Evaluate:
 
 ### Critical Risk Flags:
 
-* 🟥 Medical images publicly accessible
+* 🟥 Document files publicly accessible
 * 🟥 No file type validation
 * 🟧 No size limits
 * 🟧 No virus scanning
@@ -400,7 +400,7 @@ Include:
 
 * No fluff
 * No generic best-practice lists
-* Tie risks to healthcare domain
+* Tie risks to government communications domain
 * Separate Findings from Recommendations
 * Explicitly state assumptions
 * Use structured tables
@@ -410,9 +410,9 @@ Include:
 
 # 🔒 Important Constraints
 
-* Do NOT fabricate undocumented instructors
+* Do NOT fabricate undocumented assessors
 * Clearly label assumptions
-* Tie file storage risk to medical data sensitivity
+* Tie file storage risk to citizen data sensitivity
 * Tie payment risk to financial integrity
 * Tie integration patterns to service architecture
 * Focus on enforceability and resilience

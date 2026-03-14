@@ -184,7 +184,7 @@ Provide results in **clearly separated sections**:
 
   * `.env` files
   * CI/CD environment variables
-  * Hosting instructor configs (Vercel, Netlify, Docker, etc.)
+  * Hosting assessor configs (Vercel, Netlify, Docker, etc.)
 * Confirm backend secrets are **not** exposed to the client
 
 ### 3. Dev Server Proxy (Local Development)

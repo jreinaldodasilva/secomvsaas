@@ -1,15 +1,15 @@
-# Sintgesp Backend Review - Modular Prompt Suite
+# Secom Backend Review - Modular Prompt Suite
 
 ## Overview
 
-This document contains **8 specialized prompts** for comprehensive backend analysis of the Sintgesp system. Each prompt focuses on a specific aspect and can be used independently or as a complete review sequence.
+This document contains **8 specialized prompts** for comprehensive backend analysis of the Secom system. Each prompt focuses on a specific aspect and can be used independently or as a complete review sequence.
 
 ---
 
 ## **PROMPT 1: Initial Setup & Architecture Analysis**
 
 ### Objective
-Establish a comprehensive analysis of the Sintgesp backend codebase, document the technology stack, and analyze the overall architecture.
+Establish a comprehensive analysis of the Secom backend codebase, document the technology stack, and analyze the overall architecture.
 
 ### Tasks
 
@@ -22,7 +22,7 @@ Document all technologies:
 - **Authentication**: JWT, OAuth2, Passport, etc.
 - **Caching**: Redis, Memcached, in-memory
 - **File Storage**: S3, local, Google Cloud Storage
-- **Email Service**: SendGrid, AWS SES, SMTP
+- **Email Service**: email provider, AWS SES, SMTP
 - **Task Queue**: Bull, RabbitMQ, Celery, SQS
 - **Logging**: Winston, Morgan, Pino, etc.
 - **Monitoring**: Sentry, DataDog, New Relic, etc.
@@ -106,7 +106,7 @@ Identify:
 **Deliverable**: Architecture pattern documentation with diagrams
 
 ### Output Document
-**File**: `01-Sintgesp-Backend-Architecture-Overview.md`
+**File**: `01-Secom-Backend-Architecture-Overview.md`
 
 **Sections**:
 1. Executive Summary
@@ -134,8 +134,8 @@ Create comprehensive schema documentation:
 | Table Name | Columns | Indexes | Foreign Keys | Row Count (approx) | Purpose |
 |------------|---------|---------|--------------|-------------------|---------|
 | users | 15 | 4 | 0 | ~1000 | User accounts |
-| athletes | 20 | 6 | 1 (clinic_id) | ~5000 | Athlete records |
-| appointments | 12 | 5 | 2 | ~10000 | Appointments |
+| citizens | 20 | 6 | 1 (tenantId) | ~5000 | CitizenProfile records |
+| agendamentos | 12 | 5 | 2 | ~10000 | Agendamentos |
 | [Continue...] |
 
 **Deliverable**: Complete table inventory
@@ -153,8 +153,8 @@ erDiagram
     USERS ||--o{ PATIENTS : creates
     USERS ||--o{ APPOINTMENTS : manages
     PATIENTS ||--o{ APPOINTMENTS : has
-    CLINICS ||--o{ USERS : employs
-    CLINICS ||--o{ PATIENTS : serves
+    TENANTS ||--o{ USERS : employs
+    TENANTS ||--o{ CITIZEN_PROFILES : serves
 ```
 
 **Deliverable**: Complete ERD in Mermaid or standard ER notation
@@ -162,33 +162,33 @@ erDiagram
 #### 3. Data Model Deep Dive
 For each major entity:
 
-**Entity**: Athlete
+**Entity**: CitizenProfile
 
-**Table**: `athletes`
+**Table**: `citizens`
 
 **Columns**:
 | Column | Type | Nullable | Default | Index | Constraints | Purpose |
 |--------|------|----------|---------|-------|-------------|---------|
 | id | UUID | No | gen_random_uuid() | PK | UNIQUE | Primary key |
-| name | VARCHAR(255) | No | - | Yes | - | Athlete name |
+| name | VARCHAR(255) | No | - | Yes | - | CitizenProfile name |
 | cpf | VARCHAR(11) | No | - | UNIQUE | - | Brazilian ID |
 | birth_date | DATE | No | - | - | - | Date of birth |
 | email | VARCHAR(255) | Yes | NULL | Yes | - | Email address |
 | phone | VARCHAR(20) | No | - | - | - | Phone number |
-| clinic_id | UUID | No | - | FK | REFERENCES departments(id) | Department relationship |
+| tenantId | UUID | No | - | FK | REFERENCES tenants(id) | Tenant relationship |
 | created_at | TIMESTAMP | No | NOW() | Yes | - | Creation timestamp |
 | updated_at | TIMESTAMP | No | NOW() | - | - | Update timestamp |
 | deleted_at | TIMESTAMP | Yes | NULL | Yes | - | Soft delete |
 
 **Relationships**:
-- Belongs to: Department (clinic_id)
-- Has many: Appointments
-- Has many: MedicalRecords
-- Has many: Treatments
+- Belongs to: Tenant (tenantId)
+- Has many: Agendamentos
+- Has many: CommunicationRecords
+- Has many: Actions
 
 **Business Rules**:
-- CPF must be unique per department
-- Email can be null (not all athletes have email)
+- CPF must be unique
+- Email can be null (not all citizens have email)
 - Soft delete enabled (deleted_at)
 - Phone is required for communication
 
@@ -220,14 +220,14 @@ Review all migration files:
 **Index Analysis**:
 | Table | Index Name | Columns | Type | Size | Usage | Issues |
 |-------|-----------|---------|------|------|-------|--------|
-| athletes | idx_patients_cpf | cpf | BTREE | 2MB | High | None |
-| appointments | idx_appt_date | date | BTREE | 5MB | High | None |
+| citizens | idx_citizens_cpf | cpf | BTREE | 2MB | High | None |
+| agendamentos | idx_appt_date | date | BTREE | 5MB | High | None |
 | [Continue...] |
 
 **Missing Indexes**:
-- 🟧 `athletes.name` (frequently searched)
-- 🟧 `appointments.status` (frequently filtered)
-- 🟨 `medical_records.patient_id, created_at` (composite for common queries)
+- 🟧 `citizens.name` (frequently searched)
+- 🟧 `agendamentos.status` (frequently filtered)
+- 🟨 `communication_records.citizen_id, created_at` (composite for common queries)
 
 **Query Performance**:
 - Slow queries identified: [List if available]
@@ -272,7 +272,7 @@ Identify:
 **Deliverable**: Normalization analysis
 
 ### Output Document
-**File**: `02-Sintgesp-Database-Architecture.md`
+**File**: `02-Secom-Database-Architecture.md`
 
 **Sections**:
 1. Database Overview
@@ -300,11 +300,11 @@ Create comprehensive endpoint catalog:
 | Method | Endpoint | Controller | Handler | Auth | Roles | Request Body | Response | Status Codes |
 |--------|----------|------------|---------|------|-------|--------------|----------|--------------|
 | POST | /api/auth/login | AuthController | login | No | Public | {email, password} | {token, user} | 200, 400, 401 |
-| GET | /api/athletes | PatientController | list | Yes | Admin, Staff | Query params | Athlete[] | 200, 401, 403 |
-| POST | /api/athletes | PatientController | create | Yes | Admin, Staff | Athlete data | Athlete | 201, 400, 401, 403 |
-| GET | /api/athletes/:id | PatientController | show | Yes | Admin, Staff, Instructor | - | Athlete | 200, 401, 403, 404 |
-| PUT | /api/athletes/:id | PatientController | update | Yes | Admin, Staff | Partial Athlete | Athlete | 200, 400, 401, 403, 404 |
-| DELETE | /api/athletes/:id | PatientController | destroy | Yes | Admin | - | - | 204, 401, 403, 404 |
+| GET | /api/citizens | CitizenProfileController | list | Yes | Admin, Staff | Query params | CitizenProfile[] | 200, 401, 403 |
+| POST | /api/citizens | CitizenProfileController | create | Yes | Admin, Staff | CitizenProfile data | CitizenProfile | 201, 400, 401, 403 |
+| GET | /api/citizens/:id | CitizenProfileController | show | Yes | Admin, Staff, Assessor | - | CitizenProfile | 200, 401, 403, 404 |
+| PUT | /api/citizens/:id | CitizenProfileController | update | Yes | Admin, Staff | Partial CitizenProfile | CitizenProfile | 200, 400, 401, 403, 404 |
+| DELETE | /api/citizens/:id | CitizenProfileController | destroy | Yes | Admin | - | - | 204, 401, 403, 404 |
 | [Continue for all endpoints...] |
 
 **Deliverable**: Complete API endpoint catalog (50-200 endpoints typical)
@@ -319,21 +319,21 @@ Create comprehensive endpoint catalog:
 - ✅ HATEOAS (if applicable)
 
 **Common REST Violations**:
-- 🟧 `POST /api/athletes/search` (should be GET with query params)
-- 🟧 `GET /api/appointments/create` (should be POST /api/appointments)
+- 🟧 `POST /api/citizens/search` (should be GET with query params)
+- 🟧 `GET /api/agendamentos/create` (should be POST /api/agendamentos)
 - 🟨 Inconsistent URL patterns
 - 🟨 Non-standard status codes
 
 **URL Design Quality**:
 ```
-✅ Good: /api/v1/athletes/:id/appointments
-❌ Bad: /api/getPatientAppointments?patientId=123
+✅ Good: /api/v1/citizens/:id/agendamentos
+❌ Bad: /api/getCitizenProfileAgendamentos?citizenId=123
 
-✅ Good: /api/v1/departments/:clinicId/staff
-❌ Bad: /api/staff?department=123
+✅ Good: /api/v1/tenants/:tenantId/staff
+❌ Bad: /api/staff?tenant=123
 
-✅ Good: /api/v1/appointments?date=2025-10-15&status=confirmed
-❌ Bad: /api/appointments/filter/2025-10-15/confirmed
+✅ Good: /api/v1/agendamentos?date=2025-10-15&status=confirmed
+❌ Bad: /api/agendamentos/filter/2025-10-15/confirmed
 ```
 
 **Deliverable**: REST compliance report
@@ -342,7 +342,7 @@ Create comprehensive endpoint catalog:
 
 **Standard Request Pattern**:
 ```typescript
-// POST /api/athletes
+// POST /api/citizens
 {
   "name": "João Silva",
   "cpf": "12345678900",
@@ -355,13 +355,13 @@ Create comprehensive endpoint catalog:
     "number": "1000",
     "complement": "Apto 101",
     "neighborhood": "Bela Vista",
-    "city": "São Paulo",
+    "city": "Sede",
     "state": "SP"
   },
-  "medical_info": {
-    "allergies": ["Penicilina"],
+  "additional_info": {
+    "preferences": ["Penicilina"],
     "conditions": ["Hipertensão"],
-    "medications": ["Losartana 50mg"]
+    "notes": ["Losartana 50mg"]
   }
 }
 ```
@@ -379,7 +379,7 @@ Create comprehensive endpoint catalog:
     "created_at": "2025-10-15T14:30:00Z",
     "updated_at": "2025-10-15T14:30:00Z"
   },
-  "message": "Paciente criado com sucesso"
+  "message": "Cidadão criado com sucesso"
 }
 ```
 
@@ -419,7 +419,7 @@ Create comprehensive endpoint catalog:
 **Pagination Pattern**:
 ```typescript
 // Request
-GET /api/athletes?page=1&limit=20
+GET /api/citizens?page=1&limit=20
 
 // Response
 {
@@ -438,17 +438,17 @@ GET /api/athletes?page=1&limit=20
 **Filtering Pattern**:
 ```typescript
 // Examples
-GET /api/athletes?name=João&status=active
-GET /api/appointments?date_from=2025-10-01&date_to=2025-10-31&status=confirmed
-GET /api/athletes?search=joão silva
+GET /api/citizens?name=João&status=active
+GET /api/agendamentos?date_from=2025-10-01&date_to=2025-10-31&status=confirmed
+GET /api/citizens?search=joão silva
 ```
 
 **Sorting Pattern**:
 ```typescript
 // Examples
-GET /api/athletes?sort=name&order=asc
-GET /api/appointments?sort=date&order=desc
-GET /api/athletes?sort=name,created_at&order=asc,desc
+GET /api/citizens?sort=name&order=asc
+GET /api/agendamentos?sort=date&order=desc
+GET /api/citizens?sort=name,created_at&order=asc,desc
 ```
 
 **Evaluate**:
@@ -493,7 +493,7 @@ Evaluate:
 **Deliverable**: API documentation assessment
 
 ### Output Document
-**File**: `03-Sintgesp-API-Design.md`
+**File**: `03-Secom-API-Design.md`
 
 **Sections**:
 1. API Overview
@@ -564,11 +564,11 @@ Response: {
 
 **Role Hierarchy**:
 ```
-SuperAdmin (root access)
-  └─ Admin (department-level management)
-      └─ Instructor (sportsCoordinator - athlete care)
+super_admin (root access)
+  └─ Admin (tenant-level management)
+      └─ Assessor (assessor - citizen service)
           └─ Staff (administrative tasks)
-              └─ Athlete (self-service)
+              └─ CitizenProfile (self-service)
 ```
 
 **Permission Model**:
@@ -577,20 +577,20 @@ SuperAdmin (root access)
 - Permission storage: Database, Hardcoded, Config file
 
 **Role-Permission Matrix**:
-| Permission | SuperAdmin | Admin | Instructor | Staff | Athlete |
+| Permission | super_admin | Admin | Assessor | Staff | CitizenProfile |
 |------------|-----------|-------|----------|-------|---------|
 | users.create | ✓ | ✓ | ✗ | ✗ | ✗ |
 | users.read | ✓ | ✓ | ✗ | ✗ | ✗ |
 | users.update | ✓ | ✓ | ✗ | ✗ | ✗ |
 | users.delete | ✓ | ✗ | ✗ | ✗ | ✗ |
-| athletes.create | ✓ | ✓ | ✗ | ✓ | ✗ |
-| athletes.read | ✓ | ✓ | ✓ | ✓ | Own only |
-| athletes.update | ✓ | ✓ | ✗ | ✓ | Own only |
-| athletes.delete | ✓ | ✓ | ✗ | ✗ | ✗ |
-| appointments.create | ✓ | ✓ | ✓ | ✓ | ✓ |
-| appointments.read | ✓ | ✓ | ✓ | ✓ | Own only |
-| appointments.update | ✓ | ✓ | ✓ | ✓ | Own only |
-| appointments.delete | ✓ | ✓ | ✗ | ✗ | ✗ |
+| citizens.create | ✓ | ✓ | ✗ | ✓ | ✗ |
+| citizens.read | ✓ | ✓ | ✓ | ✓ | Own only |
+| citizens.update | ✓ | ✓ | ✗ | ✓ | Own only |
+| citizens.delete | ✓ | ✓ | ✗ | ✗ | ✗ |
+| agendamentos.create | ✓ | ✓ | ✓ | ✓ | ✓ |
+| agendamentos.read | ✓ | ✓ | ✓ | ✓ | Own only |
+| agendamentos.update | ✓ | ✓ | ✓ | ✓ | Own only |
+| agendamentos.delete | ✓ | ✓ | ✗ | ✗ | ✗ |
 | [Continue for all permissions...] |
 
 **Deliverable**: Complete role-permission matrix
@@ -602,29 +602,29 @@ SuperAdmin (root access)
 // Example flow
 app.use(authenticateJWT);  // Verify token
 app.use(authorizeRole(['admin', 'staff']));  // Check role
-app.use(authorizePermission('athletes.create'));  // Check permission
+app.use(authorizePermission('citizens.create'));  // Check permission
 ```
 
 **Authorization Patterns**:
 ```typescript
 // Pattern 1: Role-based
 @Roles(['admin', 'staff'])
-async createPatient() { }
+async createCitizenProfile() { }
 
 // Pattern 2: Permission-based
-@RequirePermission('athletes.create')
-async createPatient() { }
+@RequirePermission('citizens.create')
+async createCitizenProfile() { }
 
 // Pattern 3: Custom guard
 @UseGuards(OwnershipGuard)
-async updatePatient(@Param('id') id: string) { }
+async updateCitizenProfile(@Param('id') id: string) { }
 ```
 
 **Ownership Validation**:
-- Athlete can only access own records
-- Instructor can only access assigned athletes
-- Staff can access department athletes only
-- Admin can access all department data
+- CitizenProfile can only access own records
+- Assessor can only access assigned citizens
+- Staff can access tenant citizens only
+- Admin can access all tenant data
 
 **Evaluate**:
 - 🟥 **Critical**: Missing authorization checks on sensitive endpoints
@@ -655,7 +655,7 @@ async updatePatient(@Param('id') id: string) { }
 **CORS Configuration**:
 ```typescript
 {
-  origin: ['https://sintgesp.com.br', 'https://app.sintgesp.com.br'],
+  origin: ['https://secom.gov.br', 'https://app.secom.gov.br'],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -679,8 +679,8 @@ Evaluate:
 #### 5. Sensitive Data Protection
 
 **PII (Personally Identifiable Information)**:
-- Athlete data: Name, CPF, email, phone, address
-- Medical records: Diagnoses, treatments, evaluations
+- CitizenProfile data: Name, CPF, email, phone, address
+- Communication records: Press releases, clippings, social media posts
 - Payment information: Credit cards (if stored)
 
 **Encryption**:
@@ -743,7 +743,7 @@ Evaluate:
 **Deliverable**: Audit logging assessment
 
 ### Output Document
-**File**: `04-Sintgesp-Auth-Security.md`
+**File**: `04-Secom-Auth-Security.md`
 
 **Sections**:
 1. Authentication Mechanism
@@ -773,9 +773,9 @@ Establish a comprehensive analysis of the  business logic implementation, servic
 services/
 ├── auth.service.ts
 ├── user.service.ts
-├── athlete.service.ts
-├── appointment.service.ts
-├── department.service.ts
+├── citizen.service.ts
+├── agendamento.service.ts
+├── tenant.service.ts
 ├── notification.service.ts
 ├── report.service.ts
 └── [others]
@@ -784,18 +784,18 @@ services/
 **Service Pattern Analysis**:
 ```typescript
 // Example Service
-class PatientService {
+class CitizenProfileService {
   constructor(
-    private patientRepository: PatientRepository,
-    private clinicService: ClinicService,
+    private citizenProfileRepository: CitizenProfileRepository,
+    private officeService: OfficeService,
     private notificationService: NotificationService
   ) {}
 
-  async createPatient(data: CreatePatientDTO): Promise<Athlete> {
+  async createCitizenProfile(data: CreateCitizenProfileDTO): Promise<CitizenProfile> {
     // Business logic here
   }
 
-  async updatePatient(id: string, data: UpdatePatientDTO): Promise<Athlete> {
+  async updateCitizenProfile(id: string, data: UpdateCitizenProfileDTO): Promise<CitizenProfile> {
     // Business logic here
   }
 
@@ -816,33 +816,33 @@ class PatientService {
 
 For each major domain:
 
-**Domain**: Athlete Management
+**Domain**: Citizen Profile Management
 
 **Core Business Logic**:
-1. **Athlete Registration**
-   - Validate CPF uniqueness per department
+1. **Citizen Profile Registration**
+   - Validate CPF uniqueness
    - Validate age (must be >= 0 years old)
    - Send welcome email/SMS
-   - Create initial medical record
-   - Assign athlete number
+   - Create initial communication record
+   - Assign citizen number
 
-2. **Athlete Update**
+2. **CitizenProfile Update**
    - Validate data changes
    - Track audit history
    - Notify relevant staff if important data changes
    - Update related records
 
-3. **Athlete Deletion**
+3. **CitizenProfile Deletion**
    - Soft delete (set deleted_at)
-   - Check for active appointments
-   - Check for pending treatments
-   - Archive medical records
+   - Check for active agendamentos
+   - Check for pending actions
+   - Archive communication records
    - Notify admin
 
 **Business Rules**:
-- Rule: A athlete cannot be deleted if they have future appointments
-- Rule: CPF must be unique within a department (but can repeat across departments)
-- Rule: Athlete must be at least 18 years old to consent, otherwise require guardian
+- Rule: A citizen cannot be deleted if they have future agendamentos
+- Rule: CPF must be unique (but can repeat across tenants)
+- Rule: CitizenProfile must be at least 18 years old to consent, otherwise require representative
 - Rule: Email is optional, but if provided must be unique
 - Rule: Phone is mandatory for communication
 
@@ -852,21 +852,21 @@ For each major domain:
 
 **Domain Models**:
 
-**Model**: Appointment
+**Model**: Agendamento
 
 **Properties**:
 ```typescript
-class Appointment {
+class Agendamento {
   id: string;
-  patient_id: string;
+  citizen_id: string;
   provider_id: string;
-  clinic_id: string;
+  tenantId: string;
   date: Date;
   start_time: Time;
   end_time: Time;
   duration: number;  // minutes
-  status: AppointmentStatus;  // scheduled, confirmed, in_progress, completed, cancelled
-  type: AppointmentType;  // consultation, treatment, follow_up, emergency
+  status: AgendamentoStatus;  // scheduled, confirmed, in_progress, completed, cancelled
+  type: AgendamentoType;  // consultation, action, follow_up, emergency
   notes: string;
   cancellation_reason?: string;
   cancelled_by?: string;
@@ -877,23 +877,23 @@ class Appointment {
 
 **Business Methods**:
 ```typescript
-class Appointment {
+class Agendamento {
   canBeCancelled(): boolean {
-    // Business rule: Can only cancel if > 24h before appointment
+    // Business rule: Can only cancel if > 24h before agendamento
     const hoursBefore = this.date.diff(now(), 'hours');
     return hoursBefore > 24 && this.status !== 'completed';
   }
 
   confirm(): void {
-    // Business rule: Can only confirm scheduled appointments
+    // Business rule: Can only confirm scheduled agendamentos
     if (this.status !== 'scheduled') {
-      throw new Error('Only scheduled appointments can be confirmed');
+      throw new Error('Only scheduled agendamentos can be confirmed');
     }
     this.status = 'confirmed';
   }
 
   complete(): void {
-    // Business rule: Can only complete confirmed or in-progress appointments
+    // Business rule: Can only complete confirmed or in-progress agendamentos
     if (!['confirmed', 'in_progress'].includes(this.status)) {
       throw new Error('Invalid status transition');
     }
@@ -915,7 +915,7 @@ class Appointment {
 **Validation Layers**:
 1. **Request DTOs** (Input validation)
    ```typescript
-   class CreatePatientDTO {
+   class CreateCitizenProfileDTO {
      @IsNotEmpty()
      @MinLength(3)
      name: string;
@@ -939,9 +939,9 @@ class Appointment {
 2. **Business Rule Validation** (Domain validation)
    ```typescript
    // In service layer
-   async createPatient(data: CreatePatientDTO) {
-     // Check CPF uniqueness in department
-     const exists = await this.patientRepository.findByCPF(data.cpf, clinicId);
+   async createCitizenProfile(data: CreateCitizenProfileDTO) {
+     // Check CPF uniqueness in tenant
+     const exists = await this.citizenProfileRepository.findByCPF(data.cpf, tenantId);
      if (exists) {
        throw new ConflictError('CPF já cadastrado nesta clínica');
      }
@@ -958,9 +958,9 @@ class Appointment {
 
 3. **Database Constraints** (Last line of defense)
    ```sql
-   ALTER TABLE athletes
-     ADD CONSTRAINT patients_cpf_clinic_unique 
-     UNIQUE (cpf, clinic_id);
+   ALTER TABLE citizens
+     ADD CONSTRAINT citizens_cpf_office_unique 
+     UNIQUE (cpf, tenantId);
    ```
 
 **Validation Coverage**:
@@ -980,25 +980,25 @@ class Appointment {
 
 **Transaction Usage**:
 ```typescript
-// Example: Athlete creation with related records
-async createPatient(data: CreatePatientDTO) {
+// Example: CitizenProfile creation with related records
+async createCitizenProfile(data: CreateCitizenProfileDTO) {
   return await this.db.transaction(async (trx) => {
-    // 1. Create athlete
-    const athlete = await this.patientRepository.create(data, trx);
+    // 1. Create citizen
+    const citizen = await this.citizenProfileRepository.create(data, trx);
     
-    // 2. Create initial medical record
-    await this.medicalRecordRepository.create({
-      patient_id: athlete.id,
-      clinic_id: athlete.clinic_id
+    // 2. Create initial communication record
+    await this.communicationRecordRepository.create({
+      citizen_id: citizen.id,
+      tenantId: citizen.tenantId
     }, trx);
     
     // 3. Send notification
-    await this.notificationService.sendWelcome(athlete.email);
+    await this.notificationService.sendWelcome(citizen.email);
     
     // 4. Log event
-    await this.auditService.log('patient_created', athlete.id, trx);
+    await this.auditService.log('citizen_created', citizen.id, trx);
     
-    return athlete;
+    return citizen;
   });
 }
 ```
@@ -1046,14 +1046,14 @@ class BusinessRuleError extends AppError { /* 422 */ }
 **Exception Usage**:
 ```typescript
 // Good: Specific exceptions
-if (age < 18 && !hasGuardian) {
+if (age < 18 && !hasRepresentative) {
   throw new BusinessRuleError(
-    'Paciente menor de 18 anos precisa de um responsável'
+    'Cidadão menor de 18 anos precisa de um responsável'
   );
 }
 
 // Bad: Generic exceptions
-if (age < 18 && !hasGuardian) {
+if (age < 18 && !hasRepresentative) {
   throw new Error('Invalid age');
 }
 ```
@@ -1071,30 +1071,30 @@ if (age < 18 && !hasGuardian) {
 
 **Critical Business Rules Documentation**:
 
-**Rule BR-001**: Appointment Overlap Prevention
-- **Description**: A instructor cannot have overlapping appointments
+**Rule BR-001**: Agendamento Overlap Prevention
+- **Description**: A assessor cannot have overlapping agendamentos
 - **Enforcement**: Service layer validation before booking
 - **Implementation**: Query database for time conflicts
 - **Edge cases**: Handled (buffer time, breaks, etc.)
 
-**Rule BR-002**: Appointment Cancellation Policy
-- **Description**: Appointments can only be cancelled >24h in advance
-- **Enforcement**: Business logic in Appointment domain model
+**Rule BR-002**: Agendamento Cancellation Policy
+- **Description**: Agendamentos can only be cancelled >24h in advance
+- **Enforcement**: Business logic in Agendamento domain model
 - **Exceptions**: Admin can override, emergencies
 - **Implementation**: Date comparison with current time
 
-**Rule BR-003**: Athlete Access Control
-- **Description**: Athletes can only access their own records
+**Rule BR-003**: CitizenProfile Access Control
+- **Description**: CitizenProfiles can only access their own records
 - **Enforcement**: Authorization middleware + service layer
 - **Implementation**: Filter queries by authenticated user
 
 **Rule BR-004**: CPF Uniqueness
-- **Description**: CPF must be unique within a department (not globally)
+- **Description**: CPF must be unique (not globally)
 - **Enforcement**: Database constraint + service validation
-- **Implementation**: Composite unique index (cpf, clinic_id)
+- **Implementation**: Composite unique index (cpf, tenantId)
 
-**Rule BR-005**: Medical Record Audit
-- **Description**: All medical record changes must be audited
+**Rule BR-005**: Communication Record Audit
+- **Description**: All communication record changes must be audited
 - **Enforcement**: Database triggers + application logging
 - **Implementation**: Audit table with before/after values
 
@@ -1109,7 +1109,7 @@ if (age < 18 && !hasGuardian) {
 **Deliverable**: Business rules catalog
 
 ### Output Document
-**File**: `05-Sintgesp-Business-Logic.md`
+**File**: `05-Secom-Business-Logic.md`
 
 **Sections**:
 1. Service Layer Architecture
@@ -1133,11 +1133,11 @@ Establish a comprehensive analysis of all external integrations, API clients, th
 
 #### 1. External Service Inventory
 
-| Service | Purpose | Instructor | Integration Type | Critical | Fallback |
+| Service | Purpose | Assessor | Integration Type | Critical | Fallback |
 |---------|---------|----------|------------------|----------|----------|
-| Email | Transactional emails | SendGrid | REST API | Yes | SMTP |
-| SMS | Notifications | Twilio | REST API | No | None |
-| Payment | Payment processing | Stripe/Pagar.me | SDK | Yes | Manual |
+| Email | Transactional emails | email provider | REST API | Yes | SMTP |
+| SMS | Notifications | SMS provider | REST API | No | None |
+| Payment | Payment processing | payment gateway/payment provider | SDK | Yes | Manual |
 | Storage | File uploads | AWS S3 | SDK | Yes | Local |
 | Maps | Address lookup | Google Maps | REST API | No | Manual entry |
 | CEP Lookup | Brazilian postal code | ViaCEP | REST API | No | Manual entry |
@@ -1192,11 +1192,11 @@ async handlePaymentWebhook(@Body() data: WebhookPayload) {
 **Integration Diagram**:
 ```mermaid
 graph TB
-    Backend[Sintgesp Backend]
+    Backend[Secom Backend]
     
-    Backend --> Email[Email Service<br/>SendGrid]
-    Backend --> SMS[SMS Service<br/>Twilio]
-    Backend --> Payment[Payment Gateway<br/>Stripe]
+    Backend --> Email[Email Service<br/>email provider]
+    Backend --> SMS[SMS Service<br/>SMS provider]
+    Backend --> Payment[Payment Gateway<br/>payment gateway]
     Backend --> Storage[File Storage<br/>AWS S3]
     Backend --> Maps[Maps API<br/>Google]
     Backend --> CEP[CEP Lookup<br/>ViaCEP]
@@ -1210,23 +1210,23 @@ graph TB
 
 #### 3. Email Service Integration
 
-**Email Instructor**: SendGrid / AWS SES / Mailgun / SMTP / Other
+**Email Assessor**: email provider / AWS SES / Mailgun / SMTP / Other
 
 **Email Templates**:
 | Template | Purpose | Variables | Language | Tested |
 |----------|---------|-----------|----------|--------|
-| welcome | Welcome new athlete | {name, department} | PT-BR | ✓ |
-| appointment-confirmation | Confirm appointment | {name, date, time, instructor} | PT-BR | ✓ |
-| appointment-reminder | Remind before appointment | {name, date, time} | PT-BR | ✓ |
+| welcome | Welcome new citizen | {name, tenant} | PT-BR | ✓ |
+| agendamento-confirmation | Confirm agendamento | {name, date, time, assessor} | PT-BR | ✓ |
+| agendamento-reminder | Remind before agendamento | {name, date, time} | PT-BR | ✓ |
 | password-reset | Password reset link | {name, reset_link, expires} | PT-BR | ✓ |
 | [Continue...] |
 
 **Email Configuration**:
 ```typescript
 {
-  from: 'noreply@sintgesp.com.br',
-  fromName: 'Sintgesp',
-  replyTo: 'contato@sintgesp.com.br',
+  from: 'noreply@secom.gov.br',
+  fromName: 'Secom',
+  replyTo: 'contato@secom.gov.br',
   maxRetries: 3,
   retryDelay: 1000, // ms
   timeout: 10000 // ms
@@ -1235,25 +1235,25 @@ graph TB
 
 **Email Sending Pattern**:
 ```typescript
-async sendAppointmentConfirmation(appointment: Appointment) {
+async sendAgendamentoConfirmation(agendamento: Agendamento) {
   try {
     await this.emailService.send({
-      to: appointment.athlete.email,
-      template: 'appointment-confirmation',
+      to: agendamento.citizen.email,
+      template: 'agendamento-confirmation',
       data: {
-        name: appointment.athlete.name,
-        date: formatDate(appointment.date),
-        time: formatTime(appointment.start_time),
-        instructor: appointment.instructor.name,
-        department: appointment.department.name
+        name: agendamento.citizen.name,
+        date: formatDate(agendamento.date),
+        time: formatTime(agendamento.start_time),
+        assessor: agendamento.assessor.name,
+        tenant: agendamento.tenant.name
       }
     });
     
     // Log success
-    await this.logEmailSent(appointment.id, 'confirmation');
+    await this.logEmailSent(agendamento.id, 'confirmation');
   } catch (error) {
     // Log failure
-    await this.logEmailFailed(appointment.id, 'confirmation', error);
+    await this.logEmailFailed(agendamento.id, 'confirmation', error);
     
     // Don't throw - email is not critical
     // Could add to retry queue
@@ -1272,13 +1272,13 @@ async sendAppointmentConfirmation(appointment: Appointment) {
 
 #### 4. SMS/Notification Service
 
-**SMS Instructor**: Twilio / AWS SNS / Nexmo / Other
+**SMS Assessor**: SMS provider / AWS SNS / Nexmo / Other
 
 **SMS Templates**:
 | Template | Purpose | Length | Cost | Frequency |
 |----------|---------|--------|------|-----------|
-| appointment-reminder | Remind 24h before | ~100 chars | R$ 0.15 | Daily |
-| appointment-cancelled | Notify cancellation | ~80 chars | R$ 0.15 | As needed |
+| agendamento-reminder | Remind 24h before | ~100 chars | R$ 0.15 | Daily |
+| agendamento-cancelled | Notify cancellation | ~80 chars | R$ 0.15 | As needed |
 | verification-code | 2FA code | ~50 chars | R$ 0.15 | On login |
 
 **SMS Configuration**:
@@ -1301,7 +1301,7 @@ async sendAppointmentConfirmation(appointment: Appointment) {
 
 #### 5. Payment Gateway Integration
 
-**Payment Instructor**: Stripe / Pagar.me / PagSeguro / Mercado Pago / Other
+**Payment Assessor**: payment gateway / payment provider / payment provider / payment provider / Other
 
 **Payment Methods Supported**:
 - Credit card: Visa, Mastercard, Amex, Elo
@@ -1313,7 +1313,7 @@ async sendAppointmentConfirmation(appointment: Appointment) {
 **Payment Flow**:
 ```mermaid
 sequenceDiagram
-    Athlete->>Frontend: Enter payment info
+    CitizenProfile->>Frontend: Enter payment info
     Frontend->>Payment Gateway: Tokenize card
     Payment Gateway-->>Frontend: Card token
     Frontend->>Backend: Create payment (with token)
@@ -1321,7 +1321,7 @@ sequenceDiagram
     Payment Gateway-->>Backend: Payment result
     Backend->>Database: Update payment status
     Backend-->>Frontend: Payment confirmation
-    Frontend->>Athlete: Show success
+    Frontend->>CitizenProfile: Show success
     
     Payment Gateway->>Backend: Webhook (async confirmation)
     Backend->>Database: Confirm payment status
@@ -1370,13 +1370,13 @@ async handlePaymentWebhook(
 
 #### 6. File Storage Integration
 
-**Storage Instructor**: AWS S3 / Google Cloud Storage / Azure Blob / Local / Other
+**Storage Assessor**: AWS S3 / Google Cloud Storage / Azure Blob / Local / Other
 
 **File Types Handled**:
 | Type | Purpose | Max Size | Formats | Security |
 |------|---------|----------|---------|----------|
 | Profile photos | User avatars | 5MB | JPG, PNG | Public |
-| Medical images | X-rays, scans | 20MB | JPG, PNG, DICOM | Private |
+| Document files | X-rays, scans | 20MB | JPG, PNG, DICOM | Private |
 | Documents | Consent forms, reports | 10MB | PDF | Private |
 | Backups | Database backups | Unlimited | .sql.gz | Private |
 
@@ -1517,13 +1517,13 @@ async processWebhook(webhookId: string, handler: Function) {
 **Evaluate**:
 - 🟥 **Critical**: No signature verification
 - 🟧 **High**: No idempotency handling
-- 🟨 **Medium**: No webhook retry from instructor
+- 🟨 **Medium**: No webhook retry from assessor
 - 🟩 **Low**: No webhook event logging
 
 **Deliverable**: Webhook security assessment
 
 ### Output Document
-**File**: `06-Sintgesp-Integrations.md`
+**File**: `06-Secom-Integrations.md`
 
 **Sections**:
 1. External Services Overview
@@ -1551,9 +1551,9 @@ Analyze application performance, database query optimization, caching strategies
 **Response Time Metrics**:
 | Endpoint | Avg Response | P50 | P95 | P99 | Issues |
 |----------|--------------|-----|-----|-----|--------|
-| GET /api/athletes | ?ms | ?ms | ?ms | ?ms | ? |
-| POST /api/athletes | ?ms | ?ms | ?ms | ?ms | ? |
-| GET /api/appointments | ?ms | ?ms | ?ms | ?ms | ? |
+| GET /api/citizens | ?ms | ?ms | ?ms | ?ms | ? |
+| POST /api/citizens | ?ms | ?ms | ?ms | ?ms | ? |
+| GET /api/agendamentos | ?ms | ?ms | ?ms | ?ms | ? |
 | POST /api/auth/login | ?ms | ?ms | ?ms | ?ms | ? |
 | [All major endpoints] |
 
@@ -1577,11 +1577,11 @@ Analyze application performance, database query optimization, caching strategies
 ```sql
 -- Example slow query
 SELECT p.*, 
-       COUNT(a.id) as appointment_count,
-       MAX(a.date) as last_appointment
-FROM athletes p
-LEFT JOIN appointments a ON a.patient_id = p.id
-WHERE p.clinic_id = ?
+       COUNT(a.id) as agendamento_count,
+       MAX(a.date) as last_agendamento
+FROM citizens p
+LEFT JOIN agendamentos a ON a.citizen_id = p.id
+WHERE p.tenantId = ?
   AND p.deleted_at IS NULL
 GROUP BY p.id
 ORDER BY p.name;
@@ -1593,12 +1593,12 @@ ORDER BY p.name;
 **Optimization**:
 ```sql
 -- Add composite index
-CREATE INDEX idx_appointments_patient_date 
-ON appointments(patient_id, date);
+CREATE INDEX idx_agendamentos_citizen_date 
+ON agendamentos(citizen_id, date);
 
 -- Add index on filtered columns
-CREATE INDEX idx_patients_clinic_deleted 
-ON athletes(clinic_id, deleted_at);
+CREATE INDEX idx_citizens_office_deleted 
+ON citizens(tenantId, deleted_at);
 
 -- After optimization: 85ms
 ```
@@ -1614,17 +1614,17 @@ ON athletes(clinic_id, deleted_at);
 **N+1 Query Example**:
 ```typescript
 // ❌ Bad: N+1 queries
-const athletes = await Athlete.findAll();
-for (const athlete of athletes) {
-  athlete.appointments = await Appointment.findAll({
-    where: { patient_id: athlete.id }
+const citizens = await CitizenProfile.findAll();
+for (const citizen of citizens) {
+  citizen.agendamentos = await Agendamento.findAll({
+    where: { citizen_id: citizen.id }
   });
 }
 // Executes: 1 + N queries
 
 // ✅ Good: Single query with eager loading
-const athletes = await Athlete.findAll({
-  include: [Appointment]
+const citizens = await CitizenProfile.findAll({
+  include: [Agendamento]
 });
 // Executes: 1 query
 ```
@@ -1636,37 +1636,37 @@ const athletes = await Athlete.findAll({
 **Current Indexes**:
 | Table | Index | Columns | Type | Size | Usage | Issues |
 |-------|-------|---------|------|------|-------|--------|
-| athletes | PRIMARY | id | BTREE | 5MB | High | None |
-| athletes | idx_cpf | cpf | BTREE | 2MB | High | None |
-| athletes | idx_clinic | clinic_id | BTREE | 1MB | High | None |
-| athletes | idx_created | created_at | BTREE | 3MB | Low | Unused |
-| appointments | PRIMARY | id | BTREE | 10MB | High | None |
-| appointments | idx_patient | patient_id | BTREE | 4MB | High | None |
-| appointments | idx_provider | provider_id | BTREE | 4MB | High | None |
-| appointments | idx_date | date | BTREE | 5MB | High | None |
+| citizens | PRIMARY | id | BTREE | 5MB | High | None |
+| citizens | idx_cpf | cpf | BTREE | 2MB | High | None |
+| citizens | idx_office | tenantId | BTREE | 1MB | High | None |
+| citizens | idx_created | created_at | BTREE | 3MB | Low | Unused |
+| agendamentos | PRIMARY | id | BTREE | 10MB | High | None |
+| agendamentos | idx_citizen | citizen_id | BTREE | 4MB | High | None |
+| agendamentos | idx_provider | provider_id | BTREE | 4MB | High | None |
+| agendamentos | idx_date | date | BTREE | 5MB | High | None |
 
 **Missing Indexes**:
-- 🟧 `athletes(clinic_id, deleted_at)` - Composite for filtered queries
-- 🟧 `appointments(date, status)` - Composite for calendar queries
-- 🟨 `appointments(patient_id, date)` - Composite for athlete history
-- 🟨 `medical_records(patient_id, created_at)` - Composite for chronological queries
+- 🟧 `citizens(tenantId, deleted_at)` - Composite for filtered queries
+- 🟧 `agendamentos(date, status)` - Composite for calendar queries
+- 🟨 `agendamentos(citizen_id, date)` - Composite for citizen history
+- 🟨 `communication_records(citizen_id, created_at)` - Composite for chronological queries
 
 **Unused Indexes** (candidates for removal):
-- `athletes.idx_created` - Never used in queries
+- `citizens.idx_created` - Never used in queries
 - `users.idx_last_login` - Rarely used, high maintenance cost
 
 **Index Recommendations**:
 ```sql
 -- Add missing composite indexes
-CREATE INDEX idx_patients_clinic_deleted 
-ON athletes(clinic_id, deleted_at) 
+CREATE INDEX idx_citizens_office_deleted 
+ON citizens(tenantId, deleted_at) 
 WHERE deleted_at IS NULL;
 
-CREATE INDEX idx_appointments_date_status 
-ON appointments(date, status);
+CREATE INDEX idx_agendamentos_date_status 
+ON agendamentos(date, status);
 
 -- Remove unused index
-DROP INDEX athletes.idx_created;
+DROP INDEX citizens.idx_created;
 ```
 
 **Deliverable**: Index optimization plan
@@ -1683,52 +1683,52 @@ DROP INDEX athletes.idx_created;
 | Data Type | TTL | Invalidation Strategy | Hit Rate | Issues |
 |-----------|-----|----------------------|----------|--------|
 | User sessions | 1h | On logout | 95% | None |
-| Department settings | 15min | On update | 85% | Could be longer |
-| Athlete list | 5min | On create/update/delete | 60% | TTL too short |
-| Appointment calendar | 2min | On booking/cancellation | 70% | Cache stampede |
+| Tenant settings | 15min | On update | 85% | Could be longer |
+| CitizenProfile list | 5min | On create/update/delete | 60% | TTL too short |
+| Agendamento calendar | 2min | On booking/cancellation | 70% | Cache stampede |
 
 **Caching Patterns**:
 
 **Pattern 1: Cache-Aside (Lazy Loading)**:
 ```typescript
-async getPatient(id: string): Promise<Athlete> {
+async getCitizenProfile(id: string): Promise<CitizenProfile> {
   // Check cache first
-  const cached = await this.redis.get(`athlete:${id}`);
+  const cached = await this.redis.get(`citizen:${id}`);
   if (cached) {
     return JSON.parse(cached);
   }
   
   // Cache miss - fetch from database
-  const athlete = await this.patientRepository.findById(id);
+  const citizen = await this.citizenProfileRepository.findById(id);
   
   // Store in cache (15 min TTL)
   await this.redis.setex(
-    `athlete:${id}`,
+    `citizen:${id}`,
     900,
-    JSON.stringify(athlete)
+    JSON.stringify(citizen)
   );
   
-  return athlete;
+  return citizen;
 }
 ```
 
 **Pattern 2: Write-Through**:
 ```typescript
-async updatePatient(id: string, data: UpdatePatientDTO): Promise<Athlete> {
+async updateCitizenProfile(id: string, data: UpdateCitizenProfileDTO): Promise<CitizenProfile> {
   // Update database
-  const athlete = await this.patientRepository.update(id, data);
+  const citizen = await this.citizenProfileRepository.update(id, data);
   
   // Update cache immediately
   await this.redis.setex(
-    `athlete:${id}`,
+    `citizen:${id}`,
     900,
-    JSON.stringify(athlete)
+    JSON.stringify(citizen)
   );
   
   // Invalidate related caches
-  await this.redis.del(`athletes:list:department:${athlete.clinic_id}`);
+  await this.redis.del(`citizens:list:tenant:${citizen.tenantId}`);
   
-  return athlete;
+  return citizen;
 }
 ```
 
@@ -1796,7 +1796,7 @@ async getPopularData(key: string): Promise<any> {
       max: 5,
       window: '15m'
     },
-    'POST /api/athletes': {
+    'POST /api/citizens': {
       max: 100,
       window: '1h'
     }
@@ -1840,12 +1840,12 @@ async getPopularData(key: string): Promise<any> {
 **Job Processing Pattern**:
 ```typescript
 // Producer
-async scheduleAppointmentReminder(appointmentId: string) {
+async scheduleAgendamentoReminder(agendamentoId: string) {
   await this.queue.add('send-reminder', {
-    appointmentId,
-    scheduledFor: appointment.date.subtract(24, 'hours')
+    agendamentoId,
+    scheduledFor: agendamento.date.subtract(24, 'hours')
   }, {
-    delay: calculateDelay(appointment.date),
+    delay: calculateDelay(agendamento.date),
     attempts: 3,
     backoff: {
       type: 'exponential',
@@ -1857,18 +1857,18 @@ async scheduleAppointmentReminder(appointmentId: string) {
 // Consumer
 @Process('send-reminder')
 async processReminder(job: Job) {
-  const { appointmentId } = job.data;
+  const { agendamentoId } = job.data;
   
-  // Fetch appointment
-  const appointment = await this.appointmentService.findById(appointmentId);
+  // Fetch agendamento
+  const agendamento = await this.agendamentoService.findById(agendamentoId);
   
   // Check if still needs reminder
-  if (appointment.status !== 'confirmed') {
+  if (agendamento.status !== 'confirmed') {
     return { skipped: true };
   }
   
   // Send reminder
-  await this.notificationService.sendReminder(appointment);
+  await this.notificationService.sendReminder(agendamento);
   
   return { sent: true };
 }
@@ -1948,9 +1948,9 @@ async processReminder(job: Job) {
 **Logging Strategy**:
 ```typescript
 // Structured logging example
-logger.info('Athlete created', {
-  patient_id: athlete.id,
-  clinic_id: athlete.clinic_id,
+logger.info('Citizen profile created', {
+  citizen_id: citizen.id,
+  tenantId: citizen.tenantId,
   user_id: req.user.id,
   timestamp: Date.now(),
   duration_ms: 150
@@ -2021,7 +2021,7 @@ logger.error('Payment failed', {
 **Deliverable**: Database connection analysis
 
 ### Output Document
-**File**: `07-Sintgesp-Performance-Infrastructure.md`
+**File**: `07-Secom-Performance-Infrastructure.md`
 
 **Sections**:
 1. Application Performance Metrics
@@ -2066,8 +2066,8 @@ Establish a comprehensive analysis of the code quality and testing coverage.
 **Largest Files Analysis**:
 | File | Lines | Responsibility | Issues | Action |
 |------|-------|----------------|--------|--------|
-| athlete.service.ts | 850 | Athlete CRUD + business logic | Too large, mixed concerns | Split into multiple services |
-| appointment.controller.ts | 650 | All appointment endpoints | Too many routes | Extract to sub-controllers |
+| citizen.service.ts | 850 | CitizenProfile CRUD + business logic | Too large, mixed concerns | Split into multiple services |
+| agendamento.controller.ts | 650 | All agendamento endpoints | Too many routes | Extract to sub-controllers |
 | [Continue...] |
 
 **Deliverable**: Code metrics report
@@ -2093,46 +2093,46 @@ Establish a comprehensive analysis of the code quality and testing coverage.
 
 **❌ Bad: Business logic in controller**
 ```typescript
-@Post('/athletes')
-async createPatient(@Body() data: CreatePatientDTO) {
+@Post('/citizens')
+async createCitizenProfile(@Body() data: CreateCitizenProfileDTO) {
   // Validation
   if (!data.cpf || data.cpf.length !== 11) {
     throw new Error('Invalid CPF');
   }
   
   // Check uniqueness
-  const exists = await Athlete.findOne({ cpf: data.cpf });
+  const exists = await CitizenProfile.findOne({ cpf: data.cpf });
   if (exists) {
     throw new Error('CPF already exists');
   }
   
-  // Create athlete
-  const athlete = await Athlete.create(data);
+  // Create citizen
+  const citizen = await CitizenProfile.create(data);
   
   // Send email
-  await sendEmail(athlete.email, 'welcome');
+  await sendEmail(citizen.email, 'welcome');
   
-  return athlete;
+  return citizen;
 }
 ```
 
 **✅ Good: Business logic in service**
 ```typescript
 // Controller
-@Post('/athletes')
-async createPatient(@Body() data: CreatePatientDTO) {
-  return await this.patientService.create(data);
+@Post('/citizens')
+async createCitizenProfile(@Body() data: CreateCitizenProfileDTO) {
+  return await this.citizenProfileService.create(data);
 }
 
 // Service
-async create(data: CreatePatientDTO): Promise<Athlete> {
-  await this.validateUniqueCPF(data.cpf, data.clinic_id);
+async create(data: CreateCitizenProfileDTO): Promise<CitizenProfile> {
+  await this.validateUniqueCPF(data.cpf, data.tenantId);
   
-  const athlete = await this.patientRepository.create(data);
+  const citizen = await this.citizenProfileRepository.create(data);
   
-  await this.notificationService.sendWelcomeEmail(athlete);
+  await this.notificationService.sendWelcomeEmail(citizen);
   
-  return athlete;
+  return citizen;
 }
 ```
 
@@ -2169,12 +2169,12 @@ src/
 │   │   ├── auth.service.ts
 │   │   ├── auth.types.ts
 │   │   └── auth.validator.ts
-│   ├── athletes/
-│   │   ├── athlete.controller.ts
-│   │   ├── athlete.service.ts
-│   │   ├── athlete.repository.ts
-│   │   ├── athlete.model.ts
-│   │   └── athlete.types.ts
+│   ├── citizens/
+│   │   ├── citizen.controller.ts
+│   │   ├── citizen.service.ts
+│   │   ├── citizen.repository.ts
+│   │   ├── citizen.model.ts
+│   │   └── citizen.types.ts
 │   └── [other modules]
 ├── shared/
 │   ├── middlewares/
@@ -2212,22 +2212,22 @@ src/
 
 **❌ Bad: Using any**
 ```typescript
-async getPatient(id: string): Promise<any> {
-  const athlete = await this.db.query('SELECT * FROM athletes WHERE id = ?', [id]);
-  return athlete;
+async getCitizenProfile(id: string): Promise<any> {
+  const citizen = await this.db.query('SELECT * FROM citizens WHERE id = ?', [id]);
+  return citizen;
 }
 ```
 
 **✅ Good: Proper typing**
 ```typescript
-async getPatient(id: string): Promise<Athlete> {
-  const athlete = await this.patientRepository.findById(id);
+async getCitizenProfile(id: string): Promise<CitizenProfile> {
+  const citizen = await this.citizenProfileRepository.findById(id);
   
-  if (!athlete) {
-    throw new NotFoundError('Athlete not found');
+  if (!citizen) {
+    throw new NotFoundError('CitizenProfile not found');
   }
   
-  return athlete;
+  return citizen;
 }
 ```
 
@@ -2263,14 +2263,14 @@ Lines        : ?% ( ?/? )
 | Module | Unit Tests | Integration Tests | Coverage | Critical Gaps |
 |--------|-----------|-------------------|----------|---------------|
 | Auth | 15 | 5 | 85% | None |
-| Athletes | 8 | 2 | 45% | Create/Update logic |
-| Appointments | 5 | 1 | 30% | Booking conflicts |
+| CitizenProfiles | 8 | 2 | 45% | Create/Update logic |
+| Agendamentos | 5 | 1 | 30% | Booking conflicts |
 | Payments | 0 | 0 | 0% | Everything |
 
 **Untested Critical Paths**:
 - 🟥 Payment processing (0% coverage)
-- 🟥 Appointment booking conflicts (not tested)
-- 🟧 Athlete data validation (partial coverage)
+- 🟥 Agendamento booking conflicts (not tested)
+- 🟧 CitizenProfile data validation (partial coverage)
 - 🟧 Authorization logic (not tested)
 - 🟨 Email sending (mocked, not tested)
 
@@ -2280,26 +2280,26 @@ Lines        : ?% ( ?/? )
 ```typescript
 it('should call repository.create', async () => {
   const spy = jest.spyOn(service['repository'], 'create');
-  await service.createPatient(data);
+  await service.createCitizenProfile(data);
   expect(spy).toHaveBeenCalled();
 });
 ```
 
 **✅ Good: Testing behavior**
 ```typescript
-it('should create athlete with valid data', async () => {
-  const athlete = await service.createPatient(validData);
+it('should create citizen with valid data', async () => {
+  const citizen = await service.createCitizenProfile(validData);
   
-  expect(athlete.id).toBeDefined();
-  expect(athlete.name).toBe(validData.name);
-  expect(athlete.cpf).toBe(validData.cpf);
+  expect(citizen.id).toBeDefined();
+  expect(citizen.name).toBe(validData.name);
+  expect(citizen.cpf).toBe(validData.cpf);
 });
 
 it('should throw error for duplicate CPF', async () => {
-  await service.createPatient(data);
+  await service.createCitizenProfile(data);
   
   await expect(
-    service.createPatient(data)
+    service.createCitizenProfile(data)
   ).rejects.toThrow('CPF já cadastrado');
 });
 ```
@@ -2340,20 +2340,20 @@ it('should throw error for duplicate CPF', async () => {
 **Code Documentation**:
 ```typescript
 // ❌ Bad: No documentation
-async createPatient(data: CreatePatientDTO) {
+async createCitizenProfile(data: CreateCitizenProfileDTO) {
   // ... complex logic
 }
 
 // ✅ Good: Clear documentation
 /**
- * Creates a new athlete in the system
+ * Creates a new citizen in the system
  * 
- * @param data - Athlete creation data
- * @returns Created athlete with generated ID
- * @throws ConflictError if CPF already exists in department
+ * @param data - CitizenProfile creation data
+ * @returns Created citizen with generated ID
+ * @throws ConflictError if CPF already exists in tenant
  * @throws ValidationError if data is invalid
  */
-async createPatient(data: CreatePatientDTO): Promise<Athlete> {
+async createCitizenProfile(data: CreateCitizenProfileDTO): Promise<CitizenProfile> {
   // ... logic
 }
 ```
@@ -2373,8 +2373,8 @@ async createPatient(data: CreatePatientDTO): Promise<Athlete> {
 ```typescript
 // Pattern 1: Try-catch
 try {
-  const athlete = await this.patientService.create(data);
-  return { success: true, data: athlete };
+  const citizen = await this.citizenProfileService.create(data);
+  return { success: true, data: citizen };
 } catch (error) {
   if (error instanceof ValidationError) {
     throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
@@ -2441,13 +2441,13 @@ app.use((error, req, res, next) => {
 
 ### Output Documents
 
-**File 1**: `08-Sintgesp-Code-Quality.md`
+**File 1**: `08-Secom-Code-Quality.md`
 - Code metrics and analysis
 - Pattern evaluation
 - TypeScript quality
 - Code organization recommendations
 
-**File 2**: `09-Sintgesp-Testing-Strategy.md`
+**File 2**: `09-Secom-Testing-Strategy.md`
 - Current test coverage
 - Testing gaps
 - Testing recommendations
@@ -2644,30 +2644,30 @@ Gather all issues from the documents and categorize:
 
 ### Output Documents
 
-**File 1**: `10-Sintgesp-Improvement-Roadmap.md`
+**File 1**: `10-Secom-Improvement-Roadmap.md`
 - Complete prioritized issue list
 - Phase-by-phase implementation plan
 - Effort estimates
 - Dependencies and risks
 
-**File 2**: `11-Sintgesp-Quick-Wins.md`
+**File 2**: `11-Secom-Quick-Wins.md`
 - All quick win opportunities
 - Implementation guides
 - Expected impact
 
-**File 3**: `12-Sintgesp-Technical-Debt.md`
+**File 3**: `12-Secom-Technical-Debt.md`
 - Technical debt quantification
 - Debt categories
 - Repayment strategy
 - Long-term vision
 
-**File 4**: `00-Sintgesp-Backend-Executive-Summary.md`
+**File 4**: `00-Secom-Backend-Executive-Summary.md`
 - Executive summary
 - Key findings
 - Critical recommendations
 - Budget and timeline
 
-**File 5**: `00-Sintgesp-Backend-Master-Index.md`
+**File 5**: `00-Secom-Backend-Master-Index.md`
 - Links to all documents
 - Navigation guide
 - Version history
@@ -2702,20 +2702,20 @@ For rapid evaluation:
 ## Document Naming Convention
 
 ```
-00-Sintgesp-Backend-Master-Index.md
-00-Sintgesp-Backend-Executive-Summary.md
-01-Sintgesp-Backend-Architecture-Overview.md
-02-Sintgesp-Database-Architecture.md
-03-Sintgesp-API-Design.md
-04-Sintgesp-Auth-Security.md
-05-Sintgesp-Business-Logic.md
-06-Sintgesp-Integrations.md
-07-Sintgesp-Performance-Infrastructure.md
-08-Sintgesp-Code-Quality.md
-09-Sintgesp-Testing-Strategy.md
-10-Sintgesp-Improvement-Roadmap.md
-11-Sintgesp-Quick-Wins.md
-12-Sintgesp-Technical-Debt.md
+00-Secom-Backend-Master-Index.md
+00-Secom-Backend-Executive-Summary.md
+01-Secom-Backend-Architecture-Overview.md
+02-Secom-Database-Architecture.md
+03-Secom-API-Design.md
+04-Secom-Auth-Security.md
+05-Secom-Business-Logic.md
+06-Secom-Integrations.md
+07-Secom-Performance-Infrastructure.md
+08-Secom-Code-Quality.md
+09-Secom-Testing-Strategy.md
+10-Secom-Improvement-Roadmap.md
+11-Secom-Quick-Wins.md
+12-Secom-Technical-Debt.md
 ```
 
 ---

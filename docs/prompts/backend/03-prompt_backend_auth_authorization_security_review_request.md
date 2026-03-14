@@ -1,14 +1,14 @@
 Here is a **significantly improved and stricter version** of your prompt — redesigned so that the audit is based on **actual code and runtime behavior**, not documentation as a primary source.
 
-This version enforces an **evidence-first, implementation-driven security audit** suitable for production healthcare systems.
+This version enforces an **evidence-first, implementation-driven security audit** suitable for production government communications systems.
 
 ---
 
-# 🔐 Sintgesp – Authentication, Authorization & Security Architecture Review
+# 🔐 Secom – Authentication, Authorization & Security Architecture Review
 
 **Implementation-Driven Security Audit (Production-Grade)**
 
-You are a **Senior Security Architect performing a deep technical security assessment** of the Sintgesp backend system.
+You are a **Senior Security Architect performing a deep technical security assessment** of the Secom backend system.
 
 This is a **code-first audit**, not a documentation review.
 
@@ -47,15 +47,15 @@ If implementation evidence is missing:
 
 Treat the system as:
 
-* A **healthcare / department management platform**
-* Handling **PII and medical records**
+* A **government communications platform (Assessoria de Comunicação)**
+* Handling **PII and government communications data**
 * Subject to **LGPD (Brazilian Data Protection Law)**
 * Using **MongoDB + Mongoose**
-* Implementing **multi-tenancy (department isolation)**
+* Implementing **single-tenant architecture**
 * Running in production or pre-production
-* Operating under healthcare-grade risk tolerance
+* Operating under government-grade data protection requirements
 
-Security expectations must reflect healthcare compliance standards.
+Security expectations must reflect government data compliance standards.
 
 ---
 
@@ -65,7 +65,7 @@ Produce a **deep, architecture-level security analysis**, covering:
 
 1. Authentication architecture
 2. Authorization & RBAC design
-3. Multi-tenant isolation guarantees
+3. Data scoping guarantees
 4. Middleware enforcement correctness
 5. Sensitive data protection
 6. LGPD compliance posture
@@ -85,14 +85,14 @@ Not a checklist. Not generic advice.
 Primary output:
 
 ```
-docs/backend/03-Sintgesp-Auth-Security-Overview.md
+docs/backend/03-Secom-Auth-Security-Overview.md
 ```
 
 If length requires:
 
 ```
-docs/backend/03-Sintgesp-Auth-Security-Overview-Part1.md
-docs/backend/03-Sintgesp-Auth-Security-Overview-Part2.md
+docs/backend/03-Secom-Auth-Security-Overview-Part1.md
+docs/backend/03-Secom-Auth-Security-Overview-Part2.md
 ...
 ```
 
@@ -217,7 +217,7 @@ Based on implementation:
 * Inheritance logic
 * Separation of duties
 * Privilege escalation risk
-* SuperAdmin isolation
+* super_admin isolation
 
 Deliver:
 
@@ -249,9 +249,9 @@ Deliver:
 Produce a fully expanded matrix for:
 
 * Users
-* Athletes
-* Appointments
-* Billing
+* CitizenProfiles
+* Agendamentos
+* PressReleases
 * Reports
 * Audit logs
 * System configuration
@@ -260,7 +260,7 @@ Produce a fully expanded matrix for:
 For each:
 
 * Allowed roles
-* Scope: Own / Assigned / Department-wide / Global
+* Scope: Own / Assigned / Tenant-wide / Global
 
 Flag:
 
@@ -295,8 +295,8 @@ Evaluate:
 
 Evaluate enforcement of:
 
-* Department-scoped data filtering
-* Cross-tenant query protection
+* Tenant-scoped data filtering
+* Cross-boundary query protection
 * Mongoose-level guards
 * Service-level scope enforcement
 
@@ -304,7 +304,7 @@ Simulate:
 
 * Horizontal privilege escalation
 * Vertical privilege escalation
-* Cross-department access attempt
+* Cross-boundary access attempt
 
 Deliver:
 
@@ -380,7 +380,7 @@ Deliver:
 
 # 5️⃣ Sensitive Data & Cryptography
 
-## 5.1 PII & Medical Record Protection
+## 5.1 PII & Communication Record Protection
 
 Inspect:
 
@@ -543,9 +543,9 @@ Also classify overall maturity:
 
 * Do NOT invent undocumented security mechanisms
 * If evidence is missing → classify as risk
-* Tie tenant isolation to authorization logic
+* Tie tenant scoping to authorization logic
 * Tie data protection to MongoDB design
-* Assume healthcare-grade risk tolerance
-* Prioritize athlete data protection above convenience
+* Assume government-grade data protection requirements
+* Prioritize citizen data protection above convenience
 * Split document if necessary for completeness
 

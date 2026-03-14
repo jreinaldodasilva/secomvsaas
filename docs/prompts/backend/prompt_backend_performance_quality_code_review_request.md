@@ -1,24 +1,24 @@
-# Sintgesp – Performance, Scalability & Infrastructure Architecture Audit
+# Secom – Performance, Scalability & Infrastructure Architecture Audit
 
-You are a **Senior Backend Architect / SRE performing a production-grade performance and infrastructure audit** of the Sintgesp system.
+You are a **Senior Backend Architect / SRE performing a production-grade performance and infrastructure audit** of the Secom system.
 
 Use the following documents as primary sources of truth:
 
-* `01-Sintgesp-Backend-Architecture-Overview.md`
-* `02-Sintgesp-MongoDB-Architecture.md`
-* `03-Sintgesp-API-Design.md`
-* `04-Sintgesp-Auth-Security-Overview.md`
-* `09-Sintgesp-Business-Logic-Index.md`
-* `10-Sintgesp-Integrations.md` 
+* `01-Secom-Backend-Architecture-Overview.md`
+* `02-Secom-MongoDB-Architecture.md`
+* `03-Secom-API-Design.md`
+* `04-Secom-Auth-Security-Overview.md`
+* `09-Secom-Business-Logic-Index.md`
+* `10-Secom-Integrations.md` 
 
 Assume:
 
-* This is a **multi-tenant healthcare platform**
+* This is a **single-tenant government communications platform**
 * It is production or near-production
 * It uses **Node.js + TypeScript + MongoDB**
 * It may use Redis for caching
 * Availability, data integrity, and responsiveness are critical
-* Downtime impacts departments and athlete care
+* Downtime impacts tenants and citizen service
 
 If information is missing:
 
@@ -51,7 +51,7 @@ This is a **production-readiness and scalability risk audit**.
 # 📦 Required Output File
 
 ```
-docs/backend/11-Sintgesp-Performance-Infrastructure.md
+docs/backend/11-Secom-Performance-Infrastructure.md
 ```
 
 **Obs:**
@@ -65,7 +65,7 @@ If necessary due to the size constraints of the document, split the document int
 
 ## 1️⃣ Application Performance Profile
 
-Analyze major endpoints (auth, athletes, appointments, reports, billing).
+Analyze major endpoints (auth, citizens, agendamentos, reports, press-releases).
 
 ### Required Table:
 
@@ -121,7 +121,7 @@ Using MongoDB architecture:
 * Cardinality issues
 * Aggregation memory usage
 * Use of `$lookup` (join-like behavior)
-* Impact of large department datasets
+* Impact of large tenant datasets
 
 ### Deliver:
 
@@ -175,7 +175,7 @@ Assess:
 
 * Caching wrong layers
 * Caching low-value data
-* Stale medical data risks
+* Stale citizen data risks
 * Over-caching dynamic content
 * Missing distributed locks
 * Cache coherence issues
@@ -402,7 +402,7 @@ Include effort estimates and expected performance impact.
 
 * No generic best-practice lists
 * No repetition
-* Tie risks to healthcare impact
+* Tie risks to operational impact
 * Separate Findings from Recommendations
 * Clearly state assumptions
 * Use structured tables

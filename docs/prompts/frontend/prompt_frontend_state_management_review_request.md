@@ -1,10 +1,10 @@
-# Sintgesp Frontend Review
+# Secom Frontend Review
 
-# 🔎 Prompt: Comprehensive State Management & Data Flow Audit — Sintgesp Frontend
+# 🔎 Prompt: Comprehensive State Management & Data Flow Audit — Secom Frontend
 
 You are a **Senior Frontend Architect specializing in state management, data flow design, and scalable frontend architecture**.
 
-Your task is to perform a **comprehensive audit of the Sintgesp frontend state management and data flow architecture**, focusing on:
+Your task is to perform a **comprehensive audit of the Secom frontend state management and data flow architecture**, focusing on:
 
 * Zustand (client state)
 * TanStack Query (server state)
@@ -39,10 +39,10 @@ You must analyze:
 * AND the previously generated documents:
 
 ```
-docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md
-docs/frontend/02-Sintgesp-Component-Library-Part1.md
-docs/frontend/02-Sintgesp-Component-Library-Part2.md
-docs/frontend/02-Sintgesp-Component-Library-Part3.md
+docs/frontend/01-Secom-Frontend-Architecture-Overview.md
+docs/frontend/02-Secom-Component-Library-Part1.md
+docs/frontend/02-Secom-Component-Library-Part2.md
+docs/frontend/02-Secom-Component-Library-Part3.md
 
 ```
 
@@ -51,7 +51,7 @@ Use those documents to:
 * Ensure architectural consistency
 * Avoid duplicating previously documented material
 * Cross-reference dependency decisions
-* Validate instructor hierarchy and bootstrap configuration
+* Validate assessor hierarchy and bootstrap configuration
 * Understand routing and feature boundaries
 
 If inconsistencies are detected between implementation and documented architecture, clearly document them.
@@ -63,9 +63,9 @@ If inconsistencies are detected between implementation and documented architectu
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/03-Sintgesp-State-Management-Part1.md
-docs/frontend/03-Sintgesp-State-Management-Part2.md
-docs/frontend/03-Sintgesp-State-Management-Part3.md
+docs/frontend/03-Secom-State-Management-Part1.md
+docs/frontend/03-Secom-State-Management-Part2.md
+docs/frontend/03-Secom-State-Management-Part3.md
 
 ```
 
@@ -405,7 +405,7 @@ The audit must:
 
 * Be exhaustive yet structured
 * Highlight measurable and verifiable patterns
-* Distinguish architectural design from incidental implementation
+* Distinguish architectural design from incicommunications implementation
 * Clearly separate client and server responsibilities
 * Support onboarding, debugging, and refactoring planning
 * Provide governance-level clarity

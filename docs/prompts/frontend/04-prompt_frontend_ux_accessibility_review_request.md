@@ -1,10 +1,10 @@
-# Sintgesp Frontend Review
+# Secom Frontend Review
 
 ## UI/UX, Accessibility & Responsive Design
 
 ### Objective
 
-Conduct a **holistic user experience audit** of the Sintgesp frontend, evaluating:
+Conduct a **holistic user experience audit** of the Secom frontend, evaluating:
 
 * Visual and design consistency
 * Responsive and adaptive behavior across devices
@@ -245,8 +245,8 @@ Mobile UX evaluation with prioritized findings.
 ### Output File
 
 **File Name:**
-`docs/frontend/04-Sintgesp-UX-Accessibility-Overview-Part1.md`
-`docs/frontend/04-Sintgesp-UX-Accessibility-Overview-Part2.md`
+`docs/frontend/04-Secom-UX-Accessibility-Overview-Part1.md`
+`docs/frontend/04-Secom-UX-Accessibility-Overview-Part2.md`
 
 ---
 

@@ -1,7 +1,7 @@
 Excellent — below is the **forms & validation–scoped equivalent** of your previous structured prompts, tailored specifically for:
 
-* `docs/frontend/02-Sintgesp-Forms-Validation-Overview-Part1.md`
-* `docs/frontend/02-Sintgesp-Forms-Validation-Overview-Part2.md`
+* `docs/frontend/02-Secom-Forms-Validation-Overview-Part1.md`
+* `docs/frontend/02-Secom-Forms-Validation-Overview-Part2.md`
 
 This version:
 
@@ -15,12 +15,12 @@ This version:
 
 # PROMPT (Forms & Validation–Scoped Version)
 
-# Sintgesp – Frontend Forms & Validation Improvement Roadmap
+# Secom – Frontend Forms & Validation Improvement Roadmap
 
 **Source Documents:**
 
-* `docs/frontend/02-Sintgesp-Forms-Validation-Overview-Part1.md`
-* `docs/frontend/02-Sintgesp-Forms-Validation-Overview-Part2.md`
+* `docs/frontend/02-Secom-Forms-Validation-Overview-Part1.md`
+* `docs/frontend/02-Secom-Forms-Validation-Overview-Part2.md`
 
 **Scope Restriction:** Forms and Validation documentation only
 
@@ -372,7 +372,7 @@ Keep concise, strategic, and traceable to documented findings (1–2 pages equiv
 
 ## File 1:
 
-`docs/frontendroadmaps/02-Sintgesp-Forms-Validation-Improvement-Roadmap.md`
+`docs/frontendroadmaps/02-Secom-Forms-Validation-Improvement-Roadmap.md`
 
 Must include:
 
@@ -387,7 +387,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/02-Sintgesp-Forms-Validation-Quick-Wins.md`
+`docs/frontendroadmaps/02-Secom-Forms-Validation-Quick-Wins.md`
 
 Must include:
 

@@ -1,6 +1,6 @@
 Here is the fully expanded and consolidated version of your prompt, now including:
 
-`docs/backend/06-Sintgesp-Authorization-RBAC.md`
+`docs/backend/06-Secom-Authorization-RBAC.md`
 
 ---
 
@@ -8,18 +8,18 @@ Here is the fully expanded and consolidated version of your prompt, now includin
 
 Carefully review the following roadmap documents:
 
-* `docs/backendroadmaps/04-Sintgesp-Auth-Security-Improvement-Roadmap.md`
-* `docs/backendroadmaps/04-Sintgesp-Auth-Security-Quick-Wins.md`
+* `docs/backendroadmaps/04-Secom-Auth-Security-Improvement-Roadmap.md`
+* `docs/backendroadmaps/04-Secom-Auth-Security-Quick-Wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented authentication, authorization, and security fixes and improvements**:
 
-   * `docs/backend/04-Sintgesp-Auth-Security-Overview.md`
-   * `docs/backend/05-Sintgesp-Auth-Implementation.md`
-   * `docs/backend/06-Sintgesp-Authorization-RBAC.md`
-   * `docs/backend/07-Sintgesp-Data-Protection.md`
-   * `docs/backend/08-Sintgesp-Security-Hardening.md`
+   * `docs/backend/04-Secom-Auth-Security-Overview.md`
+   * `docs/backend/05-Secom-Auth-Implementation.md`
+   * `docs/backend/06-Secom-Authorization-RBAC.md`
+   * `docs/backend/07-Secom-Data-Protection.md`
+   * `docs/backend/08-Secom-Security-Hardening.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented authentication, authorization, and security issues**, including a structured and prioritized execution plan.
 
@@ -83,7 +83,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `04-Sintgesp-Auth-Security-Overview.md`
+## 1️⃣ `04-Secom-Auth-Security-Overview.md`
 
 * Reflect the current high-level security architecture.
 * Update conceptual diagrams or flow explanations.
@@ -92,7 +92,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `05-Sintgesp-Auth-Implementation.md`
+## 2️⃣ `05-Secom-Auth-Implementation.md`
 
 * Align authentication flows with current implementation.
 * Update token structure and lifecycle handling.
@@ -101,7 +101,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `06-Sintgesp-Authorization-RBAC.md`
+## 3️⃣ `06-Secom-Authorization-RBAC.md`
 
 * Update role definitions and permission mappings.
 * Reflect implemented RBAC enforcement patterns.
@@ -119,7 +119,7 @@ This file must act as the **authoritative RBAC reference**.
 
 ---
 
-## 4️⃣ `07-Sintgesp-Data-Protection.md`
+## 4️⃣ `07-Secom-Data-Protection.md`
 
 * Reflect current encryption practices.
 * Update sensitive field handling.
@@ -129,7 +129,7 @@ This file must act as the **authoritative RBAC reference**.
 
 ---
 
-## 5️⃣ `08-Sintgesp-Security-Hardening.md`
+## 5️⃣ `08-Secom-Security-Hardening.md`
 
 * Reflect implemented hardening controls.
 * Update rate limiting, CORS, validation, and headers.
@@ -157,9 +157,9 @@ This file must act as the **authoritative RBAC reference**.
 
 Create a new roadmap file, for example:
 
-`docs/backendroadmaps/04-Sintgesp-Auth-Security-Remaining-Roadmap.md`
+`docs/backendroadmaps/04-Secom-Auth-Security-Remaining-Roadmap.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backendroadmaps/04-Sintgesp-Auth-Security-Remaining-Roadmap.md-Part1.md', 'docs/backendroadmaps/04-Sintgesp-Auth-Security-Remaining-Roadmap.md-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backendroadmaps/04-Secom-Auth-Security-Remaining-Roadmap.md-Part1.md', 'docs/backendroadmaps/04-Secom-Auth-Security-Remaining-Roadmap.md-Part2.md', and so on.
 
 ---
 

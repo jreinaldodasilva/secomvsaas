@@ -2,7 +2,7 @@
 
 Carefully review and implement the fixes described in:
 
-`docs/frontendroadmaps/04-Sintgesp-UX-Accessibility-Improvement-Roadmap.md`
+`docs/frontendroadmaps/04-Secom-UX-Accessibility-Improvement-Roadmap.md`
 
 ### Execution Rules
 

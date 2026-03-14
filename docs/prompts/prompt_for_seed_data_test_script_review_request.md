@@ -6,7 +6,7 @@ with the rest of the project (backend architecture, DTOs, database models, and f
 
 ---
 
-# 🧠 Sintgesp Seed Script Review & Alignment Audit
+# 🧠 Secom Seed Script Review & Alignment Audit
 
 ## Target: `backend/scripts/seedTestData.ts`
 
@@ -44,7 +44,7 @@ You must:
    * Database models (e.g., Mongoose/Prisma schemas)
    * Backend DTO definitions
    * Validation schemas
-   * Shared types (`@sintgesp/shared`, if applicable)
+   * Shared types (`@vsaas/types`, if applicable)
    * Any frontend assumptions about data shape
 2. Compare seed data fields against:
 
@@ -92,7 +92,7 @@ For each entity being seeded:
 Verify:
 
 * Foreign key references exist
-* Relationship order is correct (e.g., Users created before Appointments)
+* Relationship order is correct (e.g., Users created before Agendamentos)
 * No orphan records are created
 * IDs are correctly reused
 * Circular dependencies are avoided
@@ -245,10 +245,10 @@ Categories:
 
 Generate:
 
-1. `docs/scripts/Sintgesp-Seed-Script-Alignment-Report.md`
-2. `docs/scripts/Sintgesp-Seed-DTO-Drift-Report.md`
-3. `docs/scripts/Sintgesp-Seed-Integrity-Risk-Assessment.md`
-4. `docs/scripts/Sintgesp-Seed-Refactor-Recommendations.md`
+1. `docs/scripts/Secom-Seed-Script-Alignment-Report.md`
+2. `docs/scripts/Secom-Seed-DTO-Drift-Report.md`
+3. `docs/scripts/Secom-Seed-Integrity-Risk-Assessment.md`
+4. `docs/scripts/Secom-Seed-Refactor-Recommendations.md`
 
 ---
 

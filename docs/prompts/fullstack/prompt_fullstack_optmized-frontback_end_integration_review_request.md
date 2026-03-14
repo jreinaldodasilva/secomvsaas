@@ -11,11 +11,11 @@ All security, third-party integrations, performance, and infrastructure concerns
 
 ---
 
-# 🧠 Sintgesp Frontend–Backend Integration & Data Flow Audit
+# 🧠 Secom Frontend–Backend Integration & Data Flow Audit
 
 ## 🎯 Objective
 
-Conduct a **strict end-to-end integration audit** of the Sintgesp application focused only on:
+Conduct a **strict end-to-end integration audit** of the Secom application focused only on:
 
 1. Whether all **GET endpoints correctly retrieve data**
 2. Whether all **POST endpoints correctly submit and persist data**
@@ -96,7 +96,7 @@ Validate:
 Compare across:
 
 * Backend DTO definitions
-* Shared package (`@sintgesp/shared`)
+* Shared package (`@vsaas/types`)
 * Frontend imports and usage
 
 ### Required Table
@@ -296,11 +296,11 @@ Categories:
 
 Generate:
 
-1. `docs/fullstack/Sintgesp-Frontend-Backend-Integration-Audit.md`
-2. `docs/fullstack/Sintgesp-DTO-Drift-Report.md`
-3. `docs/fullstack/Sintgesp-GET-POST-Validation-Report.md`
-4. `docs/fullstack/Sintgesp-UI-Data-Consistency-Report.md`
-5. `docs/fullstack/Sintgesp-Integration-Remediation-Roadmap.md`
+1. `docs/fullstack/Secom-Frontend-Backend-Integration-Audit.md`
+2. `docs/fullstack/Secom-DTO-Drift-Report.md`
+3. `docs/fullstack/Secom-GET-POST-Validation-Report.md`
+4. `docs/fullstack/Secom-UI-Data-Consistency-Report.md`
+5. `docs/fullstack/Secom-Integration-Remediation-Roadmap.md`
 
 Each issue must include:
 

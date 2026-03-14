@@ -1,8 +1,8 @@
-# 🔎 Prompt: Comprehensive Architectural & Technical Audit — Sintgesp Frontend
+# 🔎 Prompt: Comprehensive Architectural & Technical Audit — Secom Frontend
 
 You are a **Senior Frontend Architect and Technical Auditor**.
 
-Your task is to perform a **comprehensive architectural and technical analysis** of the **Sintgesp frontend codebase**.
+Your task is to perform a **comprehensive architectural and technical analysis** of the **Secom frontend codebase**.
 
 Assume you have **full read-only access to the entire frontend repository**, including:
 
@@ -28,7 +28,7 @@ Your objective is to:
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md
+docs/frontend/01-Secom-Frontend-Architecture-Overview.md
 ```
 
 The document must contain the following sections in order:
@@ -228,11 +228,11 @@ Analyze:
 
 * `main.tsx`
 * `App.tsx`
-* Root instructors
+* Root assessors
 
 Document:
 
-* Instructor hierarchy (QueryClientProvider, Router, ThemeProvider, etc.)
+* Assessor hierarchy (QueryClientProvider, Router, ThemeProvider, etc.)
 * Initialization order
 * Global state hydration
 * Error boundaries
@@ -330,7 +330,7 @@ The final document must include:
 
 ## 5. Application Bootstrap
 
-* Instructor hierarchy
+* Assessor hierarchy
 * Diagram
 * Architectural implications
 

@@ -3,13 +3,13 @@
 
 Carefully review the following MongoDB roadmap documents:
 
-* `docs/backendroadmaps/02-Sintgesp-MongoDB-Architecture-Improvement-Roadmap.md`
-* `docs/backendroadmaps/02-Sintgesp-MongoDB-Architecture-Quick-Wins.md`
+* `docs/backendroadmaps/02-Secom-MongoDB-Architecture-Improvement-Roadmap.md`
+* `docs/backendroadmaps/02-Secom-MongoDB-Architecture-Quick-Wins.md`
 
 Your objectives are to:
 
 1. Update
-   `docs/backend/02-Sintgesp-MongoDB-Architecture.md`
+   `docs/backend/02-Secom-MongoDB-Architecture.md`
    so it accurately reflects all **implemented MongoDB architecture fixes and improvements**.
 
 2. Create a new roadmap document defining the **remaining unimplemented MongoDB architecture issues**, including a structured execution plan.
@@ -63,7 +63,7 @@ Your objectives are to:
 
 Create a new roadmap file, for example:
 
-`docs/backendroadmaps/02-Sintgesp-MongoDB-Architecture-Remaining-Roadmap.md`
+`docs/backendroadmaps/02-Secom-MongoDB-Architecture-Remaining-Roadmap.md`
 
 ---
 

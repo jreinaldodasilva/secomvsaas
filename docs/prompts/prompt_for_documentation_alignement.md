@@ -8,7 +8,7 @@ The goal is **cross-document consistency, removal of contradictions, and creatio
 
 ---
 
-# 🧠 Sintgesp Cross-Review Alignment & Consistency Audit
+# 🧠 Secom Cross-Review Alignment & Consistency Audit
 
 ## 🎯 Objective
 
@@ -161,7 +161,7 @@ Examples:
 
 * “DTO” vs “Schema”
 * “Service layer” vs “Business layer”
-* “Hook” vs “Data instructor”
+* “Hook” vs “Data assessor”
 * “Shared types” vs “Common models”
 * “Envelope response” vs “Standard response”
 
@@ -218,11 +218,11 @@ Deliver:
 
 Generate:
 
-1. `docs/fullstack/Sintgesp-Documentation-Alignment-Report.md`
-2. `docs/fullstack/Sintgesp-Architecture-Consistency-Matrix.md`
-3. `docs/fullstack/Sintgesp-DTO-Documentation-Drift-Report.md`
-4. `docs/fullstack/Sintgesp-Term-Standardization-Guide.md`
-5. `docs/fullstack/Sintgesp-Documentation-Unification-Roadmap.md`
+1. `docs/fullstack/Secom-Documentation-Alignment-Report.md`
+2. `docs/fullstack/Secom-Architecture-Consistency-Matrix.md`
+3. `docs/fullstack/Secom-DTO-Documentation-Drift-Report.md`
+4. `docs/fullstack/Secom-Term-Standardization-Guide.md`
+5. `docs/fullstack/Secom-Documentation-Unification-Roadmap.md`
 
 ---
 

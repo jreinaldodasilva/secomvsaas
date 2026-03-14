@@ -1,10 +1,10 @@
 # PROMPT (Architecture-Scoped Version)
 
-# Sintgesp – Architecture Improvement Roadmap
+# Secom – Architecture Improvement Roadmap
 
 **Source Document:** 
-`docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part1.md`
-`docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part2.md`
+`docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`
+`docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -15,7 +15,7 @@ You are generating a **strategic improvement roadmap strictly from the Backend A
 
 You must:
 
-* Use only findings, gaps, risks, and recommendations explicitly described in `docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part1.md` and `docs/backend/01-Sintgesp-Backend-Architecture-Overview-Part2.md`
+* Use only findings, gaps, risks, and recommendations explicitly described in `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md` and `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
 * Not reference any other backend documents
 * Not assume issues from API, testing, or security audits
 * Not invent technical debt outside what is implied in the architecture review
@@ -83,7 +83,7 @@ Extract every issue related to:
 
 ### Severity Criteria
 
-* 🟥 Production fragility, scaling blockers, tenant isolation risk
+* 🟥 Production fragility, scaling blockers, tenant scoping risk
 * 🟧 Long-term maintainability or reliability risk
 * 🟨 Architectural refinement opportunity
 * 🟩 Strategic enhancement
@@ -141,7 +141,7 @@ Break down only architecture-related debt:
 
 * Structural layering debt
 * Infrastructure coupling debt
-* Multi-tenant isolation debt
+* Data scoping debt
 * Observability gaps
 * Deployment architecture debt
 * Resilience & fault tolerance debt
@@ -174,7 +174,7 @@ Design an execution roadmap focused on structural improvements.
 Focus:
 
 * Critical architectural risks
-* Tenant isolation protection
+* Tenant scoping protection
 * Deployment safety
 
 Include:
@@ -235,7 +235,7 @@ Examples:
 | Metric                       | Current State | Target                  | Measurement      |
 | ---------------------------- | ------------- | ----------------------- | ---------------- |
 | Horizontal scaling readiness | ?             | Stateless services      | Load test        |
-| Tenant isolation consistency | ?             | 100% enforced           | Code audit       |
+| Tenant scoping consistency | ?             | 100% enforced           | Code audit       |
 | Deployment reproducibility   | ?             | Fully automated         | CI/CD validation |
 | Error observability coverage | ?             | 100% structured logging | Log audit        |
 | Service coupling index       | ?             | Reduced by 40%          | Dependency graph |
@@ -256,7 +256,7 @@ Breakdown:
 * Resilience patterns
 * Observability
 * Deployment maturity
-* Tenant isolation robustness
+* Tenant scoping robustness
 
 Provide:
 
@@ -305,7 +305,7 @@ Keep concise and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/01-Sintgesp-Backend-Architecture-Improvement-Roadmap.md`
+`docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
 
 Must include:
 
@@ -320,7 +320,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/01-Sintgesp-Backend-Architecture-Quick-Wins.md`
+`docs/backendroadmaps/01-Secom-Backend-Architecture-Quick-Wins.md`
 
 Must include:
 

@@ -1,20 +1,20 @@
 # 🔎 PROMPT Backend Code Quality & Testing – Enterprise Production Audit
 
-# Sintgesp Backend Code Quality & Testing Review
+# Secom Backend Code Quality & Testing Review
 
 ## Context
 
-You are conducting a **senior-level production architecture audit** of the Sintgesp backend.
+You are conducting a **senior-level production architecture audit** of the Secom backend.
 
 The system:
 
-* Is a **multi-tenant healthcare/department management platform**
+* Is a **single-tenant government communications platform (Assessoria de Comunicação)**
 * Uses **Node.js + Express + TypeScript**
 * Implements **RBAC with 8 roles and 21 permissions**
-* Uses **JWT-based dual authentication (staff + athlete)**
+* Uses **JWT-based dual authentication (staff + citizen)**
 * Supports **165+ endpoints across 13 domains**
-* Handles **sensitive healthcare and financial data**
-* Enforces **department-scoped isolation**
+* Handles **sensitive government and communications data**
+* Enforces **tenant-scoped isolation**
 * Requires **high security, reliability, and auditability**
 
 This is not a basic lint review.
@@ -110,7 +110,7 @@ Evaluate adherence to:
 * Layered architecture (Controller → Service → Repository)
 * Separation of concerns
 * Domain-driven boundaries
-* Multi-tenant isolation enforcement
+* Data scoping enforcement
 * RBAC enforcement centralization
 * Transaction boundaries
 * Dependency injection patterns
@@ -131,10 +131,10 @@ Flag:
 
 Verify:
 
-* Department ID always required?
+* Tenant ID always required?
 * Query filters always scoped?
 * Super-admin bypass properly isolated?
-* No raw queries without department filter?
+* No raw queries without tenant filter?
 
 Flag:
 
@@ -217,9 +217,9 @@ Focus on critical domains:
 
 * Authentication
 * Scheduling
-* Athletes
+* CitizenProfiles
 * Payments
-* Clinical records
+* Officeal records
 
 Assess:
 
@@ -278,10 +278,10 @@ Specifically verify coverage for:
 
 * Login & refresh token flow
 * Password reset
-* Appointment booking conflicts
+* Agendamento booking conflicts
 * Payment processing
 * RBAC enforcement
-* Multi-tenant isolation
+* Data scoping
 * Audit logging
 * Error handling middleware
 
@@ -414,7 +414,7 @@ Flag:
 
 ## File 1:
 
-`docs/backend/12-Sintgesp-Code-Quality-Enterprise-Audit.md`
+`docs/backend/12-Secom-Code-Quality-Enterprise-Audit.md`
 
 Include:
 
@@ -431,7 +431,7 @@ Include:
 
 ## File 2:
 
-`docs/backend/13-Sintgesp-Testing-Strategy-Enterprise.md`
+`docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
 
 Include:
 

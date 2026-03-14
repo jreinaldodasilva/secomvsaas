@@ -1,10 +1,10 @@
 # PROMPT (API-Design-Scoped Version)
 
-# Sintgesp – API Design Improvement Roadmap
+# Secom – API Design Improvement Roadmap
 
 **Source Document:** 
-`docs/backend/02-Sintgesp-API-Design-Overview-Part1.md`
-`docs/backend/02-Sintgesp-API-Design-Overview-Part2.md`
+`docs/backend/02-Secom-API-Design-Overview-Part1.md`
+`docs/backend/02-Secom-API-Design-Overview-Part2.md`
 **Scope Restriction:** API Design document only
 
 ---
@@ -16,7 +16,7 @@ You are generating a **strategic API improvement roadmap strictly from the API D
 You must:
 
 * Use only findings, risks, gaps, and recommendations explicitly described in
-  `docs/backend/02-Sintgesp-API-Design-Overview-Part1.md` and `docs/backend/02-Sintgesp-API-Design-Overview-Part2.md`
+  `docs/backend/02-Secom-API-Design-Overview-Part1.md` and `docs/backend/02-Secom-API-Design-Overview-Part2.md`
 * Not reference any other backend documents
 * Not assume issues from MongoDB, infrastructure, security, or architecture audits
 * Not invent technical debt outside what is implied in the API design review
@@ -335,7 +335,7 @@ Keep concise, strategic, and decision-oriented (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/02-Sintgesp-API-Design-Improvement-Roadmap.md`
+`docs/backendroadmaps/02-Secom-API-Design-Improvement-Roadmap.md`
 
 Must include:
 
@@ -350,7 +350,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/02-Sintgesp-API-Design-Quick-Wins.md`
+`docs/backendroadmaps/02-Secom-API-Design-Quick-Wins.md`
 
 Must include:
 

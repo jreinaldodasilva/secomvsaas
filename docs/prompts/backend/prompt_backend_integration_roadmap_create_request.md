@@ -1,12 +1,12 @@
 # PROMPT (Integrations-Scoped Version)
 
-# Sintgesp – External Integrations Improvement Roadmap
+# Secom – External Integrations Improvement Roadmap
 
 **Primary Source Documents:**
 
-* `docs/backend/10-Sintgesp-Integrations-Part1.md`
-* `docs/backend/10-Sintgesp-Integrations-Part2.md`
-* `docs/backend/10-Sintgesp-Integrations-Part3.md`
+* `docs/backend/10-Secom-Integrations-Part1.md`
+* `docs/backend/10-Secom-Integrations-Part2.md`
+* `docs/backend/10-Secom-Integrations-Part3.md`
 
 **Scope Restriction:** Integration documents only
 
@@ -20,9 +20,9 @@ You must:
 
 * Use only findings, risks, gaps, and recommendations explicitly described in:
 
-  * `10-Sintgesp-Integrations-Part1.md`
-  * `10-Sintgesp-Integrations-Part2.md`
-  * `10-Sintgesp-Integrations-Part3.md`
+  * `10-Secom-Integrations-Part1.md`
+  * `10-Secom-Integrations-Part2.md`
+  * `10-Secom-Integrations-Part3.md`
 * Not reference other backend documents unless explicitly mentioned inside these integration documents
 * Not invent integration failures not implied in the documentation
 * Clearly trace every issue back to a specific section and part
@@ -53,7 +53,7 @@ Extract every issue related to:
 ## External Dependency Risk
 
 * Third-party availability dependence
-* Single-instructor lock-in
+* Single-assessor lock-in
 * Lack of fallback mechanisms
 * SLA uncertainty
 * Breaking API change risk
@@ -304,7 +304,7 @@ Focus:
 
 Focus:
 
-* Instructor abstraction layers
+* Assessor abstraction layers
 * Fallback strategies
 * Version negotiation mechanisms
 * Rate-limit adaptive handling
@@ -408,7 +408,7 @@ Keep concise, strategic, and decision-ready.
 
 ## File 1:
 
-`docs/backendroadmaps/06-Sintgesp-Integrations-Improvement-Roadmap.md`
+`docs/backendroadmaps/06-Secom-Integrations-Improvement-Roadmap.md`
 
 Must include:
 
@@ -423,7 +423,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/06-Sintgesp-Integrations-Quick-Wins.md`
+`docs/backendroadmaps/06-Secom-Integrations-Quick-Wins.md`
 
 Must include:
 

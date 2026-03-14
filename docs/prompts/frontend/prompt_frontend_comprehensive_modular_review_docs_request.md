@@ -1,15 +1,15 @@
-# Sintgesp Frontend Review - Modular Prompt Suite
+# Secom Frontend Review - Modular Prompt Suite
 
 ## Overview
 
-This document contains **8 specialized prompts** that can be used independently or as a complete review sequence. Each prompt focuses on a specific aspect of the Sintgesp frontend application.
+This document contains **8 specialized prompts** that can be used independently or as a complete review sequence. Each prompt focuses on a specific aspect of the Secom frontend application.
 
 ---
 
 ## **PROMPT 1: Initial Setup & Architecture Analysis**
 
 ### Objective
-Establish a comprehensive analysis of the Sintgesp frontend codebase, document the technology stack, and analyze the overall architecture.
+Establish a comprehensive analysis of the Secom frontend codebase, document the technology stack, and analyze the overall architecture.
 
 ### Tasks
 
@@ -65,7 +65,7 @@ Identify:
 
 #### 4. Application Entry Point
 Analyze `App.tsx` or `main.tsx`:
-- Instructor setup
+- Assessor setup
 - Router configuration
 - Global state initialization
 - Error boundaries
@@ -84,7 +84,7 @@ Document:
 **Deliverable**: Build configuration analysis
 
 ### Output Document
-**File**: `01-Sintgesp-Frontend-Architecture-Overview.md`
+**File**: `01-Secom-Frontend-Architecture-Overview.md`
 
 **Sections**:
 1. Executive Summary
@@ -192,7 +192,7 @@ Identify:
 **Deliverable**: Reusability recommendations
 
 ### Output Document
-**File**: `02-Sintgesp-Component-Library.md`
+**File**: `02-Secom-Component-Library.md`
 
 **Sections**:
 1. Component Inventory
@@ -269,7 +269,7 @@ Document:
 #### 3. Query Hooks Inventory
 | Hook | Purpose | Query Key | Cache Config | Error Handling | Issues |
 |------|---------|-----------|--------------|----------------|--------|
-| usePatients | Fetch athlete list | ['athletes', filters] | 5min stale | ✓ | None |
+| useCitizenProfiles | Fetch citizen list | ['citizens', filters] | 5min stale | ✓ | None |
 
 **Deliverable**: Complete query hooks catalog
 
@@ -298,7 +298,7 @@ Identify:
 **Deliverable**: State synchronization report
 
 ### Output Document
-**File**: `03-Sintgesp-State-Management.md`
+**File**: `03-Secom-State-Management.md`
 
 **Sections**:
 1. State Management Overview
@@ -327,12 +327,12 @@ Create complete route tree:
 ├── /dashboard
 │   ├── /super-admin
 │   │   ├── /users
-│   │   ├── /departments
+│   │   ├── /tenants
 │   │   └── /settings
 │   ├── /admin
 │   │   ├── /team
-│   │   ├── /athletes
-│   │   └── /appointments
+│   │   ├── /citizens
+│   │   └── /agendamentos
 │   └── [other role routes]
 └── [other routes]
 ```
@@ -350,7 +350,7 @@ Analyze:
 ```typescript
 // Show the protection mechanism
 <ProtectedRoute allowedRoles={['admin', 'staff']}>
-  <PatientList />
+  <CitizenProfileList />
 </ProtectedRoute>
 ```
 
@@ -363,7 +363,7 @@ Document:
 **Deliverable**: Route protection documentation
 
 #### 3. Permission Matrix
-| Route/Feature | Super Admin | Admin | Instructor | Staff | Athlete |
+| Route/Feature | Super Admin | Admin | Assessor | Staff | CitizenProfile |
 |---------------|-------------|-------|----------|-------|---------|
 | Dashboard | ✓ | ✓ | ✓ | ✓ | ✓ |
 | User Management | ✓ | ✓ | ✗ | ✗ | ✗ |
@@ -383,15 +383,15 @@ Document:
 #### 5. User Journey Mapping
 For each role, create detailed journey:
 
-**Journey**: Athlete Registration (Staff)
+**Journey**: Citizen Profile Registration (Staff)
 
 **Sequence Diagram**:
 ```mermaid
 sequenceDiagram
-    Staff->>App: Click "New Athlete"
+    Staff->>App: Click "New CitizenProfile"
     App->>Staff: Show form
     Staff->>App: Fill & submit
-    App->>API: POST /athletes
+    App->>API: POST /citizens
     API->>App: Success
     App->>Staff: Show notification
     App->>Staff: Navigate to profile
@@ -412,7 +412,7 @@ sequenceDiagram
 **Deliverable**: 5-7 critical user journeys documented
 
 ### Output Document
-**File**: `04-Sintgesp-Navigation-UserFlows.md`
+**File**: `04-Secom-Navigation-UserFlows.md`
 
 **Sections**:
 1. Routing Architecture
@@ -436,7 +436,7 @@ Evaluate all forms, input components, validation patterns, and data input user e
 | Form | Location | Fields | Validation Library | Multi-step | Issues |
 |------|----------|--------|-------------------|------------|--------|
 | Login | LoginPage | 2 | Custom | No | None |
-| Athlete Registration | PatientForm | 15+ | ? | No | Too long |
+| Citizen Profile Registration | CitizenProfileForm | 15+ | ? | No | Too long |
 
 **Deliverable**: Complete form catalog
 
@@ -460,7 +460,7 @@ Document all:
 #### 3. Form Deep Dive
 For 3-5 critical forms:
 
-**Form**: Athlete Registration
+**Form**: Citizen Profile Registration
 
 **Fields Analysis**:
 ```typescript
@@ -475,7 +475,7 @@ For 3-5 critical forms:
 - CEP (Brazilian postal code, autocomplete)
 - Logradouro, Número, Complemento, etc.
 
-// Medical Info (optional)
+// Additional Info (optional)
 - Alergias (textarea, optional)
 - Condições médicas (textarea, optional)
 ```
@@ -533,7 +533,7 @@ For each form, propose:
 **Deliverable**: Form improvement recommendations with mockups
 
 ### Output Document
-**File**: `05-Sintgesp-Forms-Validation.md`
+**File**: `05-Secom-Forms-Validation.md`
 
 **Sections**:
 1. Form Inventory
@@ -647,7 +647,7 @@ Test:
 **Deliverable**: Mobile UX evaluation
 
 ### Output Document
-**File**: `06-Sintgesp-UX-Accessibility.md`
+**File**: `06-Secom-UX-Accessibility.md`
 
 **Sections**:
 1. Design Consistency Audit
@@ -791,7 +791,7 @@ Document:
 **Deliverable**: Testing assessment
 
 ### Output Document
-**File**: `07-Sintgesp-Performance-Quality-Security.md`
+**File**: `07-Secom-Performance-Quality-Security.md`
 
 **Sections**:
 1. Performance Analysis
@@ -903,30 +903,30 @@ Create 2-3 page summary:
 
 ### Output Documents
 
-**File 1**: `08-Sintgesp-Improvement-Roadmap.md`
+**File 1**: `08-Secom-Improvement-Roadmap.md`
 - Complete prioritized issue list
 - Sprint-by-sprint implementation plan
 - Effort estimates
 - Dependencies
 - Success metrics
 
-**File 2**: `09-Sintgesp-Quick-Wins.md`
+**File 2**: `09-Secom-Quick-Wins.md`
 - All quick win opportunities
 - Implementation guides
 - Expected impact
 
-**File 3**: `10-Sintgesp-Technical-Debt.md`
+**File 3**: `10-Secom-Technical-Debt.md`
 - Technical debt quantification
 - Debt repayment plan
 - Long-term architecture vision
 
-**File 4**: `00-Sintgesp-Executive-Summary.md`
+**File 4**: `00-Secom-Executive-Summary.md`
 - Executive summary (2-3 pages)
 - Key findings
 - Recommendations
 - Budget and timeline
 
-**File 5**: `00-Sintgesp-Master-Index.md`
+**File 5**: `00-Secom-Master-Index.md`
 - Links to all documents
 - Navigation guide
 - Version history
@@ -959,18 +959,18 @@ Use individual prompts for specific areas of concern:
 ## Document Naming Convention
 
 ```
-00-Sintgesp-Master-Index.md
-00-Sintgesp-Executive-Summary.md
-01-Sintgesp-Architecture-Overview.md
-02-Sintgesp-Component-Library.md
-03-Sintgesp-State-Management.md
-04-Sintgesp-Navigation-UserFlows.md
-05-Sintgesp-Forms-Validation.md
-06-Sintgesp-UX-Accessibility.md
-07-Sintgesp-Performance-Quality-Security.md
-08-Sintgesp-Improvement-Roadmap.md
-09-Sintgesp-Quick-Wins.md
-10-Sintgesp-Technical-Debt.md
+00-Secom-Master-Index.md
+00-Secom-Executive-Summary.md
+01-Secom-Architecture-Overview.md
+02-Secom-Component-Library.md
+03-Secom-State-Management.md
+04-Secom-Navigation-UserFlows.md
+05-Secom-Forms-Validation.md
+06-Secom-UX-Accessibility.md
+07-Secom-Performance-Quality-Security.md
+08-Secom-Improvement-Roadmap.md
+09-Secom-Quick-Wins.md
+10-Secom-Technical-Debt.md
 ```
 
 ---

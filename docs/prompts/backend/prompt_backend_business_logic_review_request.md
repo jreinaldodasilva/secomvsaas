@@ -1,21 +1,21 @@
-# Sintgesp – Comprehensive Business Logic & Domain Architecture Audit
+# Secom – Comprehensive Business Logic & Domain Architecture Audit
 
-You are a **Senior Backend Architect performing a production-grade Business Logic and Domain Architecture audit** of the Sintgesp system.
+You are a **Senior Backend Architect performing a production-grade Business Logic and Domain Architecture audit** of the Secom system.
 
 Use the following documents as primary sources of truth:
 
-* `01-Sintgesp-Backend-Architecture-Overview.md`
-* `02-Sintgesp-MongoDB-Architecture.md`
-* `03-Sintgesp-API-Design.md`
-* `04-Sintgesp-Auth-Security.md`
+* `01-Secom-Backend-Architecture-Overview.md`
+* `02-Secom-MongoDB-Architecture.md`
+* `03-Secom-API-Design.md`
+* `04-Secom-Auth-Security.md`
 
 Assume:
 
-* This is a **healthcare / department management platform**
-* The system supports **multi-tenancy at the department level**
+* This is a **government communications platform (Assessoria de Comunicação)**
+* The system supports **single-tenant architecture with seeded default tenant**
 * It runs on **Node.js + TypeScript + MongoDB (Mongoose)**
 * The system is **production or near-production**
-* Data integrity and medical record correctness are critical
+* Data integrity and communication record correctness are critical
 * LGPD compliance is mandatory
 
 If information is missing:
@@ -48,7 +48,7 @@ This is an **architecture quality and risk audit**.
 # 📦 Required Output File
 
 ```
-docs/backend/09-Sintgesp-Business-Logic.md
+docs/backend/09-Secom-Business-Logic.md
 ```
 
 **Obs:**
@@ -74,7 +74,7 @@ Provide:
 * Business logic distribution map
 * Coupling analysis between services
 * Cross-domain dependencies
-* Multi-tenant rule enforcement boundaries
+* Tenant-scoped data enforcement boundaries
 
 ### Evaluate:
 
@@ -102,11 +102,11 @@ Provide:
 
 Analyze all major services:
 
-* PatientService
-* AppointmentService
-* ClinicService
+* CitizenProfileService
+* AgendamentoService
+* OfficeService
 * UserService
-* MedicalRecordService
+* CommunicationRecordService
 * NotificationService
 * ReportingService
 * AuthService (business aspects only)
@@ -143,11 +143,11 @@ Provide:
 
 Analyze core domain entities:
 
-* Athlete
-* Appointment
-* Department
+* CitizenProfile
+* Agendamento
+* Tenant
 * User
-* MedicalRecord
+* CommunicationRecord
 
 For each:
 
@@ -158,7 +158,7 @@ For each:
 * State transition protection
 * Use of value objects (CPF, TimeRange, Email, etc.)
 * Aggregate boundaries
-* Multi-tenant invariant enforcement
+* Data scoping invariant enforcement
 * Status modeling discipline
 * Behavioral methods vs procedural orchestration
 
@@ -185,14 +185,14 @@ Document all critical business rules.
 
 Examples (must verify implementation location):
 
-* Appointment overlap prevention
+* Agendamento overlap prevention
 * 24h cancellation rule
-* CPF uniqueness per department
-* Minor athlete guardian requirement
+* CPF uniqueness
+* Minor citizen representative requirement
 * Soft delete enforcement
-* Medical record audit logging
-* Cross-department data isolation
-* Instructor-athlete assignment restrictions
+* Communication record audit logging
+* Cross-boundary data isolation
+* Assessor-citizen assignment restrictions
 * Admin override policies
 
 ### For each rule:
@@ -264,11 +264,11 @@ Considering MongoDB architecture:
 
 ### Critical Flows to Inspect:
 
-* Athlete creation
-* Appointment booking
-* Appointment cancellation
-* Medical record updates
-* Department deletion
+* CitizenProfile creation
+* Agendamento booking
+* Agendamento cancellation
+* Communication record updates
+* Tenant deletion
 * Role modification
 
 ### Deliver:
@@ -311,10 +311,10 @@ This is critical.
 
 Evaluate:
 
-* Department scoping enforcement inside services
+* Tenant scoping enforcement inside services
 * Tenant filtering in repository queries
-* Cross-department data leakage risks
-* SuperAdmin override discipline
+* Cross-boundary data leakage risks
+* super_admin override discipline
 * Invariant protection during updates
 * Aggregation queries without tenant filters
 
@@ -377,7 +377,7 @@ Include:
 * Clearly mark assumptions
 * Tie transaction analysis to MongoDB architecture
 * Tie validation analysis to index strategy
-* Tie tenant isolation to auth/security model
+* Tie tenant scoping to auth/security model
 * Focus on enforceability, not theoretical design
 
 ---

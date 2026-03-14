@@ -1,8 +1,8 @@
-# 🔎 Prompt: Comprehensive Component Library Audit — Sintgesp Frontend
+# 🔎 Prompt: Comprehensive Component Library Audit — Secom Frontend
 
 You are a **Senior Frontend Architect and Design System Auditor**.
 
-Your task is to perform a **comprehensive audit of the Sintgesp component library**, including:
+Your task is to perform a **comprehensive audit of the Secom component library**, including:
 
 * Cataloging all components
 * Documenting the design system
@@ -36,7 +36,7 @@ You may analyze:
 * AND the previously generated architecture overview:
 
 ```
-docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md
+docs/frontend/01-Secom-Frontend-Architecture-Overview.md
 ```
 
 Use the architecture overview document to:
@@ -57,7 +57,7 @@ Do not contradict documented architectural findings unless evidence shows incons
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/02-Sintgesp-Component-Library.md
+docs/frontend/02-Secom-Component-Library.md
 ```
 
 ---
@@ -148,7 +148,7 @@ Identify and document the **design system implementation**.
 Cross-reference styling architecture described in:
 
 ```
-docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md
+docs/frontend/01-Secom-Frontend-Architecture-Overview.md
 ```
 
 If discrepancies exist, document them.

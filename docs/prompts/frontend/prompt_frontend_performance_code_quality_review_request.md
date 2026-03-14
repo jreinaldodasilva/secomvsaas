@@ -4,9 +4,9 @@ Below is an improved, clearer, and more execution-oriented version of your promp
 
 # ✅ Improved AI Prompt
 
-## Sintgesp Frontend – Performance, Code Quality, and Security Audit
+## Secom Frontend – Performance, Code Quality, and Security Audit
 
-Conduct a **comprehensive frontend technical audit** of the Sintgesp application.
+Conduct a **comprehensive frontend technical audit** of the Secom application.
 
 You must analyze:
 
@@ -22,7 +22,7 @@ You must analyze:
 
 In addition to the source code and build artifacts, you must also read and use the architectural context provided in:
 
-* `docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+* `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 
 Use this document to validate whether the implementation aligns with the intended architecture and frontend standards.
 
@@ -38,7 +38,7 @@ You have access to:
 * Chrome DevTools (Performance, Lighthouse, Network, Coverage)
 * React DevTools Profiler
 * Testing framework files (if present)
-* `docs/frontend/01-Sintgesp-Frontend-Architecture-Overview.md`
+* `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 
 ---
 
@@ -50,7 +50,7 @@ You have access to:
 
 ### Lighthouse Audits
 
-Run Lighthouse on all key pages (minimum: Login, Dashboard, Athlete List, Appointments).
+Run Lighthouse on all key pages (minimum: Login, Dashboard, CitizenProfile List, Agendamentos).
 
 Report results:
 
@@ -199,7 +199,7 @@ Evaluate:
 * File size distribution
 * Duplication patterns
 * Naming conventions
-* Architecture alignment with `01-Sintgesp-Frontend-Architecture-Overview.md`
+* Architecture alignment with `01-Secom-Frontend-Architecture-Overview.md`
 
 ---
 
@@ -334,7 +334,7 @@ A **Testing Assessment Report** with risk analysis.
 # 📄 Final Output Document
 
 **File name:**
-`07-Sintgesp-Performance-Quality-Security.md`
+`07-Secom-Performance-Quality-Security.md`
 
 ---
 
@@ -360,6 +360,6 @@ A **Testing Assessment Report** with risk analysis.
 * Include metrics wherever possible.
 * Provide concrete file references.
 * Classify issues by severity.
-* Align findings with the intended architecture described in `01-Sintgesp-Frontend-Architecture-Overview.md`.
+* Align findings with the intended architecture described in `01-Secom-Frontend-Architecture-Overview.md`.
 * Conclude with a prioritized action plan (Quick Wins / Medium-Term / Strategic Improvements).
 

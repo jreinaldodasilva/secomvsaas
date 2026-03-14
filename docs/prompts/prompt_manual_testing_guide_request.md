@@ -1,11 +1,11 @@
 
-# 🧪 Sintgesp Manual Testing Guide – Authoring Prompt (Chrome + Full Documentation Aware)
+# 🧪 Secom Manual Testing Guide – Authoring Prompt (Chrome + Full Documentation Aware)
 
 ## 🎯 Mission
 
 You are acting as a **Senior QA Engineer and Technical Documentation Specialist**.
 
-Your task is to create a **comprehensive Manual Testing Guide** for the **Sintgesp Sports Department Management System**, intended for **real-world, end-to-end manual testing using Google Chrome**.
+Your task is to create a **comprehensive Manual Testing Guide** for the **Secom Office of Public Relations Management System**, intended for **real-world, end-to-end manual testing using Google Chrome**.
 
 The guide must enable **any tester (QA, developer, product owner, or auditor)** to manually verify:
 
@@ -13,7 +13,7 @@ The guide must enable **any tester (QA, developer, product owner, or auditor)** 
 * UI/UX behavior
 * Backend integrations
 * Data consistency
-* Multi-role and multi-department isolation
+* Multi-role and data scoping
 
 ⚠️ **Important:**
 The guide is **not limited to the README or a single document**.
@@ -34,23 +34,23 @@ Assume the documentation set is **authoritative and complete**, and your output 
 
 ### Product Overview
 
-* **Name:** Sintgesp – Sports Department Management System
-* **Domain:** Multi-department, multi-role sports practice management
+* **Name:** Secom – Office of Public Relations Management System
+* **Domain:** Single-tenant government communications management (Assessoria de Comunicação)
 * **Locale:** Brazilian Portuguese (pt-BR)
 * **Compliance:** LGPD (partially implemented)
-* **Access Modes:** Staff Portal and Athlete Portal
+* **Access Modes:** Staff Portal and Citizen Portal
 
 ### Architecture & Stack
 
 * **Frontend:** React 18, TypeScript, Vite, Zustand, TanStack Query, React Router, CSS Modules, Framer Motion
 * **Backend:** Node.js 18+, Express, TypeScript, MongoDB (25+ collections), Redis, BullMQ
-* **Authentication:** JWT + refresh tokens, dual authentication (staff vs athlete)
+* **Authentication:** JWT + refresh tokens, dual authentication (staff vs citizen)
 * **External Services:**
 
-  * Stripe (payments)
-  * Twilio (SMS)
-  * SendGrid / Nodemailer (email)
-  * AWS S3 (file storage)
+  * N/A (no payment integration)
+  * N/A (no SMS integration)
+  * Nodemailer (email via MailHog in dev)
+  * Local file storage
 * **Rate Limiting & Security:** Redis-based rate limiting, bcrypt password hashing, audit logging
 
 ### Deployment & URLs (Local Development)
@@ -72,8 +72,8 @@ npm run seed:test
 ### Global Rules
 
 * **Password (all users):** `Test@123`
-* **Email pattern:** `*@sintgesp.test`
-* **Multi-tenant:** Strict department isolation
+* **Email pattern:** `*@secom.gov.br.test`
+* **Multi-tenant:** Strict tenant scoping
 * **Date coverage:** Past 6 months, current day, next 3 months
 * **Locale:** Brazilian names, CPF/CNPJ, addresses, phone numbers
 
@@ -81,20 +81,20 @@ npm run seed:test
 
 * **System Admins (Global):**
 
-  * `admin@sintgesp.test`
-  * `admin2@sintgesp.test`
+  * `admin@secom.gov.br.gov.br.test`
+  * `admin2@secom.gov.br.gov.br.test`
 
-* **Department Admins, SportsCoordinators, Staff, Athletes**
+* **Tenant Admins, Assessors, Staff, CitizenProfiles**
 
-  * Departments: **Sintgesp Paulista** and **Sintgesp Campinas**
+  * Tenants: **Secom Principal** and **Secom Secundário**
   * Roles and permissions as defined in the seed data and RBAC documentation
 
-* **Athlete Portal**
+* **Citizen Portal**
 
-  * URL: `/athlete/login`
-  * All athletes have verified emails and active portal access
+  * URL: `/citizen/login`
+  * All citizens have verified emails and active portal access
 
-All test cases must explicitly state **which role, department, and seeded account** is being used.
+All test cases must explicitly state **which role, tenant, and seeded account** is being used.
 
 ---
 
@@ -148,7 +148,7 @@ Provide **precise, reproducible instructions** for preparing a clean test enviro
 ### Test Data Preparation
 
 * Running seed scripts
-* Verifying seeded departments, users, and roles
+* Verifying seeded tenants, users, and roles
 * Resetting test data between executions
 
 ---
@@ -167,9 +167,9 @@ Include a **test tracking table**:
 | Area                   | Priority | Tester | Status  | Notes |
 | ---------------------- | -------- | ------ | ------- | ----- |
 | Authentication         | High     | QA     | Pending |       |
-| Multi-Department Isolation | High     | QA     | Pending |       |
-| Athletes               | High     | QA     | Pending |       |
-| Appointments           | High     | QA     | Pending |       |
+| Multi-Tenant Isolation | High     | QA     | Pending |       |
+| CitizenProfiles               | High     | QA     | Pending |       |
+| Agendamentos           | High     | QA     | Pending |       |
 | Payments               | High     | QA     | Pending |       |
 | Notifications          | Medium   | QA     | Pending |       |
 
@@ -181,7 +181,7 @@ Each test case **must include**:
 
 * Test ID
 * User role
-* Department context
+* Tenant context
 * Preconditions (including seeded account)
 * Numbered steps
 * Expected result
@@ -191,7 +191,7 @@ Each test case **must include**:
 
 ### Mandatory Format Example
 
-| Test ID | Role | Department | Preconditions | Steps | Expected Result | Actual Result | Status | Notes |
+| Test ID | Role | Tenant | Preconditions | Steps | Expected Result | Actual Result | Status | Notes |
 | ------- | ---- | ------ | ------------- | ----- | --------------- | ------------- | ------ | ----- |
 
 ---
@@ -202,48 +202,48 @@ Create **multiple detailed manual test cases per area**, including edge cases an
 
 ### Authentication & Authorization
 
-* Staff vs athlete login flows
+* Staff vs citizen login flows
 * Role-based access control
-* Department isolation
+* Tenant scoping
 * Token expiration and refresh
 * Invalid credentials
 
-### Department & Multi-Tenant Management
+### Tenant & Multi-Tenant Management
 
-* System admin cross-department access
-* Department admin restrictions
-* Cross-department data leakage prevention
+* System admin cross-boundary access
+* Tenant admin restrictions
+* Cross-boundary data leakage prevention
 
-### Athlete Management
+### Citizen Profile Management
 
-* Create, edit, deactivate, reactivate athletes
-* Medical history
+* Create, edit, deactivate, reactivate citizens
+* Service history
 * Attachments and documents (S3-backed)
 
-### Appointment Scheduling
+### Agendamento Scheduling
 
 * Booking by staff
-* Instructor availability
+* Assessor availability
 * Overlap prevention
-* Appointment lifecycle statuses
+* Agendamento lifecycle statuses
 
-### Clinical Workflows
+### Officeal Workflows
 
-* Sports charts
-* Clinical notes
-* Treatment plans
-* Evaluations
+* Service records
+* Officeal notes
+* Action plans
+* Assessments
 
-### Payments & Billing
+### Payments & PressReleases
 
-* Stripe checkout (sandbox)
+* payment checkout (sandbox)
 * Successful and failed payments
 * Receipts and invoices
 
 ### Notifications & Background Jobs
 
-* SMS via Twilio
-* Email via SendGrid/Nodemailer
+* SMS via SMS provider
+* Email via email provider/Nodemailer
 * BullMQ job execution and retries
 
 ### UI / UX Validation
@@ -269,7 +269,7 @@ Include explicit Chrome-focused validations:
 | --------- | -------------------------- | --------------- | ----- |
 | Cookies   | Session persistence        | JWT retained    |       |
 | Storage   | Local/session storage      | Correct values  |       |
-| Popups    | Modals & Stripe            | Not blocked     |       |
+| Popups    | Modals & payment gateway            | Not blocked     |       |
 | Redirects | Auth & payment flows       | Work correctly  |       |
 | DevTools  | No critical console errors |                 |       |
 
@@ -290,7 +290,7 @@ Define:
 **Title:**  
 **Environment:** Chrome vXX, OS  
 **User Role:**  
-**Department:**  
+**Tenant:**  
 **Preconditions:**  
 **Steps to Reproduce:**  
 **Expected Result:**  
@@ -307,7 +307,7 @@ The guide is accepted only if:
 
 * All major features documented across the project are covered
 * All test cases use real seeded accounts
-* Multi-department isolation is validated
+* Data scoping is validated
 * Chrome-specific behavior is addressed
 * No automated tools are referenced
 * All steps are clear, reproducible, and unambiguous
@@ -319,6 +319,6 @@ The guide is accepted only if:
 * Output **only** the contents of `MANUAL_TESTING_GUIDE.md`
 * Do **not** invent features, roles, or workflows
 * Base everything on the **entire documentation set**
-* Assume the tester is technical but unfamiliar with Sintgesp
+* Assume the tester is technical but unfamiliar with Secom
 
 

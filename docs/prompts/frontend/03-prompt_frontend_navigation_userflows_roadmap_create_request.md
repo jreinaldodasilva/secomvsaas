@@ -1,7 +1,7 @@
 Excellent — below is the **navigation & user-flow–scoped equivalent** of your previous prompts, tailored specifically for:
 
-* `docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part1.md`
-* `docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part2.md`
+* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md`
+* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md`
 
 This version:
 
@@ -15,12 +15,12 @@ This version:
 
 # PROMPT (Navigation & User-Flows–Scoped Version)
 
-# Sintgesp – Frontend Navigation & User Flow Improvement Roadmap
+# Secom – Frontend Navigation & User Flow Improvement Roadmap
 
 **Source Documents:**
 
-* `docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part1.md`
-* `docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part2.md`
+* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md`
+* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md`
 
 **Scope Restriction:** Navigation and User Flow documentation only
 
@@ -373,7 +373,7 @@ Keep concise, strategic, and traceable to documented findings (1–2 pages equiv
 
 ## File 1:
 
-`docs/frontendroadmaps/02-Sintgesp-Navigation-UserFlows-Improvement-Roadmap.md`
+`docs/frontendroadmaps/02-Secom-Navigation-UserFlows-Improvement-Roadmap.md`
 
 Must include:
 
@@ -388,7 +388,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/02-Sintgesp-Navigation-UserFlows-Quick-Wins.md`
+`docs/frontendroadmaps/02-Secom-Navigation-UserFlows-Quick-Wins.md`
 
 Must include:
 

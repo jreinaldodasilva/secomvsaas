@@ -6,16 +6,16 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following frontend roadmap documents:
 
-* `docs/frontendroadmaps/04-Sintgesp-Navigation-UserFlows-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/04-Sintgesp-Navigation-UserFlows-Quick-Wins.md`
+* `docs/frontendroadmaps/04-Secom-Navigation-UserFlows-Improvement-Roadmap.md`
+* `docs/frontendroadmaps/04-Secom-Navigation-UserFlows-Quick-Wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented navigation, routing, and user flow improvements**:
 
-   * `docs/frontend/04-Sintgesp-Navigation-UserFlows-Part1.md`
-   * `docs/frontend/04-Sintgesp-Navigation-UserFlows-Part2.md`
-   * `docs/frontend/04-Sintgesp-Navigation-UserFlows-Part3.md`
+   * `docs/frontend/04-Secom-Navigation-UserFlows-Part1.md`
+   * `docs/frontend/04-Secom-Navigation-UserFlows-Part2.md`
+   * `docs/frontend/04-Secom-Navigation-UserFlows-Part3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented navigation and user flow issues**, including a structured and prioritized execution plan.
 
@@ -65,7 +65,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `04-Sintgesp-Navigation-UserFlows-Part1.md`
+## 1️⃣ `04-Secom-Navigation-UserFlows-Part1.md`
 
 * Update core routing structure.
 * Reflect implemented route hierarchy changes.
@@ -75,7 +75,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `04-Sintgesp-Navigation-UserFlows-Part2.md`
+## 2️⃣ `04-Secom-Navigation-UserFlows-Part2.md`
 
 * Update user journey descriptions.
 * Reflect simplified or refactored flows.
@@ -85,7 +85,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `04-Sintgesp-Navigation-UserFlows-Part3.md`
+## 3️⃣ `04-Secom-Navigation-UserFlows-Part3.md`
 
 * Update advanced flow scenarios.
 * Reflect cross-module navigation consistency improvements.
@@ -118,9 +118,9 @@ Each file must describe the **current operational navigation architecture and us
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/04-Sintgesp-Navigation-UserFlows-Remaining-Roadmap.md`
+`docs/frontendroadmaps/04-Secom-Navigation-UserFlows-Remaining-Roadmap.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/04-Sintgesp-Navigation-UserFlows-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/04-Sintgesp-Navigation-UserFlows-Remaining-Roadmap-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/04-Secom-Navigation-UserFlows-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/04-Secom-Navigation-UserFlows-Remaining-Roadmap-Part2.md', and so on.
 ---
 
 ## The new roadmap must include:

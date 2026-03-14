@@ -3,13 +3,13 @@
 
 Carefully review the following API Design roadmap documents:
 
-* `docs/backendroadmaps/03-Sintgesp-API-Design-Improvement-Roadmap.md`
-* `docs/backendroadmaps/03-Sintgesp-API-Design-Quick-Wins.md`
+* `docs/backendroadmaps/03-Secom-API-Design-Improvement-Roadmap.md`
+* `docs/backendroadmaps/03-Secom-API-Design-Quick-Wins.md`
 
 Your objectives are to:
 
 1. Update
-   `docs/backend/03-Sintgesp-API-Design.md`
+   `docs/backend/03-Secom-API-Design.md`
    so it accurately reflects all **implemented API design fixes, improvements, and structural changes**.
 
 2. Create a new roadmap document that defines the **remaining unimplemented API design issues**, including a structured and prioritized execution plan.
@@ -75,9 +75,9 @@ Do not duplicate roadmap text — reflect outcomes and current reality.
 
 Create a new roadmap file, for example:
 
-`docs/backendroadmaps/03-Sintgesp-API-Design-Remaining-Roadmap.md`
+`docs/backendroadmaps/03-Secom-API-Design-Remaining-Roadmap.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backendroadmaps/03-Sintgesp-API-Design-Remaining-Roadmap-Part1.md', 'docs/backendroadmaps/03-Sintgesp-API-Design-Remaining-Roadmap-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backendroadmaps/03-Secom-API-Design-Remaining-Roadmap-Part1.md', 'docs/backendroadmaps/03-Secom-API-Design-Remaining-Roadmap-Part2.md', and so on.
 
 ---
 

@@ -10,7 +10,7 @@ It forces actionable planning — not generic recommendations.
 
 ---
 
-# 🚀 Sintgesp – Improvement Roadmap & Quick Wins Generation Prompt
+# 🚀 Secom – Improvement Roadmap & Quick Wins Generation Prompt
 
 You are a **Principal Software Architect and Technical Program Planner**.
 
@@ -26,8 +26,8 @@ This is a **strategic remediation and optimization plan**.
 Use the following review document(s) as primary input:
 
 ```
-docs/fullstack/04-Sintgesp-Request-Response-Interface-Audit-Part1.md
-docs/fullstack/04-Sintgesp-Request-Response-Interface-Audit-Part2.md
+docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part1.md
+docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part2.md
 ```
 
 If the review is split into multiple files, treat them as a single body of findings.
@@ -53,14 +53,14 @@ The output must be **implementation-oriented and execution-ready**.
 # 📁 Required Output Location
 
 ```
-docs/fullstackroadmaps/04-Sintgesp-Improvement-Roadmap-Based-On-Review.md
+docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Based-On-Review.md
 ```
 
 If size requires:
 
 ```
-docs/fullstackroadmaps/04-Sintgesp-Improvement-Roadmap-Part1.md
-docs/fullstackroadmaps/04-Sintgesp-Improvement-Roadmap-Part2.md
+docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Part1.md
+docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Part2.md
 ...
 ```
 
@@ -81,7 +81,7 @@ You must:
   * Architectural impact
   * Compliance impact
   * Data integrity risk
-  * Tenant isolation risk
+  * Tenant scoping risk
 
 Do NOT repeat the review document verbatim.
 
@@ -151,7 +151,7 @@ Examples:
 * Authentication hardening
 * Authorization model refactor
 * DTO & schema contract enforcement
-* Multi-tenant isolation strengthening
+* Data scoping strengthening
 * Registration workflow hardening
 * Logging & observability enhancement
 * Data integrity safeguards
@@ -269,8 +269,8 @@ No improvement should be “theoretical”.
 * Do NOT restate the original findings verbatim
 * Convert every issue into a concrete remediation task
 * Avoid vague statements like “improve security”
-* Prioritize healthcare-grade risk tolerance
-* Tie roadmap to athlete data protection and tenant isolation
+* Prioritize government-grade data protection requirements
+* Tie roadmap to citizen data protection and tenant scoping
 * Clearly separate tactical fixes from architectural redesign
 * Do not fabricate new problems not found in review
 * If review lacks severity classification, infer logically

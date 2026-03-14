@@ -1,9 +1,9 @@
 
 ## Improved Prompt — MongoDB Edition (AI-Ready)
 
-Perform a comprehensive analysis of the **Sintgesp MongoDB database** by inspecting collections, document schemas, indexes, validation rules, and access patterns.
+Perform a comprehensive analysis of the **Secom MongoDB database** by inspecting collections, document schemas, indexes, validation rules, and access patterns.
 
-The system supports **clinical/medical workflows**, so data integrity, performance, and scalability are critical.
+The system supports **government communications workflows**, so data integrity, performance, and scalability are critical.
 Assume a **production environment** with high read/write volume and long-term data growth.
 
 If information is missing:
@@ -39,7 +39,7 @@ For each collection, document:
 
 📌 **Notes**
 
-* Highlight core domain collections (athletes, appointments, departments, users)
+* Highlight core domain collections (citizens, agendamentos, tenants, users)
 * Identify lookup/reference collections
 * Flag collections with very large documents (>16MB risk)
 
@@ -51,7 +51,7 @@ For each collection, document:
 
 For each major collection, document its **logical document schema**.
 
-**Collection**: `athletes`
+**Collection**: `citizens`
 
 **Document Structure**:
 
@@ -63,8 +63,8 @@ For each major collection, document its **logical document schema**.
   "birthDate": "date",
   "email": "string | null",
   "phone": "string",
-  "clinicId": ObjectId,
-  "appointments": [ObjectId],
+  "tenantId": ObjectId,
+  "agendamentos": [ObjectId],
   "createdAt": ISODate,
   "updatedAt": ISODate,
   "deletedAt": ISODate | null
@@ -101,9 +101,9 @@ For each major relationship:
 
 Examples:
 
-* Athletes ↔ Appointments
-* Departments ↔ Users
-* Athletes ↔ MedicalRecords
+* CitizenProfiles ↔ Agendamentos
+* Tenants ↔ Users
+* CitizenProfiles ↔ CommunicationRecords
 
 Classify decisions:
 
@@ -226,7 +226,7 @@ Assess:
 ## Output Requirements
 
 **Output File**:
-`docs/backend/02-Sintgesp-MongoDB-Architecture.md`
+`docs/backend/02-Secom-MongoDB-Architecture.md`
 
 **Document Sections**:
 
@@ -249,4 +249,4 @@ Assess:
 * Flag risks early and clearly
 * Prioritize **read/write performance**
 * Write for **backend engineers, DBAs, and system architects**
-* If you need further information about backend architecture, refer to the 'docs/backend/01-Sintgesp-Backend-Architecture-Overview.md' document.
+* If you need further information about backend architecture, refer to the 'docs/backend/01-Secom-Backend-Architecture-Overview.md' document.

@@ -31,7 +31,7 @@ A shared repository containing reusable modules used by both products.
 
 `vsaas-saas-platform`
 
-A multi-tenant SaaS platform boilerplate.
+A single-tenant government application boilerplate.
 
 `vsaas-app-boilerplate`
 
@@ -74,7 +74,7 @@ git remote add origin git@github.com:ORG/vsaas-saas-platform.git
 git push -u origin main
 ```
 
-This repository becomes the multi-tenant SaaS platform product.
+This repository becomes the single-tenant government application product.
 
 ## Step 3 — Create the Single-Tenant Repository
 
@@ -164,7 +164,7 @@ The core repository must contain only reusable and deployment-independent module
 Rules:
 
 * no multi-tenant concepts
-* no SaaS billing logic
+* no SaaS press-releases logic
 * no platform administration logic
 * must be usable by both products
 
@@ -176,7 +176,7 @@ The SaaS repository contains platform-level functionality required to operate a 
 
 Responsibilities include:
 
-* tenant isolation
+* tenant scoping
 * organization management
 * subscription handling
 * onboarding and provisioning
@@ -330,7 +330,7 @@ Candidate modules to extract (verify against actual code before finalizing):
 Starts as a direct clone of `vsaas`. Retains everything, then imports shared modules from `./core` replacing local copies. Adds:
 - Tenant model, tenant middleware, tenant provisioning
 - Organization/workspace management
-- Subscription handling (Stripe integration)
+- Subscription handling (payment integration)
 - Platform administration (super_admin flows)
 - Multi-tenant query scoping (`tenant` field filters)
 
@@ -370,7 +370,7 @@ For each module being extracted:
 - Remove `tenantId` from `TokenPayload`, `AuthUser`, `User` model, and JWT claims
 - Remove `tenantId` from `BaseService.tenantFilter()` — replace with unconditional queries
 - Remove the `PORTAL_JWT_SECRET` / portal auth system entirely if unused
-- Remove Stripe integration (`stripe` package, webhook routes, subscription logic)
+- Remove payment integration (`stripe` package, webhook routes, subscription logic)
 
 #### Auth simplification:
 - Keep roles: `admin`, `manager`, `staff`

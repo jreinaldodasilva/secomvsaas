@@ -1,8 +1,8 @@
-# 🔎 Prompt: Comprehensive Routing, Navigation & User Flow Audit — Sintgesp Frontend
+# 🔎 Prompt: Comprehensive Routing, Navigation & User Flow Audit — Secom Frontend
 
 You are a **Senior Frontend Architect specializing in routing architecture, access control systems, and user flow modeling**.
 
-Your task is to perform a **comprehensive audit of the Sintgesp frontend routing and navigation architecture**, including:
+Your task is to perform a **comprehensive audit of the Secom frontend routing and navigation architecture**, including:
 
 * Route hierarchy and composition
 * Route protection and authorization logic
@@ -45,8 +45,8 @@ You must analyze:
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part1.md
-docs/frontend/03-Sintgesp-Navigation-UserFlows-Overview-Part2.md
+docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md
+docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md
 ```
 
 ---
@@ -123,9 +123,9 @@ Produce a structured tree representation such as:
 ├── /dashboard
 │   ├── /super-admin
 │   ├── /admin
-│   ├── /instructor
+│   ├── /assessor
 │   ├── /staff
-│   └── /athlete
+│   └── /citizen
 └── ...
 ```
 
@@ -216,7 +216,7 @@ Identify:
 
 ## Required Matrix Format
 
-| Route / Feature | Super Admin | Admin | Instructor | Staff | Athlete | Notes |
+| Route / Feature | Super Admin | Admin | Assessor | Staff | CitizenProfile | Notes |
 | --------------- | ----------- | ----- | -------- | ----- | ------- | ----- |
 
 If role definitions are not explicit, infer only from observable code.

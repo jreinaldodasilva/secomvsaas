@@ -14,7 +14,7 @@ export interface IInviteToken extends Document {
 const InviteTokenSchema = new Schema<IInviteToken>({
   tenantId: { type: Schema.Types.ObjectId, ref: 'Tenant', required: true, index: true },
   email: { type: String, required: true, lowercase: true, trim: true },
-  role: { type: String, enum: ['admin', 'manager', 'staff'], default: 'staff' },
+  role: { type: String, enum: ['admin', 'assessor', 'social_media', 'atendente', 'citizen'], default: 'atendente' },
   token: { type: String, required: true, unique: true },
   invitedBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   expiresAt: { type: Date, required: true },

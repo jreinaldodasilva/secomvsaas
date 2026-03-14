@@ -14,7 +14,7 @@
     "next": "Next",
     "confirm": "Confirm",
     "cancel": "Cancel",
-    "brand": "vSaaS"
+    "brand": "Secom"
   },
   "auth": {
     "login": "Sign in",
@@ -29,7 +29,7 @@
     "email": "Email",
     "password": "Password",
     "name": "Name",
-    "companyName": "Company name",
+    "companyName": "Organization name",
     "currentPassword": "Current password",
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
@@ -47,7 +47,14 @@
     "dashboard": "Dashboard",
     "users": "Users",
     "profile": "My profile",
-    "settings": "Settings"
+    "settings": "Settings",
+    "pressReleases": "Press Releases",
+    "mediaContacts": "Media Contacts",
+    "clippings": "Clippings",
+    "events": "Events",
+    "appointments": "Appointments",
+    "citizenPortal": "Citizen Portal",
+    "socialMedia": "Social Media"
   },
   "users": {
     "title": "Users",
@@ -70,7 +77,14 @@
       "role": "Role",
       "status": "Status"
     },
-    "roleLabel": "Role of {{name}}"
+    "roleLabel": "Role of {{name}}",
+    "roles": {
+      "admin": "Administrator",
+      "assessor": "Press Officer",
+      "social_media": "Social Media Manager",
+      "atendente": "Attendant",
+      "citizen": "Citizen"
+    }
   },
   "profile": {
     "title": "My profile"
@@ -88,5 +102,42 @@
     "number": "Number",
     "special": "Special character",
     "strength": ["Weak", "Weak", "Fair", "Good", "Strong"]
+  },
+  "domain": {
+    "pressReleases": {
+      "title": "Press Releases",
+      "create": "New press release",
+      "empty": "No press releases found"
+    },
+    "mediaContacts": {
+      "title": "Media Contacts",
+      "create": "New contact",
+      "empty": "No contacts found"
+    },
+    "clippings": {
+      "title": "News Clippings",
+      "create": "New clipping",
+      "empty": "No clippings found"
+    },
+    "events": {
+      "title": "Events",
+      "create": "New event",
+      "empty": "No events found"
+    },
+    "appointments": {
+      "title": "Appointments",
+      "create": "New appointment",
+      "empty": "No appointments found"
+    },
+    "citizenPortal": {
+      "title": "Citizen Portal",
+      "create": "New record",
+      "empty": "No records found"
+    },
+    "socialMedia": {
+      "title": "Social Media",
+      "create": "New post",
+      "empty": "No posts found"
+    }
   }
 }

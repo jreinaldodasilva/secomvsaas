@@ -4,9 +4,9 @@ const options: swaggerJsdoc.Options = {
   definition: {
     openapi: '3.0.0',
     info: {
-      title: 'vSaaS API',
-      version: '1.0.0',
-      description: 'Vertical SaaS platform API',
+      title: 'Secom API',
+      version: '0.1.0',
+      description: 'Sistema da Secretaria de Comunicação — API',
     },
     servers: [
       {

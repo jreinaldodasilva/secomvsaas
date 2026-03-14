@@ -3,8 +3,7 @@ import bcrypt from 'bcrypt';
 import { authMixin } from './mixins/authMixin';
 import { baseSchemaFields, baseSchemaOptions } from './base/baseSchema';
 
-// TODO: Import UserRole from @vsaas/types
-const USER_ROLES = ['super_admin', 'admin', 'manager', 'staff'] as const;
+const USER_ROLES = ['super_admin', 'admin', 'assessor', 'social_media', 'atendente', 'citizen'] as const;
 
 const UserSchema = new Schema({
   name: {
@@ -31,7 +30,7 @@ const UserSchema = new Schema({
   role: {
     type: String,
     enum: USER_ROLES,
-    default: 'staff',
+    default: 'atendente',
   },
   tenantId: { type: Schema.Types.ObjectId, ref: 'Tenant', index: true },
   ...authMixin.fields,

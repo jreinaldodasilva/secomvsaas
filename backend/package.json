@@ -1,7 +1,7 @@
 {
-  "name": "vsaas-backend",
-  "version": "1.0.0",
-  "description": "vSaaS — Generic vertical SaaS boilerplate — Backend API",
+  "name": "secom-backend",
+  "version": "0.1.0",
+  "description": "Secom — Sistema da Secretaria de Comunicação — Backend API",
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {

@@ -1,7 +1,7 @@
 {
-  "name": "vsaas-frontend",
-  "version": "1.0.0",
-  "description": "vSaaS — Generic vertical SaaS boilerplate — Frontend",
+  "name": "secom-frontend",
+  "version": "0.1.0",
+  "description": "Secom — Sistema da Secretaria de Comunicação — Frontend",
   "private": true,
   "type": "module",
   "dependencies": {

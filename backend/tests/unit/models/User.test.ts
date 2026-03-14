@@ -6,7 +6,7 @@ describe('User model', () => {
       name: 'Test User',
       email: 'test@example.com',
       password: 'TestPassword123!',
-      role: 'staff',
+      role: 'atendente',
     });
 
     expect(user.id).toBeDefined();
@@ -17,9 +17,9 @@ describe('User model', () => {
   });
 
   it('rejects duplicate email', async () => {
-    await User.create({ name: 'User A', email: 'dup@example.com', password: 'Password123!', role: 'staff' });
+    await User.create({ name: 'User A', email: 'dup@example.com', password: 'Password123!', role: 'atendente' });
     await expect(
-      User.create({ name: 'User B', email: 'dup@example.com', password: 'Password123!', role: 'staff' })
+      User.create({ name: 'User B', email: 'dup@example.com', password: 'Password123!', role: 'atendente' })
     ).rejects.toThrow();
   });
 });

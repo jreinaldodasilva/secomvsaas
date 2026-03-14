@@ -46,5 +46,5 @@ export const acceptInviteValidation = [
 
 export const inviteMemberValidation = [
   body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
-  body('role').isIn(['admin', 'manager', 'staff']).withMessage('Role deve ser admin, manager ou staff'),
+  body('role').isIn(['admin', 'assessor', 'social_media', 'atendente', 'citizen']).withMessage('Role deve ser admin, assessor, social_media, atendente ou citizen'),
 ];

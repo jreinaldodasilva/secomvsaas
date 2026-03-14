@@ -14,7 +14,7 @@
     "next": "Próximo",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
-    "brand": "vSaaS"
+    "brand": "Secom"
   },
   "auth": {
     "login": "Entrar",
@@ -29,7 +29,7 @@
     "email": "Email",
     "password": "Senha",
     "name": "Nome",
-    "companyName": "Nome da empresa",
+    "companyName": "Nome do órgão",
     "currentPassword": "Senha atual",
     "newPassword": "Nova senha",
     "confirmPassword": "Confirmar senha",
@@ -44,10 +44,17 @@
     "resetPasswordSuccess": "Senha redefinida com sucesso. Faça login."
   },
   "nav": {
-    "dashboard": "Dashboard",
+    "dashboard": "Painel",
     "users": "Usuários",
     "profile": "Meu perfil",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "pressReleases": "Comunicados",
+    "mediaContacts": "Contatos de Mídia",
+    "clippings": "Clipping",
+    "events": "Eventos",
+    "appointments": "Agendamentos",
+    "citizenPortal": "Portal do Cidadão",
+    "socialMedia": "Redes Sociais"
   },
   "users": {
     "title": "Usuários",
@@ -70,7 +77,14 @@
       "role": "Papel",
       "status": "Status"
     },
-    "roleLabel": "Papel de {{name}}"
+    "roleLabel": "Papel de {{name}}",
+    "roles": {
+      "admin": "Administrador",
+      "assessor": "Assessor de Imprensa",
+      "social_media": "Gestor de Redes Sociais",
+      "atendente": "Atendente",
+      "citizen": "Cidadão"
+    }
   },
   "profile": {
     "title": "Meu perfil"
@@ -88,5 +102,42 @@
     "number": "Número",
     "special": "Caractere especial",
     "strength": ["Fraca", "Fraca", "Razoável", "Boa", "Forte"]
+  },
+  "domain": {
+    "pressReleases": {
+      "title": "Comunicados de Imprensa",
+      "create": "Novo comunicado",
+      "empty": "Nenhum comunicado encontrado"
+    },
+    "mediaContacts": {
+      "title": "Contatos de Mídia",
+      "create": "Novo contato",
+      "empty": "Nenhum contato encontrado"
+    },
+    "clippings": {
+      "title": "Clipping de Notícias",
+      "create": "Novo clipping",
+      "empty": "Nenhum clipping encontrado"
+    },
+    "events": {
+      "title": "Eventos",
+      "create": "Novo evento",
+      "empty": "Nenhum evento encontrado"
+    },
+    "appointments": {
+      "title": "Agendamentos",
+      "create": "Novo agendamento",
+      "empty": "Nenhum agendamento encontrado"
+    },
+    "citizenPortal": {
+      "title": "Portal do Cidadão",
+      "create": "Novo registro",
+      "empty": "Nenhum registro encontrado"
+    },
+    "socialMedia": {
+      "title": "Redes Sociais",
+      "create": "Nova publicação",
+      "empty": "Nenhuma publicação encontrada"
+    }
   }
 }

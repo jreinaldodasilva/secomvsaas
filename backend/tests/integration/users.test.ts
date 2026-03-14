@@ -33,7 +33,7 @@ describe('User management routes', () => {
       name: 'Staff User',
       email: 'staff@test.com',
       password: 'TestPassword123!',
-      role: 'staff',
+      role: 'atendente',
       tenantId,
     });
     staffId = (staff as any)._id.toString();
@@ -80,10 +80,10 @@ describe('User management routes', () => {
       const res = await request(app)
         .patch(`/api/v1/users/${staffId}`)
         .set('Cookie', adminCookies)
-        .send({ role: 'manager' });
+        .send({ role: 'assessor' });
 
       expect(res.status).toBe(200);
-      expect(res.body.data.role).toBe('manager');
+      expect(res.body.data.role).toBe('assessor');
     });
 
     it('blocks self-modification', async () => {
@@ -95,7 +95,7 @@ describe('User management routes', () => {
       const res = await request(app)
         .patch(`/api/v1/users/${myId}`)
         .set('Cookie', adminCookies)
-        .send({ role: 'staff' });
+        .send({ role: 'atendente' });
 
       expect(res.status).toBe(403);
     });

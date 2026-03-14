@@ -1,4 +1,4 @@
-// @vsaas/types — Shared types for the vertical SaaS platform
+// @secom/types — Shared types for the Secom platform
 
 // ─── API envelope ────────────────────────────────────────────────────────────
 
@@ -115,15 +115,91 @@ export type HealthStatus = {
 export const UserRole = {
   SUPER_ADMIN: 'super_admin',
   ADMIN: 'admin',
-  MANAGER: 'manager',
-  STAFF: 'staff',
+  ASSESSOR: 'assessor',
+  SOCIAL_MEDIA: 'social_media',
+  ATENDENTE: 'atendente',
+  CITIZEN: 'citizen',
 } as const;
 
 export type UserRoleType = typeof UserRole[keyof typeof UserRole];
+
+// ─── Domain entities ─────────────────────────────────────────────────────────
+
+export type PressRelease = {
+  id: string;
+  title: string;
+  content: string;
+  status: 'draft' | 'review' | 'approved' | 'published' | 'archived';
+  publishedAt?: string | Date;
+  createdBy?: string;
+  createdAt?: string | Date;
+  updatedAt?: string | Date;
+};
+
+export type MediaContact = {
+  id: string;
+  name: string;
+  outlet: string;
+  email?: string;
+  phone?: string;
+  beat?: string;
+  status: 'active' | 'inactive';
+  createdAt?: string | Date;
+};
+
+export type Clipping = {
+  id: string;
+  title: string;
+  source: string;
+  url?: string;
+  publishedAt?: string | Date;
+  sentiment?: 'positive' | 'neutral' | 'negative';
+  createdAt?: string | Date;
+};
+
+export type Event = {
+  id: string;
+  title: string;
+  description?: string;
+  location?: string;
+  startsAt: string | Date;
+  endsAt?: string | Date;
+  status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  isPublic: boolean;
+  createdAt?: string | Date;
+};
+
+export type Appointment = {
+  id: string;
+  citizenId: string;
+  service: string;
+  scheduledAt: string | Date;
+  status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
+  notes?: string;
+  createdAt?: string | Date;
+};
+
+export type CitizenProfile = {
+  id: string;
+  userId: string;
+  cpf?: string;
+  phone?: string;
+  address?: string;
+  createdAt?: string | Date;
+};
+
+export type SocialMediaPost = {
+  id: string;
+  platform: 'instagram' | 'facebook' | 'twitter' | 'youtube' | 'tiktok';
+  content: string;
+  scheduledAt?: string | Date;
+  publishedAt?: string | Date;
+  status: 'draft' | 'scheduled' | 'published' | 'failed';
+  createdBy?: string;
+  createdAt?: string | Date;
+};
 
 // ─── Utility types ───────────────────────────────────────────────────────────
 
 export type ID = string;
 export type DateString = string;
-
-// Add types for generated modules below.

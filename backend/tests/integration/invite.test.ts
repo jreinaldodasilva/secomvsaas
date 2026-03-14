@@ -42,12 +42,12 @@ describe('Invitation flow', () => {
       const res = await request(app)
         .post(`/api/v1/tenants/${tenantId}/invite`)
         .set('Cookie', adminCookies)
-        .send({ email: 'new@test.com', role: 'staff' });
+        .send({ email: 'new@test.com', role: 'atendente' });
 
       expect(res.status).toBe(201);
       expect(res.body.success).toBe(true);
       expect(res.body.data.email).toBe('new@test.com');
-      expect(res.body.data.role).toBe('staff');
+      expect(res.body.data.role).toBe('atendente');
 
       const token = await InviteToken.findOne({ email: 'new@test.com' });
       expect(token).toBeTruthy();
@@ -58,14 +58,14 @@ describe('Invitation flow', () => {
         name: 'Existing',
         email: 'existing@test.com',
         password: 'TestPassword123!',
-        role: 'staff',
+        role: 'atendente',
         tenantId,
       });
 
       const res = await request(app)
         .post(`/api/v1/tenants/${tenantId}/invite`)
         .set('Cookie', adminCookies)
-        .send({ email: 'existing@test.com', role: 'staff' });
+        .send({ email: 'existing@test.com', role: 'atendente' });
 
       expect(res.status).toBe(409);
     });
@@ -76,7 +76,7 @@ describe('Invitation flow', () => {
       const invite = await InviteToken.create({
         tenantId,
         email: 'invited@test.com',
-        role: 'staff',
+        role: 'atendente',
         token: 'valid-token-123',
         invitedBy: adminId,
         expiresAt: new Date(Date.now() + 86400000),
@@ -99,7 +99,7 @@ describe('Invitation flow', () => {
       await InviteToken.create({
         tenantId,
         email: 'expired@test.com',
-        role: 'staff',
+        role: 'atendente',
         token: 'expired-token',
         invitedBy: adminId,
         expiresAt: new Date(Date.now() - 1000),

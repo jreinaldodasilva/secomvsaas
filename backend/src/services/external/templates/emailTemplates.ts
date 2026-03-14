@@ -9,13 +9,13 @@ const layout = (content: string) => `
 .container{max-width:560px;margin:40px auto;background:#fff;border-radius:8px;padding:32px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .btn{display:inline-block;padding:12px 24px;background:#2563eb;color:#fff;text-decoration:none;border-radius:6px;font-weight:600}
 .footer{margin-top:32px;font-size:12px;color:#999;text-align:center}</style>
-</head><body><div class="container">${content}<div class="footer">© vSaaS</div></div></body></html>`;
+</head><body><div class="container">${content}<div class="footer">© Secom — Secretaria de Comunicação</div></div></body></html>`;
 
 export const emailTemplates = {
   welcome: (name: string) => ({
-    subject: 'Bem-vindo ao vSaaS',
-    html: layout(`<h2>Bem-vindo, ${name}!</h2><p>Sua conta foi criada com sucesso.</p>
-      <p><a class="btn" href="${baseUrl}/login">Acessar plataforma</a></p>`),
+    subject: 'Bem-vindo ao Secom',
+    html: layout(`<h2>Bem-vindo, ${name}!</h2><p>Sua conta no sistema da Secretaria de Comunicação foi criada com sucesso.</p>
+      <p><a class="btn" href="${baseUrl}/login">Acessar sistema</a></p>`),
   }),
 
   passwordReset: (name: string, token: string) => ({

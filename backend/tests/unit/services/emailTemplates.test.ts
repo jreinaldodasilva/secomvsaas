@@ -23,11 +23,11 @@ describe('emailTemplates', () => {
   });
 
   it('invite returns HTML with inviter, tenant, token, and role', () => {
-    const result = emailTemplates.invite('Dave', 'Acme Corp', 'tok456', 'manager');
+    const result = emailTemplates.invite('Dave', 'Acme Corp', 'tok456', 'assessor');
     expect(result.subject).toContain('Acme Corp');
     expect(result.html).toContain('Dave');
     expect(result.html).toContain('Acme Corp');
     expect(result.html).toContain('token=tok456');
-    expect(result.html).toContain('manager');
+    expect(result.html).toContain('assessor');
   });
 });

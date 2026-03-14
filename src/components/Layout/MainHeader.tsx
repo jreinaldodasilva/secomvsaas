@@ -8,7 +8,9 @@ export function MainHeader() {
   return (
     <header className="main-header">
       <div className="main-header-inner">
-        <Link to="/" className="main-header-brand">{t('common.brand')}</Link>
+        <Link to="/" className="main-header-brand">
+          <img src="/logo192.png" alt={t('common.brand')} className="brand-logo" />
+        </Link>
         <nav className="main-header-nav">
           <NavLink to="/#features" className="main-header-link">{t('landing.nav.features')}</NavLink>
           <NavLink to="/#modules" className="main-header-link">{t('landing.nav.modules')}</NavLink>

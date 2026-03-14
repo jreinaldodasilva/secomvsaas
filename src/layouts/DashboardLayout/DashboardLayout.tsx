@@ -19,7 +19,7 @@ export function DashboardLayout() {
     <div className={`dashboard-layout ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
       <aside className="sidebar">
         <div className="sidebar-header">
-          <span className="sidebar-brand">{t('common.brand')}</span>
+          <img src="/logo192.png" alt={t('common.brand')} className="brand-logo" />
           <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Toggle sidebar">☰</button>
         </div>
         <nav className="sidebar-nav">

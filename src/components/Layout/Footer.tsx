@@ -9,7 +9,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-footer-inner">
         <div className="site-footer-brand">
-          <span className="site-footer-logo">{t('common.brand')}</span>
+          <img src="/logo192.png" alt={t('common.brand')} className="brand-logo" />
           <p className="site-footer-tagline">{t('landing.footer.tagline')}</p>
         </div>
         <div className="site-footer-links">

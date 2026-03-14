@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { authService } from '../../services/api/authService';
+import { Button } from '../../components/UI';
 import { useTranslation } from '../../i18n';
+import { usePageTitle } from '../../hooks/usePageTitle';
+import { ApiError } from '../../services/http';
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation();
+  usePageTitle(t('auth.forgotPassword'));
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
@@ -17,8 +21,8 @@ export function ForgotPasswordPage() {
     try {
       await authService.forgotPassword(email);
       setSubmitted(true);
-    } catch (err: any) {
-      setError(err?.message || t('auth.forgotError'));
+    } catch (err: unknown) {
+      setError(err instanceof ApiError ? err.message : t('auth.forgotError'));
     } finally {
       setIsLoading(false);
     }
@@ -42,9 +46,7 @@ export function ForgotPasswordPage() {
           <label htmlFor="email">{t('auth.email')}</label>
           <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
         </div>
-        <button type="submit" disabled={isLoading} className="btn btn-primary">
-          {isLoading ? t('common.sending') : t('auth.sendLink')}
-        </button>
+        <Button type="submit" isLoading={isLoading}>{t('auth.sendLink')}</Button>
       </form>
       <p><Link to="/login">{t('common.backToLogin')}</Link></p>
     </div>

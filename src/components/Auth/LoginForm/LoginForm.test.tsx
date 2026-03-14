@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { LoginForm } from './LoginForm';
+import { ApiError } from '../../../services/http';
 
 const mockLogin = vi.fn();
 
@@ -34,7 +35,7 @@ describe('LoginForm', () => {
   });
 
   it('displays error message on login failure', async () => {
-    mockLogin.mockRejectedValue(new Error('Invalid credentials'));
+    mockLogin.mockRejectedValue(new ApiError('Invalid credentials', 401));
     render(<LoginForm />);
 
     await userEvent.type(screen.getByLabelText('Email'), 'bad@test.com');
@@ -45,7 +46,7 @@ describe('LoginForm', () => {
   });
 
   it('displays fallback error when message is missing', async () => {
-    mockLogin.mockRejectedValue({});
+    mockLogin.mockRejectedValue(new Error());
     render(<LoginForm />);
 
     await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
@@ -63,6 +64,6 @@ describe('LoginForm', () => {
     await userEvent.type(screen.getByLabelText('Senha'), 'x');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
-    expect(screen.getByRole('button', { name: 'Entrando...' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Entrar' })).toBeDisabled();
   });
 });

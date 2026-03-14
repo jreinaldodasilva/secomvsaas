@@ -19,11 +19,15 @@ const DEFAULT_TENANT = {
 const DEFAULT_ADMIN = {
   name: 'Administrador Secom',
   email: 'admin@secom.gov.br',
-  password: 'Admin@Secom2024',
+  password: process.env.DEFAULT_ADMIN_PASSWORD || (process.env.NODE_ENV !== 'production' ? 'Admin@Secom2024' : ''),
   role: 'admin',
 };
 
 export async function ensureDefaultTenant(): Promise<void> {
+  if (!DEFAULT_ADMIN.password) {
+    throw new Error('DEFAULT_ADMIN_PASSWORD env var is required in production');
+  }
+
   const existing = await Tenant.findOne({ slug: DEFAULT_TENANT.slug });
   if (existing) {
     logger.info({ tenantId: existing._id, slug: existing.slug }, 'Tenant padrão já existe');

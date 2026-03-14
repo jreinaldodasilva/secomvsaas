@@ -57,7 +57,7 @@ const getEnvConfig = (): EnvConfig => ({
   nodeEnv: process.env.NODE_ENV || 'development',
   port: parseInt(process.env.PORT || '5000', 10),
   database: {
-    url: process.env.DATABASE_URL || 'mongodb://localhost:27017/vsaas',
+    url: process.env.DATABASE_URL || 'mongodb://localhost:27017/secom',
   },
   redis: {
     url: process.env.REDIS_URL || 'redis://localhost:6379',
@@ -77,8 +77,8 @@ const getEnvConfig = (): EnvConfig => ({
     adminUrl: process.env.ADMIN_URL,
   },
   email: {
-    from: process.env.FROM_EMAIL || 'noreply@vsaas.app',
-    admin: process.env.ADMIN_EMAIL || 'admin@vsaas.app',
+    from: process.env.FROM_EMAIL || 'noreply@secom.gov.br',
+    admin: process.env.ADMIN_EMAIL || 'admin@secom.gov.br',
     sendgridApiKey: process.env.SENDGRID_API_KEY,
     etherealUser: process.env.ETHEREAL_USER,
     etherealPass: process.env.ETHEREAL_PASS,

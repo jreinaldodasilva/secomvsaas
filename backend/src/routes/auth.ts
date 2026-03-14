@@ -17,7 +17,7 @@ import { validateRequest } from '../middleware/validate';
 const router = express.Router();
 
 // Rename cookie constants to match your app
-const ACCESS_COOKIE = 'vsaas_access_token';
+const ACCESS_COOKIE = 'secom_access_token';
 const REFRESH_COOKIE = 'refreshToken';
 
 const cookieOpts = (maxAge: number) => ({

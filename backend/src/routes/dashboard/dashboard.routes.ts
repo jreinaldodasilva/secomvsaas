@@ -1,21 +1,21 @@
-const { Router } = require('express');
-const { authenticate } = require('../../middleware/auth/auth');
-const { requireTenant } = require('../../platform/tenants');
-const { TenantContext } = require('../../platform/tenants/TenantContext');
-const { PressRelease } = require('../../modules/domain/press-releases/models/PressRelease');
-const { MediaContact } = require('../../modules/domain/media-contacts/models/MediaContact');
-const { Clipping } = require('../../modules/domain/clippings/models/Clipping');
-const { Event } = require('../../modules/domain/events/models/Event');
-const { Appointment } = require('../../modules/domain/appointments/models/Appointment');
-const { CitizenPortal } = require('../../modules/domain/citizen-portal/models/CitizenPortal');
-const { SocialMedia } = require('../../modules/domain/social-media/models/SocialMedia');
+import { Router, Request, Response, NextFunction } from 'express';
+import { authenticate } from '../../middleware/auth/auth';
+import { requireTenant } from '../../platform/tenants';
+import { TenantContext } from '../../platform/tenants/TenantContext';
+import { PressRelease } from '../../modules/domain/press-releases/models/PressRelease';
+import { MediaContact } from '../../modules/domain/media-contacts/models/MediaContact';
+import { Clipping } from '../../modules/domain/clippings/models/Clipping';
+import { Event as EventModel } from '../../modules/domain/events/models/Event';
+import { Appointment } from '../../modules/domain/appointments/models/Appointment';
+import { CitizenPortal } from '../../modules/domain/citizen-portal/models/CitizenPortal';
+import { SocialMedia } from '../../modules/domain/social-media/models/SocialMedia';
 
 const router = Router();
 
 router.use(authenticate);
 router.use(requireTenant);
 
-router.get('/summary', async (_req, res, next) => {
+router.get('/summary', async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const tenantId = TenantContext.requireTenantId();
     const filter = { tenantId };
@@ -36,12 +36,12 @@ router.get('/summary', async (_req, res, next) => {
       PressRelease.countDocuments(filter),
       MediaContact.countDocuments(filter),
       Clipping.countDocuments(filter),
-      Event.countDocuments(filter),
+      EventModel.countDocuments(filter),
       Appointment.countDocuments(filter),
       CitizenPortal.countDocuments(filter),
       SocialMedia.countDocuments(filter),
       PressRelease.find(filter).sort({ createdAt: -1 }).limit(5).select('title status createdAt').lean(),
-      Event.find({ ...filter, startsAt: { $gte: now } }).sort({ startsAt: 1 }).limit(5).select('title startsAt location').lean(),
+      EventModel.find({ ...filter, startsAt: { $gte: now } }).sort({ startsAt: 1 }).limit(5).select('title startsAt location').lean(),
       Appointment.countDocuments({ ...filter, status: 'pending' }),
     ]);
 
@@ -59,5 +59,4 @@ router.get('/summary', async (_req, res, next) => {
   }
 });
 
-module.exports = router;
-module.exports.dashboardRoutes = router;
+export default router;

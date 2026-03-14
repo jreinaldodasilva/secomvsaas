@@ -3,7 +3,7 @@ import { create } from 'zustand';
 
 type Theme = 'light' | 'dark';
 
-const STORAGE_KEY = 'vsaas_theme';
+const STORAGE_KEY = 'secom_theme';
 
 function getInitialTheme(): Theme {
   if (typeof window === 'undefined') return 'light';

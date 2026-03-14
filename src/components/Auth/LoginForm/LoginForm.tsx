@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslation } from '../../../i18n';
+import { Button } from '../../UI';
+import { ApiError } from '../../../services/http';
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -21,8 +23,8 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
     try {
       await login(email, password);
       onSuccess?.();
-    } catch (err: any) {
-      setError(err?.message || t('auth.loginError'));
+    } catch (err: unknown) {
+      setError(err instanceof ApiError ? err.message : t('auth.loginError'));
     } finally {
       setIsLoading(false);
     }
@@ -39,9 +41,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         <label htmlFor="password">{t('auth.password')}</label>
         <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
       </div>
-      <button type="submit" disabled={isLoading} className="btn btn-primary">
-        {isLoading ? t('auth.loggingIn') : t('auth.login')}
-      </button>
+      <Button type="submit" isLoading={isLoading}>{t('auth.login')}</Button>
     </form>
   );
 }

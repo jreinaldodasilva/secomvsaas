@@ -4,7 +4,7 @@ import en from './locales/en.json';
 
 const locales: Record<string, Record<string, any>> = { 'pt-BR': ptBR, en };
 
-const STORAGE_KEY = 'vsaas_locale';
+const STORAGE_KEY = 'secom_locale';
 const DEFAULT_LOCALE = 'pt-BR';
 export const SUPPORTED_LOCALES = Object.keys(locales);
 

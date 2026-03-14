@@ -35,7 +35,7 @@ function logAuthzFailure(req: Request, reason: string): void {
 class StaffAuthMiddleware extends BaseAuthMiddleware {
   protected getCookieTokens(cookies: any): string | null {
     // Rename cookie to match your app
-    return cookies['vsaas_access_token'] || null;
+    return cookies['secom_access_token'] || null;
   }
 
   protected async verifyToken(token: string): Promise<any> {

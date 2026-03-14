@@ -18,7 +18,7 @@ const options: swaggerJsdoc.Options = {
     ],
     components: {
       securitySchemes: {
-        cookieAuth: { type: 'apiKey', in: 'cookie', name: 'vsaas_access_token' },
+        cookieAuth: { type: 'apiKey', in: 'cookie', name: 'secom_access_token' },
       },
     },
   },

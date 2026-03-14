@@ -1,7 +1,9 @@
 import { useTranslation } from '../../i18n';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export function TermsPage() {
   const { t } = useTranslation();
+  usePageTitle(t('legal.terms.title'));
 
   return (
     <div className="legal-page">

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useAppointmentList, useCreateAppointment, useUpdateAppointment, useDeleteAppointment } from '../../../hooks/useAppointment';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface AppointmentItem {
@@ -22,6 +23,7 @@ const emptyForm = { citizenName: '', citizenCpf: '', citizenPhone: '', service: 
 export function AppointmentsPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.appointments.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useEventList, useCreateEvent, useUpdateEvent, useDeleteEvent } from '../../../hooks/useEvent';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface EventItem {
@@ -21,6 +22,7 @@ const emptyForm = { title: '', description: '', location: '', startsAt: '', ends
 export function EventsPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.events.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

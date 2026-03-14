@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useSocialMediaList, useCreateSocialMedia, useUpdateSocialMedia, useDeleteSocialMedia } from '../../../hooks/useSocialMedia';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface SocialMediaItem {
@@ -22,6 +23,7 @@ const emptyForm = { platform: 'instagram', content: '', mediaUrl: '', scheduledA
 export function SocialMediaPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.socialMedia.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

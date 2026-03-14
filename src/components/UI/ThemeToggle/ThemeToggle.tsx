@@ -33,7 +33,7 @@ export function ThemeToggle() {
     <button
       onClick={toggle}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: '1.2em', padding: 0 }}
+      className="theme-toggle-btn"
     >
       {theme === 'light' ? '🌙' : '☀️'}
     </button>

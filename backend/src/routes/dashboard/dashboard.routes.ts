@@ -1,4 +1,6 @@
 const { Router } = require('express');
+const { authenticate } = require('../../middleware/auth/auth');
+const { requireTenant } = require('../../platform/tenants');
 const { TenantContext } = require('../../platform/tenants/TenantContext');
 const { PressRelease } = require('../../modules/domain/press-releases/models/PressRelease');
 const { MediaContact } = require('../../modules/domain/media-contacts/models/MediaContact');
@@ -9,6 +11,9 @@ const { CitizenPortal } = require('../../modules/domain/citizen-portal/models/Ci
 const { SocialMedia } = require('../../modules/domain/social-media/models/SocialMedia');
 
 const router = Router();
+
+router.use(authenticate);
+router.use(requireTenant);
 
 router.get('/summary', async (_req, res, next) => {
   try {

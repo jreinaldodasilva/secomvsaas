@@ -56,9 +56,9 @@ export type User = {
   role: UserRoleType;
   tenantId?: string;
   isActive?: boolean;
-  lastLogin?: string | Date;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
+  lastLogin?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type Tenant = {
@@ -75,10 +75,10 @@ export type Tenant = {
     features: Record<string, boolean>;
   };
   owner: string;
-  trialEndsAt?: string | Date;
+  trialEndsAt?: string;
   maxUsers: number;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type AuditLog = {
@@ -95,7 +95,7 @@ export type AuditLog = {
   changes?: { before?: any; after?: any };
   metadata?: Record<string, any>;
   tenantId?: string;
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 // ─── Health ──────────────────────────────────────────────────────────────────
@@ -134,11 +134,11 @@ export type PressRelease = {
   category: 'nota_oficial' | 'comunicado' | 'convite' | 'esclarecimento' | 'outro';
   tags: string[];
   status: 'draft' | 'review' | 'approved' | 'published' | 'archived';
-  publishedAt?: string | Date;
+  publishedAt?: string;
   approvedBy?: string;
   createdBy?: string;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type MediaContact = {
@@ -150,7 +150,7 @@ export type MediaContact = {
   beat?: string;
   notes?: string;
   status: 'active' | 'inactive';
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 export type Clipping = {
@@ -158,11 +158,11 @@ export type Clipping = {
   title: string;
   source: string;
   sourceUrl?: string;
-  publishedAt?: string | Date;
+  publishedAt?: string;
   sentiment: 'positive' | 'neutral' | 'negative';
   summary?: string;
   tags: string[];
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 export type Event = {
@@ -170,11 +170,11 @@ export type Event = {
   title: string;
   description?: string;
   location?: string;
-  startsAt: string | Date;
-  endsAt?: string | Date;
+  startsAt: string;
+  endsAt?: string;
   isPublic: boolean;
   status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 export type Appointment = {
@@ -183,10 +183,10 @@ export type Appointment = {
   citizenCpf?: string;
   citizenPhone?: string;
   service: string;
-  scheduledAt: string | Date;
+  scheduledAt: string;
   status: 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
   notes?: string;
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 export type CitizenProfile = {
@@ -201,7 +201,7 @@ export type CitizenProfile = {
   city?: string;
   state?: string;
   status: 'active' | 'inactive';
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 export type SocialMediaPost = {
@@ -209,11 +209,11 @@ export type SocialMediaPost = {
   platform: 'instagram' | 'facebook' | 'twitter' | 'youtube' | 'tiktok';
   content: string;
   mediaUrl?: string;
-  scheduledAt?: string | Date;
-  publishedAt?: string | Date;
+  scheduledAt?: string;
+  publishedAt?: string;
   status: 'draft' | 'scheduled' | 'published' | 'failed';
   createdBy?: string;
-  createdAt?: string | Date;
+  createdAt?: string;
 };
 
 // ─── Utility types ───────────────────────────────────────────────────────────

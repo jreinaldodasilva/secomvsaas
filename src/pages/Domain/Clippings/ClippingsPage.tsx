@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClipping } from '../../../hooks/useClipping';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface ClippingItem {
@@ -21,6 +22,7 @@ const emptyForm = { title: '', source: '', sourceUrl: '', publishedAt: '', senti
 export function ClippingsPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.clippings.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

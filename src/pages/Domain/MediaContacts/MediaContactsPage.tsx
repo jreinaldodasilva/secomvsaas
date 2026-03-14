@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useMediaContactList, useCreateMediaContact, useUpdateMediaContact, useDeleteMediaContact } from '../../../hooks/useMediaContact';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface MediaContactItem {
@@ -20,6 +21,7 @@ const emptyForm = { name: '', outlet: '', email: '', phone: '', beat: '', notes:
 export function MediaContactsPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.mediaContacts.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

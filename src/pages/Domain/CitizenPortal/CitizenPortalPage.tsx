@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { useCitizenPortalList, useCreateCitizenPortal, useUpdateCitizenPortal, useDeleteCitizenPortal } from '../../../hooks/useCitizenPortal';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface CitizenItem {
@@ -23,6 +24,7 @@ const emptyForm = { userId: '', fullName: '', cpf: '', phone: '', email: '', add
 export function CitizenPortalPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.citizenPortal.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);

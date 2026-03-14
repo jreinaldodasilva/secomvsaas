@@ -5,6 +5,7 @@ import { useToast } from '../../../hooks/useToast';
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTenant } from '../../../contexts/TenantContext';
 import { useTranslation } from '../../../i18n';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 
 interface UserItem {
   id: string;
@@ -27,6 +28,7 @@ export function UsersPage() {
   const { tenant } = useTenant();
   const toast = useToast();
   const { t } = useTranslation();
+  usePageTitle(t('users.title'));
 
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');

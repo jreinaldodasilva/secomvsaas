@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
 import { usePressReleaseList, useCreatePressRelease, useUpdatePressRelease, useDeletePressRelease } from '../../../hooks/usePressRelease';
 import { useToast } from '../../../hooks/useToast';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
 
 interface PressReleaseItem {
@@ -14,7 +15,7 @@ interface PressReleaseItem {
   tags: string[];
   status: string;
   publishedAt?: string;
-  createdAt: string;
+  createdAt?: string;
 }
 
 const STATUSES = ['draft', 'review', 'approved', 'published', 'archived'] as const;
@@ -26,6 +27,7 @@ const emptyForm = { title: '', content: '', subtitle: '', summary: '', category:
 export function PressReleasesPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  usePageTitle(t('domain.pressReleases.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
@@ -63,7 +65,7 @@ export function PressReleasesPage() {
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
     { key: 'status', header: t('domain.pressReleases.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
-    { key: 'createdAt', header: t('domain.pressReleases.fields.createdAt'), render: (r) => new Date(r.createdAt).toLocaleDateString('pt-BR') },
+    { key: 'createdAt', header: t('domain.pressReleases.fields.createdAt'), render: (r) => r.createdAt ? new Date(r.createdAt).toLocaleDateString('pt-BR') : '—' },
     {
       key: 'actions', header: '',
       render: (r) => (

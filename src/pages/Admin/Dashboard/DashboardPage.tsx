@@ -1,6 +1,7 @@
 import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslation } from '../../../i18n';
 import { useDashboard } from '../../../hooks/useDashboard';
+import { usePageTitle } from '../../../hooks/usePageTitle';
 import { StatusBadge } from '../../../components/UI';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -11,6 +12,7 @@ export function DashboardPage() {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { data, isLoading } = useDashboard();
+  usePageTitle(t('nav.dashboard'));
 
   const summary = data?.data;
 

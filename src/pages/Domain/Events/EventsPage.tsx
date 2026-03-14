@@ -7,6 +7,7 @@ import { useTranslation } from '../../../i18n';
 interface EventItem {
   id: string;
   title: string;
+  description?: string;
   location?: string;
   startsAt: string;
   endsAt?: string;
@@ -15,7 +16,6 @@ interface EventItem {
 }
 
 const STATUS_COLORS: Record<string, string> = { scheduled: 'blue', ongoing: 'yellow', completed: 'green', cancelled: 'red' };
-
 const emptyForm = { title: '', description: '', location: '', startsAt: '', endsAt: '', isPublic: false };
 
 export function EventsPage() {
@@ -35,16 +35,15 @@ export function EventsPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: EventItem) => {
     setEditing(item);
-    const a = item as any;
-    setForm({ title: a.title, description: a.description || '', location: a.location || '', startsAt: a.startsAt ? a.startsAt.slice(0, 16) : '', endsAt: a.endsAt ? a.endsAt.slice(0, 16) : '', isPublic: a.isPublic ?? false });
+    setForm({ title: item.title, description: item.description || '', location: item.location || '', startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '', endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '', isPublic: item.isPublic ?? false });
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form };
-    payload.startsAt = new Date(payload.startsAt).toISOString();
-    if (payload.endsAt) payload.endsAt = new Date(payload.endsAt).toISOString();
+    const payload: Record<string, unknown> = { ...form };
+    payload.startsAt = new Date(payload.startsAt as string).toISOString();
+    if (payload.endsAt) payload.endsAt = new Date(payload.endsAt as string).toISOString();
     else delete payload.endsAt;
     if (!payload.description) delete payload.description;
     if (!payload.location) delete payload.location;

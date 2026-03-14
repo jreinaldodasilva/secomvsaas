@@ -8,6 +8,7 @@ interface SocialMediaItem {
   id: string;
   platform: string;
   content: string;
+  mediaUrl?: string;
   scheduledAt?: string;
   publishedAt?: string;
   status: string;
@@ -16,8 +17,7 @@ interface SocialMediaItem {
 const PLATFORMS = ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'] as const;
 const STATUSES = ['draft', 'scheduled', 'published', 'failed'] as const;
 const STATUS_COLORS: Record<string, string> = { draft: 'gray', scheduled: 'blue', published: 'green', failed: 'red' };
-
-const emptyForm = { platform: 'instagram' as string, content: '', mediaUrl: '', scheduledAt: '' };
+const emptyForm = { platform: 'instagram', content: '', mediaUrl: '', scheduledAt: '' };
 
 export function SocialMediaPage() {
   const { t } = useTranslation();
@@ -37,16 +37,15 @@ export function SocialMediaPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: SocialMediaItem) => {
     setEditing(item);
-    const a = item as any;
-    setForm({ platform: a.platform, content: a.content, mediaUrl: a.mediaUrl || '', scheduledAt: a.scheduledAt ? a.scheduledAt.slice(0, 16) : '' });
-    setEditStatus(a.status);
+    setForm({ platform: item.platform, content: item.content, mediaUrl: item.mediaUrl || '', scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '' });
+    setEditStatus(item.status);
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form };
-    if (payload.scheduledAt) payload.scheduledAt = new Date(payload.scheduledAt).toISOString();
+    const payload: Record<string, unknown> = { ...form };
+    if (payload.scheduledAt) payload.scheduledAt = new Date(payload.scheduledAt as string).toISOString();
     else delete payload.scheduledAt;
     if (!payload.mediaUrl) delete payload.mediaUrl;
     if (editing) {

@@ -166,6 +166,69 @@
     "special": "Special character",
     "strength": ["Weak", "Weak", "Fair", "Good", "Strong"]
   },
+  "lgpd": {
+    "message": "This site uses essential cookies for platform operation, in compliance with the LGPD.",
+    "learnMore": "Learn more",
+    "accept": "Accept"
+  },
+  "dashboard": {
+    "welcome": "Welcome, {{name}}",
+    "recentPressReleases": "Recent press releases",
+    "upcomingEvents": "Upcoming events",
+    "pendingAppointments": "{{count}} pending appointment(s)",
+    "noRecent": "No recent press releases",
+    "noUpcoming": "No upcoming events"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Privacy Policy",
+      "updated": "Last updated: January 2025",
+      "collection": {
+        "title": "1. Data Collection",
+        "desc": "We collect personal data necessary for providing platform services, including name, email, CPF, and phone number. Collection is carried out in accordance with the Brazilian General Data Protection Law (LGPD — Law No. 13,709/2018)."
+      },
+      "usage": {
+        "title": "2. Data Usage",
+        "desc": "Collected data is used exclusively for platform operation, user communication, appointment scheduling, and internal reporting. We do not share personal data with third parties without consent."
+      },
+      "storage": {
+        "title": "3. Storage and Security",
+        "desc": "Data is stored on secure servers with encryption in transit and at rest. Access is restricted to authorized users according to the platform's role-based access control."
+      },
+      "rights": {
+        "title": "4. Data Subject Rights",
+        "desc": "Under the LGPD, you have the right to access, correct, delete, and port your personal data. To exercise these rights, contact the data protection officer through the channel indicated below."
+      },
+      "contact": {
+        "title": "5. Contact",
+        "desc": "For questions about privacy and data protection, contact the Office of Public Relations through the institutional email."
+      }
+    },
+    "terms": {
+      "title": "Terms of Use",
+      "updated": "Last updated: January 2025",
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "desc": "By accessing and using the Secom platform, you agree to these terms of use. If you do not agree, do not use the platform."
+      },
+      "usage": {
+        "title": "2. Platform Usage",
+        "desc": "The platform is intended for institutional use by the Office of Public Relations and its authorized collaborators. Access is personal and non-transferable."
+      },
+      "obligations": {
+        "title": "3. User Obligations",
+        "desc": "Users must keep their credentials confidential, use the platform ethically and in compliance with applicable legislation, and not attempt to access unauthorized data or features."
+      },
+      "liability": {
+        "title": "4. Limitation of Liability",
+        "desc": "The platform is provided as-is. We are not responsible for temporary unavailability, data loss resulting from misuse, or user connection failures."
+      },
+      "changes": {
+        "title": "5. Changes to Terms",
+        "desc": "These terms may be updated at any time. Significant changes will be communicated to users through the platform."
+      }
+    }
+  },
   "domain": {
     "pressReleases": {
       "title": "Press Releases",

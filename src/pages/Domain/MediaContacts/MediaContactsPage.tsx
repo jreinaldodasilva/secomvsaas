@@ -11,6 +11,7 @@ interface MediaContactItem {
   email?: string;
   phone?: string;
   beat?: string;
+  notes?: string;
   status: string;
 }
 
@@ -33,13 +34,13 @@ export function MediaContactsPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: MediaContactItem) => {
     setEditing(item);
-    setForm({ name: item.name, outlet: item.outlet, email: (item as any).email || '', phone: (item as any).phone || '', beat: (item as any).beat || '', notes: (item as any).notes || '' });
+    setForm({ name: item.name, outlet: item.outlet, email: item.email || '', phone: item.phone || '', beat: item.beat || '', notes: item.notes || '' });
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form };
+    const payload: Record<string, unknown> = { ...form };
     if (!payload.email) delete payload.email;
     if (!payload.phone) delete payload.phone;
     if (!payload.beat) delete payload.beat;

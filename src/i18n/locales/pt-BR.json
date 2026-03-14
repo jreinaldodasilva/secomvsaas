@@ -166,6 +166,69 @@
     "special": "Caractere especial",
     "strength": ["Fraca", "Fraca", "Razoável", "Boa", "Forte"]
   },
+  "lgpd": {
+    "message": "Este site utiliza cookies essenciais para o funcionamento da plataforma, em conformidade com a LGPD.",
+    "learnMore": "Saiba mais",
+    "accept": "Aceitar"
+  },
+  "dashboard": {
+    "welcome": "Bem-vindo, {{name}}",
+    "recentPressReleases": "Comunicados recentes",
+    "upcomingEvents": "Próximos eventos",
+    "pendingAppointments": "{{count}} agendamento(s) pendente(s)",
+    "noRecent": "Nenhum comunicado recente",
+    "noUpcoming": "Nenhum evento próximo"
+  },
+  "legal": {
+    "privacy": {
+      "title": "Política de Privacidade",
+      "updated": "Última atualização: janeiro de 2025",
+      "collection": {
+        "title": "1. Coleta de Dados",
+        "desc": "Coletamos dados pessoais necessários para a prestação dos serviços da plataforma, incluindo nome, e-mail, CPF e telefone. A coleta é realizada com base na Lei Geral de Proteção de Dados (LGPD — Lei nº 13.709/2018)."
+      },
+      "usage": {
+        "title": "2. Uso dos Dados",
+        "desc": "Os dados coletados são utilizados exclusivamente para operação da plataforma, comunicação com o usuário, agendamento de atendimentos e geração de relatórios internos. Não compartilhamos dados pessoais com terceiros sem consentimento."
+      },
+      "storage": {
+        "title": "3. Armazenamento e Segurança",
+        "desc": "Os dados são armazenados em servidores seguros com criptografia em trânsito e em repouso. O acesso é restrito a usuários autorizados conforme o controle de papéis da plataforma."
+      },
+      "rights": {
+        "title": "4. Direitos do Titular",
+        "desc": "Conforme a LGPD, você tem direito a acessar, corrigir, excluir e portar seus dados pessoais. Para exercer esses direitos, entre em contato com o encarregado de proteção de dados pelo canal indicado abaixo."
+      },
+      "contact": {
+        "title": "5. Contato",
+        "desc": "Para dúvidas sobre privacidade e proteção de dados, entre em contato com a Secretaria de Comunicação pelo e-mail institucional do órgão."
+      }
+    },
+    "terms": {
+      "title": "Termos de Uso",
+      "updated": "Última atualização: janeiro de 2025",
+      "acceptance": {
+        "title": "1. Aceitação dos Termos",
+        "desc": "Ao acessar e utilizar a plataforma Secom, você concorda com estes termos de uso. Caso não concorde, não utilize a plataforma."
+      },
+      "usage": {
+        "title": "2. Uso da Plataforma",
+        "desc": "A plataforma é destinada ao uso institucional pela Secretaria de Comunicação e seus colaboradores autorizados. O acesso é pessoal e intransferível."
+      },
+      "obligations": {
+        "title": "3. Obrigações do Usuário",
+        "desc": "O usuário deve manter suas credenciais em sigilo, utilizar a plataforma de forma ética e em conformidade com a legislação vigente, e não tentar acessar dados ou funcionalidades não autorizadas."
+      },
+      "liability": {
+        "title": "4. Limitação de Responsabilidade",
+        "desc": "A plataforma é fornecida no estado em que se encontra. Não nos responsabilizamos por indisponibilidades temporárias, perda de dados decorrente de uso indevido ou falhas de conexão do usuário."
+      },
+      "changes": {
+        "title": "5. Alterações nos Termos",
+        "desc": "Estes termos podem ser atualizados a qualquer momento. Alterações significativas serão comunicadas aos usuários pela plataforma."
+      }
+    }
+  },
   "domain": {
     "pressReleases": {
       "title": "Comunicados de Imprensa",

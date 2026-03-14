@@ -6,11 +6,15 @@ import { useTranslation } from '../../../i18n';
 
 interface CitizenItem {
   id: string;
+  userId: string;
   fullName: string;
   cpf?: string;
   phone?: string;
   email?: string;
+  address?: string;
+  neighborhood?: string;
   city?: string;
+  state?: string;
   status: string;
 }
 
@@ -33,14 +37,13 @@ export function CitizenPortalPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: CitizenItem) => {
     setEditing(item);
-    const a = item as any;
-    setForm({ userId: a.userId || '', fullName: a.fullName, cpf: a.cpf || '', phone: a.phone || '', email: a.email || '', address: a.address || '', neighborhood: a.neighborhood || '', city: a.city || '', state: a.state || '' });
+    setForm({ userId: item.userId || '', fullName: item.fullName, cpf: item.cpf || '', phone: item.phone || '', email: item.email || '', address: item.address || '', neighborhood: item.neighborhood || '', city: item.city || '', state: item.state || '' });
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form };
+    const payload: Record<string, unknown> = { ...form };
     Object.keys(payload).forEach(k => { if (!payload[k]) delete payload[k]; });
     if (editing) {
       delete payload.userId;

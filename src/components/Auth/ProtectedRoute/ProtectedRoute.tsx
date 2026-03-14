@@ -14,11 +14,10 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
 
   if (isLoading) {
     return (
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh' }}>
-        <div style={{ textAlign: 'center' }}>
-          <div className="spinner" style={{ width: 40, height: 40, border: '3px solid #e2e8f0', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 0.6s linear infinite', margin: '0 auto 12px' }} />
-          <p style={{ color: '#64748b', fontSize: 14 }}>{t('common.loading')}</p>
-          <style>{`@keyframes spin { to { transform: rotate(360deg) } }`}</style>
+      <div className="loading-screen">
+        <div className="loading-screen-content">
+          <div className="spinner spinner-lg" />
+          <p className="loading-screen-text">{t('common.loading')}</p>
         </div>
       </div>
     );

@@ -6,6 +6,7 @@ import stripeWebhookRoutes from '../webhooks/stripe';
 import userRoutes from '../users/user.routes';
 import uploadRoutes from '../uploads/upload.routes';
 import webhookSubRoutes from '../webhooks/subscriptions';
+import dashboardRoutes from '../dashboard/dashboard.routes';
 
 // Domain modules
 import { pressReleaseRoutes } from '../../modules/domain/press-releases';
@@ -26,6 +27,7 @@ router.use('/webhooks/stripe', stripeWebhookRoutes);
 router.use('/users', userRoutes);
 router.use('/uploads', uploadRoutes);
 router.use('/webhooks/subscriptions', webhookSubRoutes);
+router.use('/dashboard', dashboardRoutes);
 
 // Domain
 router.use('/press-releases', pressReleaseRoutes);

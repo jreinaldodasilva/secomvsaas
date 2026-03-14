@@ -7,14 +7,16 @@ import { useTranslation } from '../../../i18n';
 interface AppointmentItem {
   id: string;
   citizenName: string;
+  citizenCpf?: string;
+  citizenPhone?: string;
   service: string;
   scheduledAt: string;
+  notes?: string;
   status: string;
 }
 
 const STATUSES = ['pending', 'confirmed', 'completed', 'cancelled', 'no_show'] as const;
 const STATUS_COLORS: Record<string, string> = { pending: 'yellow', confirmed: 'blue', completed: 'green', cancelled: 'red', no_show: 'gray' };
-
 const emptyForm = { citizenName: '', citizenCpf: '', citizenPhone: '', service: '', scheduledAt: '', notes: '' };
 
 export function AppointmentsPage() {
@@ -35,16 +37,15 @@ export function AppointmentsPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: AppointmentItem) => {
     setEditing(item);
-    const a = item as any;
-    setForm({ citizenName: a.citizenName, citizenCpf: a.citizenCpf || '', citizenPhone: a.citizenPhone || '', service: a.service, scheduledAt: a.scheduledAt ? a.scheduledAt.slice(0, 16) : '', notes: a.notes || '' });
-    setEditStatus(a.status);
+    setForm({ citizenName: item.citizenName, citizenCpf: item.citizenCpf || '', citizenPhone: item.citizenPhone || '', service: item.service, scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '', notes: item.notes || '' });
+    setEditStatus(item.status);
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form };
-    payload.scheduledAt = new Date(payload.scheduledAt).toISOString();
+    const payload: Record<string, unknown> = { ...form };
+    payload.scheduledAt = new Date(payload.scheduledAt as string).toISOString();
     if (!payload.citizenCpf) delete payload.citizenCpf;
     if (!payload.citizenPhone) delete payload.citizenPhone;
     if (!payload.notes) delete payload.notes;

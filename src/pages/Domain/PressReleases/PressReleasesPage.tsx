@@ -7,7 +7,11 @@ import { useTranslation } from '../../../i18n';
 interface PressReleaseItem {
   id: string;
   title: string;
+  subtitle?: string;
+  content: string;
+  summary?: string;
   category: string;
+  tags: string[];
   status: string;
   publishedAt?: string;
   createdAt: string;
@@ -15,12 +19,9 @@ interface PressReleaseItem {
 
 const STATUSES = ['draft', 'review', 'approved', 'published', 'archived'] as const;
 const CATEGORIES = ['nota_oficial', 'comunicado', 'convite', 'esclarecimento', 'outro'] as const;
+const STATUS_COLORS: Record<string, string> = { draft: 'gray', review: 'yellow', approved: 'blue', published: 'green', archived: 'red' };
 
-const STATUS_COLORS: Record<string, string> = {
-  draft: 'gray', review: 'yellow', approved: 'blue', published: 'green', archived: 'red',
-};
-
-const emptyForm = { title: '', content: '', subtitle: '', summary: '', category: 'comunicado' as string, tags: '' };
+const emptyForm = { title: '', content: '', subtitle: '', summary: '', category: 'comunicado', tags: '', status: 'draft' };
 
 export function PressReleasesPage() {
   const { t } = useTranslation();
@@ -39,33 +40,23 @@ export function PressReleasesPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: PressReleaseItem) => {
     setEditing(item);
-    setForm({ title: (item as any).title, content: (item as any).content || '', subtitle: (item as any).subtitle || '', summary: (item as any).summary || '', category: (item as any).category || 'comunicado', tags: ((item as any).tags || []).join(', ') });
+    setForm({ title: item.title, content: item.content, subtitle: item.subtitle || '', summary: item.summary || '', category: item.category, tags: (item.tags || []).join(', '), status: item.status });
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
+    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
     if (editing) {
-      update.mutate({ id: editing.id, ...payload }, {
-        onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); },
-        onError: (err) => toast.error(err.message),
-      });
+      update.mutate({ id: editing.id, ...payload }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
     } else {
-      create.mutate(payload, {
-        onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); },
-        onError: (err) => toast.error(err.message),
-      });
+      delete payload.status;
+      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
     }
   };
 
   const handleDelete = (id: string) => {
-    if (window.confirm(t('common.deleteConfirm'))) {
-      del.mutate(id, {
-        onSuccess: () => toast.success(t('common.deleted')),
-        onError: (err) => toast.error(err.message),
-      });
-    }
+    if (window.confirm(t('common.deleteConfirm'))) del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
   };
 
   const columns: Column<PressReleaseItem>[] = [
@@ -93,9 +84,7 @@ export function PressReleasesPage() {
         <h1>{t('domain.pressReleases.title')}</h1>
         <Button onClick={openCreate}>{t('domain.pressReleases.create')}</Button>
       </div>
-
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.pressReleases.empty')} />
-
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.pressReleases.create')} size="md">
         <form onSubmit={handleSubmit} className="form-stack">
           <label>{t('domain.pressReleases.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={5} /></label>
@@ -110,7 +99,7 @@ export function PressReleasesPage() {
           <label>{t('domain.pressReleases.fields.tags')}<input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder={t('domain.pressReleases.tagsHint')} /></label>
           {editing && (
             <label>{t('domain.pressReleases.fields.status')}
-              <select value={(editing as any).status} onChange={e => setEditing(prev => prev ? { ...prev, status: e.target.value } : prev)}>
+              <select value={form.status} onChange={e => setForm(f => ({ ...f, status: e.target.value }))}>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </label>

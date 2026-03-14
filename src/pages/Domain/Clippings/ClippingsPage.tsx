@@ -11,11 +11,12 @@ interface ClippingItem {
   sourceUrl?: string;
   publishedAt?: string;
   sentiment: string;
+  summary?: string;
+  tags: string[];
 }
 
 const SENTIMENTS = ['positive', 'neutral', 'negative'] as const;
-
-const emptyForm = { title: '', source: '', sourceUrl: '', publishedAt: '', sentiment: 'neutral' as string, summary: '', tags: '' };
+const emptyForm = { title: '', source: '', sourceUrl: '', publishedAt: '', sentiment: 'neutral', summary: '', tags: '' };
 
 export function ClippingsPage() {
   const { t } = useTranslation();
@@ -34,15 +35,14 @@ export function ClippingsPage() {
   const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
   const openEdit = (item: ClippingItem) => {
     setEditing(item);
-    const a = item as any;
-    setForm({ title: a.title, source: a.source, sourceUrl: a.sourceUrl || '', publishedAt: a.publishedAt ? a.publishedAt.slice(0, 10) : '', sentiment: a.sentiment || 'neutral', summary: a.summary || '', tags: (a.tags || []).join(', ') });
+    setForm({ title: item.title, source: item.source, sourceUrl: item.sourceUrl || '', publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '', sentiment: item.sentiment, summary: item.summary || '', tags: (item.tags || []).join(', ') });
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: any = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
-    if (payload.publishedAt) payload.publishedAt = new Date(payload.publishedAt).toISOString();
+    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
+    if (payload.publishedAt) payload.publishedAt = new Date(payload.publishedAt as string).toISOString();
     else delete payload.publishedAt;
     if (!payload.sourceUrl) delete payload.sourceUrl;
     if (!payload.summary) delete payload.summary;

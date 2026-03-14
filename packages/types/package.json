@@ -1,0 +1,14 @@
+{
+  "name": "@vsaas/types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for vsaas boilerplate",
+  "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
+}

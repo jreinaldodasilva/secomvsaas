@@ -1,0 +1,92 @@
+{
+  "common": {
+    "loading": "Carregando...",
+    "saving": "Salvando...",
+    "sending": "Enviando...",
+    "creating": "Criando...",
+    "back": "Voltar",
+    "backToHome": "Voltar ao início",
+    "backToLogin": "Voltar ao login",
+    "close": "Fechar",
+    "search": "Buscar...",
+    "noResults": "Nenhum registro encontrado",
+    "previous": "Anterior",
+    "next": "Próximo",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "brand": "vSaaS"
+  },
+  "auth": {
+    "login": "Entrar",
+    "loggingIn": "Entrando...",
+    "logout": "Sair",
+    "register": "Criar conta",
+    "forgotPassword": "Esqueceu a senha?",
+    "resetPassword": "Redefinir senha",
+    "changePassword": "Alterar senha",
+    "sendLink": "Enviar link",
+    "acceptInvite": "Criar conta",
+    "email": "Email",
+    "password": "Senha",
+    "name": "Nome",
+    "companyName": "Nome da empresa",
+    "currentPassword": "Senha atual",
+    "newPassword": "Nova senha",
+    "confirmPassword": "Confirmar senha",
+    "loginError": "Erro ao fazer login",
+    "registerError": "Erro ao criar conta",
+    "resetError": "Erro ao redefinir senha",
+    "forgotError": "Erro ao enviar e-mail de recuperação",
+    "acceptInviteError": "Erro ao aceitar convite",
+    "changePasswordError": "Erro ao alterar senha",
+    "changePasswordSuccess": "Senha alterada com sucesso",
+    "forgotPasswordSuccess": "Se o e-mail estiver registrado, um link de redefinição foi enviado.",
+    "resetPasswordSuccess": "Senha redefinida com sucesso. Faça login."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Usuários",
+    "profile": "Meu perfil",
+    "settings": "Configurações"
+  },
+  "users": {
+    "title": "Usuários",
+    "invite": "Convidar",
+    "inviteTitle": "Convidar membro",
+    "inviteEmail": "Email",
+    "inviteRole": "Papel",
+    "inviteSend": "Enviar convite",
+    "inviteSending": "Enviando...",
+    "inviteSuccess": "Convite enviado",
+    "updateSuccess": "Usuário atualizado",
+    "deactivateSuccess": "Usuário desativado",
+    "deactivateConfirm": "Desativar este usuário?",
+    "deactivate": "Desativar",
+    "searchPlaceholder": "Buscar por nome ou email...",
+    "empty": "Nenhum usuário encontrado",
+    "columns": {
+      "name": "Nome",
+      "email": "Email",
+      "role": "Papel",
+      "status": "Status"
+    },
+    "roleLabel": "Papel de {{name}}"
+  },
+  "profile": {
+    "title": "Meu perfil"
+  },
+  "errors": {
+    "notFound": "Página não encontrada",
+    "unauthorized": "Acesso não autorizado",
+    "apiUnreachable": "Servidor indisponível. Verifique sua conexão."
+  },
+  "password": {
+    "show": "Mostrar senha",
+    "hide": "Ocultar senha",
+    "minLength": "Mínimo 8 caracteres",
+    "uppercase": "Letra maiúscula",
+    "number": "Número",
+    "special": "Caractere especial",
+    "strength": ["Fraca", "Fraca", "Razoável", "Boa", "Forte"]
+  }
+}

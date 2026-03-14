@@ -1,0 +1,92 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "sending": "Sending...",
+    "creating": "Creating...",
+    "back": "Back",
+    "backToHome": "Back to home",
+    "backToLogin": "Back to login",
+    "close": "Close",
+    "search": "Search...",
+    "noResults": "No records found",
+    "previous": "Previous",
+    "next": "Next",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "brand": "vSaaS"
+  },
+  "auth": {
+    "login": "Sign in",
+    "loggingIn": "Signing in...",
+    "logout": "Sign out",
+    "register": "Create account",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "changePassword": "Change password",
+    "sendLink": "Send link",
+    "acceptInvite": "Create account",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "companyName": "Company name",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "loginError": "Login failed",
+    "registerError": "Registration failed",
+    "resetError": "Password reset failed",
+    "forgotError": "Failed to send recovery email",
+    "acceptInviteError": "Failed to accept invite",
+    "changePasswordError": "Failed to change password",
+    "changePasswordSuccess": "Password changed successfully",
+    "forgotPasswordSuccess": "If the email is registered, a reset link has been sent.",
+    "resetPasswordSuccess": "Password reset successfully. Please sign in."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "profile": "My profile",
+    "settings": "Settings"
+  },
+  "users": {
+    "title": "Users",
+    "invite": "Invite",
+    "inviteTitle": "Invite member",
+    "inviteEmail": "Email",
+    "inviteRole": "Role",
+    "inviteSend": "Send invite",
+    "inviteSending": "Sending...",
+    "inviteSuccess": "Invite sent",
+    "updateSuccess": "User updated",
+    "deactivateSuccess": "User deactivated",
+    "deactivateConfirm": "Deactivate this user?",
+    "deactivate": "Deactivate",
+    "searchPlaceholder": "Search by name or email...",
+    "empty": "No users found",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status"
+    },
+    "roleLabel": "Role of {{name}}"
+  },
+  "profile": {
+    "title": "My profile"
+  },
+  "errors": {
+    "notFound": "Page not found",
+    "unauthorized": "Unauthorized access",
+    "apiUnreachable": "Server unreachable. Check your connection."
+  },
+  "password": {
+    "show": "Show password",
+    "hide": "Hide password",
+    "minLength": "At least 8 characters",
+    "uppercase": "Uppercase letter",
+    "number": "Number",
+    "special": "Special character",
+    "strength": ["Weak", "Weak", "Fair", "Good", "Strong"]
+  }
+}

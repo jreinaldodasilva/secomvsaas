@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - vsaas-network
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - vsaas-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - vsaas-network
+
+  api:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.api
+    ports:
+      - "5000:5000"
+    env_file:
+      - ../../backend/.env
+    environment:
+      DATABASE_URL: mongodb://mongo:27017/vsaas
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../backend/src:/app/backend/src
+      - ../../packages:/app/packages
+    networks:
+      - vsaas-network
+
+  frontend:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.frontend
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: http://localhost:5000
+    depends_on:
+      - api
+    volumes:
+      - ../../src:/app/src
+      - ../../packages:/app/packages
+    networks:
+      - vsaas-network
+
+volumes:
+  mongo-data:
+  redis-data:
+
+networks:
+  vsaas-network:
+    driver: bridge

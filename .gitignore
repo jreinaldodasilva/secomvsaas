@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+packages/types/node_modules/
+
+# Build outputs
+dist/
+backend/dist/
+packages/types/src/*.js
+packages/types/src/*.d.ts
+packages/types/src/*.map
+
+# Environment files
+.env
+backend/.env
+backend/.env.test
+.env.local
+
+# Logs
+logs/
+*.log
+backend/logs/
+
+# Coverage
+coverage/
+backend/coverage/
+
+# Test reports
+reports/
+backend/reports/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+.tsbuildinfo

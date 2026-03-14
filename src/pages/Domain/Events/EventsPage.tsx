@@ -68,7 +68,7 @@ export function EventsPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -81,19 +81,19 @@ export function EventsPage() {
 
   return (
     <div className="page-events">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.events.title')}</h1>
         <Button onClick={openCreate}>{t('domain.events.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.events.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.events.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label>{t('domain.events.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={3} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.events.fields.description')}<textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.events.fields.location')}<input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.events.fields.startsAt')}<input type="datetime-local" value={form.startsAt} onChange={e => setForm(f => ({ ...f, startsAt: e.target.value }))} required style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.events.fields.endsAt')}<input type="datetime-local" value={form.endsAt} onChange={e => setForm(f => ({ ...f, endsAt: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label>{t('domain.events.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={3} /></label>
+          <label>{t('domain.events.fields.description')}<textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} /></label>
+          <label>{t('domain.events.fields.location')}<input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} /></label>
+          <label>{t('domain.events.fields.startsAt')}<input type="datetime-local" value={form.startsAt} onChange={e => setForm(f => ({ ...f, startsAt: e.target.value }))} required /></label>
+          <label>{t('domain.events.fields.endsAt')}<input type="datetime-local" value={form.endsAt} onChange={e => setForm(f => ({ ...f, endsAt: e.target.value }))} /></label>
+          <label className="form-check">
             <input type="checkbox" checked={form.isPublic} onChange={e => setForm(f => ({ ...f, isPublic: e.target.checked }))} />
             {t('domain.events.fields.isPublic')}
           </label>

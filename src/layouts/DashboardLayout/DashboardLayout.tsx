@@ -33,7 +33,7 @@ export function DashboardLayout() {
             {t('nav.profile')}
           </NavLink>
 
-          <div className="nav-section-label" style={{ padding: '12px 16px 4px', fontSize: '0.7em', textTransform: 'uppercase', opacity: 0.6 }}>{t('nav.modules')}</div>
+          <div className="nav-section-label">{t('nav.modules')}</div>
           <NavLink to="/press-releases" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             {t('nav.pressReleases')}
           </NavLink>
@@ -62,7 +62,7 @@ export function DashboardLayout() {
             value={locale}
             onChange={(e) => setLocale(e.target.value)}
             aria-label="Language"
-            style={{ background: 'transparent', border: '1px solid currentColor', borderRadius: 4, padding: '2px 4px', color: 'inherit', fontSize: '0.8em' }}
+            className="locale-select"
           >
             {SUPPORTED_LOCALES.map(l => <option key={l} value={l}>{l}</option>)}
           </select>

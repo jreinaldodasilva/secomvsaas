@@ -68,7 +68,7 @@ export function SocialMediaPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -81,24 +81,24 @@ export function SocialMediaPage() {
 
   return (
     <div className="page-social-media">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.socialMedia.title')}</h1>
         <Button onClick={openCreate}>{t('domain.socialMedia.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.socialMedia.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.socialMedia.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={handleSubmit} className="form-stack">
           <label>{t('domain.socialMedia.fields.platform')}
-            <select value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))} style={{ width: '100%', marginTop: 4 }}>
+            <select value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}>
               {PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
             </select>
           </label>
-          <label>{t('domain.socialMedia.fields.content')}<textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} required rows={4} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.socialMedia.fields.mediaUrl')}<input type="url" value={form.mediaUrl} onChange={e => setForm(f => ({ ...f, mediaUrl: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.socialMedia.fields.scheduledAt')}<input type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
+          <label>{t('domain.socialMedia.fields.content')}<textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} required rows={4} /></label>
+          <label>{t('domain.socialMedia.fields.mediaUrl')}<input type="url" value={form.mediaUrl} onChange={e => setForm(f => ({ ...f, mediaUrl: e.target.value }))} /></label>
+          <label>{t('domain.socialMedia.fields.scheduledAt')}<input type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} /></label>
           {editing && (
             <label>{t('domain.socialMedia.fields.status')}
-              <select value={editStatus} onChange={e => setEditStatus(e.target.value)} style={{ width: '100%', marginTop: 4 }}>
+              <select value={editStatus} onChange={e => setEditStatus(e.target.value)}>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </label>

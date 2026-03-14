@@ -45,22 +45,14 @@ export function MediaContactsPage() {
     if (!payload.beat) delete payload.beat;
     if (!payload.notes) delete payload.notes;
     if (editing) {
-      update.mutate({ id: editing.id, ...payload }, {
-        onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); },
-        onError: (err) => toast.error(err.message),
-      });
+      update.mutate({ id: editing.id, ...payload }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
     } else {
-      create.mutate(payload, {
-        onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); },
-        onError: (err) => toast.error(err.message),
-      });
+      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
     }
   };
 
   const handleDelete = (id: string) => {
-    if (confirm(t('common.deleteConfirm'))) {
-      del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
-    }
+    if (confirm(t('common.deleteConfirm'))) del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
   };
 
   const columns: Column<MediaContactItem>[] = [
@@ -73,7 +65,7 @@ export function MediaContactsPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -86,19 +78,19 @@ export function MediaContactsPage() {
 
   return (
     <div className="page-media-contacts">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.mediaContacts.title')}</h1>
         <Button onClick={openCreate}>{t('domain.mediaContacts.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.mediaContacts.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.mediaContacts.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label>{t('domain.mediaContacts.fields.name')}<input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required minLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.mediaContacts.fields.outlet')}<input type="text" value={form.outlet} onChange={e => setForm(f => ({ ...f, outlet: e.target.value }))} required minLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.mediaContacts.fields.email')}<input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.mediaContacts.fields.phone')}<input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.mediaContacts.fields.beat')}<input type="text" value={form.beat} onChange={e => setForm(f => ({ ...f, beat: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.mediaContacts.fields.notes')}<textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={3} style={{ width: '100%', marginTop: 4 }} /></label>
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label>{t('domain.mediaContacts.fields.name')}<input type="text" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} required minLength={2} /></label>
+          <label>{t('domain.mediaContacts.fields.outlet')}<input type="text" value={form.outlet} onChange={e => setForm(f => ({ ...f, outlet: e.target.value }))} required minLength={2} /></label>
+          <label>{t('domain.mediaContacts.fields.email')}<input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} /></label>
+          <label>{t('domain.mediaContacts.fields.phone')}<input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} /></label>
+          <label>{t('domain.mediaContacts.fields.beat')}<input type="text" value={form.beat} onChange={e => setForm(f => ({ ...f, beat: e.target.value }))} /></label>
+          <label>{t('domain.mediaContacts.fields.notes')}<textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={3} /></label>
           <Button type="submit" disabled={create.isPending || update.isPending}>{t('common.saving')}</Button>
         </form>
       </Modal>

@@ -46,7 +46,6 @@ export function PressReleasesPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const payload: any = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
-    delete payload.tags_raw;
     if (editing) {
       update.mutate({ id: editing.id, ...payload }, {
         onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); },
@@ -77,7 +76,7 @@ export function PressReleasesPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -90,7 +89,7 @@ export function PressReleasesPage() {
 
   return (
     <div className="page-press-releases">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.pressReleases.title')}</h1>
         <Button onClick={openCreate}>{t('domain.pressReleases.create')}</Button>
       </div>
@@ -98,30 +97,20 @@ export function PressReleasesPage() {
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.pressReleases.empty')} />
 
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.pressReleases.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label>{t('domain.pressReleases.fields.title')}
-            <input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={5} style={{ width: '100%', marginTop: 4 }} />
-          </label>
-          <label>{t('domain.pressReleases.fields.subtitle')}
-            <input type="text" value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} style={{ width: '100%', marginTop: 4 }} />
-          </label>
-          <label>{t('domain.pressReleases.fields.content')}
-            <textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} required minLength={10} rows={6} style={{ width: '100%', marginTop: 4 }} />
-          </label>
-          <label>{t('domain.pressReleases.fields.summary')}
-            <textarea value={form.summary} onChange={e => setForm(f => ({ ...f, summary: e.target.value }))} rows={2} style={{ width: '100%', marginTop: 4 }} />
-          </label>
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label>{t('domain.pressReleases.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={5} /></label>
+          <label>{t('domain.pressReleases.fields.subtitle')}<input type="text" value={form.subtitle} onChange={e => setForm(f => ({ ...f, subtitle: e.target.value }))} /></label>
+          <label>{t('domain.pressReleases.fields.content')}<textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} required minLength={10} rows={6} /></label>
+          <label>{t('domain.pressReleases.fields.summary')}<textarea value={form.summary} onChange={e => setForm(f => ({ ...f, summary: e.target.value }))} rows={2} /></label>
           <label>{t('domain.pressReleases.fields.category')}
-            <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))} style={{ width: '100%', marginTop: 4 }}>
+            <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}>
               {CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
             </select>
           </label>
-          <label>{t('domain.pressReleases.fields.tags')}
-            <input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder={t('domain.pressReleases.tagsHint')} style={{ width: '100%', marginTop: 4 }} />
-          </label>
+          <label>{t('domain.pressReleases.fields.tags')}<input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} placeholder={t('domain.pressReleases.tagsHint')} /></label>
           {editing && (
             <label>{t('domain.pressReleases.fields.status')}
-              <select value={(editing as any).status} onChange={e => setEditing(prev => prev ? { ...prev, status: e.target.value } : prev)} style={{ width: '100%', marginTop: 4 }}>
+              <select value={(editing as any).status} onChange={e => setEditing(prev => prev ? { ...prev, status: e.target.value } : prev)}>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </label>

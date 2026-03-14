@@ -112,7 +112,7 @@ export function UsersPage() {
 
   return (
     <div className="page-users">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('users.title')}</h1>
         <Button onClick={() => setInviteOpen(true)}>{t('users.invite')}</Button>
       </div>
@@ -132,14 +132,14 @@ export function UsersPage() {
 
       <Modal isOpen={inviteOpen} onClose={() => setInviteOpen(false)} title={t('users.inviteTitle')} size="sm">
         <form onSubmit={(e) => { e.preventDefault(); invite.mutate({ email: inviteEmail, role: inviteRole }); }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div className="form-stack">
             <label>
               {t('users.inviteEmail')}
-              <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} required autoFocus style={{ width: '100%', marginTop: 4 }} />
+              <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} required autoFocus />
             </label>
             <label>
               {t('users.inviteRole')}
-              <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)} style={{ width: '100%', marginTop: 4 }}>
+              <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
                 {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
             </label>

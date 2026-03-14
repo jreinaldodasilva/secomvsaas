@@ -149,3 +149,82 @@ body {
 
 /* ─── Error Boundary ──────────────────────────────────────────────────────── */
 .error-boundary { display: flex; flex-direction: column; align-items: center; padding: var(--space-12); text-align: center; }
+
+/* ─── Page Layout ─────────────────────────────────────────────────────────── */
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
+
+/* ─── Form Utilities ──────────────────────────────────────────────────────── */
+.form-stack { display: flex; flex-direction: column; gap: var(--space-3); }
+.form-stack label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-gray-600); }
+.form-stack input,
+.form-stack select,
+.form-stack textarea {
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: border-color var(--transition-fast);
+}
+.form-stack input:focus,
+.form-stack select:focus,
+.form-stack textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 3px var(--color-primary-50);
+}
+.form-row { display: flex; gap: var(--space-2); }
+.form-row > * { flex: 1; }
+.form-row > .form-col-narrow { flex: 0 0 5rem; }
+.form-check { display: flex; align-items: center; gap: var(--space-2); }
+
+/* ─── Actions Row ─────────────────────────────────────────────────────────── */
+.actions-row { display: flex; gap: var(--space-1); }
+
+/* ─── Sidebar Section Label ───────────────────────────────────────────────── */
+.nav-section-label {
+  padding: var(--space-3) var(--space-4) var(--space-1);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+/* ─── Locale Selector ─────────────────────────────────────────────────────── */
+.locale-select {
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: var(--radius-sm);
+  padding: 2px var(--space-1);
+  color: inherit;
+  font-size: var(--font-size-sm);
+}
+
+/* ─── Data Table ──────────────────────────────────────────────────────────── */
+.data-table-search { margin-bottom: var(--space-3); }
+.data-table-search input {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-gray-200);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  width: 100%;
+}
+.data-table table { width: 100%; border-collapse: collapse; }
+.data-table th {
+  text-align: left;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 2px solid var(--color-gray-200);
+  font-size: var(--font-size-sm);
+  color: var(--color-gray-600);
+}
+.data-table th.sortable { cursor: pointer; }
+.data-table td {
+  padding: var(--space-2) var(--space-3);
+}
+.data-table tr + tr { border-top: 1px solid var(--color-gray-100); }
+.data-table-pagination {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: center;
+  margin-top: var(--space-4);
+}

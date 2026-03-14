@@ -14,6 +14,7 @@ interface ClippingItem {
 }
 
 const SENTIMENTS = ['positive', 'neutral', 'negative'] as const;
+
 const emptyForm = { title: '', source: '', sourceUrl: '', publishedAt: '', sentiment: 'neutral' as string, summary: '', tags: '' };
 
 export function ClippingsPage() {
@@ -64,7 +65,7 @@ export function ClippingsPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           {r.sourceUrl && <a href={r.sourceUrl} target="_blank" rel="noopener noreferrer"><Button variant="ghost" size="sm">🔗</Button></a>}
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
@@ -78,24 +79,24 @@ export function ClippingsPage() {
 
   return (
     <div className="page-clippings">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.clippings.title')}</h1>
         <Button onClick={openCreate}>{t('domain.clippings.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.clippings.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.clippings.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label>{t('domain.clippings.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={3} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.clippings.fields.source')}<input type="text" value={form.source} onChange={e => setForm(f => ({ ...f, source: e.target.value }))} required minLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.clippings.fields.sourceUrl')}<input type="url" value={form.sourceUrl} onChange={e => setForm(f => ({ ...f, sourceUrl: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.clippings.fields.publishedAt')}<input type="date" value={form.publishedAt} onChange={e => setForm(f => ({ ...f, publishedAt: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label>{t('domain.clippings.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} required minLength={3} /></label>
+          <label>{t('domain.clippings.fields.source')}<input type="text" value={form.source} onChange={e => setForm(f => ({ ...f, source: e.target.value }))} required minLength={2} /></label>
+          <label>{t('domain.clippings.fields.sourceUrl')}<input type="url" value={form.sourceUrl} onChange={e => setForm(f => ({ ...f, sourceUrl: e.target.value }))} /></label>
+          <label>{t('domain.clippings.fields.publishedAt')}<input type="date" value={form.publishedAt} onChange={e => setForm(f => ({ ...f, publishedAt: e.target.value }))} /></label>
           <label>{t('domain.clippings.fields.sentiment')}
-            <select value={form.sentiment} onChange={e => setForm(f => ({ ...f, sentiment: e.target.value }))} style={{ width: '100%', marginTop: 4 }}>
+            <select value={form.sentiment} onChange={e => setForm(f => ({ ...f, sentiment: e.target.value }))}>
               {SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
             </select>
           </label>
-          <label>{t('domain.clippings.fields.summary')}<textarea value={form.summary} onChange={e => setForm(f => ({ ...f, summary: e.target.value }))} rows={3} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.clippings.fields.tags')}<input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
+          <label>{t('domain.clippings.fields.summary')}<textarea value={form.summary} onChange={e => setForm(f => ({ ...f, summary: e.target.value }))} rows={3} /></label>
+          <label>{t('domain.clippings.fields.tags')}<input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} /></label>
           <Button type="submit" disabled={create.isPending || update.isPending}>{t('common.saving')}</Button>
         </form>
       </Modal>

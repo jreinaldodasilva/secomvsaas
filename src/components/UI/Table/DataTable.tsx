@@ -62,7 +62,7 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div className="data-table">
       {onSearch && (
-        <div className="data-table-search" style={{ marginBottom: 12 }}>
+        <div className="data-table-search">
           <input
             type="text"
             value={search}
@@ -77,14 +77,14 @@ export function DataTable<T extends Record<string, any>>({
         <EmptyState title={emptyMessage} />
       ) : (
         <>
-          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <table>
             <thead>
               <tr>
                 {columns.map(col => (
                   <th
                     key={col.key}
+                    className={col.sortable ? 'sortable' : undefined}
                     onClick={col.sortable ? () => handleSort(col.key) : undefined}
-                    style={{ cursor: col.sortable ? 'pointer' : 'default', textAlign: 'left', padding: '8px 12px', borderBottom: '2px solid #eee' }}
                   >
                     {col.header}
                     {col.sortable && sortKey === col.key && (sortDir === 'asc' ? ' ↑' : ' ↓')}
@@ -94,9 +94,9 @@ export function DataTable<T extends Record<string, any>>({
             </thead>
             <tbody>
               {sorted.map((item, i) => (
-                <tr key={(item as any).id || (item as any)._id || i} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                <tr key={(item as any).id || (item as any)._id || i}>
                   {columns.map(col => (
-                    <td key={col.key} style={{ padding: '8px 12px' }}>
+                    <td key={col.key}>
                       {col.render ? col.render(item) : item[col.key]}
                     </td>
                   ))}
@@ -106,7 +106,7 @@ export function DataTable<T extends Record<string, any>>({
           </table>
 
           {totalPages > 1 && onPageChange && (
-            <div className="data-table-pagination" style={{ display: 'flex', gap: 8, justifyContent: 'center', marginTop: 16 }}>
+            <div className="data-table-pagination">
               <button disabled={page <= 1} onClick={() => onPageChange(page - 1)}>{t('common.previous')}</button>
               <span>{page} / {totalPages}</span>
               <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>{t('common.next')}</button>

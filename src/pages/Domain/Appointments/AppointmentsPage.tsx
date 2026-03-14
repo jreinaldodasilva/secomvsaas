@@ -67,7 +67,7 @@ export function AppointmentsPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -80,22 +80,22 @@ export function AppointmentsPage() {
 
   return (
     <div className="page-appointments">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.appointments.title')}</h1>
         <Button onClick={openCreate}>{t('domain.appointments.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.appointments.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.appointments.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <label>{t('domain.appointments.fields.citizenName')}<input type="text" value={form.citizenName} onChange={e => setForm(f => ({ ...f, citizenName: e.target.value }))} required minLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.appointments.fields.citizenCpf')}<input type="text" value={form.citizenCpf} onChange={e => setForm(f => ({ ...f, citizenCpf: e.target.value }))} maxLength={11} placeholder="00000000000" style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.appointments.fields.citizenPhone')}<input type="text" value={form.citizenPhone} onChange={e => setForm(f => ({ ...f, citizenPhone: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.appointments.fields.service')}<input type="text" value={form.service} onChange={e => setForm(f => ({ ...f, service: e.target.value }))} required style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.appointments.fields.scheduledAt')}<input type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} required style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.appointments.fields.notes')}<textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={3} style={{ width: '100%', marginTop: 4 }} /></label>
+        <form onSubmit={handleSubmit} className="form-stack">
+          <label>{t('domain.appointments.fields.citizenName')}<input type="text" value={form.citizenName} onChange={e => setForm(f => ({ ...f, citizenName: e.target.value }))} required minLength={2} /></label>
+          <label>{t('domain.appointments.fields.citizenCpf')}<input type="text" value={form.citizenCpf} onChange={e => setForm(f => ({ ...f, citizenCpf: e.target.value }))} maxLength={11} placeholder="00000000000" /></label>
+          <label>{t('domain.appointments.fields.citizenPhone')}<input type="text" value={form.citizenPhone} onChange={e => setForm(f => ({ ...f, citizenPhone: e.target.value }))} /></label>
+          <label>{t('domain.appointments.fields.service')}<input type="text" value={form.service} onChange={e => setForm(f => ({ ...f, service: e.target.value }))} required /></label>
+          <label>{t('domain.appointments.fields.scheduledAt')}<input type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} required /></label>
+          <label>{t('domain.appointments.fields.notes')}<textarea value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} rows={3} /></label>
           {editing && (
             <label>{t('domain.appointments.fields.status')}
-              <select value={editStatus} onChange={e => setEditStatus(e.target.value)} style={{ width: '100%', marginTop: 4 }}>
+              <select value={editStatus} onChange={e => setEditStatus(e.target.value)}>
                 {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </label>

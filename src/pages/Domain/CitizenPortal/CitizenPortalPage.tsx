@@ -64,7 +64,7 @@ export function CitizenPortalPage() {
     {
       key: 'actions', header: '',
       render: (r) => (
-        <div style={{ display: 'flex', gap: 4 }}>
+        <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
           <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
         </div>
@@ -77,23 +77,23 @@ export function CitizenPortalPage() {
 
   return (
     <div className="page-citizen-portal">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+      <div className="page-header">
         <h1>{t('domain.citizenPortal.title')}</h1>
         <Button onClick={openCreate}>{t('domain.citizenPortal.create')}</Button>
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.citizenPortal.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.citizenPortal.create')} size="md">
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          {!editing && <label>{t('domain.citizenPortal.fields.userId')}<input type="text" value={form.userId} onChange={e => setForm(f => ({ ...f, userId: e.target.value }))} required style={{ width: '100%', marginTop: 4 }} /></label>}
-          <label>{t('domain.citizenPortal.fields.fullName')}<input type="text" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} required minLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.citizenPortal.fields.cpf')}<input type="text" value={form.cpf} onChange={e => setForm(f => ({ ...f, cpf: e.target.value }))} maxLength={11} placeholder="00000000000" style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.citizenPortal.fields.phone')}<input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.citizenPortal.fields.email')}<input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.citizenPortal.fields.address')}<input type="text" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <label>{t('domain.citizenPortal.fields.neighborhood')}<input type="text" value={form.neighborhood} onChange={e => setForm(f => ({ ...f, neighborhood: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-          <div style={{ display: 'flex', gap: 8 }}>
-            <label style={{ flex: 1 }}>{t('domain.citizenPortal.fields.city')}<input type="text" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} style={{ width: '100%', marginTop: 4 }} /></label>
-            <label style={{ width: 80 }}>{t('domain.citizenPortal.fields.state')}<input type="text" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} maxLength={2} style={{ width: '100%', marginTop: 4 }} /></label>
+        <form onSubmit={handleSubmit} className="form-stack">
+          {!editing && <label>{t('domain.citizenPortal.fields.userId')}<input type="text" value={form.userId} onChange={e => setForm(f => ({ ...f, userId: e.target.value }))} required /></label>}
+          <label>{t('domain.citizenPortal.fields.fullName')}<input type="text" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} required minLength={2} /></label>
+          <label>{t('domain.citizenPortal.fields.cpf')}<input type="text" value={form.cpf} onChange={e => setForm(f => ({ ...f, cpf: e.target.value }))} maxLength={11} placeholder="00000000000" /></label>
+          <label>{t('domain.citizenPortal.fields.phone')}<input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} /></label>
+          <label>{t('domain.citizenPortal.fields.email')}<input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} /></label>
+          <label>{t('domain.citizenPortal.fields.address')}<input type="text" value={form.address} onChange={e => setForm(f => ({ ...f, address: e.target.value }))} /></label>
+          <label>{t('domain.citizenPortal.fields.neighborhood')}<input type="text" value={form.neighborhood} onChange={e => setForm(f => ({ ...f, neighborhood: e.target.value }))} /></label>
+          <div className="form-row">
+            <label>{t('domain.citizenPortal.fields.city')}<input type="text" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} /></label>
+            <label className="form-col-narrow">{t('domain.citizenPortal.fields.state')}<input type="text" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} maxLength={2} /></label>
           </div>
           <Button type="submit" disabled={create.isPending || update.isPending}>{t('common.saving')}</Button>
         </form>

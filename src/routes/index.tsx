@@ -12,6 +12,13 @@ import { UsersPage } from '../pages/Admin/Users/UsersPage';
 import { ProfilePage } from '../pages/Settings/ProfilePage';
 import { NotFoundPage } from '../pages/Error/NotFoundPage';
 import { UnauthorizedPage } from '../pages/Error/UnauthorizedPage';
+import { PressReleasesPage } from '../pages/Domain/PressReleases/PressReleasesPage';
+import { MediaContactsPage } from '../pages/Domain/MediaContacts/MediaContactsPage';
+import { ClippingsPage } from '../pages/Domain/Clippings/ClippingsPage';
+import { EventsPage } from '../pages/Domain/Events/EventsPage';
+import { AppointmentsPage } from '../pages/Domain/Appointments/AppointmentsPage';
+import { CitizenPortalPage } from '../pages/Domain/CitizenPortal/CitizenPortalPage';
+import { SocialMediaPage } from '../pages/Domain/SocialMedia/SocialMediaPage';
 
 export function AppRoutes() {
   return (
@@ -30,6 +37,13 @@ export function AppRoutes() {
         <Route path="/admin/dashboard" element={<DashboardPage />} />
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/settings/profile" element={<ProfilePage />} />
+        <Route path="/press-releases" element={<PressReleasesPage />} />
+        <Route path="/media-contacts" element={<MediaContactsPage />} />
+        <Route path="/clippings" element={<ClippingsPage />} />
+        <Route path="/events" element={<EventsPage />} />
+        <Route path="/appointments" element={<AppointmentsPage />} />
+        <Route path="/citizen-portal" element={<CitizenPortalPage />} />
+        <Route path="/social-media" element={<SocialMediaPage />} />
       </Route>
 
       {/* Fallback */}

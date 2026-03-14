@@ -32,7 +32,29 @@ export function DashboardLayout() {
           <NavLink to="/settings/profile" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
             {t('nav.profile')}
           </NavLink>
-          {/* Add nav links for your modules here */}
+
+          <div className="nav-section-label" style={{ padding: '12px 16px 4px', fontSize: '0.7em', textTransform: 'uppercase', opacity: 0.6 }}>{t('nav.modules')}</div>
+          <NavLink to="/press-releases" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.pressReleases')}
+          </NavLink>
+          <NavLink to="/media-contacts" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.mediaContacts')}
+          </NavLink>
+          <NavLink to="/clippings" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.clippings')}
+          </NavLink>
+          <NavLink to="/events" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.events')}
+          </NavLink>
+          <NavLink to="/appointments" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.appointments')}
+          </NavLink>
+          <NavLink to="/citizen-portal" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.citizenPortal')}
+          </NavLink>
+          <NavLink to="/social-media" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+            {t('nav.socialMedia')}
+          </NavLink>
         </nav>
         <div className="sidebar-footer">
           <ThemeToggle />

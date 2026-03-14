@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Carregando...",
-    "saving": "Salvando...",
+    "saving": "Salvar",
+    "saved": "Salvo com sucesso",
     "sending": "Enviando...",
     "creating": "Criando...",
     "back": "Voltar",
@@ -14,6 +15,10 @@
     "next": "Próximo",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "deleted": "Excluído com sucesso",
+    "deleteConfirm": "Tem certeza que deseja excluir?",
     "brand": "Secom"
   },
   "auth": {
@@ -48,6 +53,7 @@
     "users": "Usuários",
     "profile": "Meu perfil",
     "settings": "Configurações",
+    "modules": "Módulos",
     "pressReleases": "Comunicados",
     "mediaContacts": "Contatos de Mídia",
     "clippings": "Clipping",
@@ -107,37 +113,113 @@
     "pressReleases": {
       "title": "Comunicados de Imprensa",
       "create": "Novo comunicado",
-      "empty": "Nenhum comunicado encontrado"
+      "empty": "Nenhum comunicado encontrado",
+      "tagsHint": "Separar por vírgula",
+      "fields": {
+        "title": "Título",
+        "subtitle": "Subtítulo",
+        "content": "Conteúdo",
+        "summary": "Resumo",
+        "category": "Categoria",
+        "tags": "Tags",
+        "status": "Status",
+        "createdAt": "Criado em"
+      },
+      "categories": {
+        "nota_oficial": "Nota Oficial",
+        "comunicado": "Comunicado",
+        "convite": "Convite",
+        "esclarecimento": "Esclarecimento",
+        "outro": "Outro"
+      }
     },
     "mediaContacts": {
       "title": "Contatos de Mídia",
       "create": "Novo contato",
-      "empty": "Nenhum contato encontrado"
+      "empty": "Nenhum contato encontrado",
+      "fields": {
+        "name": "Nome",
+        "outlet": "Veículo",
+        "email": "Email",
+        "phone": "Telefone",
+        "beat": "Editoria",
+        "notes": "Observações"
+      }
     },
     "clippings": {
       "title": "Clipping de Notícias",
       "create": "Novo clipping",
-      "empty": "Nenhum clipping encontrado"
+      "empty": "Nenhum clipping encontrado",
+      "fields": {
+        "title": "Título",
+        "source": "Fonte",
+        "sourceUrl": "URL da fonte",
+        "publishedAt": "Data de publicação",
+        "sentiment": "Sentimento",
+        "summary": "Resumo",
+        "tags": "Tags"
+      },
+      "sentiments": {
+        "positive": "Positivo",
+        "neutral": "Neutro",
+        "negative": "Negativo"
+      }
     },
     "events": {
       "title": "Eventos",
       "create": "Novo evento",
-      "empty": "Nenhum evento encontrado"
+      "empty": "Nenhum evento encontrado",
+      "fields": {
+        "title": "Título",
+        "description": "Descrição",
+        "location": "Local",
+        "startsAt": "Início",
+        "endsAt": "Término",
+        "isPublic": "Público",
+        "status": "Status"
+      }
     },
     "appointments": {
       "title": "Agendamentos",
       "create": "Novo agendamento",
-      "empty": "Nenhum agendamento encontrado"
+      "empty": "Nenhum agendamento encontrado",
+      "fields": {
+        "citizenName": "Nome do cidadão",
+        "citizenCpf": "CPF",
+        "citizenPhone": "Telefone",
+        "service": "Serviço",
+        "scheduledAt": "Data/hora",
+        "notes": "Observações",
+        "status": "Status"
+      }
     },
     "citizenPortal": {
       "title": "Portal do Cidadão",
       "create": "Novo registro",
-      "empty": "Nenhum registro encontrado"
+      "empty": "Nenhum registro encontrado",
+      "fields": {
+        "userId": "ID do usuário",
+        "fullName": "Nome completo",
+        "cpf": "CPF",
+        "phone": "Telefone",
+        "email": "Email",
+        "address": "Endereço",
+        "neighborhood": "Bairro",
+        "city": "Cidade",
+        "state": "UF"
+      }
     },
     "socialMedia": {
       "title": "Redes Sociais",
       "create": "Nova publicação",
-      "empty": "Nenhuma publicação encontrada"
+      "empty": "Nenhuma publicação encontrada",
+      "fields": {
+        "platform": "Plataforma",
+        "content": "Conteúdo",
+        "mediaUrl": "URL da mídia",
+        "scheduledAt": "Agendado para",
+        "status": "Status"
+      }
     }
   }
 }

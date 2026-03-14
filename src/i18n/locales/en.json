@@ -1,7 +1,8 @@
 {
   "common": {
     "loading": "Loading...",
-    "saving": "Saving...",
+    "saving": "Save",
+    "saved": "Saved successfully",
     "sending": "Sending...",
     "creating": "Creating...",
     "back": "Back",
@@ -14,6 +15,10 @@
     "next": "Next",
     "confirm": "Confirm",
     "cancel": "Cancel",
+    "edit": "Edit",
+    "delete": "Delete",
+    "deleted": "Deleted successfully",
+    "deleteConfirm": "Are you sure you want to delete?",
     "brand": "Secom"
   },
   "auth": {
@@ -48,6 +53,7 @@
     "users": "Users",
     "profile": "My profile",
     "settings": "Settings",
+    "modules": "Modules",
     "pressReleases": "Press Releases",
     "mediaContacts": "Media Contacts",
     "clippings": "Clippings",
@@ -107,37 +113,113 @@
     "pressReleases": {
       "title": "Press Releases",
       "create": "New press release",
-      "empty": "No press releases found"
+      "empty": "No press releases found",
+      "tagsHint": "Separate with commas",
+      "fields": {
+        "title": "Title",
+        "subtitle": "Subtitle",
+        "content": "Content",
+        "summary": "Summary",
+        "category": "Category",
+        "tags": "Tags",
+        "status": "Status",
+        "createdAt": "Created at"
+      },
+      "categories": {
+        "nota_oficial": "Official Statement",
+        "comunicado": "Press Release",
+        "convite": "Invitation",
+        "esclarecimento": "Clarification",
+        "outro": "Other"
+      }
     },
     "mediaContacts": {
       "title": "Media Contacts",
       "create": "New contact",
-      "empty": "No contacts found"
+      "empty": "No contacts found",
+      "fields": {
+        "name": "Name",
+        "outlet": "Outlet",
+        "email": "Email",
+        "phone": "Phone",
+        "beat": "Beat",
+        "notes": "Notes"
+      }
     },
     "clippings": {
       "title": "News Clippings",
       "create": "New clipping",
-      "empty": "No clippings found"
+      "empty": "No clippings found",
+      "fields": {
+        "title": "Title",
+        "source": "Source",
+        "sourceUrl": "Source URL",
+        "publishedAt": "Published at",
+        "sentiment": "Sentiment",
+        "summary": "Summary",
+        "tags": "Tags"
+      },
+      "sentiments": {
+        "positive": "Positive",
+        "neutral": "Neutral",
+        "negative": "Negative"
+      }
     },
     "events": {
       "title": "Events",
       "create": "New event",
-      "empty": "No events found"
+      "empty": "No events found",
+      "fields": {
+        "title": "Title",
+        "description": "Description",
+        "location": "Location",
+        "startsAt": "Starts at",
+        "endsAt": "Ends at",
+        "isPublic": "Public",
+        "status": "Status"
+      }
     },
     "appointments": {
       "title": "Appointments",
       "create": "New appointment",
-      "empty": "No appointments found"
+      "empty": "No appointments found",
+      "fields": {
+        "citizenName": "Citizen name",
+        "citizenCpf": "CPF",
+        "citizenPhone": "Phone",
+        "service": "Service",
+        "scheduledAt": "Date/time",
+        "notes": "Notes",
+        "status": "Status"
+      }
     },
     "citizenPortal": {
       "title": "Citizen Portal",
       "create": "New record",
-      "empty": "No records found"
+      "empty": "No records found",
+      "fields": {
+        "userId": "User ID",
+        "fullName": "Full name",
+        "cpf": "CPF",
+        "phone": "Phone",
+        "email": "Email",
+        "address": "Address",
+        "neighborhood": "Neighborhood",
+        "city": "City",
+        "state": "State"
+      }
     },
     "socialMedia": {
       "title": "Social Media",
       "create": "New post",
-      "empty": "No posts found"
+      "empty": "No posts found",
+      "fields": {
+        "platform": "Platform",
+        "content": "Content",
+        "mediaUrl": "Media URL",
+        "scheduledAt": "Scheduled for",
+        "status": "Status"
+      }
     }
   }
 }

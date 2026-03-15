@@ -22,18 +22,6 @@ export const TENANT_EVENTS = {
   MEMBER_REMOVED: 'tenant.member_removed',
 } as const;
 
-// ─── Billing Events ──────────────────────────────────────
-export const BILLING_EVENTS = {
-  SUBSCRIPTION_CREATED: 'subscription.created',
-  SUBSCRIPTION_ACTIVATED: 'subscription.activated',
-  SUBSCRIPTION_CANCELLED: 'subscription.cancelled',
-  SUBSCRIPTION_EXPIRED: 'subscription.expired',
-  PAYMENT_SUCCEEDED: 'payment.succeeded',
-  PAYMENT_FAILED: 'payment.failed',
-  INVOICE_GENERATED: 'invoice.generated',
-  TRIAL_ENDING: 'subscription.trial_ending',
-} as const;
-
 // ─── Notification Events ─────────────────────────────────
 export const NOTIFICATION_EVENTS = {
   NOTIFICATION_SENT: 'notification.sent',
@@ -51,13 +39,11 @@ export const AUDIT_EVENTS = {
 // Aggregate all event types for type safety
 export type AuthEventType = typeof AUTH_EVENTS[keyof typeof AUTH_EVENTS];
 export type TenantEventType = typeof TENANT_EVENTS[keyof typeof TENANT_EVENTS];
-export type BillingEventType = typeof BILLING_EVENTS[keyof typeof BILLING_EVENTS];
 export type NotificationEventType = typeof NOTIFICATION_EVENTS[keyof typeof NOTIFICATION_EVENTS];
 export type AuditEventType = typeof AUDIT_EVENTS[keyof typeof AUDIT_EVENTS];
 
 export type PlatformEventType =
   | AuthEventType
   | TenantEventType
-  | BillingEventType
   | NotificationEventType
   | AuditEventType;

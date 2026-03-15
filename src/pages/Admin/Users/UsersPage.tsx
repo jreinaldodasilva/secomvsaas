@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
 import { useApiQuery, useApiMutation } from '../../../hooks/useApi';
 import { useToast } from '../../../hooks/useToast';
 import { useAuth } from '../../../contexts/AuthContext';
@@ -35,6 +35,7 @@ export function UsersPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState<string>('staff');
+  const [deactivateTarget, setDeactivateTarget] = useState<string | null>(null);
 
   const { data, isLoading, refetch } = useApiQuery<UsersResponse>(
     ['users', String(page), search],
@@ -101,7 +102,7 @@ export function UsersPage() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => { if (window.confirm(t('users.deactivateConfirm'))) deactivateUser.mutate({ id: u.id }); }}
+          onClick={() => setDeactivateTarget(u.id)}
         >
           {t('users.deactivate')}
         </Button>
@@ -151,6 +152,14 @@ export function UsersPage() {
           </div>
         </form>
       </Modal>
+
+      <ConfirmDialog
+        isOpen={!!deactivateTarget}
+        onClose={() => setDeactivateTarget(null)}
+        onConfirm={() => { if (deactivateTarget) deactivateUser.mutate({ id: deactivateTarget }, { onSuccess: () => setDeactivateTarget(null) }); }}
+        message={t('users.deactivateConfirm')}
+        isLoading={deactivateUser.isPending}
+      />
     </div>
   );
 }

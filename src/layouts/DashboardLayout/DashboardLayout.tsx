@@ -4,6 +4,7 @@ import { useUIStore } from '../../store/uiStore';
 import { useTranslation, SUPPORTED_LOCALES } from '../../i18n';
 import { ThemeToggle } from '../../components/UI';
 import { PermissionGate } from '../../components/Auth/PermissionGate/PermissionGate';
+import { MdDashboard, MdPeople, MdPerson, MdArticle, MdContacts, MdContentCut, MdEvent, MdSchedule, MdAccountBox, MdShare } from 'react-icons/md';
 
 export function DashboardLayout() {
   const { user, logout } = useAuth();
@@ -26,36 +27,36 @@ export function DashboardLayout() {
           <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Toggle sidebar">☰</button>
         </div>
         <nav className="sidebar-nav">
-          <NavLink to="/admin/dashboard" className={navCls}>{t('nav.dashboard')}</NavLink>
+          <NavLink to="/admin/dashboard" className={navCls}><MdDashboard />{t('nav.dashboard')}</NavLink>
 
           <PermissionGate permissions={['users:read']}>
-            <NavLink to="/admin/users" className={navCls}>{t('nav.users')}</NavLink>
+            <NavLink to="/admin/users" className={navCls}><MdPeople />{t('nav.users')}</NavLink>
           </PermissionGate>
 
-          <NavLink to="/settings/profile" className={navCls}>{t('nav.profile')}</NavLink>
+          <NavLink to="/settings/profile" className={navCls}><MdPerson />{t('nav.profile')}</NavLink>
 
           <div className="nav-section-label">{t('nav.modules')}</div>
 
           <PermissionGate permissions={['press-releases:read']}>
-            <NavLink to="/press-releases" className={navCls}>{t('nav.pressReleases')}</NavLink>
+            <NavLink to="/press-releases" className={navCls}><MdArticle />{t('nav.pressReleases')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['media-contacts:read']}>
-            <NavLink to="/media-contacts" className={navCls}>{t('nav.mediaContacts')}</NavLink>
+            <NavLink to="/media-contacts" className={navCls}><MdContacts />{t('nav.mediaContacts')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['clippings:read']}>
-            <NavLink to="/clippings" className={navCls}>{t('nav.clippings')}</NavLink>
+            <NavLink to="/clippings" className={navCls}><MdContentCut />{t('nav.clippings')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['events:read']}>
-            <NavLink to="/events" className={navCls}>{t('nav.events')}</NavLink>
+            <NavLink to="/events" className={navCls}><MdEvent />{t('nav.events')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['appointments:read']}>
-            <NavLink to="/appointments" className={navCls}>{t('nav.appointments')}</NavLink>
+            <NavLink to="/appointments" className={navCls}><MdSchedule />{t('nav.appointments')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['citizen-portal:read']}>
-            <NavLink to="/citizen-portal" className={navCls}>{t('nav.citizenPortal')}</NavLink>
+            <NavLink to="/citizen-portal" className={navCls}><MdAccountBox />{t('nav.citizenPortal')}</NavLink>
           </PermissionGate>
           <PermissionGate permissions={['social-media:read']}>
-            <NavLink to="/social-media" className={navCls}>{t('nav.socialMedia')}</NavLink>
+            <NavLink to="/social-media" className={navCls}><MdShare />{t('nav.socialMedia')}</NavLink>
           </PermissionGate>
         </nav>
         <div className="sidebar-footer">

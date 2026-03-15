@@ -42,7 +42,6 @@ interface EnvConfig {
   };
   logging: { level: string; enableRequestLogging: boolean; detailedErrors: boolean };
   features: { mockEmailService: boolean; mockSmsService: boolean };
-  stripe: { secretKey: string; webhookSecret: string };
   aws: { region: string; s3Bucket: string; accessKeyId: string; secretAccessKey: string };
   auth: {
     accessTokenExpires: string;
@@ -107,10 +106,6 @@ const getEnvConfig = (): EnvConfig => ({
   features: {
     mockEmailService: process.env.MOCK_EMAIL_SERVICE === 'true',
     mockSmsService: process.env.MOCK_SMS_SERVICE === 'true',
-  },
-  stripe: {
-    secretKey: process.env.STRIPE_SECRET_KEY || '',
-    webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || '',
   },
   aws: {
     region: process.env.AWS_REGION || '',

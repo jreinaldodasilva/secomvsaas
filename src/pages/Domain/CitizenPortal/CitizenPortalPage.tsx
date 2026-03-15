@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge } from '../../../components/UI';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
 import { useCitizenPortalList, useCreateCitizenPortal, useUpdateCitizenPortal, useDeleteCitizenPortal } from '../../../hooks/useCitizenPortal';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -30,21 +30,33 @@ export function CitizenPortalPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<CitizenItem | null>(null);
   const [form, setForm] = useState(emptyForm);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
   const { data, isLoading } = useCitizenPortalList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateCitizenPortal();
   const update = useUpdateCitizenPortal();
   const del = useDeleteCitizenPortal();
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setModalOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
   const openEdit = (item: CitizenItem) => {
     setEditing(item);
     setForm({ userId: item.userId || '', fullName: item.fullName, cpf: item.cpf || '', phone: item.phone || '', email: item.email || '', address: item.address || '', neighborhood: item.neighborhood || '', city: item.city || '', state: item.state || '' });
+    setErrors({});
     setModalOpen(true);
+  };
+
+  const validate = () => {
+    const e: Record<string, string> = {};
+    if (!editing && !form.userId) e.userId = t('domain.citizenPortal.fields.userId') + ' — obrigatório';
+    if (form.fullName.length < 2) e.fullName = t('domain.citizenPortal.fields.fullName') + ' — mín. 2 caracteres';
+    setErrors(e);
+    return Object.keys(e).length === 0;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validate()) return;
     const payload: Record<string, unknown> = { ...form };
     Object.keys(payload).forEach(k => { if (!payload[k]) delete payload[k]; });
     if (editing) {
@@ -55,8 +67,9 @@ export function CitizenPortalPage() {
     }
   };
 
-  const handleDelete = (id: string) => {
-    if (window.confirm(t('common.deleteConfirm'))) del.mutate(id, { onSuccess: () => toast.success(t('common.deleted')), onError: (err) => toast.error(err.message) });
+  const handleDelete = () => {
+    if (!deleteTarget) return;
+    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
   };
 
   const columns: Column<CitizenItem>[] = [
@@ -71,7 +84,7 @@ export function CitizenPortalPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => handleDelete(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
         </div>
       ),
     },
@@ -88,9 +101,9 @@ export function CitizenPortalPage() {
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.citizenPortal.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.citizenPortal.create')} size="md">
-        <form onSubmit={handleSubmit} className="form-stack">
-          {!editing && <label>{t('domain.citizenPortal.fields.userId')}<input type="text" value={form.userId} onChange={e => setForm(f => ({ ...f, userId: e.target.value }))} required /></label>}
-          <label>{t('domain.citizenPortal.fields.fullName')}<input type="text" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} required minLength={2} /></label>
+        <form onSubmit={handleSubmit} className="form-stack" noValidate>
+          {!editing && <label className={errors.userId ? 'form-field-error' : ''}>{t('domain.citizenPortal.fields.userId')}<input type="text" value={form.userId} onChange={e => setForm(f => ({ ...f, userId: e.target.value }))} />{errors.userId && <span className="form-error">{errors.userId}</span>}</label>}
+          <label className={errors.fullName ? 'form-field-error' : ''}>{t('domain.citizenPortal.fields.fullName')}<input type="text" value={form.fullName} onChange={e => setForm(f => ({ ...f, fullName: e.target.value }))} />{errors.fullName && <span className="form-error">{errors.fullName}</span>}</label>
           <label>{t('domain.citizenPortal.fields.cpf')}<input type="text" value={form.cpf} onChange={e => setForm(f => ({ ...f, cpf: e.target.value }))} maxLength={11} placeholder="00000000000" /></label>
           <label>{t('domain.citizenPortal.fields.phone')}<input type="text" value={form.phone} onChange={e => setForm(f => ({ ...f, phone: e.target.value }))} /></label>
           <label>{t('domain.citizenPortal.fields.email')}<input type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} /></label>
@@ -100,9 +113,10 @@ export function CitizenPortalPage() {
             <label>{t('domain.citizenPortal.fields.city')}<input type="text" value={form.city} onChange={e => setForm(f => ({ ...f, city: e.target.value }))} /></label>
             <label className="form-col-narrow">{t('domain.citizenPortal.fields.state')}<input type="text" value={form.state} onChange={e => setForm(f => ({ ...f, state: e.target.value }))} maxLength={2} /></label>
           </div>
-          <Button type="submit" disabled={create.isPending || update.isPending}>{t('common.saving')}</Button>
+          <Button type="submit" isLoading={create.isPending || update.isPending}>{t('common.saving')}</Button>
         </form>
       </Modal>
+      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
     </div>
   );
 }

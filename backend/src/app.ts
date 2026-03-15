@@ -107,7 +107,6 @@ app.use(cors({
 }));
 
 // ─── Body Parsing & Security ──────────────────────────────────────────────────
-app.use('/api/v1/webhooks/stripe', express.raw({ type: 'application/json' }));
 app.use(express.json({ limit: '10mb', strict: true }));
 app.use(express.urlencoded({ extended: true, limit: '10mb', parameterLimit: 100 }));
 app.use(cookieParser());

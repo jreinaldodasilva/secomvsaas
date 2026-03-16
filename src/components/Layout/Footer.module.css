@@ -3,6 +3,14 @@
   color: var(--color-primary-200);
 }
 
+/* Reset global link styles inside footer */
+.footer a {
+  color: var(--color-primary-200);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+.footer a:hover { color: var(--color-neutral-0); }
+
 .inner {
   max-width: var(--container-max-width);
   margin: 0 auto;

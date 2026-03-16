@@ -19,6 +19,7 @@ export function Footer() {
             <h4>{t('landing.footer.platform')}</h4>
             <a href="/#features">{t('landing.nav.features')}</a>
             <a href="/#modules">{t('landing.nav.modules')}</a>
+            <a href="/#lgpd">{t('landing.nav.lgpd')}</a>
             <a href="/#contact">{t('landing.nav.contact')}</a>
           </div>
           <div className={styles.col}>

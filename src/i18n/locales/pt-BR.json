@@ -26,6 +26,7 @@
       "features": "Funcionalidades",
       "modules": "Módulos",
       "contact": "Contato",
+      "lgpd": "LGPD",
       "getStarted": "Começar agora"
     },
     "hero": {
@@ -69,7 +70,7 @@
       "button": "Criar conta gratuita"
     },
     "footer": {
-      "tagline": "Plataforma de comunicação pública para secretarias e órgãos governamentais.",
+      "tagline": "Gestão da comunicação para secretarias e órgãos governamentais.",
       "platform": "Plataforma",
       "access": "Acesso",
       "legal": "Legal",
@@ -119,6 +120,7 @@
     "resetPasswordSuccess": "Senha redefinida com sucesso. Faça login."
   },
   "nav": {
+    "toggleSidebar": "Alternar menu lateral",
     "dashboard": "Painel",
     "users": "Usuários",
     "profile": "Meu perfil",

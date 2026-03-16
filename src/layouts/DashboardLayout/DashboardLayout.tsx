@@ -2,8 +2,7 @@ import { useState, useCallback } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { useUIStore } from '../../store/uiStore';
-import { useTranslation, SUPPORTED_LOCALES } from '../../i18n';
-import { ThemeToggle } from '../../components/UI';
+import { useTranslation } from '../../i18n';
 import { PermissionGate } from '../../components/Auth/PermissionGate/PermissionGate';
 import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import { Icon } from '../../components/UI/Icon/Icon';
@@ -16,7 +15,7 @@ export function DashboardLayout() {
   const { user, logout } = useAuth();
   const { sidebarOpen, toggleSidebar } = useUIStore();
   const navigate = useNavigate();
-  const { t, locale, setLocale } = useTranslation();
+  const { t } = useTranslation();
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
 
   const handleLogout = useCallback(async () => {
@@ -41,7 +40,7 @@ export function DashboardLayout() {
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label="Toggle sidebar">☰</button>
+          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label={t('nav.toggleSidebar')}>☰</button>
         </div>
         <nav className={styles.sidebarNav}>
           <NavLink to="/admin/dashboard" className={navCls}><Icon name="dashboard" />{t('nav.dashboard')}</NavLink>
@@ -77,15 +76,6 @@ export function DashboardLayout() {
           </PermissionGate>
         </nav>
         <div className={styles.sidebarFooter}>
-          <ThemeToggle />
-          <select
-            value={locale}
-            onChange={(e) => setLocale(e.target.value)}
-            aria-label="Language"
-            className={styles.localeSelect}
-          >
-            {SUPPORTED_LOCALES.map(l => <option key={l} value={l}>{l}</option>)}
-          </select>
           <span className={styles.sidebarUser}>{user?.name}</span>
           <button className="btn btn-ghost btn-sm" onClick={handleLogout}>{t('auth.logout')}</button>
         </div>

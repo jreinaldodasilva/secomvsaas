@@ -11,7 +11,7 @@ export function Footer() {
       <div className={styles.inner}>
         <div className={styles.brand}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <p className={styles.tagline}>Gestão da comunicação para secretarias municipais.</p>
+          <p className={styles.tagline}>{t('landing.footer.tagline')}</p>
         </div>
 
         <nav className={styles.links} aria-label="Rodapé">

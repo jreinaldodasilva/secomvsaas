@@ -26,6 +26,7 @@
       "features": "Features",
       "modules": "Modules",
       "contact": "Contact",
+      "lgpd": "LGPD",
       "getStarted": "Get started"
     },
     "hero": {
@@ -69,7 +70,7 @@
       "button": "Create free account"
     },
     "footer": {
-      "tagline": "Public communication platform for government offices and agencies.",
+      "tagline": "Communication management for government offices and agencies.",
       "platform": "Platform",
       "access": "Access",
       "legal": "Legal",
@@ -119,6 +120,7 @@
     "resetPasswordSuccess": "Password reset successfully. Please sign in."
   },
   "nav": {
+    "toggleSidebar": "Toggle sidebar",
     "dashboard": "Dashboard",
     "users": "Users",
     "profile": "My profile",

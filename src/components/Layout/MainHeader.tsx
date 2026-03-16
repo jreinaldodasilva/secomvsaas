@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from '../../i18n';
-import { ThemeToggle, Icon } from '../UI';
+import { Icon } from '../UI';
 import styles from './MainHeader.module.css';
 
 const NAV_LINKS = [
-  { to: '/#features', label: 'Funcionalidades' },
-  { to: '/#modules',  label: 'Módulos' },
-  { to: '/#lgpd',     label: 'LGPD' },
-  { to: '/#contact',  label: 'Contato' },
-];
+  { to: '/#features', key: 'landing.nav.features' },
+  { to: '/#modules',  key: 'landing.nav.modules' },
+  { to: '/#lgpd',     key: 'landing.nav.lgpd' },
+  { to: '/#contact',  key: 'landing.nav.contact' },
+] as const;
 
 export function MainHeader() {
   const { t } = useTranslation();
@@ -44,12 +44,11 @@ export function MainHeader() {
 
         <nav className={styles.nav} aria-label="Navegação principal">
           {NAV_LINKS.map(l => (
-            <a key={l.to} href={l.to} className={styles.navLink}>{l.label}</a>
+            <a key={l.to} href={l.to} className={styles.navLink}>{t(l.key)}</a>
           ))}
         </nav>
 
         <div className={styles.actions}>
-          <ThemeToggle />
           <Link to="/login" className={`btn btn-ghost ${styles.hideOnMobile}`}>{t('auth.login')}</Link>
           <Link to="/register" className={`btn btn-primary ${styles.hideOnMobile}`}>{t('landing.nav.getStarted')}</Link>
           <button
@@ -67,7 +66,7 @@ export function MainHeader() {
         <div className={`${styles.mobileMenu} ${styles.showOnMobile}`} ref={mobileRef} role="navigation">
           <nav className={styles.mobileNav}>
             {NAV_LINKS.map(l => (
-              <a key={l.to} href={l.to} className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>{l.label}</a>
+              <a key={l.to} href={l.to} className={styles.mobileNavLink} onClick={() => setMobileOpen(false)}>{t(l.key)}</a>
             ))}
           </nav>
           <div className={styles.mobileAuth}>

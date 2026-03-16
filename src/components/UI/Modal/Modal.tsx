@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { t } from '../../../i18n';
+import { useTranslation } from '../../../i18n';
 
 interface ModalProps {
   isOpen: boolean;
@@ -10,6 +10,7 @@ interface ModalProps {
 }
 
 export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalProps) {
+  const { t } = useTranslation();
   const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

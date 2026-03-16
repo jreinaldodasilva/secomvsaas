@@ -1,29 +1,8 @@
 import { useEffect } from 'react';
-import { create } from 'zustand';
-
-type Theme = 'light' | 'dark';
-
-const STORAGE_KEY = 'secom_theme';
-
-function getInitialTheme(): Theme {
-  if (typeof window === 'undefined') return 'light';
-  const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-  if (stored === 'light' || stored === 'dark') return stored;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-export const useThemeStore = create<{ theme: Theme; toggle: () => void }>((set, get) => ({
-  theme: getInitialTheme(),
-  toggle: () => {
-    const next = get().theme === 'light' ? 'dark' : 'light';
-    localStorage.setItem(STORAGE_KEY, next);
-    document.documentElement.setAttribute('data-theme', next);
-    set({ theme: next });
-  },
-}));
+import { useUIStore } from '../../../store';
 
 export function ThemeToggle() {
-  const { theme, toggle } = useThemeStore();
+  const { theme, toggleTheme } = useUIStore();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -31,7 +10,7 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={toggle}
+      onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       className="theme-toggle-btn"
     >

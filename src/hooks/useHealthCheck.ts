@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { ENV } from '../config/env';
 
-const HEALTH_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/api/v1/health`;
+const HEALTH_URL = `${ENV.API_URL}/api/v1/health`;
 const POLL_INTERVAL = 30_000;
 
 export function useHealthCheck(interval = POLL_INTERVAL) {

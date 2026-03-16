@@ -1,5 +1,5 @@
 import { useState, useMemo, InputHTMLAttributes } from 'react';
-import { t, tArray } from '../../../i18n';
+import { useTranslation } from '../../../i18n';
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   showStrength?: boolean;
@@ -16,6 +16,7 @@ const RULES = [
 const STRENGTH_COLORS = ['#e74c3c', '#e74c3c', '#f39c12', '#2ecc71', '#27ae60'] as const;
 
 export function PasswordInput({ showStrength = false, label, value, ...props }: PasswordInputProps) {
+  const { t, tArray } = useTranslation();
   const [visible, setVisible] = useState(false);
   const val = String(value ?? '');
 

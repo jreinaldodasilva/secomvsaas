@@ -1,7 +1,8 @@
 import { useHealthCheck } from '../../../hooks/useHealthCheck';
-import { t } from '../../../i18n';
+import { useTranslation } from '../../../i18n';
 
 export function ConnectionBanner() {
+  const { t } = useTranslation();
   const { isApiReachable, recheckNow } = useHealthCheck();
 
   if (isApiReachable) return null;

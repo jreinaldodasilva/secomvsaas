@@ -1,7 +1,7 @@
 import { useState, useMemo, ReactNode } from 'react';
 import { Spinner } from '../Loading/Loading';
 import { EmptyState } from '../EmptyState/EmptyState';
-import { t } from '../../../i18n';
+import { useTranslation } from '../../../i18n';
 
 export interface Column<T> {
   key: string;
@@ -25,8 +25,11 @@ interface DataTableProps<T> {
 
 export function DataTable<T extends Record<string, any>>({
   columns, data, total = 0, page = 1, limit = 10,
-  isLoading, onPageChange, onSearch, searchPlaceholder = t('common.search'), emptyMessage = t('common.noResults'),
+  isLoading, onPageChange, onSearch, searchPlaceholder, emptyMessage,
 }: DataTableProps<T>) {
+  const { t } = useTranslation();
+  const resolvedSearchPlaceholder = searchPlaceholder ?? t('common.search');
+  const resolvedEmptyMessage = emptyMessage ?? t('common.noResults');
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [search, setSearch] = useState('');
@@ -67,14 +70,14 @@ export function DataTable<T extends Record<string, any>>({
             type="text"
             value={search}
             onChange={e => handleSearch(e.target.value)}
-            placeholder={searchPlaceholder}
-            aria-label={searchPlaceholder}
+            placeholder={resolvedSearchPlaceholder}
+            aria-label={resolvedSearchPlaceholder}
           />
         </div>
       )}
 
       {sorted.length === 0 ? (
-        <EmptyState title={emptyMessage} />
+        <EmptyState title={resolvedEmptyMessage} />
       ) : (
         <>
           <table>

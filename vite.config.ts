@@ -10,6 +10,9 @@ export default defineConfig({
     include: ['src/**/*.{test,spec}.{ts,tsx}'],
     setupFiles: ['./src/tests/setup.ts'],
     passWithNoTests: true,
+    env: {
+      VITE_API_URL: 'http://localhost:5000',
+    },
   },
   resolve: {
     alias: {
@@ -29,7 +32,6 @@ export default defineConfig({
         manualChunks: {
           vendor: ['react', 'react-dom', 'react-router-dom'],
           query: ['@tanstack/react-query'],
-          forms: ['zod'],
         },
       },
     },

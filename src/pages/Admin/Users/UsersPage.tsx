@@ -6,6 +6,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useTenant } from '../../../contexts/TenantContext';
 import { useTranslation } from '../../../i18n';
 import { usePageTitle } from '../../../hooks/usePageTitle';
+import { ROLES } from '../../../config/permissions';
 
 interface UserItem {
   id: string;
@@ -21,7 +22,7 @@ interface UsersResponse {
   data: { items: UserItem[]; total: number; page: number; limit: number; totalPages: number };
 }
 
-const ROLES = ['admin', 'manager', 'staff'] as const;
+const INVITE_ROLES = [ROLES.ADMIN, ROLES.ASSESSOR, ROLES.SOCIAL_MEDIA, ROLES.ATENDENTE] as const;
 
 export function UsersPage() {
   const { user: currentUser } = useAuth();
@@ -34,7 +35,7 @@ export function UsersPage() {
   const [search, setSearch] = useState('');
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
-  const [inviteRole, setInviteRole] = useState<string>('staff');
+  const [inviteRole, setInviteRole] = useState<string>(ROLES.ASSESSOR);
   const [deactivateTarget, setDeactivateTarget] = useState<string | null>(null);
 
   const { data, isLoading, refetch } = useApiQuery<UsersResponse>(
@@ -69,7 +70,7 @@ export function UsersPage() {
         toast.success(t('users.inviteSuccess'));
         setInviteOpen(false);
         setInviteEmail('');
-        setInviteRole('staff');
+        setInviteRole(ROLES.ASSESSOR);
       },
       onError: (err) => toast.error(err.message),
     },
@@ -88,7 +89,7 @@ export function UsersPage() {
           onChange={(e) => updateUser.mutate({ id: u.id, role: e.target.value })}
           aria-label={t('users.roleLabel', { name: u.name })}
         >
-          {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+          {INVITE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
         </select>
       ),
     },
@@ -143,7 +144,7 @@ export function UsersPage() {
             <label>
               {t('users.inviteRole')}
               <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
-                {ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                {INVITE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
             </label>
             <Button type="submit" disabled={invite.isPending}>

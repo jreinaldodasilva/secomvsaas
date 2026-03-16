@@ -15,16 +15,16 @@
 
 | # | Title | Effort | Priority | Risk Level | Phase |
 |---|---|---|---|---|---|
-| QW-01 | Remove unused production dependencies | 0.5 days | P1 | Low | 1 |
-| QW-02 | Consolidate duplicate theme Zustand stores | 0.5 days | P0 | Low | 1 |
-| QW-03 | Fix RBAC role list in `UsersPage` | 0.5 days | P0 | Low | 1 |
-| QW-04 | Add `vite build` step to CI pipeline | 0.5 days | P1 | Low | 1 |
-| QW-05 | Remove empty `zod` manual chunk from `vite.config.ts` | 0.5 days | P2 | Low | 1 |
-| QW-06 | Move `@tanstack/react-query-devtools` to `devDependencies` | 0.5 days | P2 | Low | 1 |
-| QW-07 | Add startup environment variable validation | 0.5 days | P2 | Low | 2 |
-| QW-08 | Fix i18n stale renders in UI components | 1 day | P1 | Low | 2 |
-| QW-09 | Prune `.env.example` to consumed variables only | 0.5 days | P2 | Low | 1 |
-| QW-10 | Remove or document empty placeholder directories | 0.5 days | P2 | Low | 1 |
+| QW-01 | ~~Remove unused production dependencies~~ ✅ | 0.5 days | P1 | Low | 1 |
+| QW-02 | ~~Consolidate duplicate theme Zustand stores~~ ✅ | 0.5 days | P0 | Low | 1 |
+| QW-03 | ~~Fix RBAC role list in `UsersPage`~~ ✅ | 0.5 days | P0 | Low | 1 |
+| QW-04 | ~~Add `vite build` step to CI pipeline~~ ✅ | 0.5 days | P1 | Low | 1 |
+| QW-05 | ~~Remove empty `zod` manual chunk from `vite.config.ts`~~ ✅ | 0.5 days | P2 | Low | 1 |
+| QW-06 | ~~Move `@tanstack/react-query-devtools` to `devDependencies`~~ ✅ | 0.5 days | P2 | Low | 1 |
+| QW-07 | ~~Add startup environment variable validation~~ ✅ | 0.5 days | P2 | Low | 2 |
+| QW-08 | ~~Fix i18n stale renders in UI components~~ ✅ | 1 day | P1 | Low | 2 |
+| QW-09 | ~~Prune `.env.example` to consumed variables only~~ ✅ | 0.5 days | P2 | Low | 1 |
+| QW-10 | ~~Remove or document empty placeholder directories~~ ✅ | 0.5 days | P2 | Low | 1 |
 
 **Total estimated effort: 6 developer-days**
 
@@ -34,7 +34,7 @@
 
 ---
 
-### QW-01: Remove Unused Production Dependencies
+### QW-01: ~~Remove Unused Production Dependencies~~ ✅
 
 **Architecture Problem**
 
@@ -64,7 +64,7 @@
 
 ---
 
-### QW-02: Consolidate Duplicate Theme Zustand Stores
+### QW-02: ~~Consolidate Duplicate Theme Zustand Stores~~ ✅
 
 **Architecture Problem**
 
@@ -95,7 +95,7 @@
 
 ---
 
-### QW-03: Fix RBAC Role List in `UsersPage`
+### QW-03: ~~Fix RBAC Role List in `UsersPage`~~ ✅
 
 **Architecture Problem**
 
@@ -125,7 +125,7 @@
 
 ---
 
-### QW-04: Add `vite build` Step to CI Pipeline
+### QW-04: ~~Add `vite build` Step to CI Pipeline~~ ✅
 
 **Architecture Problem**
 
@@ -164,7 +164,7 @@ The CI pipeline (`.github/workflows/ci.yml`) runs type-check, lint, and unit tes
 
 ---
 
-### QW-05: Remove Empty `zod` Manual Chunk from `vite.config.ts`
+### QW-05: ~~Remove Empty `zod` Manual Chunk from `vite.config.ts`~~ ✅
 
 **Architecture Problem**
 
@@ -192,7 +192,7 @@ The CI pipeline (`.github/workflows/ci.yml`) runs type-check, lint, and unit tes
 
 ---
 
-### QW-06: Move `@tanstack/react-query-devtools` to `devDependencies`
+### QW-06: ~~Move `@tanstack/react-query-devtools` to `devDependencies`~~ ✅
 
 **Architecture Problem**
 
@@ -220,7 +220,7 @@ The CI pipeline (`.github/workflows/ci.yml`) runs type-check, lint, and unit tes
 
 ---
 
-### QW-07: Add Startup Environment Variable Validation
+### QW-07: ~~Add Startup Environment Variable Validation~~ ✅
 
 **Architecture Problem**
 
@@ -256,7 +256,7 @@ The CI pipeline (`.github/workflows/ci.yml`) runs type-check, lint, and unit tes
 
 ---
 
-### QW-08: Fix i18n Stale Renders in UI Components
+### QW-08: ~~Fix i18n Stale Renders in UI Components~~ ✅
 
 **Architecture Problem**
 
@@ -286,7 +286,7 @@ Four UI components import the `t()` function as a plain module import rather tha
 
 ---
 
-### QW-09: Prune `.env.example` to Consumed Variables Only
+### QW-09: ~~Prune `.env.example` to Consumed Variables Only~~ ✅
 
 **Architecture Problem**
 
@@ -314,7 +314,7 @@ Four UI components import the `t()` function as a plain module import rather tha
 
 ---
 
-### QW-10: Remove or Document Empty Placeholder Directories
+### QW-10: ~~Remove or Document Empty Placeholder Directories~~ ✅
 
 **Architecture Problem**
 

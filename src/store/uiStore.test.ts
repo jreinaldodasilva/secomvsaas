@@ -38,11 +38,19 @@ describe('uiStore', () => {
     expect(useUIStore.getState().theme).toBe('light');
   });
 
-  it('toggleTheme persists to localStorage', () => {
+  it('toggleTheme persists to localStorage under secom_theme key', () => {
     act(() => useUIStore.getState().toggleTheme());
-    expect(localStorage.getItem('theme')).toBe('dark');
+    expect(localStorage.getItem('secom_theme')).toBe('dark');
 
     act(() => useUIStore.getState().toggleTheme());
-    expect(localStorage.getItem('theme')).toBe('light');
+    expect(localStorage.getItem('secom_theme')).toBe('light');
+  });
+
+  it('toggleTheme sets data-theme on documentElement', () => {
+    act(() => useUIStore.getState().toggleTheme());
+    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+
+    act(() => useUIStore.getState().toggleTheme());
+    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
   });
 });

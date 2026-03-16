@@ -75,7 +75,6 @@
   background: var(--color-gray-100);
   padding: var(--space-16) var(--space-6);
 }
-:global([data-theme="dark"]) .sectionAlt { background: var(--color-gray-100); }
 
 .sectionAlt > * {
   max-width: var(--max-width-6xl);
@@ -161,7 +160,6 @@
   box-shadow: var(--shadow-sm);
   padding: var(--space-8) var(--space-6);
 }
-:global([data-theme="dark"]) .contactWrap { background: var(--color-gray-100); }
 
 /* ── CTA ── */
 .cta {

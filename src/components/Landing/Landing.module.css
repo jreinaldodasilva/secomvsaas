@@ -6,14 +6,12 @@
 
 /* ── Stat card ── */
 .statCard             { background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); text-align: center; }
-:global([data-theme="dark"]) .statCard { background: var(--color-gray-100); }
 .statValue            { font-size: var(--font-size-2xl); font-weight: 800; color: var(--color-primary-600); line-height: 1.2; margin-bottom: var(--space-1); }
 .statLabel            { font-size: var(--font-size-base); font-weight: 600; color: var(--color-gray-900); margin-bottom: var(--space-1); }
 .statDesc             { font-size: var(--font-size-sm); color: var(--color-gray-600); }
 
 /* ── Feature card ── */
 .featureCard          { background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); display: flex; flex-direction: column; }
-:global([data-theme="dark"]) .featureCard { background: var(--color-gray-100); }
 .featureIcon          { font-size: var(--font-size-2xl); color: var(--color-primary-600); margin-bottom: var(--space-4); }
 .featureTitle         { font-size: var(--font-size-lg); font-weight: 600; color: var(--color-gray-900); margin-bottom: var(--space-2); }
 .featureDesc          { font-size: var(--font-size-sm); color: var(--color-gray-600); line-height: 1.6; margin-bottom: var(--space-4); flex: 1; }
@@ -29,7 +27,6 @@
 
 /* ── Module card ── */
 .moduleCard           { background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
-:global([data-theme="dark"]) .moduleCard { background: var(--color-gray-100); }
 .moduleCardHighlight  { border-color: var(--color-primary-500); box-shadow: var(--shadow-md); }
 .moduleBadge          { position: absolute; top: calc(-1 * var(--space-3)); left: 50%; transform: translateX(-50%); background: var(--color-primary-600); color: #fff; font-size: var(--font-size-sm); font-weight: 600; padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); white-space: nowrap; }
 .moduleEmoji          { font-size: var(--font-size-2xl); }
@@ -40,7 +37,6 @@
 
 /* ── Testimonial card ── */
 .testimonialCard      { background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); padding: var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
-:global([data-theme="dark"]) .testimonialCard { background: var(--color-gray-100); }
 .testimonialCard::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--color-primary-600); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 .testimonialStars     { display: flex; gap: var(--space-1); color: var(--color-warning); }
 .testimonialQuote     { font-size: var(--font-size-sm); color: var(--color-gray-600); line-height: 1.6; font-style: italic; flex: 1; }
@@ -51,7 +47,6 @@
 
 /* ── LGPD card ── */
 .lgpdCard             { display: flex; align-items: flex-start; gap: var(--space-4); background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); padding: var(--space-4); transition: box-shadow var(--transition-base), border-color var(--transition-fast); }
-:global([data-theme="dark"]) .lgpdCard { background: var(--color-gray-100); }
 .lgpdCard:hover       { border-color: var(--color-primary-500); box-shadow: var(--shadow-md); }
 .lgpdCardEmoji        { font-size: var(--font-size-xl); line-height: 1; flex-shrink: 0; margin-top: 2px; }
 .lgpdCardTitle        { font-size: var(--font-size-sm); font-weight: 600; color: var(--color-gray-900); margin-bottom: var(--space-1); }

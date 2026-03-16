@@ -16,7 +16,6 @@
   border-radius: var(--radius-lg);
   padding: var(--space-4);
 }
-:global([data-theme="dark"]) .statCard { background: var(--color-gray-100); }
 
 .statIcon { font-size: var(--font-size-2xl); }
 .statValue { font-size: var(--font-size-xl); font-weight: 700; display: block; }
@@ -31,7 +30,6 @@
   font-weight: 500;
   margin-bottom: var(--space-6);
 }
-:global([data-theme="dark"]) .alert { background: #78350f; color: #fef3c7; }
 
 .panels {
   display: grid;
@@ -45,7 +43,6 @@
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-6);
 }
-:global([data-theme="dark"]) .panel { background: var(--color-gray-100); }
 .panel h2 { font-size: var(--font-size-base); font-weight: 600; margin-bottom: var(--space-3); }
 
 .list { list-style: none; }

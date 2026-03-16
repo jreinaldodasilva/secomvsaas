@@ -15,6 +15,4 @@
   max-width: 400px;
 }
 
-:global([data-theme="dark"]) .card { background: var(--color-gray-100); }
-
 .brand { text-align: center; margin-bottom: var(--space-6); }

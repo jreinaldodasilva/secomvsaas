@@ -12,7 +12,6 @@
   width: 100%;
 }
 
-:global([data-theme="dark"]) .modal { background: var(--color-gray-100); }
 
 .sm { max-width: 400px; }
 .md { max-width: 560px; }

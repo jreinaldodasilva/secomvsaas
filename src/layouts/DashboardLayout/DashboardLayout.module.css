@@ -22,7 +22,6 @@
 }
 
 .brandLogo { height: 2rem; width: auto; object-fit: contain; }
-:global([data-theme="dark"]) .brandLogo { filter: brightness(0) invert(1); }
 
 .sidebarToggle { background: none; border: none; color: #fff; cursor: pointer; font-size: var(--font-size-lg); }
 

@@ -30,10 +30,7 @@
     <!-- Prevent FOUC: apply theme before React renders -->
     <script>
       (function () {
-        var stored = localStorage.getItem('secom_theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.setAttribute('data-theme', 'light');
         var locale = localStorage.getItem('secom_locale');
         if (locale) document.documentElement.lang = locale;
       })();

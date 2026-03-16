@@ -32,7 +32,6 @@
   padding: 0.75rem;
   background: #fff;
 }
-:global([data-theme="dark"]) .statsGrid { background: var(--color-gray-100); }
 
 .stat {
   display: flex;
@@ -55,10 +54,8 @@
   padding: 0 0.75rem 0.75rem;
   background: #fff;
 }
-:global([data-theme="dark"]) .widgets { background: var(--color-gray-100); }
 
 .widget { background: #fff; border: 1px solid var(--color-gray-200); border-radius: var(--radius-md); overflow: hidden; }
-:global([data-theme="dark"]) .widget { background: var(--color-gray-100); }
 
 .widgetHeader {
   display: flex;

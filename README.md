@@ -39,9 +39,9 @@ npm run dev:all
 
 Na primeira execução, o sistema cria automaticamente:
 - Tenant padrão: **Secretaria de Comunicação** (slug: `secom`)
-- Administrador: `admin@secom.gov.br` / `Admin@Secom2024`
+- Administrador: `admin@secom.gov.br` com a senha definida em `DEFAULT_ADMIN_PASSWORD`
 
-⚠️ **Altere a senha do administrador após o primeiro login.**
+⚠️ **`DEFAULT_ADMIN_PASSWORD` deve ser definido no arquivo `.env` antes da primeira execução.**
 
 ## URLs
 

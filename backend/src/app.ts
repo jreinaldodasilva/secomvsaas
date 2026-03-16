@@ -10,6 +10,7 @@ import swaggerUi from 'swagger-ui-express';
 
 import { checkDatabaseConnection } from './middleware/database';
 import { errorHandler } from './middleware/errorHandler';
+import { NotFoundError } from './utils/errors/errors';
 import { csrfProtection, generateToken, mongoSanitization } from './middleware/security/security';
 import logger from './config/logger';
 import { responseWrapper } from './middleware/normalizeResponse';
@@ -139,7 +140,7 @@ app.get('/api/csrf-token', (req: any, res: any) => res.json({ csrfToken: generat
 app.use('/api', (req: any, res: any, next: any) => {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
   if (process.env.NODE_ENV === 'test') return next();
-  const skipPaths = ['/api/v1/auth/refresh', '/api/v1/auth/logout', '/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/accept-invite', '/api/v1/webhooks/stripe', '/api/csrf-token'];
+  const skipPaths = ['/api/v1/auth/refresh', '/api/v1/auth/logout', '/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/accept-invite', '/api/csrf-token'];
   if (skipPaths.some(p => req.originalUrl.startsWith(p))) return next();
   csrfProtection(req, res, next);
 });
@@ -165,14 +166,13 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/api/health', healthRoutes);
 app.get('/health', (_req, res) => res.status(200).json({ status: 'alive' }));
 
+// ─── 404 ──────────────────────────────────────────────────────────────────────
+app.use('*', (req: Request, _res: Response, next: NextFunction) => {
+  next(new NotFoundError(`Endpoint ${req.method} ${req.path}`));
+});
+
 // ─── Error Handler ────────────────────────────────────────────────────────────
 app.use(errorHandler);
-
-// ─── 404 ──────────────────────────────────────────────────────────────────────
-app.use('*', (req: Request, res: Response) => {
-  logger.warn({ method: req.method, path: req.path, ip: req.ip }, '404 Not Found');
-  return res.status(404).json({ success: false, message: 'Endpoint não encontrado', path: req.path });
-});
 
 // ─── Process Error Handlers ───────────────────────────────────────────────────
 process.on('unhandledRejection', (reason, promise) => logger.error({ reason, promise }, 'Unhandled Rejection'));

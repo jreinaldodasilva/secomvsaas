@@ -5,6 +5,12 @@ import path from 'path';
 
 dotenv.config({ path: path.resolve(__dirname, '../.env.test') });
 
+// Import queues eagerly so the same module instances are closed in afterAll.
+// Workers are null in test (guarded by NODE_ENV check in queue files).
+import redisClient from '../src/config/database/redis';
+import { emailQueue } from '../src/queues/emailQueue';
+import { auditCleanupQueue } from '../src/queues/auditCleanupQueue';
+
 let mongod: MongoMemoryServer;
 
 beforeAll(async () => {
@@ -15,20 +21,9 @@ beforeAll(async () => {
 afterAll(async () => {
   await mongoose.disconnect();
   await mongod.stop();
-
-  // Close Redis and BullMQ to prevent open handles
-  try {
-    const redisClient = (await import('../src/config/database/redis')).default;
-    await redisClient.quit().catch(() => {});
-  } catch {}
-  try {
-    const { emailQueue } = await import('../src/queues/emailQueue');
-    await emailQueue.close().catch(() => {});
-  } catch {}
-  try {
-    const { auditCleanupQueue } = await import('../src/queues/auditCleanupQueue');
-    await auditCleanupQueue.close().catch(() => {});
-  } catch {}
+  await emailQueue.close().catch(() => {});
+  await auditCleanupQueue.close().catch(() => {});
+  await redisClient.quit().catch(() => {});
 });
 
 afterEach(async () => {

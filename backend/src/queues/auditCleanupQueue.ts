@@ -5,22 +5,27 @@ import { env } from '../config/env';
 
 const connection = { host: env.redis.host, port: env.redis.port };
 const RETENTION_DAYS = parseInt(process.env.AUDIT_LOG_TTL_DAYS || '90', 10);
+const isTest = process.env.NODE_ENV === 'test';
 
 export const auditCleanupQueue = new Queue('audit-cleanup', { connection });
 
-export const auditCleanupWorker = new Worker('audit-cleanup', async () => {
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - RETENTION_DAYS);
+export const auditCleanupWorker = isTest
+  ? null as unknown as Worker
+  : new Worker('audit-cleanup', async () => {
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - RETENTION_DAYS);
 
-  const result = await AuditLog.deleteMany({ createdAt: { $lt: cutoff } });
-  if (result.deletedCount > 0) {
-    logger.info({ deletedCount: result.deletedCount, retentionDays: RETENTION_DAYS }, 'Audit log cleanup completed');
-  }
-}, { connection });
+      const result = await AuditLog.deleteMany({ createdAt: { $lt: cutoff } });
+      if (result.deletedCount > 0) {
+        logger.info({ deletedCount: result.deletedCount, retentionDays: RETENTION_DAYS }, 'Audit log cleanup completed');
+      }
+    }, { connection });
 
-auditCleanupWorker.on('failed', (job, err) =>
-  logger.error({ jobId: job?.id, error: err }, 'Audit cleanup job failed'),
-);
+if (!isTest) {
+  auditCleanupWorker.on('failed', (job, err) =>
+    logger.error({ jobId: job?.id, error: err }, 'Audit cleanup job failed'),
+  );
+}
 
 // Schedule daily at 3 AM
 export const scheduleAuditCleanup = async () => {

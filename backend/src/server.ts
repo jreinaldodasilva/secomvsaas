@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 5000;
 const start = async () => {
   await connectToDatabase();
   await ensureDefaultTenant();
+  registerAuthEventListeners();
 
   const server = app.listen(PORT, () => {
     logger.info('🚀 ===================================');
@@ -28,7 +29,6 @@ const start = async () => {
   });
 
   await scheduleAuditCleanup();
-  registerAuthEventListeners();
 
   const gracefulShutdown = async (signal: string): Promise<void> => {
     logger.info(`${signal} received. Shutting down gracefully...`);

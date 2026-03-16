@@ -19,13 +19,15 @@ const DEFAULT_TENANT = {
 const DEFAULT_ADMIN = {
   name: 'Administrador Secom',
   email: 'admin@secom.gov.br',
-  password: process.env.DEFAULT_ADMIN_PASSWORD || (process.env.NODE_ENV !== 'production' ? 'Admin@Secom2024' : ''),
   role: 'admin',
 };
 
 export async function ensureDefaultTenant(): Promise<void> {
-  if (!DEFAULT_ADMIN.password) {
-    throw new Error('DEFAULT_ADMIN_PASSWORD env var is required in production');
+  const password = process.env.DEFAULT_ADMIN_PASSWORD;
+  if (!password) {
+    throw new Error(
+      'DEFAULT_ADMIN_PASSWORD is required for seeding. Set this environment variable before starting the server.',
+    );
   }
 
   const existing = await Tenant.findOne({ slug: DEFAULT_TENANT.slug });
@@ -37,7 +39,7 @@ export async function ensureDefaultTenant(): Promise<void> {
   const admin = await User.create({
     name: DEFAULT_ADMIN.name,
     email: DEFAULT_ADMIN.email,
-    password: DEFAULT_ADMIN.password,
+    password,
     role: DEFAULT_ADMIN.role,
   });
 

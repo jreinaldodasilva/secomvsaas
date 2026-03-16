@@ -5,6 +5,7 @@
 **Source Document:** 
 `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`
 `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
+`docs/backend/01-Secom-Backend-Architecture-Overview-Part3.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -15,7 +16,7 @@ You are generating a **strategic improvement roadmap strictly from the Backend A
 
 You must:
 
-* Use only findings, gaps, risks, and recommendations explicitly described in `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md` and `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
+* Use only findings, gaps, risks, and recommendations explicitly described in `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`, `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md` and `docs/backend/01-Secom-Backend-Architecture-Overview-Part3.md`
 * Not reference any other backend documents
 * Not assume issues from API, testing, or security audits
 * Not invent technical debt outside what is implied in the architecture review
@@ -339,4 +340,4 @@ Must include:
 * Executive-level clarity
 * Focus on systemic risk, not code style
 * Prioritize production resilience and scalability
-
+* Due to the size of the documents, they should be created in sections.

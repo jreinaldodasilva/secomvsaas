@@ -115,6 +115,20 @@
   text-align: center;
 }
 
+/* Forgot password row */
+.forgotRow {
+  text-align: right;
+  margin-top: calc(-1 * var(--space-2));
+  margin-bottom: var(--space-5);
+}
+
+.forgotLink {
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-500);
+  text-decoration: none;
+}
+.forgotLink:hover { text-decoration: underline; }
+
 /* Buttons */
 .btnPrimary {
   width: 100%;

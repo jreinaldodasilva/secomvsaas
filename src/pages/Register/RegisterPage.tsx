@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { Button, PasswordInput } from '../../components/UI';
 import { useTranslation } from '../../i18n';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { ApiError } from '../../services/http';
+import { PasswordInput } from '../../components/UI';
 import s from '../Auth.module.css';
 
 export function RegisterPage() {
@@ -38,7 +38,6 @@ export function RegisterPage() {
     <div className={s.page}>
       <div className={`${s.card} ${s.cardWide}`}>
         <div className={s.header}>
-          <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
           <h1 className={s.title}>{t('auth.register')}</h1>
           <p className={s.subtitle}>{t('auth.registerSubtitle')}</p>
         </div>
@@ -92,22 +91,21 @@ export function RegisterPage() {
               />
             </div>
 
-            <div className={s.field}>
-              <PasswordInput
-                id="password"
-                label={t('auth.password')}
-                value={form.password}
-                onChange={set('password')}
-                required
-                minLength={8}
-                showStrength
-                autoComplete="new-password"
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              label={t('auth.password')}
+              value={form.password}
+              onChange={set('password')}
+              required
+              minLength={8}
+              showStrength
+              autoComplete="new-password"
+              wrapperClassName={s.field}
+            />
 
-            <Button type="submit" isLoading={loading} style={{ width: '100%', marginTop: 'var(--space-2)' }}>
-              {t('auth.register')}
-            </Button>
+            <button type="submit" className={s.btnPrimary} disabled={loading}>
+              {loading ? t('common.loading') : t('auth.register')}
+            </button>
           </form>
         </div>
 

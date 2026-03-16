@@ -36,7 +36,6 @@ export function LoginPage() {
     <div className={s.page}>
       <div className={s.card}>
         <div className={s.header}>
-          <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
           <h1 className={s.title}>{t('auth.login')}</h1>
           <p className={s.subtitle}>{t('auth.loginSubtitle')}</p>
         </div>
@@ -63,19 +62,18 @@ export function LoginPage() {
               />
             </div>
 
-            <div className={s.field}>
-              <PasswordInput
-                id="password"
-                label={t('auth.password')}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </div>
+            <PasswordInput
+              id="password"
+              label={t('auth.password')}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              wrapperClassName={s.field}
+            />
 
-            <div style={{ textAlign: 'right', marginTop: 'calc(-1 * var(--space-3))', marginBottom: 'var(--space-5)' }}>
-              <Link to="/forgot-password" style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-primary-500)' }}>
+            <div className={s.forgotRow}>
+              <Link to="/forgot-password" className={s.forgotLink}>
                 {t('auth.forgotPassword')}
               </Link>
             </div>

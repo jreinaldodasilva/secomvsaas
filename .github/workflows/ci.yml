@@ -59,3 +59,11 @@ jobs:
           CSRF_SECRET: test-csrf-secret-min-32-chars-aaa
           FRONTEND_URL: http://localhost:3000
         run: cd backend && npm run test:ci
+
+      - name: E2E tests (Cypress)
+        env:
+          VITE_API_URL: https://api.placeholder.example
+        run: |
+          npx vite preview --port 3000 &
+          npx wait-on http://localhost:3000 --timeout 30000
+          npx cypress run --spec 'cypress/e2e/press-releases.cy.ts'

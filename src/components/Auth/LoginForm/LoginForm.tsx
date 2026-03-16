@@ -31,7 +31,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="login-form">
+    <form onSubmit={handleSubmit} className="login-form" data-testid="login-form">
       {error && <div className="form-error">{error}</div>}
       <div className="form-field">
         <label htmlFor="email">{t('auth.email')}</label>

@@ -4,7 +4,7 @@ describe('Authentication', () => {
   });
 
   it('shows login form', () => {
-    cy.get('form.login-form').should('exist');
+    cy.get('[data-testid="login-form"]').should('exist');
     cy.get('input[type="email"]').should('exist');
     cy.get('input[type="password"]').should('exist');
     cy.get('button[type="submit"]').should('exist');

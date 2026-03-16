@@ -120,7 +120,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | P2-05 | ~~**Empty placeholder directories create structural noise.**~~ ✅ **Resolved (QW-10)** — 7 empty directories removed (`components/common/`, `Navigation/`, `Notifications/`, `UI/Form/`, `UI/Toast/`, `src/types/`, `src/utils/`). `services/base/` and `services/interceptors/` documented with `index.ts` stubs explaining the intended pattern. | Misleading project structure; onboarding confusion; unclear architectural intent | Project structure | 0.5 days | None | Part 1 §3.2, §8 (L1) |
 | P2-06 | ~~**`.env.example` contains 7 variables not consumed in source.**~~ ✅ **Resolved (QW-09)** — Pruned to `VITE_API_URL` only, with a descriptive comment. | Onboarding confusion; false expectation of implemented features; misleading operational contract | Environment config | 0.5 days | None | Part 2 §6.1, §8 (L4) |
 | P2-07 | ~~**`zod` referenced in Vite manual chunk config but not used in source.**~~ ✅ **Resolved (QW-05)** — `forms: ['zod']` entry removed from `vite.config.ts` `manualChunks`. | Wasted HTTP request; misleading build output | Build / Bundling | 0.5 days | None | Part 1 §4.1, Part 2 §6.3 |
-| P2-08 | **No E2E test coverage for domain modules in CI.** The only Cypress spec covers authentication. Domain module flows (CRUD operations) have no automated E2E verification. CI does not run Cypress at all. | No end-to-end regression detection for primary application functionality | Testing architecture / CI | 3–4 days | None | Part 2 §7.8, §6.5 |
+| P2-08 | ~~**No E2E test coverage for domain modules in CI.**~~ ✅ **Resolved** — `cypress/e2e/press-releases.cy.ts` added with 12 tests covering full CRUD: list rendering, empty state, search, create (with validation), edit (pre-fill + save), delete (cancel + confirm). All API calls stubbed via `cy.intercept()`. CI updated with `E2E tests (Cypress)` step using `vite preview` + `wait-on`. `wait-on` added to `devDependencies`. | No end-to-end regression detection for primary application functionality | Testing architecture / CI | 3–4 days | None | Part 2 §7.8, §6.5 |
 | P2-09 | ~~**No source maps configured for production builds.**~~ ✅ **Resolved** — `sourcemap: true` added to `vite.config.ts` `build` config. | Undebuggable production errors; operational risk | Build / Observability | 0.5 days | None | Part 2 §6.3 |
 
 ---
@@ -166,7 +166,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | Confidence level | **Medium** |
 | P0 items (must fix) | ~~2 issues — 1 day total~~ ✅ **0 open** (both resolved in Phase 1) |
 | P1 items (fix this quarter) | 7 issues total — **7 resolved** ✅ — **0 open** |
-| P2 items (fix this half) | 9 issues total — **8 resolved** ✅ — **1 open** (P2-08, ~3–4 days) |
+| P2 items (fix this half) | 9 issues total — **9 resolved** ✅ — **0 open** |
 | P3 items (backlog) | 5 issues — 3–4 days total |
 
 **Assumptions:**
@@ -245,7 +245,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 |---|---|---|
 | P1-01 (complete) | ~~Complete domain page separation for remaining 3 domain pages (Clippings, CitizenPortal, SocialMedia) + Users admin page~~ | 3–4 days | ✅ Done (all 7 pages) |
 | P1-02 | Add unit tests for domain hooks (7 hooks) — validate functions already covered (29 tests) | 2–3 days | ✅ Done — 37 tests in `src/hooks/domain-hooks.test.ts` |
-| P2-08 | Add Cypress E2E spec for at least one domain module (PressReleases CRUD); add Cypress step to CI | 2–3 days |
+| P2-08 | ~~Add Cypress E2E spec for at least one domain module (PressReleases CRUD); add Cypress step to CI~~ | 2–3 days | ✅ Done — 12 tests in `cypress/e2e/press-releases.cy.ts`; CI step added |
 | P1-06 (start) | Begin CSS scoping migration: convert 3–4 high-traffic components to CSS Modules | 2–3 days | ✅ Done — Modal, DataTable, StatusBadge, EmptyState migrated |
 | P3-03 | Audit UI barrel export (`components/UI/index.ts`) for tree-shaking impact; restructure if needed | 1 day |
 
@@ -338,7 +338,7 @@ Week 13–14  Phase 4: Architecture Maturity (part 2)
 | **Error boundary coverage** | ~~1 root boundary (0% route coverage)~~ | 100% of layout-level routes covered | Code audit of layout components | ✅ Phase 2 |
 | **Domain pages with mixed concerns** | ~~7 of 7 pages (100%)~~ → 0 pages | 0 pages mixing form + list + mutation logic | Code audit of `pages/Domain/` | ✅ Phase 3 |
 | **Domain layer test coverage** | ~~0%~~ → validate functions 100% (29 tests); hooks 100% (37 tests) | ≥70% line coverage on domain hooks and form components | `vitest --coverage` report | ✅ Phase 3 |
-| **E2E domain module coverage** | 0 domain specs | ≥1 domain module with full CRUD E2E spec | Cypress spec count | Phase 3 |
+| **E2E domain module coverage** | ~~0 domain specs~~ → 1 domain spec (PressReleases, 12 tests) | ≥1 domain module with full CRUD E2E spec | Cypress spec count | ✅ Phase 3 |
 | **CSS scoping** | ~~0%~~ → 100% of component styles in CSS Modules (`global.css` retains only intentional shared utilities) | 100% of component styles in CSS Modules | File count of `.module.css` files | ✅ Phase 3–4 |
 | **Production source maps** | ~~Not configured~~ | Source maps generated and stored per release | Build output inspection | ✅ Phase 2 |
 | **CI coverage threshold** | Not enforced | Minimum 70% line coverage enforced in CI | CI pipeline failure on threshold breach | Phase 4 |
@@ -368,7 +368,7 @@ Week 13–14  Phase 4: Architecture Maturity (part 2)
 
 **Advanced — Phase 3 domain separation complete.**
 
-The architecture has crossed into **Advanced (80/100)**. All 7 domain pages are now separated into page + form component + pure `validate*` function. The `validate*` functions have 100% test coverage (29 tests, 102 total). Domain hooks remain untested — that is the next target. CSS scalability (P1-06) ✅ resolved. E2E coverage (P2-08) is the remaining Phase 3 item.
+The architecture has crossed into **Advanced (80/100)**. All 7 domain pages are now separated into page + form component + pure `validate*` function. The `validate*` functions have 100% test coverage (29 tests, 102 total). Domain hooks remain untested — that is the next target. E2E coverage (P2-08) ✅ resolved. All Phase 3 items complete.
 
 ---
 

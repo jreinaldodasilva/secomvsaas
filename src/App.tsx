@@ -15,6 +15,7 @@ export default function App() {
       <QueryProvider>
         <BrowserRouter>
           <AuthProvider>
+            {/* TenantProvider must be nested inside AuthProvider — see TenantContext.tsx */}
             <TenantProvider>
               <ConnectionBanner />
               <AppRoutes />

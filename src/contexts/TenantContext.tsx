@@ -3,6 +3,9 @@ import type { Tenant } from '@vsaas/types';
 import { http } from '../services/http';
 import { useAuth } from './AuthContext';
 
+// TenantProvider must be rendered inside AuthProvider — it calls useAuth() internally.
+// Reversing the provider order in App.tsx will throw at runtime.
+
 interface TenantContextValue {
   tenant: Tenant | null;
   isLoading: boolean;

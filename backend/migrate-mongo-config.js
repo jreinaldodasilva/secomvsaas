@@ -1,4 +1,5 @@
-// migrate-mongo-config.js
+require('dotenv').config();
+
 const config = {
   mongodb: {
     url: process.env.DATABASE_URL || 'mongodb://localhost:27017/vsaas',

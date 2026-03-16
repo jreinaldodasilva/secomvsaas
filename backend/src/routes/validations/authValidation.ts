@@ -1,50 +1,46 @@
-import { body } from 'express-validator';
+import { z } from 'zod';
 
-export const registerValidation = [
-  body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Nome deve ter entre 2 e 100 caracteres'),
-  body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
-  body('password')
-    .isLength({ min: 8 }).withMessage('Senha deve ter pelo menos 8 caracteres')
-    .matches(/[A-Z]/).withMessage('Senha deve conter pelo menos uma letra maiúscula')
-    .matches(/[0-9]/).withMessage('Senha deve conter pelo menos um número'),
-  body('companyName').trim().isLength({ min: 2, max: 100 }).withMessage('Nome da empresa deve ter entre 2 e 100 caracteres'),
-];
+const passwordSchema = z
+  .string()
+  .min(8, 'Senha deve ter pelo menos 8 caracteres')
+  .regex(/[A-Z]/, 'Senha deve conter pelo menos uma letra maiúscula')
+  .regex(/[0-9]/, 'Senha deve conter pelo menos um número');
 
-export const loginValidation = [
-  body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
-  body('password').notEmpty().withMessage('Senha é obrigatória'),
-];
+export const registerSchema = z.object({
+  name: z.string().trim().min(2, 'Nome deve ter entre 2 e 100 caracteres').max(100),
+  email: z.string().email('E-mail inválido').toLowerCase(),
+  password: passwordSchema,
+  companyName: z.string().trim().min(2, 'Nome da empresa deve ter entre 2 e 100 caracteres').max(100),
+});
 
-export const changePasswordValidation = [
-  body('currentPassword').notEmpty().withMessage('Senha atual é obrigatória'),
-  body('newPassword')
-    .isLength({ min: 8 }).withMessage('Nova senha deve ter pelo menos 8 caracteres')
-    .matches(/[A-Z]/).withMessage('Nova senha deve conter pelo menos uma letra maiúscula')
-    .matches(/[0-9]/).withMessage('Nova senha deve conter pelo menos um número'),
-];
+export const loginSchema = z.object({
+  email: z.string().email('E-mail inválido').toLowerCase(),
+  password: z.string().min(1, 'Senha é obrigatória'),
+});
 
-export const forgotPasswordValidation = [
-  body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
-];
+export const changePasswordSchema = z.object({
+  currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
+  newPassword: passwordSchema.refine((v) => v, { message: 'Nova senha inválida' }),
+});
 
-export const resetPasswordValidation = [
-  body('token').notEmpty().withMessage('Token é obrigatório'),
-  body('newPassword')
-    .isLength({ min: 8 }).withMessage('Nova senha deve ter pelo menos 8 caracteres')
-    .matches(/[A-Z]/).withMessage('Nova senha deve conter pelo menos uma letra maiúscula')
-    .matches(/[0-9]/).withMessage('Nova senha deve conter pelo menos um número'),
-];
+export const forgotPasswordSchema = z.object({
+  email: z.string().email('E-mail inválido').toLowerCase(),
+});
 
-export const acceptInviteValidation = [
-  body('token').notEmpty().withMessage('Token é obrigatório'),
-  body('name').trim().isLength({ min: 2, max: 100 }).withMessage('Nome deve ter entre 2 e 100 caracteres'),
-  body('password')
-    .isLength({ min: 8 }).withMessage('Senha deve ter pelo menos 8 caracteres')
-    .matches(/[A-Z]/).withMessage('Senha deve conter pelo menos uma letra maiúscula')
-    .matches(/[0-9]/).withMessage('Senha deve conter pelo menos um número'),
-];
+export const resetPasswordSchema = z.object({
+  token: z.string().min(1, 'Token é obrigatório'),
+  newPassword: passwordSchema,
+});
 
-export const inviteMemberValidation = [
-  body('email').isEmail().normalizeEmail().withMessage('E-mail inválido'),
-  body('role').isIn(['admin', 'assessor', 'social_media', 'atendente', 'citizen']).withMessage('Role deve ser admin, assessor, social_media, atendente ou citizen'),
-];
+export const acceptInviteSchema = z.object({
+  token: z.string().min(1, 'Token é obrigatório'),
+  name: z.string().trim().min(2, 'Nome deve ter entre 2 e 100 caracteres').max(100),
+  password: passwordSchema,
+});
+
+export const inviteMemberSchema = z.object({
+  email: z.string().email('E-mail inválido').toLowerCase(),
+  role: z.enum(['admin', 'assessor', 'social_media', 'atendente', 'citizen'], {
+    errorMap: () => ({ message: 'Role deve ser admin, assessor, social_media, atendente ou citizen' }),
+  }),
+});

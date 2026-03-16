@@ -4,8 +4,7 @@ import { authService } from '../../../services/auth';
 import { authenticate, authorize, AuthenticatedRequest } from '../../../middleware/auth/auth';
 import { validateSchema } from '../../../validation/middleware';
 import { createTenantSchema, updateTenantSchema, tenantFiltersSchema } from '../validators/tenant.validator';
-import { inviteMemberValidation } from '../../../routes/validations/authValidation';
-import { validateRequest } from '../../../middleware/validate';
+import { inviteMemberSchema } from '../../../routes/validations/authValidation';
 import { inviteLimiter } from '../../../middleware/rateLimiter';
 
 const router = Router();
@@ -108,8 +107,7 @@ router.post('/:id/invite',
   authenticate,
   authorize('super_admin', 'admin'),
   inviteLimiter,
-  inviteMemberValidation,
-  validateRequest,
+  validateSchema(inviteMemberSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authReq = req as AuthenticatedRequest;

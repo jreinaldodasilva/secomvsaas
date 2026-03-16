@@ -10,6 +10,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.test') });
 import redisClient from '../src/config/database/redis';
 import { emailQueue } from '../src/queues/emailQueue';
 import { auditCleanupQueue } from '../src/queues/auditCleanupQueue';
+import { domainEventsQueue } from '../src/queues/domainEventsQueue';
 
 let mongod: MongoMemoryServer;
 
@@ -23,6 +24,7 @@ afterAll(async () => {
   await mongod.stop();
   await emailQueue.close().catch(() => {});
   await auditCleanupQueue.close().catch(() => {});
+  await domainEventsQueue.close().catch(() => {});
   await redisClient.quit().catch(() => {});
 });
 

@@ -1,33 +1,6 @@
 import logger from '../../config/logger';
 import crypto from 'crypto';
-
-/**
- * In-process EventBus — suitable for single-process deployments.
- *
- * ## Scaling to multi-process / multi-server
- *
- * This EventBus is an in-memory singleton. Events emitted in one process are
- * NOT visible to other processes. When you scale horizontally, swap this with
- * one of the following strategies:
- *
- * ### Option A: Redis Pub/Sub
- * Replace `emit()` with `redisClient.publish(channel, payload)` and subscribe
- * in each process via `redisClient.subscribe(channel)`. Handlers fire in every
- * subscriber. Good for fan-out notifications.
- *
- * ### Option B: BullMQ job queues
- * Replace `emit()` with `queue.add(eventType, payload)`. A single worker
- * processes each event exactly once. Good for background jobs (emails, billing).
- * Already available in this project via `backend/src/services/queue/`.
- *
- * ### Option C: Persistent event log (MongoDB)
- * Write every event to a `domain_events` collection before dispatching.
- * Enables audit trails, event replay, and crash recovery. Consumers track
- * their last-processed event ID (cursor-based).
- *
- * To migrate: create an adapter that implements the same `emit/on/off`
- * interface and swap the singleton export below.
- */
+import { domainEventsQueue, createDomainEventsWorker } from '../../queues/domainEventsQueue';
 
 export interface DomainEvent {
   id: string;
@@ -41,7 +14,30 @@ export interface DomainEvent {
 
 type EventHandler = (event: DomainEvent) => Promise<void>;
 
-class EventBus {
+const isTest = process.env.NODE_ENV === 'test';
+
+/**
+ * BullMQ-backed EventBus.
+ *
+ * In production/development:
+ *   emit()  → adds a job to the 'domain-events' BullMQ queue (Redis-backed).
+ *             The worker in this same process (or a dedicated worker process)
+ *             dequeues the job and dispatches it to registered in-process handlers.
+ *             Events are durable and survive process restarts.
+ *
+ * In test:
+ *   emit()  → dispatches directly to in-process handlers (no Redis required).
+ *             Behaviour is identical to the previous in-memory EventBus.
+ *
+ * The on/off/removeAll/listenerCount interface is unchanged — no call sites
+ * need to be modified.
+ *
+ * To scale to multiple server instances: run a dedicated worker process that
+ * imports and calls startWorker(). Each instance registers its own handlers
+ * via on(); the BullMQ queue ensures each event is processed exactly once
+ * across all instances.
+ */
+class BullMQEventBus {
   private handlers = new Map<string, EventHandler[]>();
 
   async emit(type: string, payload: Record<string, any>, metadata?: Record<string, any>): Promise<void> {
@@ -57,8 +53,18 @@ class EventBus {
 
     logger.debug({ eventType: type, eventId: event.id }, 'Event emitted');
 
+    if (isTest) {
+      await this.dispatch(event);
+      return;
+    }
+
+    await domainEventsQueue.add(type, event, { jobId: event.id });
+  }
+
+  /** Called by the BullMQ worker to dispatch a dequeued event to handlers. */
+  async dispatch(event: DomainEvent): Promise<void> {
     const handlers = [
-      ...(this.handlers.get(type) || []),
+      ...(this.handlers.get(event.type) || []),
       ...(this.handlers.get('*') || []),
     ];
 
@@ -67,10 +73,23 @@ class EventBus {
         try {
           await handler(event);
         } catch (error) {
-          logger.error({ eventType: type, eventId: event.id, error }, 'Event handler failed');
+          logger.error({ eventType: event.type, eventId: event.id, error }, 'Event handler failed');
         }
-      })
+      }),
     );
+  }
+
+  /**
+   * Start the BullMQ worker that processes domain events.
+   * Call once at server startup (after registering all listeners via on()).
+   * No-op in test environment.
+   */
+  startWorker(): void {
+    if (isTest) return;
+    createDomainEventsWorker(async (job) => {
+      await this.dispatch(job.data as DomainEvent);
+    });
+    logger.info('Domain events worker started');
   }
 
   on(type: string, handler: EventHandler): void {
@@ -96,6 +115,8 @@ class EventBus {
   }
 }
 
-// Singleton
-export const eventBus = new EventBus();
-export { EventBus };
+// Singleton — same export name, same interface, drop-in replacement
+export const eventBus = new BullMQEventBus();
+
+// Keep EventBus exported for tests that instantiate it directly
+export { BullMQEventBus as EventBus };

@@ -5,14 +5,14 @@ import { maskEmail } from '../utils/masking';
 import { auditService } from '../services/admin/auditService';
 import { UnauthorizedError } from '../utils/errors';
 import {
-  loginValidation,
-  registerValidation,
-  acceptInviteValidation,
-  changePasswordValidation,
-  forgotPasswordValidation,
-  resetPasswordValidation,
+  loginSchema,
+  registerSchema,
+  acceptInviteSchema,
+  changePasswordSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
 } from './validations/authValidation';
-import { validateRequest } from '../middleware/validate';
+import { validateSchema } from '../validation/middleware';
 
 const router = express.Router();
 
@@ -49,7 +49,7 @@ const cookieOpts = (maxAge: number) => ({
  *       201: { description: Tenant and user created, sets auth cookies }
  *       409: { description: Email or slug already in use }
  */
-router.post('/register', registerValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/register', validateSchema(registerSchema), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const deviceInfo = {
       userAgent: req.headers['user-agent'],
@@ -88,7 +88,7 @@ router.post('/register', registerValidation, validateRequest, async (req: Reques
  *       200: { description: Login successful, sets auth cookies }
  *       401: { description: Invalid credentials }
  */
-router.post('/login', loginValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/login', validateSchema(loginSchema), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const deviceInfo = {
       userAgent: req.headers['user-agent'],
@@ -198,7 +198,7 @@ router.post('/logout-all', authenticate, async (req: Request, res: Response, nex
   } catch (error) { next(error); }
 });
 
-router.patch('/change-password', authenticate, changePasswordValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.patch('/change-password', authenticate, validateSchema(changePasswordSchema), async (req: Request, res: Response, next: NextFunction) => {
   const authReq = req as AuthenticatedRequest;
   try {
     if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Usuário não autenticado' });
@@ -225,7 +225,7 @@ router.patch('/change-password', authenticate, changePasswordValidation, validat
  *     responses:
  *       200: { description: Reset email sent if account exists }
  */
-router.post('/forgot-password', forgotPasswordValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/forgot-password', validateSchema(forgotPasswordSchema), async (req: Request, res: Response, next: NextFunction) => {
   try {
     await authService.forgotPassword(req.body.email);
     return res.json({ success: true, message: 'Se o e-mail estiver registrado, um link de redefinição de senha foi enviado.' });
@@ -252,7 +252,7 @@ router.post('/forgot-password', forgotPasswordValidation, validateRequest, async
  *       200: { description: Password reset successfully }
  *       401: { description: Invalid or expired token }
  */
-router.post('/reset-password', resetPasswordValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/reset-password', validateSchema(resetPasswordSchema), async (req: Request, res: Response, next: NextFunction) => {
   try {
     await authService.resetPasswordWithToken(req.body.token, req.body.newPassword);
     return res.json({ success: true, message: 'Senha redefinida com sucesso.' });
@@ -280,7 +280,7 @@ router.post('/reset-password', resetPasswordValidation, validateRequest, async (
  *       201: { description: Account created, sets auth cookies }
  *       401: { description: Invalid or expired invite }
  */
-router.post('/accept-invite', acceptInviteValidation, validateRequest, async (req: Request, res: Response, next: NextFunction) => {
+router.post('/accept-invite', validateSchema(acceptInviteSchema), async (req: Request, res: Response, next: NextFunction) => {
   try {
     const deviceInfo = {
       userAgent: req.headers['user-agent'],

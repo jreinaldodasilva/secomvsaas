@@ -59,6 +59,27 @@ services:
     networks:
       - vsaas-network
 
+  worker:
+    build:
+      context: ../../
+      dockerfile: infrastructure/docker/Dockerfile.api
+    command: node dist/worker.js
+    env_file:
+      - ../../backend/.env
+    environment:
+      DATABASE_URL: mongodb://mongo:27017/vsaas
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - ../../backend/src:/app/backend/src
+      - ../../packages:/app/packages
+    networks:
+      - vsaas-network
+
   frontend:
     build:
       context: ../../

@@ -2,9 +2,6 @@ import { initializeMonitoring } from './config/monitoring';
 import { validateEnv } from './config/env';
 import { connectToDatabase, closeDatabaseConnection } from './config/database/database';
 import redisClient from './config/database/redis';
-import { emailQueue, emailWorker } from './queues/emailQueue';
-import { auditCleanupQueue, auditCleanupWorker, scheduleAuditCleanup } from './queues/auditCleanupQueue';
-import { registerAuthEventListeners } from './services/auth/authEventListeners';
 import { ensureDefaultTenant } from './seeds/defaultTenant';
 import logger from './config/logger';
 
@@ -18,7 +15,6 @@ const PORT = process.env.PORT || 5000;
 const start = async () => {
   await connectToDatabase();
   await ensureDefaultTenant();
-  registerAuthEventListeners();
 
   const server = app.listen(PORT, () => {
     logger.info('🚀 ===================================');
@@ -28,22 +24,11 @@ const start = async () => {
     logger.info('🚀 ===================================');
   });
 
-  await scheduleAuditCleanup();
-
   const gracefulShutdown = async (signal: string): Promise<void> => {
     logger.info(`${signal} received. Shutting down gracefully...`);
 
     server.close(async () => {
       logger.info('HTTP server closed');
-      try {
-        await emailWorker.close();
-        await emailQueue.close();
-        await auditCleanupWorker.close();
-        await auditCleanupQueue.close();
-        logger.info('BullMQ workers and queues closed');
-      } catch (err) {
-        logger.error({ err }, 'Error closing BullMQ');
-      }
       try {
         await redisClient.quit();
         logger.info('Redis connection closed');

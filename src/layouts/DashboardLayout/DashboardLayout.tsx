@@ -4,6 +4,7 @@ import { useUIStore } from '../../store/uiStore';
 import { useTranslation, SUPPORTED_LOCALES } from '../../i18n';
 import { ThemeToggle } from '../../components/UI';
 import { PermissionGate } from '../../components/Auth/PermissionGate/PermissionGate';
+import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import { MdDashboard, MdPeople, MdPerson, MdArticle, MdContacts, MdContentCut, MdEvent, MdSchedule, MdAccountBox, MdShare } from 'react-icons/md';
 
 export function DashboardLayout() {
@@ -74,7 +75,9 @@ export function DashboardLayout() {
         </div>
       </aside>
       <main className="main-content">
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </div>
   );

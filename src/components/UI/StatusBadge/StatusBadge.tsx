@@ -1,6 +1,7 @@
+import styles from './StatusBadge.module.css';
+
 interface StatusBadgeProps {
   status: string;
-  // Extend this map with statuses from your modules.
   colorMap?: Record<string, string>;
 }
 
@@ -15,5 +16,5 @@ const DEFAULT_COLORS: Record<string, string> = {
 export function StatusBadge({ status, colorMap }: StatusBadgeProps) {
   const colors = colorMap ?? DEFAULT_COLORS;
   const color = colors[status] ?? 'gray';
-  return <span className={`badge badge-${color}`}>{status}</span>;
+  return <span className={`${styles.badge} ${styles[color]}`}>{status}</span>;
 }

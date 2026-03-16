@@ -1,5 +1,6 @@
 import { Outlet } from 'react-router-dom';
 import { useTranslation } from '../../i18n';
+import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 
 export function AuthLayout() {
   const { t } = useTranslation();
@@ -9,7 +10,9 @@ export function AuthLayout() {
         <div className="auth-brand">
           <h1>{t('common.brand')}</h1>
         </div>
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </div>
     </div>
   );

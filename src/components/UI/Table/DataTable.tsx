@@ -2,6 +2,7 @@ import { useState, useMemo, ReactNode } from 'react';
 import { Spinner } from '../Loading/Loading';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { useTranslation } from '../../../i18n';
+import styles from './DataTable.module.css';
 
 export interface Column<T> {
   key: string;
@@ -65,7 +66,7 @@ export function DataTable<T extends Record<string, any>>({
   return (
     <div className="data-table">
       {onSearch && (
-        <div className="data-table-search">
+        <div className={styles.search}>
           <input
             type="text"
             value={search}
@@ -80,13 +81,13 @@ export function DataTable<T extends Record<string, any>>({
         <EmptyState title={resolvedEmptyMessage} />
       ) : (
         <>
-          <table>
+          <table className={styles.table}>
             <thead>
               <tr>
                 {columns.map(col => (
                   <th
                     key={col.key}
-                    className={col.sortable ? 'sortable' : undefined}
+                    className={col.sortable ? styles.sortable : undefined}
                     onClick={col.sortable ? () => handleSort(col.key) : undefined}
                   >
                     {col.header}
@@ -97,9 +98,9 @@ export function DataTable<T extends Record<string, any>>({
             </thead>
             <tbody>
               {sorted.map((item, i) => (
-                <tr key={(item as any).id || (item as any)._id || i}>
+                <tr key={(item as any).id || (item as any)._id || i} className={styles.tr}>
                   {columns.map(col => (
-                    <td key={col.key}>
+                    <td key={col.key} className={styles.td}>
                       {col.render ? col.render(item) : item[col.key]}
                     </td>
                   ))}
@@ -109,7 +110,7 @@ export function DataTable<T extends Record<string, any>>({
           </table>
 
           {totalPages > 1 && onPageChange && (
-            <div className="data-table-pagination">
+            <div className={styles.pagination}>
               <button disabled={page <= 1} onClick={() => onPageChange(page - 1)}>{t('common.previous')}</button>
               <span>{page} / {totalPages}</span>
               <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>{t('common.next')}</button>

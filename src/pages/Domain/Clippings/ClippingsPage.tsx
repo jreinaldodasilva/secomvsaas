@@ -4,6 +4,8 @@ import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClippin
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
+import { ClippingForm, validateClipping, emptyClippingForm } from './ClippingForm';
+import type { ClippingFormState } from './ClippingForm';
 
 interface ClippingItem {
   id: string;
@@ -16,9 +18,6 @@ interface ClippingItem {
   tags: string[];
 }
 
-const SENTIMENTS = ['positive', 'neutral', 'negative'] as const;
-const emptyForm = { title: '', source: '', sourceUrl: '', publishedAt: '', sentiment: 'neutral', summary: '', tags: '' };
-
 export function ClippingsPage() {
   const { t } = useTranslation();
   const toast = useToast();
@@ -27,7 +26,7 @@ export function ClippingsPage() {
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ClippingItem | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<ClippingFormState>(emptyClippingForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
@@ -36,26 +35,19 @@ export function ClippingsPage() {
   const update = useUpdateClipping();
   const del = useDeleteClipping();
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyClippingForm); setErrors({}); setModalOpen(true); };
   const openEdit = (item: ClippingItem) => {
     setEditing(item);
-    setForm({ title: item.title, source: item.source, sourceUrl: item.sourceUrl || '', publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '', sentiment: item.sentiment, summary: item.summary || '', tags: (item.tags || []).join(', ') });
+    setForm({ title: item.title, source: item.source, sourceUrl: item.sourceUrl ?? '', publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '', sentiment: item.sentiment, summary: item.summary ?? '', tags: (item.tags ?? []).join(', ') });
     setErrors({});
     setModalOpen(true);
   };
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (form.title.length < 3) e.title = t('domain.clippings.fields.title') + ' — mín. 3 caracteres';
-    if (form.source.length < 2) e.source = t('domain.clippings.fields.source') + ' — mín. 2 caracteres';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
-    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(t => t.trim()).filter(Boolean) : [] };
+    const errs = validateClipping(form, t);
+    if (Object.keys(errs).length) { setErrors(errs); return; }
+    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [] };
     if (payload.publishedAt) payload.publishedAt = new Date(payload.publishedAt as string).toISOString();
     else delete payload.publishedAt;
     if (!payload.sourceUrl) delete payload.sourceUrl;
@@ -100,20 +92,7 @@ export function ClippingsPage() {
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.clippings.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.clippings.create')} size="md">
-        <form onSubmit={handleSubmit} className="form-stack" noValidate>
-          <label className={errors.title ? 'form-field-error' : ''}>{t('domain.clippings.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />{errors.title && <span className="form-error">{errors.title}</span>}</label>
-          <label className={errors.source ? 'form-field-error' : ''}>{t('domain.clippings.fields.source')}<input type="text" value={form.source} onChange={e => setForm(f => ({ ...f, source: e.target.value }))} />{errors.source && <span className="form-error">{errors.source}</span>}</label>
-          <label>{t('domain.clippings.fields.sourceUrl')}<input type="url" value={form.sourceUrl} onChange={e => setForm(f => ({ ...f, sourceUrl: e.target.value }))} /></label>
-          <label>{t('domain.clippings.fields.publishedAt')}<input type="date" value={form.publishedAt} onChange={e => setForm(f => ({ ...f, publishedAt: e.target.value }))} /></label>
-          <label>{t('domain.clippings.fields.sentiment')}
-            <select value={form.sentiment} onChange={e => setForm(f => ({ ...f, sentiment: e.target.value }))}>
-              {SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
-            </select>
-          </label>
-          <label>{t('domain.clippings.fields.summary')}<textarea value={form.summary} onChange={e => setForm(f => ({ ...f, summary: e.target.value }))} rows={3} /></label>
-          <label>{t('domain.clippings.fields.tags')}<input type="text" value={form.tags} onChange={e => setForm(f => ({ ...f, tags: e.target.value }))} /></label>
-          <Button type="submit" isLoading={create.isPending || update.isPending}>{t('common.saving')}</Button>
-        </form>
+        <ClippingForm form={form} setForm={setForm} errors={errors} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
       </Modal>
       <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
     </div>

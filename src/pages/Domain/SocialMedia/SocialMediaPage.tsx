@@ -4,6 +4,8 @@ import { useSocialMediaList, useCreateSocialMedia, useUpdateSocialMedia, useDele
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
+import { SocialMediaForm, validateSocialMedia, emptySocialMediaForm } from './SocialMediaForm';
+import type { SocialMediaFormState } from './SocialMediaForm';
 
 interface SocialMediaItem {
   id: string;
@@ -15,10 +17,7 @@ interface SocialMediaItem {
   status: string;
 }
 
-const PLATFORMS = ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'] as const;
-const STATUSES = ['draft', 'scheduled', 'published', 'failed'] as const;
 const STATUS_COLORS: Record<string, string> = { draft: 'gray', scheduled: 'blue', published: 'green', failed: 'red' };
-const emptyForm = { platform: 'instagram', content: '', mediaUrl: '', scheduledAt: '' };
 
 export function SocialMediaPage() {
   const { t } = useTranslation();
@@ -28,7 +27,7 @@ export function SocialMediaPage() {
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<SocialMediaItem | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<SocialMediaFormState>(emptySocialMediaForm);
   const [editStatus, setEditStatus] = useState('draft');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
@@ -38,25 +37,19 @@ export function SocialMediaPage() {
   const update = useUpdateSocialMedia();
   const del = useDeleteSocialMedia();
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptySocialMediaForm); setErrors({}); setModalOpen(true); };
   const openEdit = (item: SocialMediaItem) => {
     setEditing(item);
-    setForm({ platform: item.platform, content: item.content, mediaUrl: item.mediaUrl || '', scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '' });
+    setForm({ platform: item.platform, content: item.content, mediaUrl: item.mediaUrl ?? '', scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '' });
     setEditStatus(item.status);
     setErrors({});
     setModalOpen(true);
   };
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (!form.content.trim()) e.content = t('domain.socialMedia.fields.content') + ' — obrigatório';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    const errs = validateSocialMedia(form, t);
+    if (Object.keys(errs).length) { setErrors(errs); return; }
     const payload: Record<string, unknown> = { ...form };
     if (payload.scheduledAt) payload.scheduledAt = new Date(payload.scheduledAt as string).toISOString();
     else delete payload.scheduledAt;
@@ -100,24 +93,7 @@ export function SocialMediaPage() {
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.socialMedia.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.socialMedia.create')} size="md">
-        <form onSubmit={handleSubmit} className="form-stack" noValidate>
-          <label>{t('domain.socialMedia.fields.platform')}
-            <select value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}>
-              {PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
-            </select>
-          </label>
-          <label className={errors.content ? 'form-field-error' : ''}>{t('domain.socialMedia.fields.content')}<textarea value={form.content} onChange={e => setForm(f => ({ ...f, content: e.target.value }))} rows={4} />{errors.content && <span className="form-error">{errors.content}</span>}</label>
-          <label>{t('domain.socialMedia.fields.mediaUrl')}<input type="url" value={form.mediaUrl} onChange={e => setForm(f => ({ ...f, mediaUrl: e.target.value }))} /></label>
-          <label>{t('domain.socialMedia.fields.scheduledAt')}<input type="datetime-local" value={form.scheduledAt} onChange={e => setForm(f => ({ ...f, scheduledAt: e.target.value }))} /></label>
-          {editing && (
-            <label>{t('domain.socialMedia.fields.status')}
-              <select value={editStatus} onChange={e => setEditStatus(e.target.value)}>
-                {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </label>
-          )}
-          <Button type="submit" isLoading={create.isPending || update.isPending}>{t('common.saving')}</Button>
-        </form>
+        <SocialMediaForm form={form} setForm={setForm} errors={errors} editing={!!editing} editStatus={editStatus} setEditStatus={setEditStatus} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
       </Modal>
       <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
     </div>

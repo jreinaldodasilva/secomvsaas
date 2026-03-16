@@ -4,6 +4,8 @@ import { useEventList, useCreateEvent, useUpdateEvent, useDeleteEvent } from '..
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
 import { useTranslation } from '../../../i18n';
+import { EventForm, validateEvent, emptyEventForm } from './EventForm';
+import type { EventFormState } from './EventForm';
 
 interface EventItem {
   id: string;
@@ -17,7 +19,6 @@ interface EventItem {
 }
 
 const STATUS_COLORS: Record<string, string> = { scheduled: 'blue', ongoing: 'yellow', completed: 'green', cancelled: 'red' };
-const emptyForm = { title: '', description: '', location: '', startsAt: '', endsAt: '', isPublic: false };
 
 export function EventsPage() {
   const { t } = useTranslation();
@@ -27,7 +28,7 @@ export function EventsPage() {
   const [search, setSearch] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<EventItem | null>(null);
-  const [form, setForm] = useState(emptyForm);
+  const [form, setForm] = useState<EventFormState>(emptyEventForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
@@ -36,25 +37,18 @@ export function EventsPage() {
   const update = useUpdateEvent();
   const del = useDeleteEvent();
 
-  const openCreate = () => { setEditing(null); setForm(emptyForm); setErrors({}); setModalOpen(true); };
+  const openCreate = () => { setEditing(null); setForm(emptyEventForm); setErrors({}); setModalOpen(true); };
   const openEdit = (item: EventItem) => {
     setEditing(item);
-    setForm({ title: item.title, description: item.description || '', location: item.location || '', startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '', endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '', isPublic: item.isPublic ?? false });
+    setForm({ title: item.title, description: item.description ?? '', location: item.location ?? '', startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '', endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '', isPublic: item.isPublic ?? false });
     setErrors({});
     setModalOpen(true);
   };
 
-  const validate = () => {
-    const e: Record<string, string> = {};
-    if (form.title.length < 3) e.title = t('domain.events.fields.title') + ' — mín. 3 caracteres';
-    if (!form.startsAt) e.startsAt = t('domain.events.fields.startsAt') + ' — obrigatório';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validate()) return;
+    const errs = validateEvent(form, t);
+    if (Object.keys(errs).length) { setErrors(errs); return; }
     const payload: Record<string, unknown> = { ...form };
     payload.startsAt = new Date(payload.startsAt as string).toISOString();
     if (payload.endsAt) payload.endsAt = new Date(payload.endsAt as string).toISOString();
@@ -101,18 +95,7 @@ export function EventsPage() {
       </div>
       <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.events.empty')} />
       <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.events.create')} size="md">
-        <form onSubmit={handleSubmit} className="form-stack" noValidate>
-          <label className={errors.title ? 'form-field-error' : ''}>{t('domain.events.fields.title')}<input type="text" value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} />{errors.title && <span className="form-error">{errors.title}</span>}</label>
-          <label>{t('domain.events.fields.description')}<textarea value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))} rows={3} /></label>
-          <label>{t('domain.events.fields.location')}<input type="text" value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} /></label>
-          <label className={errors.startsAt ? 'form-field-error' : ''}>{t('domain.events.fields.startsAt')}<input type="datetime-local" value={form.startsAt} onChange={e => setForm(f => ({ ...f, startsAt: e.target.value }))} />{errors.startsAt && <span className="form-error">{errors.startsAt}</span>}</label>
-          <label>{t('domain.events.fields.endsAt')}<input type="datetime-local" value={form.endsAt} onChange={e => setForm(f => ({ ...f, endsAt: e.target.value }))} /></label>
-          <label className="form-check">
-            <input type="checkbox" checked={form.isPublic} onChange={e => setForm(f => ({ ...f, isPublic: e.target.checked }))} />
-            {t('domain.events.fields.isPublic')}
-          </label>
-          <Button type="submit" isLoading={create.isPending || update.isPending}>{t('common.saving')}</Button>
-        </form>
+        <EventForm form={form} setForm={setForm} errors={errors} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
       </Modal>
       <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
     </div>

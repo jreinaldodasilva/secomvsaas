@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from '../../i18n';
 import { Icon } from '../UI';
 import styles from './MainHeader.module.css';
@@ -33,12 +33,22 @@ export function MainHeader() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
+  const navigate = useNavigate();
   const toggleMobile = useCallback(() => setMobileOpen(o => !o), []);
+
+  const handleLogoClick = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else {
+      navigate('/');
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <header className={styles.header} role="banner">
       <div className={styles.inner}>
-        <Link to="/" className={styles.brand} aria-label="Secom — Página inicial">
+        <Link to="/" className={styles.brand} aria-label="Secom — Página inicial" onClick={handleLogoClick}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
         </Link>
 

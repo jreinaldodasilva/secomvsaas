@@ -25,7 +25,7 @@
 .brand { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
 .brand:hover { opacity: 0.8; }
 .brand:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 2px; border-radius: var(--radius-md); }
-.brandLogo { height: 2.25rem; width: auto; display: block; }
+.brandLogo { height: 2.25rem; width: auto; max-width: none; display: block; }
 
 .nav { display: flex; gap: var(--space-2); align-items: center; }
 

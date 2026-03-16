@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { PublicLayout } from '../layouts/PublicLayout/PublicLayout';
-import { AuthLayout } from '../layouts/AuthLayout/AuthLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
 import { rolesWithPermission } from '../config/permissions';
@@ -42,8 +41,8 @@ export function AppRoutes() {
           <Route path="/terms" element={<TermsPage />} />
         </Route>
 
-        {/* Auth routes */}
-        <Route element={<AuthLayout />}>
+        {/* Auth routes — with public header/footer */}
+        <Route element={<PublicLayout />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/accept-invite" element={<AcceptInvitePage />} />

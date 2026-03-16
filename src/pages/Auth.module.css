@@ -1,11 +1,11 @@
 /* Shared auth page layout */
 .page {
-  min-height: 100vh;
+  min-height: calc(100vh - var(--header-height));
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-500) 100%);
-  padding: var(--space-4);
+  background: linear-gradient(160deg, var(--color-primary-50) 0%, var(--color-bg-secondary) 60%);
+  padding: var(--space-10) var(--space-4);
 }
 
 .card {
@@ -23,15 +23,11 @@
 
 .header {
   background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-600) 100%);
-  padding: var(--space-8) var(--space-8) var(--space-6);
+  padding: var(--space-6) var(--space-8) var(--space-5);
   text-align: center;
 }
 
-.logo {
-  height: 2.5rem;
-  width: auto;
-  margin-bottom: var(--space-4);
-}
+.logo { display: none; }
 
 .title {
   color: var(--color-neutral-0);

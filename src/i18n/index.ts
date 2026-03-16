@@ -1,22 +1,14 @@
 import { create } from 'zustand';
 import ptBR from './locales/pt-BR.json';
-import en from './locales/en.json';
 
-const locales: Record<string, Record<string, any>> = { 'pt-BR': ptBR, en };
+const locales: Record<string, Record<string, any>> = { 'pt-BR': ptBR };
 
 const STORAGE_KEY = 'secom_locale';
 const DEFAULT_LOCALE = 'pt-BR';
-export const SUPPORTED_LOCALES = Object.keys(locales);
+export const SUPPORTED_LOCALES = ['pt-BR'];
 
 function getInitialLocale(): string {
-  if (typeof window === 'undefined') return DEFAULT_LOCALE;
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored && locales[stored]) return stored;
-  const browser = navigator.language;
-  if (locales[browser]) return browser;
-  const prefix = browser.split('-')[0];
-  const match = SUPPORTED_LOCALES.find(l => l.startsWith(prefix));
-  return match || DEFAULT_LOCALE;
+  return DEFAULT_LOCALE;
 }
 
 interface I18nState {

@@ -9,12 +9,17 @@ export function Footer() {
   return (
     <footer className={styles.footer} id="footer">
       <div className={styles.inner}>
-        <div className={styles.brand}>
-          <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <p className={styles.tagline}>{t('landing.footer.tagline')}</p>
+
+        <div className={styles.top}>
+          <div className={styles.brand}>
+            <span className={styles.brandName}>{t('common.brand')}</span>
+            <p className={styles.tagline}>{t('landing.footer.tagline')}</p>
+          </div>
         </div>
 
-        <nav className={styles.links} aria-label="Rodapé">
+        <div className={styles.divider} />
+
+        <nav className={styles.cols} aria-label="Rodapé">
           <div className={styles.col}>
             <h4>{t('landing.footer.platform')}</h4>
             <a href="/#features">{t('landing.nav.features')}</a>
@@ -33,6 +38,7 @@ export function Footer() {
             <Link to="/terms">{t('landing.footer.terms')}</Link>
           </div>
         </nav>
+
       </div>
 
       <div className={styles.bottom}>

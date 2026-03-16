@@ -1,148 +1,96 @@
-# 🔎 Prompt: Comprehensive Architectural & Technical Audit — Secom Frontend
+# Secom Frontend Review
 
-You are a **Senior Frontend Architect and Technical Auditor**.
+## Initial Setup & Architecture Analysis
 
-Your task is to perform a **comprehensive architectural and technical analysis** of the **Secom frontend codebase**.
+### Objective
 
-Assume you have **full read-only access to the entire frontend repository**, including:
+Perform a **comprehensive architectural and technical analysis of the Secom (secomvsaas) frontend codebase**. The goal is to document the current frontend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
 
-* Source files
-* Configuration files
-* `package.json` and lock files
-* Build configuration
-* Environment configuration
-* CI configuration (if present)
-
-Your objective is to:
-
-1. Document the **current technical state** of the application
-2. Identify **risks, architectural constraints, and scalability concerns**
-3. Highlight **improvement and consolidation opportunities**
-4. Produce a **clear onboarding and architectural reference document**
-5. Avoid speculation — rely only on observable evidence from the repository
+Assume you have **full read access to the frontend repository**, including source code, configuration files, tests, and documentation.
 
 ---
 
-# 🎯 Deliverable
+## Scope & Analysis Guidelines
 
-Generate a single Markdown document with the exact file path:
+* Base all findings strictly on observable code and configuration.
+* Do not assume undocumented architecture or design decisions.
+* Prefer verifiable facts over speculation.
+* Highlight architectural strengths, weaknesses, and risks.
+* Classify issues by severity where applicable.
+* Keep recommendations **high-level**, not implementation instructions.
 
-```
-docs/frontend/01-Secom-Frontend-Architecture-Overview.md
-```
+### Severity Classification
 
-The document must contain the following sections in order:
-
-1. Executive Summary
-2. Technology Stack
-3. Folder Structure & Organization
-4. Dependency Analysis
-5. Application Bootstrap
-6. Build Configuration
-7. Initial Recommendations (High-Level)
-
-Tone must be:
-
-* Technical
-* Neutral
-* Concise but thorough
-* Evidence-based
-* Structured with tables and diagrams
-
-Do NOT include implementation-level instructions.
+* 🟥 Critical – Security, data integrity, or availability risk
+* 🟧 High – Maintainability, scalability, or operational risk
+* 🟨 Medium – Architectural or organizational concern
+* 🟩 Low – Optimization or best-practice opportunity
 
 ---
 
-# 📦 Scope of Analysis
+## Tasks
 
 ---
 
-## 1️⃣ Technology Stack Inventory
+### 1. Technology Stack Inventory
 
-Identify and document **all technologies, libraries, frameworks, and tools** used in the frontend.
+Identify and document **all technologies, libraries, frameworks, and tools** used by the frontend.
 
-### Include (but do not limit to):
+Include (but are not limited to):
 
-### Core Framework
+* **Core Framework**
 
-* React version
-* Rendering mode (CSR, SSR, hybrid)
-* Key React features used:
+  * React version
+  * Rendering mode (CSR, SSR, hybrid)
+  * Key React features in use (Hooks, Suspense, Lazy loading, Context API, Memoization, Concurrent features)
 
-  * Hooks
-  * Suspense
-  * Lazy loading
-  * Context API
-  * Memoization
-  * Concurrent features (if present)
+* **Language & Type System**
 
-### Language & Type System
+  * TypeScript version
+  * Key `tsconfig.json` settings: strict mode, path aliases, module resolution, incremental builds
 
-* TypeScript version
-* Key `tsconfig.json` settings:
+* **State Management**
 
-  * strict mode
-  * path aliases
-  * module resolution strategy
-  * incremental builds
+  * Client state (e.g., Zustand): store organization, coupling level
+  * Server state (e.g., TanStack Query): query structure, caching strategy, retry behavior, global config
 
-### State Management
+* **Routing**
 
-* Client state (e.g., Zustand)
+  * Router library and version
+  * Routing strategy (file-based, config-based, nested)
+  * Lazy route loading
 
-  * Store organization pattern
-  * Store coupling level
-* Server state (e.g., TanStack Query)
+* **UI & Styling**
 
-  * Query structure
-  * Caching strategy
-  * Retry behavior
-  * Global configuration
+  * UI component libraries
+  * CSS strategy (CSS Modules, Tailwind, styled-components, etc.)
+  * Theming approach
 
-### Routing
+* **Build & Bundling**
 
-* Router library and version
-* Routing strategy (file-based, config-based, nested)
-* Lazy route loading
+  * Build tool (Vite, Webpack, etc.)
+  * Plugins and dev server configuration
 
-### UI & Styling
+* **Quality & Dev Tooling**
 
-* UI libraries
-* Component frameworks
-* CSS strategy (CSS Modules, Tailwind, styled-components, etc.)
-* Theming approach
-
-### Build & Bundling
-
-* Build tool (Vite, Webpack, etc.)
-* Plugins
-* Dev server configuration
-
-### Quality & Dev Tooling
-
-* ESLint configuration
-* Prettier
-* Testing frameworks
-* Storybook (if present)
-* Husky / Git hooks
-* CI tooling
+  * ESLint, Prettier, testing frameworks, Storybook, Husky / Git hooks, CI tooling
 
 ---
 
-### 📋 Required Output Format
+#### Deliverable
 
-Create a structured table:
+A **technology stack table** with:
 
-| Technology | Version | Category | Purpose | Notes |
-| ---------- | ------- | -------- | ------- | ----- |
+| Technology | Category | Version | Purpose | Notes |
+| ---------- | -------- | ------- | ------- | ----- |
 
-Include everything observable from configuration files.
+Include observations about stack maturity and cohesion.
 
 ---
 
-## 2️⃣ Folder Structure & Code Organization
+### 2. Project Structure & Code Organization
 
-Analyze the structure under:
+Analyze the repository structure, including but not limited to:
 
 ```
 frontend/src/
@@ -158,94 +106,78 @@ frontend/src/
 └── assets/
 ```
 
-For each directory:
+For each major directory, document:
 
-* File count
-* Naming conventions
-* Organizational strategy:
-
-  * Feature-based
-  * Layer-based
-  * Type-based
-* Average file size (LOC estimate)
+* Number of files
+* File naming conventions
+* Responsibility and scope
+* Organization strategy: feature-based, layer-based, or type-based
+* Average file size (LOC)
 * Largest files (>300 LOC)
-* Possible “god files”
-* Mixed responsibilities
+* Signs of mixed responsibilities or "god files"
 * Cross-feature coupling
 
 ---
 
-### 📋 Deliverables
+#### Deliverable
 
-1. Directory-by-directory breakdown
-2. Summary statistics table
-3. Observations on:
+Project structure documentation including:
 
-   * Scalability
-   * Maintainability
-   * Architectural consistency
+* Directory-by-directory analysis
+* Summary statistics table
+* Architectural observations on maintainability and scalability
 
 ---
 
-## 3️⃣ Dependency Analysis
+### 3. Dependency Analysis
 
-Analyze:
-
-* `package.json`
-* `package-lock.json` / `pnpm-lock.yaml` / `yarn.lock`
+Analyze dependency manifests and lock files.
 
 Create a dependency audit table:
 
-| Package | Version | Category | Estimated Size | Purpose | Issues | Replacement Options |
-| ------- | ------- | -------- | -------------- | ------- | ------ | ------------------- |
+| Package | Version | Purpose | Security Issues | Status | Replacement Options |
+| ------- | ------- | ------- | --------------- | ------ | ------------------- |
 
-Classify findings using indicators:
+Identify and classify:
 
-* 🟥 Security vulnerability
-* 🟧 ≥ 2 major versions behind
-* 🟨 Possibly unused / redundant
-* 🟩 Optimization opportunity
+* 🟥 Known security vulnerabilities
+* 🟧 Outdated dependencies (≥2 major versions behind)
+* 🟨 Unused or redundant dependencies
+* 🟩 Opportunities for consolidation or simplification
 
 Include:
 
-* Redundant libraries
-* Overlapping utilities
-* Heavy dependencies
+* Redundant or overlapping libraries
+* Heavy dependencies and bundle impact
 * Polyfill overhead
 * Transitive risk dependencies
 
-Conclude with:
+---
 
-* Risk highlights
-* Cleanup opportunities
-* Modernization potential
+#### Deliverable
+
+Dependency audit report with risks and observations.
 
 ---
 
-## 4️⃣ Application Entry Point Analysis
+### 4. Application Bootstrap & Runtime Lifecycle
 
-Analyze:
-
-* `main.tsx`
-* `App.tsx`
-* Root assessors
+Analyze the main application entry points (`main.tsx`, `App.tsx`, root providers).
 
 Document:
 
-* Assessor hierarchy (QueryClientProvider, Router, ThemeProvider, etc.)
-* Initialization order
+* Provider hierarchy (QueryClientProvider, Router, ThemeProvider, etc.)
+* Initialization and mounting order
 * Global state hydration
-* Error boundaries
-* Suspense boundaries
+* Error boundaries and Suspense boundaries
 * Fallback UI handling
 * Global CSS or theme injection
 
 ---
 
-### 📋 Deliverables
+#### Deliverable
 
-1. Written explanation of bootstrap flow
-2. High-level diagram (ASCII or Mermaid)
+Application bootstrap documentation supported by a flow diagram (ASCII or Mermaid).
 
 Example structure:
 
@@ -260,114 +192,96 @@ main.tsx
 
 ---
 
-## 5️⃣ Build & Environment Configuration
+### 5. Build & Environment Configuration
 
-Analyze:
-
-* Vite / Webpack config
-* tsconfig
-* PostCSS / Tailwind config
-* Babel config (if present)
-* Environment variable strategy (`.env` usage)
-* Build output structure
+Analyze build and environment configuration files.
 
 Document:
 
-* Code splitting strategy
+* Environment variable strategy (`.env` usage, validation)
+* Environment separation (dev / staging / prod)
+* Code splitting and chunking strategy
 * Lazy loading usage
 * Tree shaking
-* Chunking strategy
 * Static asset handling
-* Source maps
-* Minification
-* Estimated or observable:
+* Source maps and minification
+* Estimated or observable build time and bundle size
 
-  * Build time
-  * Bundle size
-
-Include architectural implications of current setup.
+Include architectural implications of the current setup.
 
 ---
 
-# 🧾 Output Structure Requirements
+#### Deliverable
 
-The final document must include:
-
----
-
-## 1. Executive Summary
-
-* High-level architecture pattern
-* Technical maturity assessment
-* Key risks
-* Key strengths
-* Overall maintainability assessment
+Build and environment configuration analysis with architectural observations.
 
 ---
 
-## 2. Technology Stack
+### 6. Architecture & Design Patterns
 
-* Inventory table
-* Observations
+Identify and document the **overall frontend architecture**.
 
----
+Analyze:
 
-## 3. Folder Structure & Organization
-
-* Breakdown
-* Statistics
-* Scalability analysis
-
----
-
-## 4. Dependency Analysis
-
-* Audit tables
-* Risk flags
-* Observations
+* Architecture style: component-driven, feature-sliced, layered, atomic design, etc.
+* Design patterns in use: Container/Presenter, Compound Components, Custom Hooks, HOCs, Render Props
+* Component coupling and reuse strategy
+* Separation of concerns: UI, business logic, data fetching
+* Cross-cutting concerns: authentication guards, error handling, loading states, i18n (if present)
+* Testability: component isolation, mock strategy, test coverage signals
 
 ---
 
-## 5. Application Bootstrap
+#### Deliverable
 
-* Assessor hierarchy
-* Diagram
-* Architectural implications
+Architecture documentation including:
 
----
-
-## 6. Build Configuration
-
-* Configuration analysis
-* Optimization strategy assessment
+* Written explanation
+* High-level architecture diagram (ASCII or Mermaid)
+* Observations on testability and scalability
 
 ---
 
-## 7. Initial Recommendations (High-Level)
+## Output Requirements
 
-Provide:
+### Output File
 
-* Architectural refinement themes
-* Risk mitigation themes
-* Scalability improvement themes
+**File Name:**
+`docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
 
-Do NOT provide:
-
-* Code-level rewrites
-* Step-by-step implementation guides
-
-Keep recommendations strategic and directional.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as `docs/frontend/01-Secom-Frontend-Architecture-Overview-Part1.md`, `docs/frontend/01-Secom-Frontend-Architecture-Overview-Part2.md`, and so on.
 
 ---
 
-# ⚙️ Analytical Constraints
+### Required Sections
 
-* Do not assume undocumented architecture decisions.
-* If something is unclear, mark as:
+1. Executive Summary
+2. Technology Stack
+3. Project Structure & Organization
+4. Dependency Analysis
+5. Application Bootstrap & Lifecycle
+6. Build & Environment Configuration
+7. Architecture & Design Patterns
+8. Initial High-Level Recommendations
 
-  > *“Not inferable from repository structure”*
-* Base conclusions strictly on observable code.
-* Avoid subjective judgments — justify claims with evidence.
-* Prefer structured tables over long paragraphs.
-* Maintain professional architecture review tone.
+---
 
+## Formatting & Style Requirements
+
+* Use structured Markdown
+* Prefer tables for inventories and comparisons
+* Use diagrams where they add clarity
+* Maintain a neutral, technical tone
+* Avoid speculative assumptions
+* Avoid step-by-step refactoring instructions
+
+---
+
+## Quality Expectations
+
+The analysis should:
+
+* Provide architectural clarity
+* Reveal technical and organizational risks
+* Support onboarding and long-term maintenance
+* Serve as a baseline for refactoring or scaling discussions

@@ -1,16 +1,10 @@
-Excellent — here is the **frontend-equivalent version** of your backend architecture-scoped prompt, aligned in structure, rigor, and clarity.
-
-This version is tailored specifically for:
-
-`docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
-
----
-
 # PROMPT (Architecture-Scoped Version)
 
 # Secom – Frontend Architecture Improvement Roadmap
 
-**Source Document:** `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
+**Source Document:**
+`docs/frontend/01-Secom-Frontend-Architecture-Overview-Part1.md`
+`docs/frontend/01-Secom-Frontend-Architecture-Overview-Part2.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -21,8 +15,7 @@ You are generating a **strategic frontend architecture improvement roadmap stric
 
 You must:
 
-* Use only findings, gaps, risks, and recommendations explicitly described in
-  `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
+* Use only findings, gaps, risks, and recommendations explicitly described in `docs/frontend/01-Secom-Frontend-Architecture-Overview-Part1.md` and `docs/frontend/01-Secom-Frontend-Architecture-Overview-Part2.md` 
 * Not reference any other frontend documents
 * Not assume issues from UX audits, accessibility audits, performance audits, or testing strategy documents
 * Not invent technical debt outside what is implied in the architecture review
@@ -77,19 +70,13 @@ Extract every issue related to:
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source Section |
 | - | ----- | -------------------- | ----------- | ------ | ------------ | -------------- |
 
----
-
 ### 🟧 P1 – Scalability / Maintainability Risks
 
 [Same structure]
 
----
-
 ### 🟨 P2 – Structural Improvements
 
 [Same structure]
-
----
 
 ### 🟩 P3 – Optimization & Future Enhancements
 
@@ -268,7 +255,7 @@ Examples (only if aligned with document findings):
 | Error boundary coverage   | ?             | 100% top-level routes | Code audit          |
 | Circular dependencies     | ?             | 0                     | Static analysis     |
 
-Do NOT include UX, design, or accessibility metrics unless architecture document discusses them structurally.
+Do NOT include UX, design, or accessibility metrics unless the architecture document discusses them structurally.
 
 ---
 
@@ -302,15 +289,11 @@ Provide:
 
 X / 100
 
----
-
 ### Key Structural Strengths
 
 1.
 2.
 3.
-
----
 
 ### Major Architectural Risks
 
@@ -318,25 +301,19 @@ X / 100
 2.
 3.
 
----
-
 ### Estimated Investment
 
 * Total developer-days:
 * Timeline:
 * Risk if delayed:
 
----
-
 ### Recommendation
-
-Choose one:
 
 * Stable but requires targeted hardening
 * Moderate architectural refactor required
 * Strategic structural restructuring recommended
 
-Keep concise, strategic, and traceable to document findings (1–2 pages equivalent).
+Keep concise and strategic (1–2 pages equivalent).
 
 ---
 
@@ -380,3 +357,4 @@ Must include:
 * Focus on systemic structural risk
 * Avoid feature-level UX commentary
 * Prioritize scalability, resilience, maintainability, and deployment stability
+* Due to the size of the documents, they should be created in sections

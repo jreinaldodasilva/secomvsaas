@@ -10,7 +10,41 @@ body {
   line-height: 1.5;
 }
 
-/* ─── Buttons (shared utility — used across Button, Link, and plain <button> elements) ── */
+/* --- Skip link (accessibility) --- */
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: var(--space-4);
+  z-index: 9999;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary-600);
+  color: #fff;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  text-decoration: none;
+  transition: top var(--transition-fast);
+}
+.skip-link:focus { top: var(--space-4); }
+
+/* --- Loading screen (lazy route fallback) --- */
+.loading-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--color-gray-50);
+}
+
+/* --- Container --- */
+.container {
+  max-width: var(--max-width-6xl);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  width: 100%;
+}
+
+/* --- Buttons --- */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -21,18 +55,23 @@ body {
   font-size: var(--font-size-sm);
   font-weight: 500;
   cursor: pointer;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  text-decoration: none;
 }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.btn-primary { background: var(--color-primary-600); color: #fff; }
-.btn-primary:hover:not(:disabled) { background: var(--color-primary-700); }
+.btn-primary   { background: var(--color-primary-600); color: #fff; }
+.btn-primary:hover:not(:disabled)   { background: var(--color-primary-700); }
 .btn-secondary { background: var(--color-gray-200); color: var(--color-gray-800); }
-.btn-danger { background: var(--color-danger); color: #fff; }
-.btn-ghost { background: transparent; color: var(--color-gray-600); }
-.btn-sm { padding: var(--space-1) var(--space-2); font-size: var(--font-size-sm); }
-.btn-lg { padding: var(--space-3) var(--space-6); font-size: var(--font-size-lg); }
+.btn-secondary:hover:not(:disabled) { background: var(--color-gray-400); }
+.btn-danger    { background: var(--color-danger); color: #fff; }
+.btn-ghost     { background: transparent; color: var(--color-gray-600); }
+.btn-ghost:hover:not(:disabled) { background: var(--color-gray-100); color: var(--color-gray-900); }
+.btn-outline   { background: transparent; color: var(--color-primary-600); border: 2px solid var(--color-primary-600); }
+.btn-outline:hover:not(:disabled) { background: var(--color-primary-600); color: #fff; }
+.btn-sm  { padding: var(--space-1) var(--space-2); font-size: var(--font-size-sm); }
+.btn-lg  { padding: var(--space-3) var(--space-6); font-size: var(--font-size-lg); }
 
-/* ─── Forms (shared utility — used in domain forms, auth pages, profile) ─── */
+/* --- Forms --- */
 .form-field { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-4); }
 .form-field label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-gray-600); }
 .form-field input, .form-field select, .form-field textarea {
@@ -49,7 +88,7 @@ body {
 }
 .form-error { color: var(--color-danger); font-size: var(--font-size-sm); margin-bottom: var(--space-3); }
 
-/* ─── Spinner (shared utility — used in DashboardPage and Button loading state) ── */
+/* --- Spinner --- */
 .spinner {
   border: 2px solid var(--color-gray-200);
   border-top-color: var(--color-primary-600);
@@ -61,10 +100,10 @@ body {
 .spinner-lg { width: 2.5rem; height: 2.5rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── Page Layout (shared utility — used across all domain pages) ─────────── */
+/* --- Page layout --- */
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
 
-/* ─── Form Utilities (shared — used in domain forms and auth pages) ─────── */
+/* --- Form stack --- */
 .form-stack { display: flex; flex-direction: column; gap: var(--space-3); }
 .form-stack label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-gray-600); }
 .form-stack input,
@@ -88,17 +127,16 @@ body {
 .form-row { display: flex; gap: var(--space-2); }
 .form-row > * { flex: 1; }
 .form-row > .form-col-narrow { flex: 0 0 5rem; }
-
 .form-field-error input,
 .form-field-error select,
 .form-field-error textarea { border-color: var(--color-danger); }
 .form-field-error .form-error { margin-top: var(--space-1); }
 .form-check { display: flex; align-items: center; gap: var(--space-2); }
 
-/* ─── Actions Row (shared — used in domain pages) ────────────────────────── */
+/* --- Actions row --- */
 .actions-row { display: flex; gap: var(--space-1); }
 
-/* ─── Cookie Consent Banner ───────────────────────────────────────────────── */
+/* --- Cookie consent banner --- */
 .cookie-banner {
   position: fixed;
   bottom: 0;
@@ -116,7 +154,7 @@ body {
 }
 .cookie-banner a { color: #fff; text-decoration: underline; }
 
-/* ─── Legal Pages ─────────────────────────────────────────────────────────── */
+/* --- Legal pages --- */
 .legal-page {
   max-width: 48rem;
   margin: 0 auto;

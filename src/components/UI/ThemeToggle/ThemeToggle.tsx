@@ -1,21 +1,19 @@
-import { useEffect } from 'react';
 import { useUIStore } from '../../../store';
+import { Icon } from '../Icon/Icon';
 import styles from './ThemeToggle.module.css';
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useUIStore();
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
+  const isDark = theme === 'dark';
 
   return (
     <button
       onClick={toggleTheme}
-      aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
+      aria-label={isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'}
       className={styles.btn}
+      title={isDark ? 'Modo claro' : 'Modo escuro'}
     >
-      {theme === 'light' ? '🌙' : '☀️'}
+      <Icon name={isDark ? 'star' : 'shield'} size="1.1rem" aria-hidden />
     </button>
   );
 }

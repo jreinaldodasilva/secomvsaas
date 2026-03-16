@@ -9,7 +9,7 @@ export function AuthLayout() {
     <div className={styles.layout}>
       <div className={styles.card}>
         <div className={styles.brand}>
-          <h1>{t('common.brand')}</h1>
+          <img src="/secom_logo.png" alt={t('common.brand')} style={{ height: '2rem', width: 'auto' }} />
         </div>
         <ErrorBoundary>
           <Outlet />

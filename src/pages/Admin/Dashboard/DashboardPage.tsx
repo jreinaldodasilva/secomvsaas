@@ -2,7 +2,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useTranslation } from '../../../i18n';
 import { useDashboard } from '../../../hooks/useDashboard';
 import { usePageTitle } from '../../../hooks/usePageTitle';
-import { StatusBadge } from '../../../components/UI';
+import { StatusBadge, Skeleton, Card } from '../../../components/UI';
 import styles from './DashboardPage.module.css';
 
 const STATUS_COLORS: Record<string, string> = {
@@ -34,8 +34,12 @@ export function DashboardPage() {
       </div>
 
       {isLoading ? (
-        <div className={styles.loading}>
-          <div className="spinner spinner-md" />
+        <div className={styles.stats}>
+          {Array.from({ length: 7 }, (_, i) => (
+            <Card key={i} padding="md">
+              <Skeleton variant="rectangular" height={64} />
+            </Card>
+          ))}
         </div>
       ) : (
         <>

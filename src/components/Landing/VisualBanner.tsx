@@ -1,0 +1,23 @@
+import { SectionHeader, AnimatedGrid, AnimatedItem } from './LandingShared';
+import { VISUAL_IMAGES } from './landing.data';
+import styles from './Landing.module.css';
+import pageStyles from '../../pages/Landing/LandingPage.module.css';
+
+export function VisualBanner() {
+  return (
+    <section className={pageStyles.sectionAlt}>
+      <SectionHeader
+        title="Feito para a Comunicação Pública"
+        desc="Da produção do release à cobertura do evento, tudo integrado"
+      />
+      <AnimatedGrid className={pageStyles.visualGrid}>
+        {VISUAL_IMAGES.map(img => (
+          <AnimatedItem key={img.label} className={styles.visualCard}>
+            <img src={img.src} alt={img.alt} className={styles.visualImg} loading="lazy" />
+            <span className={styles.visualLabel}>{img.label}</span>
+          </AnimatedItem>
+        ))}
+      </AnimatedGrid>
+    </section>
+  );
+}

@@ -1,0 +1,41 @@
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-neutral-100) 25%,
+    var(--color-neutral-200) 50%,
+    var(--color-neutral-100) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--radius-md);
+  display: block;
+  animation: wave 1.5s ease-in-out infinite;
+}
+
+.text {
+  height: 1.2em;
+  margin-bottom: var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.rectangular {
+  border-radius: var(--radius-md);
+}
+
+.circular {
+  border-radius: var(--radius-full);
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@keyframes wave {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}

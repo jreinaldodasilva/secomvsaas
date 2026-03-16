@@ -1,7 +1,18 @@
 .btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
   background: none;
   border: none;
+  border-radius: var(--radius-md);
+  color: var(--color-gray-600);
   cursor: pointer;
-  font-size: 1.2em;
-  padding: 0;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.btn:hover {
+  background: var(--color-gray-100);
+  color: var(--color-gray-900);
 }

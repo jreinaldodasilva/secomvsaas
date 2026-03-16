@@ -7,17 +7,19 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className={styles.footer}>
+    <footer className={styles.footer} id="footer">
       <div className={styles.inner}>
-        <div>
-          <img src="/logo192.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <p className={styles.tagline}>{t('landing.footer.tagline')}</p>
+        <div className={styles.brand}>
+          <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
+          <p className={styles.tagline}>Gestão da comunicação para secretarias municipais.</p>
         </div>
-        <div className={styles.links}>
+
+        <nav className={styles.links} aria-label="Rodapé">
           <div className={styles.col}>
             <h4>{t('landing.footer.platform')}</h4>
-            <Link to="/#features">{t('landing.nav.features')}</Link>
-            <Link to="/#modules">{t('landing.nav.modules')}</Link>
+            <a href="/#features">{t('landing.nav.features')}</a>
+            <a href="/#modules">{t('landing.nav.modules')}</a>
+            <a href="/#contact">{t('landing.nav.contact')}</a>
           </div>
           <div className={styles.col}>
             <h4>{t('landing.footer.access')}</h4>
@@ -29,8 +31,9 @@ export function Footer() {
             <Link to="/privacy">{t('landing.footer.privacy')}</Link>
             <Link to="/terms">{t('landing.footer.terms')}</Link>
           </div>
-        </div>
+        </nav>
       </div>
+
       <div className={styles.bottom}>
         <p>© {year} {t('common.brand')}. {t('landing.footer.rights')}</p>
       </div>

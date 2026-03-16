@@ -31,8 +31,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          query: ['@tanstack/react-query'],
+          vendor:  ['react', 'react-dom', 'react-router-dom'],
+          query:   ['@tanstack/react-query'],
+          motion:  ['framer-motion'],
+          icons:   ['react-icons'],
         },
       },
     },

@@ -3,15 +3,50 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Favicon -->
     <link rel="icon" href="/favicon.ico" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="/icon-192x192.png" />
-    <meta name="description" content="Secom — Plataforma de comunicação pública para secretarias e órgãos governamentais. Assessoria de imprensa, eventos, agendamentos e redes sociais." />
+
+    <!-- PWA -->
     <meta name="theme-color" content="#2563eb" />
-    <title>Secom</title>
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Secom" />
+
+    <!-- SEO -->
+    <meta name="description" content="Secom — Plataforma de comunicação pública para secretarias e órgãos governamentais. Assessoria de imprensa, eventos, agendamentos e redes sociais." />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Secom — Comunicação Pública Moderna" />
+    <meta property="og:description" content="Plataforma integrada para assessoria de imprensa, gestão de eventos, atendimento ao cidadão e redes sociais." />
+    <meta property="og:image" content="/icon-512x512.png" />
+
+    <!-- Prevent FOUC: apply theme before React renders -->
+    <script>
+      (function () {
+        var stored = localStorage.getItem('secom_theme');
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = stored === 'light' || stored === 'dark' ? stored : prefersDark ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', theme);
+        var locale = localStorage.getItem('secom_locale');
+        if (locale) document.documentElement.lang = locale;
+      })();
+    </script>
+
+    <title>Secom — Comunicação Pública</title>
   </head>
   <body>
+    <noscript>
+      <p style="padding:2rem;text-align:center;font-family:sans-serif">
+        Esta aplicação requer JavaScript. Por favor, habilite-o no seu navegador.
+      </p>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/index.tsx"></script>
   </body>

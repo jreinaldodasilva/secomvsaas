@@ -41,7 +41,7 @@ export function CtaSection() {
         Gestão eficiente · Pautas organizadas · Dados centralizados · Suporte especializado
       </p>
       <div className={pageStyles.ctaActions}>
-        <button className="btn btn-primary btn-lg" onClick={() => navigate('/register')}>
+        <button className={`btn btn-primary btn-lg ${pageStyles.ctaBtnPrimary}`} onClick={() => navigate('/register')}>
           Solicitar Demonstração
         </button>
         <button className={`btn btn-lg ${pageStyles.ctaBtnOutline}`} onClick={() => navigate('/login')}>

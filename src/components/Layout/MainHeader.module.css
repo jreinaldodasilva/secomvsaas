@@ -1,17 +1,17 @@
 .header {
   position: fixed;
   top: 0; left: 0; right: 0;
-  z-index: 1000;
+  z-index: var(--z-sticky);
   height: var(--header-height);
-  background: rgba(249, 250, 251, 0.95);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--color-gray-200);
+  border-bottom: 1px solid var(--color-border-primary);
 }
 
 .inner {
-  max-width: var(--max-width-6xl);
+  max-width: var(--container-max-width);
   margin: 0 auto;
-  padding: 0 var(--space-6);
+  padding: 0 var(--space-4);
   height: 100%;
   display: flex;
   align-items: center;
@@ -19,22 +19,26 @@
   gap: var(--space-6);
 }
 
+@media (min-width: 640px)  { .inner { padding: 0 var(--space-6); } }
+@media (min-width: 1024px) { .inner { padding: 0 var(--space-8); } }
+
 .brand { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; }
 .brand:hover { opacity: 0.8; }
+.brand:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 2px; border-radius: var(--radius-md); }
 .brandLogo { height: 2.25rem; width: auto; display: block; }
 
-.nav { display: flex; gap: var(--space-6); align-items: center; }
+.nav { display: flex; gap: var(--space-2); align-items: center; }
 
 .navLink {
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   text-decoration: none;
   font-size: var(--font-size-sm);
-  font-weight: 500;
+  font-weight: var(--font-weight-medium);
   padding: var(--space-2) var(--space-3);
   border-radius: var(--radius-md);
   transition: color var(--transition-fast), background var(--transition-fast);
 }
-.navLink:hover { color: var(--color-gray-900); background: var(--color-gray-100); }
+.navLink:hover { color: var(--color-text-primary); background: var(--color-neutral-100); }
 
 .actions { display: flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 
@@ -42,25 +46,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: var(--touch-target-min);
+  min-height: var(--touch-target-min);
   width: 2.5rem;
   height: 2.5rem;
   background: none;
   border: none;
   border-radius: var(--radius-md);
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: background var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
-.mobileBtn svg { width: 1.5rem; height: 1.5rem; }
-.mobileBtn:hover { background: var(--color-gray-100); }
+.mobileBtn:hover { background: var(--color-neutral-100); color: var(--color-text-primary); }
+.mobileBtn:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 1px; }
 
 .mobileMenu {
   position: absolute;
   top: 100%; left: 0; right: 0;
-  background: var(--color-gray-50);
-  border-bottom: 1px solid var(--color-gray-200);
-  box-shadow: var(--shadow-md);
+  background: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border-primary);
+  box-shadow: var(--shadow-level-3);
   animation: slideDown 0.2s ease-out;
+  z-index: var(--z-dropdown);
 }
 
 .mobileNav { padding: var(--space-2) 0; }
@@ -69,18 +77,19 @@
   display: flex;
   align-items: center;
   padding: var(--space-3) var(--space-6);
-  color: var(--color-gray-600);
+  color: var(--color-text-secondary);
   text-decoration: none;
-  font-weight: 500;
-  min-height: 44px;
+  font-weight: var(--font-weight-medium);
+  min-height: var(--touch-target-min);
   transition: background var(--transition-fast), color var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
 }
-.mobileNavLink:hover { background: var(--color-gray-100); color: var(--color-gray-900); }
+.mobileNavLink:hover { background: var(--color-neutral-100); color: var(--color-text-primary); }
 
 .mobileAuth {
   padding: var(--space-4) var(--space-6);
-  border-top: 1px solid var(--color-gray-200);
-  background: var(--color-gray-100);
+  border-top: 1px solid var(--color-border-primary);
+  background: var(--color-bg-secondary);
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
@@ -99,7 +108,7 @@
 }
 
 @media (max-width: 767px) {
-  .nav { display: none; }
+  .nav          { display: none; }
   .hideOnMobile { display: none !important; }
   .showOnMobile { display: flex; }
 }

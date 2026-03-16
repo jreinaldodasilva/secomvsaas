@@ -12,12 +12,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--color-gray-900);
+  background: var(--color-primary-900);
   padding: 0.75rem 1rem;
   gap: 0.5rem;
 }
 
-.headerTitle { font-size: 0.85rem; font-weight: 700; color: #fbbf24; }
+.headerTitle { font-size: 0.85rem; font-weight: 700; color: var(--color-accent-400); }
 .headerSub   { font-size: 0.65rem; color: var(--color-gray-400); margin-top: 1px; }
 .headerActions { display: flex; gap: 0.4rem; }
 

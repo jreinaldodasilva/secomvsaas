@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useUIStore } from '../../../store';
+import styles from './ThemeToggle.module.css';
 
 export function ThemeToggle() {
   const { theme, toggleTheme } = useUIStore();
@@ -12,7 +13,7 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-      className="theme-toggle-btn"
+      className={styles.btn}
     >
       {theme === 'light' ? '🌙' : '☀️'}
     </button>

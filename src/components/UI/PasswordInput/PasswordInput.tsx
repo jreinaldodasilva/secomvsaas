@@ -1,5 +1,6 @@
 import { useState, useMemo, InputHTMLAttributes } from 'react';
 import { useTranslation } from '../../../i18n';
+import styles from './PasswordInput.module.css';
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   showStrength?: boolean;
@@ -27,29 +28,29 @@ export function PasswordInput({ showStrength = false, label, value, ...props }: 
   return (
     <div className="password-input">
       {label && <label htmlFor={props.id}>{label}</label>}
-      <div className="password-input-wrapper">
+      <div className={styles.wrapper}>
         <input {...props} type={visible ? 'text' : 'password'} value={value} />
         <button
           type="button"
           onClick={() => setVisible((v) => !v)}
           aria-label={visible ? t('password.hide') : t('password.show')}
-          className="password-input-toggle"
+          className={styles.toggle}
         >
           {visible ? '🙈' : '👁'}
         </button>
       </div>
       {showStrength && val.length > 0 && (
         <div className="password-strength" aria-live="polite">
-          <div className="password-strength-track">
+          <div className={styles.strengthTrack}>
             <div
-              className="password-strength-bar"
+              className={styles.strengthBar}
               style={{ width: `${(score / RULES.length) * 100}%`, background: STRENGTH_COLORS[score] }}
             />
           </div>
-          <small className="password-strength-label" style={{ color: STRENGTH_COLORS[score] }}>{strengthLabels[score]}</small>
-          <ul className="password-strength-rules">
+          <small className={styles.strengthLabel} style={{ color: STRENGTH_COLORS[score] }}>{strengthLabels[score]}</small>
+          <ul className={styles.rules}>
             {RULES.map((r) => (
-              <li key={r.key} className={r.test(val) ? 'rule-pass' : 'rule-fail'}>
+              <li key={r.key} className={r.test(val) ? styles.rulePass : styles.ruleFail}>
                 {t(r.key)}
               </li>
             ))}

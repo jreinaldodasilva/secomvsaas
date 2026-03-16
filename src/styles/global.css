@@ -10,7 +10,7 @@ body {
   line-height: 1.5;
 }
 
-/* ─── Buttons ─────────────────────────────────────────────────────────────── */
+/* ─── Buttons (shared utility — used across Button, Link, and plain <button> elements) ── */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -32,7 +32,7 @@ body {
 .btn-sm { padding: var(--space-1) var(--space-2); font-size: var(--font-size-sm); }
 .btn-lg { padding: var(--space-3) var(--space-6); font-size: var(--font-size-lg); }
 
-/* ─── Forms ───────────────────────────────────────────────────────────────── */
+/* ─── Forms (shared utility — used in domain forms, auth pages, profile) ─── */
 .form-field { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-4); }
 .form-field label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-gray-600); }
 .form-field input, .form-field select, .form-field textarea {
@@ -49,10 +49,7 @@ body {
 }
 .form-error { color: var(--color-danger); font-size: var(--font-size-sm); margin-bottom: var(--space-3); }
 
-/* ─── Badges ──────────────────────────────────────────────────────────────── */
-/* Styles migrated to src/components/UI/StatusBadge/StatusBadge.module.css */
-
-/* ─── Spinner ─────────────────────────────────────────────────────────────── */
+/* ─── Spinner (shared utility — used in DashboardPage and Button loading state) ── */
 .spinner {
   border: 2px solid var(--color-gray-200);
   border-top-color: var(--color-primary-600);
@@ -64,198 +61,10 @@ body {
 .spinner-lg { width: 2.5rem; height: 2.5rem; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ─── Loading Screen ──────────────────────────────────────────────────────── */
-.loading-screen {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-}
-.loading-screen-content { text-align: center; }
-.loading-screen-text { color: var(--color-gray-600); font-size: var(--font-size-sm); margin-top: var(--space-3); }
-
-/* ─── Auth Layout ─────────────────────────────────────────────────────────── */
-.auth-layout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--color-gray-100);
-}
-.auth-card {
-  background: #fff;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  padding: var(--space-8);
-  width: 100%;
-  max-width: 400px;
-}
-[data-theme="dark"] .auth-card { background: var(--color-gray-100); }
-.auth-brand { text-align: center; margin-bottom: var(--space-6); }
-.login-form { display: flex; flex-direction: column; }
-
-/* ─── Dashboard Layout ────────────────────────────────────────────────────── */
-.dashboard-layout { display: flex; min-height: 100vh; }
-.sidebar {
-  width: 240px;
-  background: var(--color-gray-900);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  transition: width var(--transition-base);
-  flex-shrink: 0;
-}
-.sidebar-closed .sidebar { width: 64px; }
-.sidebar-header { display: flex; align-items: center; justify-content: space-between; padding: var(--space-4); border-bottom: 1px solid var(--color-gray-800); }
-.brand-logo { height: 2rem; width: auto; object-fit: contain; }
-[data-theme="dark"] .brand-logo { filter: brightness(0) invert(1); }
-.sidebar-toggle { background: none; border: none; color: #fff; cursor: pointer; font-size: var(--font-size-lg); }
-.sidebar-nav { flex: 1; padding: var(--space-4) 0; display: flex; flex-direction: column; gap: var(--space-1); }
-.nav-link { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-2) var(--space-4); color: var(--color-gray-400); text-decoration: none; border-radius: var(--radius-md); transition: background var(--transition-fast); }
-.nav-link svg { flex-shrink: 0; font-size: 1.15rem; }
-.nav-link:hover, .nav-link.active { background: var(--color-gray-800); color: #fff; }
-.sidebar-footer { padding: var(--space-4); border-top: 1px solid var(--color-gray-800); display: flex; align-items: center; justify-content: space-between; }
-.sidebar-user { font-size: var(--font-size-sm); color: var(--color-gray-400); }
-.main-content { flex: 1; padding: var(--space-6); overflow-y: auto; }
-
-/* ─── Modal ───────────────────────────────────────────────────────────────── */
-/* Styles migrated to src/components/UI/Modal/Modal.module.css */
-
-/* ─── Empty State ─────────────────────────────────────────────────────────── */
-/* Styles migrated to src/components/UI/EmptyState/EmptyState.module.css */
-
-/* ─── Error Boundary ──────────────────────────────────────────────────────── */
-.error-boundary { display: flex; flex-direction: column; align-items: center; padding: var(--space-12); text-align: center; }
-
-/* ─── Error Pages (404, 403) ──────────────────────────────────────────────── */
-.error-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  text-align: center;
-  padding: var(--space-6);
-}
-.error-page-code { font-size: 4.5rem; margin: 0; color: var(--color-gray-200); font-weight: 800; }
-.error-page-message { font-size: var(--font-size-lg); color: var(--color-gray-600); margin-bottom: var(--space-6); }
-
-/* ─── Connection Banner ───────────────────────────────────────────────────── */
-.connection-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 9999;
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-danger);
-  color: #fff;
-  text-align: center;
-  font-size: var(--font-size-sm);
-}
-.connection-banner-retry {
-  background: none;
-  border: 1px solid #fff;
-  color: #fff;
-  cursor: pointer;
-  border-radius: var(--radius-sm);
-  padding: 2px var(--space-2);
-  margin-left: var(--space-2);
-}
-
-/* ─── Theme Toggle ────────────────────────────────────────────────────────── */
-.theme-toggle-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2em;
-  padding: 0;
-}
-
-/* ─── Password Input ──────────────────────────────────────────────────────── */
-.password-input-wrapper { position: relative; display: flex; }
-.password-input-toggle {
-  position: absolute;
-  right: var(--space-2);
-  top: 50%;
-  transform: translateY(-50%);
-  background: none;
-  border: none;
-  cursor: pointer;
-}
-.password-strength-track { height: 4px; border-radius: 2px; background: var(--color-gray-200); margin-top: var(--space-1); }
-.password-strength-bar { height: 100%; border-radius: 2px; transition: width 0.2s, background 0.2s; }
-.password-strength-label { font-size: var(--font-size-sm); }
-.password-strength-rules { font-size: 0.8em; margin: var(--space-1) 0 0; padding-left: var(--space-4); }
-.password-strength-rules .rule-pass { color: var(--color-success); }
-.password-strength-rules .rule-fail { color: var(--color-gray-400); }
-
-/* ─── Profile Page ────────────────────────────────────────────────────────── */
-.profile-info { margin-bottom: var(--space-8); }
-.profile-info p { margin-bottom: var(--space-2); }
-.profile-password h3 { margin-bottom: var(--space-4); }
-
-/* ─── Dashboard ─────────────────────────────────────────────────────────── */
-.dashboard-loading { display: flex; justify-content: center; padding: var(--space-12); }
-.dashboard-stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-  gap: var(--space-4);
-  margin-bottom: var(--space-6);
-}
-.stat-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  background: #fff;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4);
-}
-[data-theme="dark"] .stat-card { background: var(--color-gray-100); }
-.stat-icon { font-size: var(--font-size-2xl); }
-.stat-value { font-size: var(--font-size-xl); font-weight: 700; display: block; }
-.stat-label { font-size: var(--font-size-sm); color: var(--color-gray-600); }
-.dashboard-alert {
-  background: #fef3c7;
-  color: #92400e;
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  margin-bottom: var(--space-6);
-}
-[data-theme="dark"] .dashboard-alert { background: #78350f; color: #fef3c7; }
-.dashboard-panels {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-6);
-}
-.dashboard-panel {
-  background: #fff;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--space-4) var(--space-6);
-}
-[data-theme="dark"] .dashboard-panel { background: var(--color-gray-100); }
-.dashboard-panel h2 { font-size: var(--font-size-base); font-weight: 600; margin-bottom: var(--space-3); }
-.dashboard-list { list-style: none; }
-.dashboard-list-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--color-gray-100);
-  font-size: var(--font-size-sm);
-}
-.dashboard-list-item:last-child { border-bottom: none; }
-.dashboard-meta { color: var(--color-gray-400); font-size: var(--font-size-sm); }
-.dashboard-empty { color: var(--color-gray-400); font-size: var(--font-size-sm); }
-
-/* ─── Page Layout ─────────────────────────────────────────────────────────── */
+/* ─── Page Layout (shared utility — used across all domain pages) ─────────── */
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
 
-/* ─── Form Utilities ──────────────────────────────────────────────────────── */
+/* ─── Form Utilities (shared — used in domain forms and auth pages) ─────── */
 .form-stack { display: flex; flex-direction: column; gap: var(--space-3); }
 .form-stack label { font-size: var(--font-size-sm); font-weight: 500; color: var(--color-gray-600); }
 .form-stack input,
@@ -280,254 +89,14 @@ body {
 .form-row > * { flex: 1; }
 .form-row > .form-col-narrow { flex: 0 0 5rem; }
 
-.confirm-dialog p { margin-bottom: var(--space-4); color: var(--color-gray-600); }
-.confirm-dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); }
-
 .form-field-error input,
 .form-field-error select,
 .form-field-error textarea { border-color: var(--color-danger); }
 .form-field-error .form-error { margin-top: var(--space-1); }
 .form-check { display: flex; align-items: center; gap: var(--space-2); }
 
-/* ─── Actions Row ─────────────────────────────────────────────────────────── */
+/* ─── Actions Row (shared — used in domain pages) ────────────────────────── */
 .actions-row { display: flex; gap: var(--space-1); }
-
-/* ─── Sidebar Section Label ───────────────────────────────────────────────── */
-.nav-section-label {
-  padding: var(--space-3) var(--space-4) var(--space-1);
-  font-size: var(--font-size-sm);
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-
-/* ─── Locale Selector ─────────────────────────────────────────────────────── */
-.locale-select {
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: var(--radius-sm);
-  padding: 2px var(--space-1);
-  color: inherit;
-  font-size: var(--font-size-sm);
-}
-
-/* ─── Data Table ──────────────────────────────────────────────────────────── */
-/* Styles migrated to src/components/UI/Table/DataTable.module.css */
-
-/* ─── Public Layout ───────────────────────────────────────────────────────── */
-.public-layout { display: flex; flex-direction: column; min-height: 100vh; }
-.public-main { flex: 1; }
-
-/* ─── Main Header ─────────────────────────────────────────────────────────── */
-.main-header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: var(--color-gray-50);
-  border-bottom: 1px solid var(--color-gray-200);
-}
-[data-theme="dark"] .main-header { background: var(--color-gray-50); }
-.main-header-inner {
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: var(--space-3) var(--space-6);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.main-header-brand {
-  font-weight: 700;
-  font-size: var(--font-size-xl);
-  color: var(--color-primary-600);
-  text-decoration: none;
-}
-.main-header-nav {
-  display: flex;
-  gap: var(--space-6);
-}
-.main-header-link {
-  color: var(--color-gray-600);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  transition: color var(--transition-fast);
-}
-.main-header-link:hover { color: var(--color-primary-600); }
-.main-header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-/* ─── Footer ──────────────────────────────────────────────────────────────── */
-.site-footer {
-  background: var(--color-gray-900);
-  color: var(--color-gray-400);
-}
-.site-footer-inner {
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: var(--space-12) var(--space-6);
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-8);
-  flex-wrap: wrap;
-}
-.site-footer-brand { max-width: 20rem; }
-.site-footer-brand .brand-logo { height: 2.5rem; }
-.site-footer-tagline {
-  margin-top: var(--space-2);
-  font-size: var(--font-size-sm);
-  line-height: 1.6;
-}
-.site-footer-links {
-  display: flex;
-  gap: var(--space-12);
-}
-.site-footer-col {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-.site-footer-col h4 {
-  color: #fff;
-  font-size: var(--font-size-sm);
-  font-weight: 600;
-  margin-bottom: var(--space-1);
-}
-.site-footer-col a {
-  color: var(--color-gray-400);
-  text-decoration: none;
-  font-size: var(--font-size-sm);
-  transition: color var(--transition-fast);
-}
-.site-footer-col a:hover { color: #fff; }
-.site-footer-bottom {
-  border-top: 1px solid var(--color-gray-800);
-  padding: var(--space-4) var(--space-6);
-  text-align: center;
-  font-size: var(--font-size-sm);
-}
-
-/* ─── Landing Page ────────────────────────────────────────────────────────── */
-.landing-hero {
-  text-align: center;
-  padding: var(--space-16) var(--space-6);
-  background: linear-gradient(135deg, var(--color-primary-50), var(--color-gray-50));
-}
-.landing-hero-title {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--color-gray-900);
-  line-height: 1.2;
-  max-width: 40rem;
-  margin: 0 auto var(--space-4);
-}
-.landing-hero-subtitle {
-  font-size: var(--font-size-lg);
-  color: var(--color-gray-600);
-  max-width: 36rem;
-  margin: 0 auto var(--space-8);
-}
-.landing-hero-actions {
-  display: flex;
-  gap: var(--space-3);
-  justify-content: center;
-}
-.landing-section {
-  max-width: 72rem;
-  margin: 0 auto;
-  padding: var(--space-16) var(--space-6);
-}
-.landing-section-alt {
-  background: var(--color-gray-100);
-  max-width: 100%;
-}
-.landing-section-alt > .landing-section-title,
-.landing-section-alt > .landing-grid { max-width: 72rem; margin-left: auto; margin-right: auto; }
-.landing-section-title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: var(--space-8);
-  color: var(--color-gray-900);
-}
-.landing-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-6);
-}
-.landing-grid-3 { grid-template-columns: repeat(3, 1fr); }
-.landing-card {
-  background: #fff;
-  border: 1px solid var(--color-gray-200);
-  border-radius: var(--radius-lg);
-  padding: var(--space-6);
-  transition: box-shadow var(--transition-base);
-}
-[data-theme="dark"] .landing-card { background: var(--color-gray-100); }
-.landing-card:hover { box-shadow: var(--shadow-md); }
-.landing-card h3 {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-gray-900);
-  margin-bottom: var(--space-2);
-}
-.landing-card p {
-  font-size: var(--font-size-sm);
-  color: var(--color-gray-600);
-  line-height: 1.6;
-}
-.landing-cta {
-  text-align: center;
-  background: var(--color-primary-600);
-  max-width: 100%;
-  padding: var(--space-16) var(--space-6);
-}
-.landing-cta-title {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: var(--space-3);
-}
-.landing-cta-desc {
-  color: var(--color-primary-100);
-  font-size: var(--font-size-lg);
-  margin-bottom: var(--space-6);
-}
-.landing-cta .btn-primary {
-  background: #fff;
-  color: var(--color-primary-600);
-}
-.landing-cta .btn-primary:hover:not(:disabled) {
-  background: var(--color-primary-50);
-}
-
-/* ─── Legal Pages ─────────────────────────────────────────────────────────── */
-.legal-page {
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: var(--space-12) var(--space-6);
-}
-.legal-page h1 {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  margin-bottom: var(--space-2);
-}
-.legal-updated {
-  color: var(--color-gray-400);
-  font-size: var(--font-size-sm);
-  margin-bottom: var(--space-8);
-}
-.legal-page section { margin-bottom: var(--space-6); }
-.legal-page h2 {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  margin-bottom: var(--space-2);
-}
-.legal-page p {
-  color: var(--color-gray-600);
-  line-height: 1.7;
-}
 
 /* ─── Cookie Consent Banner ───────────────────────────────────────────────── */
 .cookie-banner {
@@ -547,11 +116,14 @@ body {
 }
 .cookie-banner a { color: #fff; text-decoration: underline; }
 
-@media (max-width: 768px) {
-  .main-header-nav { display: none; }
-  .landing-hero-title { font-size: 1.75rem; }
-  .landing-grid, .landing-grid-3 { grid-template-columns: 1fr; }
-  .site-footer-inner { flex-direction: column; }
-  .site-footer-links { flex-direction: column; gap: var(--space-6); }
-  .dashboard-panels { grid-template-columns: 1fr; }
+/* ─── Legal Pages ─────────────────────────────────────────────────────────── */
+.legal-page {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: var(--space-12) var(--space-6);
 }
+.legal-page h1 { font-size: var(--font-size-2xl); font-weight: 700; margin-bottom: var(--space-2); }
+.legal-updated { color: var(--color-gray-400); font-size: var(--font-size-sm); margin-bottom: var(--space-8); }
+.legal-page section { margin-bottom: var(--space-6); }
+.legal-page h2 { font-size: var(--font-size-lg); font-weight: 600; margin-bottom: var(--space-2); }
+.legal-page p { color: var(--color-gray-600); line-height: 1.7; }

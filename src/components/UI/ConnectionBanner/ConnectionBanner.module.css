@@ -1,0 +1,22 @@
+.banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-danger);
+  color: #fff;
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+.retry {
+  background: none;
+  border: 1px solid #fff;
+  color: #fff;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 2px var(--space-2);
+  margin-left: var(--space-2);
+}

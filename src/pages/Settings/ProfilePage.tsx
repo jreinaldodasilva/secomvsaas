@@ -6,6 +6,7 @@ import { useToast } from '../../hooks/useToast';
 import { useTranslation } from '../../i18n';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { ApiError } from '../../services/http';
+import styles from './ProfilePage.module.css';
 
 export function ProfilePage() {
   const { user } = useAuth();
@@ -33,14 +34,14 @@ export function ProfilePage() {
     setForm(prev => ({ ...prev, [field]: e.target.value }));
 
   return (
-    <div className="profile-page">
+    <div>
       <h2>{t('profile.title')}</h2>
-      <section className="profile-info">
+      <section className={styles.info}>
         <p><strong>{t('auth.name')}:</strong> {user?.name}</p>
         <p><strong>{t('auth.email')}:</strong> {user?.email}</p>
         <p><strong>{t('users.columns.role')}:</strong> {user?.role ? t(`users.roles.${user.role}`) : '—'}</p>
       </section>
-      <section className="profile-password">
+      <section className={styles.password}>
         <h3>{t('auth.changePassword')}</h3>
         <form onSubmit={handleChangePassword} className="form-stack">
           <PasswordInput id="currentPassword" label={t('auth.currentPassword')} value={form.currentPassword} onChange={set('currentPassword')} required />

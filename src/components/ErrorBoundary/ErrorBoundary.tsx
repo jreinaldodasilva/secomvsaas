@@ -1,4 +1,5 @@
 import React, { Component, ErrorInfo } from 'react';
+import styles from './ErrorBoundary.module.css';
 
 interface Props { children: React.ReactNode; fallback?: React.ReactNode; }
 interface State { hasError: boolean; error?: Error; }
@@ -17,7 +18,7 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return this.props.fallback ?? (
-        <div className="error-boundary">
+        <div className={styles.boundary}>
           <h2>Algo deu errado</h2>
           <p>{this.state.error?.message}</p>
           <button onClick={() => this.setState({ hasError: false })}>Tentar novamente</button>

@@ -1,5 +1,6 @@
 import { useHealthCheck } from '../../../hooks/useHealthCheck';
 import { useTranslation } from '../../../i18n';
+import styles from './ConnectionBanner.module.css';
 
 export function ConnectionBanner() {
   const { t } = useTranslation();
@@ -8,9 +9,9 @@ export function ConnectionBanner() {
   if (isApiReachable) return null;
 
   return (
-    <div className="connection-banner" role="alert">
+    <div className={styles.banner} role="alert">
       {t('errors.apiUnreachable')}{' '}
-      <button className="connection-banner-retry" onClick={recheckNow}>↻</button>
+      <button className={styles.retry} onClick={recheckNow}>↻</button>
     </div>
   );
 }

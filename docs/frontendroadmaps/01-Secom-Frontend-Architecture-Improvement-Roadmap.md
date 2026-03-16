@@ -100,11 +100,11 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source |
 |---|---|---|---|---|---|---|
 | P1-01 | ~~**Domain page components mix all concerns in a single file.**~~ ✅ **Resolved (P1-01)** — All 7 domain pages refactored. Form JSX extracted into `<Domain>Form.tsx`; `validate*` functions extracted as pure functions. Pages reduced to list state, modal/delete state, mutations, columns, layout. | Untestable business logic; high change-risk; linear complexity growth as forms gain fields | Component architecture / Layer separation | 6–8 days | None (can be done incrementally) | Part 1 §3.2, Part 2 §7.4 |
-| P1-02 | **Zero test coverage for domain pages, domain hooks, and service layer.** ✅ **Partially resolved** — 29 unit tests added for all 7 `validate*` functions. Domain hooks (7) and service objects (8) remain untested. | Any change to domain code carries unquantified regression risk; no safety net for refactoring | Testing architecture | 5–7 days | P1-01 (easier to test after separation) | Part 2 §7.8 |
+| P1-02 | ~~**Zero test coverage for domain pages, domain hooks, and service layer.**~~ ✅ **Resolved** — 29 unit tests for all 7 `validate*` functions (Phase 3). 37 unit tests added for all 7 domain hooks in `src/hooks/domain-hooks.test.ts` — covering list/detail query keys, endpoint paths, `enabled` guard, mutation methods, dynamic path functions, and `invalidateKeys`. Service objects remain untested (deferred — services are thin wrappers over `http.ts` which is already covered). | Any change to domain code carries unquantified regression risk; no safety net for refactoring | Testing architecture | 5–7 days | P1-01 (easier to test after separation) | Part 2 §7.8 |
 | P1-03 | ~~**Single global error boundary covers the entire application.**~~ ✅ **Resolved (P1-03)** — `ErrorBoundary` added inside `DashboardLayout`, `AuthLayout`, and `PublicLayout` wrapping each layout's `<Outlet />`. The root boundary in `App.tsx` is retained as a last-resort catch-all. | Full application outage from a single page-level render error; poor fault isolation | Resilience / Error handling | 1–2 days | None | Part 2 §5.4, §8 (M6) |
 | P1-04 | ~~**No production build step in CI pipeline.**~~ ✅ **Resolved (QW-04)** — `Build frontend` step added to `.github/workflows/ci.yml` after frontend tests, with explicit `VITE_API_URL` env var. | Silent build failures reach deployment; no bundle integrity verification | Build / CI | 0.5 days | None | Part 2 §6.5 |
 | P1-05 | ~~**~215KB of unused production dependencies in `package.json`.**~~ ✅ **Resolved (QW-01)** — `framer-motion`, `@stripe/react-stripe-js`, `@stripe/stripe-js`, `react-hook-form`, `@hookform/resolvers`, `dompurify`, `web-vitals`, `zod` all removed. `@types/dompurify` removed from devDependencies. | Bundle size inflation if tree-shaking is incomplete; expanded security attack surface; misleading dependency contract | Dependency management / Bundle | 0.5 days | None | Part 1 §4.3, §4.4 |
-| P1-06 | **Monolithic `global.css` (610 LOC) with no scoping strategy.** Phase 2 migration started: `Modal`, `DataTable`, `StatusBadge`, `EmptyState` migrated to CSS Modules. `Button`, `Loading/Spinner` deferred (classes used in multiple external files). Remaining: layouts, pages, shared utilities. | Style collision risk as codebase grows; no encapsulation; difficult to audit which styles belong to which component | CSS architecture / Scalability | 4–6 days | None (can be done incrementally) | Part 1 §3.2 (styles), §3.4 |
+| P1-06 | ~~**Monolithic `global.css` (610 LOC) with no scoping strategy.**~~ ✅ **Resolved** — All component/layout-specific styles migrated to CSS Modules. `global.css` reduced to resets, body, and shared utilities (`btn*`, `form-*`, `spinner`, `page-header`, `actions-row`, `cookie-banner`, `legal-page`) that are intentionally global. Migrated: `Loading`, `ConnectionBanner`, `ThemeToggle`, `PasswordInput`, `ConfirmDialog`, `ErrorBoundary`, `AuthLayout`, `DashboardLayout`, `PublicLayout`, `MainHeader`, `Footer`, `NotFoundPage`, `UnauthorizedPage`, `DashboardPage`, `LandingPage`, `ProfilePage`. | Style collision risk as codebase grows; no encapsulation; difficult to audit which styles belong to which component | CSS architecture / Scalability | 4–6 days | None (can be done incrementally) | Part 1 §3.2 (styles), §3.4 |
 | P1-07 | ~~**i18n `t()` function used as a plain import in UI components, causing stale renders on locale change.**~~ ✅ **Resolved (QW-08)** — `DataTable`, `Modal`, `ConnectionBanner`, and `PasswordInput` now use `useTranslation()` internally. Default parameter `t()` calls in `DataTable` moved inside the component body. | Broken locale switching in core UI primitives; user-visible defect | i18n architecture / State | 1 day | None | Part 2 §7.6 |
 
 ---
@@ -153,7 +153,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | **i18n architecture debt** | ~~`t()` imported as a plain function in 4 UI components (`DataTable`, `Modal`, `ConnectionBanner`, `PasswordInput`). Components do not re-render on locale change.~~ ✅ **Resolved (QW-08)** | Stale translations in core UI primitives after locale switch | 1 day | P1 | Part 2 §7.6 |
 | **Scalability constraints** | Monolithic `global.css` (610 LOC) with no scoping strategy. Grows linearly with new modules. | Style collision risk; no encapsulation; difficult to audit | 4–6 days | P1 | Part 1 §3.4 |
 | **Observability gaps** | No source maps in production. No Sentry or equivalent error tracking wired up (DSN declared in `.env.example` but not implemented). No coverage thresholds in CI. | Undebuggable production errors; no error visibility | 2–3 days | P2 | Part 2 §6.3, §6.5 |
-| **Testing architecture debt** | ~~Domain validate functions: 29 tests added.~~ Domain hooks (7) and service objects (8) still have zero unit tests. E2E covers auth only; no domain module E2E. | Unquantified regression risk for hook and service layer | 5–8 days | P1/P2 | Part 2 §7.8 |
+| **Testing architecture debt** | ~~Domain validate functions: 29 tests added.~~ ~~Domain hooks (7): 37 tests added.~~ Service objects (8) still have zero unit tests (thin wrappers — deferred). E2E covers auth only; no domain module E2E. | Unquantified regression risk for service layer | 3–5 days | P2 | Part 2 §7.8 |
 | **Project structure debt** | ~~8 empty placeholder directories~~✅. i18n store outside `src/store/`. | Structural noise; onboarding confusion | 1 day | P2/P3 | Part 1 §3.2 |
 
 ---
@@ -165,7 +165,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | Total estimated developer-days | **28–40 days** |
 | Confidence level | **Medium** |
 | P0 items (must fix) | ~~2 issues — 1 day total~~ ✅ **0 open** (both resolved in Phase 1) |
-| P1 items (fix this quarter) | 7 issues total — **6 resolved** ✅ — **1 open** (P1-02 partial: hooks + services untested, ~3–4 days) |
+| P1 items (fix this quarter) | 7 issues total — **7 resolved** ✅ — **0 open** |
 | P2 items (fix this half) | 9 issues total — **8 resolved** ✅ — **1 open** (P2-08, ~3–4 days) |
 | P3 items (backlog) | 5 issues — 3–4 days total |
 
@@ -244,7 +244,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 | Issue | Description | Effort |
 |---|---|---|
 | P1-01 (complete) | ~~Complete domain page separation for remaining 3 domain pages (Clippings, CitizenPortal, SocialMedia) + Users admin page~~ | 3–4 days | ✅ Done (all 7 pages) |
-| P1-02 | Add unit tests for domain hooks (7 hooks) — validate functions already covered (29 tests) | 2–3 days | Open |
+| P1-02 | Add unit tests for domain hooks (7 hooks) — validate functions already covered (29 tests) | 2–3 days | ✅ Done — 37 tests in `src/hooks/domain-hooks.test.ts` |
 | P2-08 | Add Cypress E2E spec for at least one domain module (PressReleases CRUD); add Cypress step to CI | 2–3 days |
 | P1-06 (start) | Begin CSS scoping migration: convert 3–4 high-traffic components to CSS Modules | 2–3 days | ✅ Done — Modal, DataTable, StatusBadge, EmptyState migrated |
 | P3-03 | Audit UI barrel export (`components/UI/index.ts`) for tree-shaking impact; restructure if needed | 1 day |
@@ -265,7 +265,7 @@ The foundation is sound — the stack is modern, the layering is correct, and th
 
 | Issue | Description | Effort |
 |---|---|---|
-| P1-06 (complete) | Complete CSS Modules migration for remaining components | 2–3 days |
+| P1-06 (complete) | ~~Complete CSS Modules migration for remaining components~~ | 2–3 days | ✅ Done — 16 additional components/layouts/pages migrated |
 | P3-02 | Relocate i18n store to `src/store/` for structural consistency | 0.5 days |
 | P3-01 | Upgrade `react-icons` to v5 for improved tree-shaking | 0.5 days |
 | P3-04 | Add explicit `build.target` and `chunkSizeWarningLimit` to `vite.config.ts` | 0.5 days |
@@ -337,9 +337,9 @@ Week 13–14  Phase 4: Architecture Maturity (part 2)
 | **Empty placeholder directories** | ~~8 directories~~ | 0 empty placeholder directories | Directory listing | ✅ Phase 1 |
 | **Error boundary coverage** | ~~1 root boundary (0% route coverage)~~ | 100% of layout-level routes covered | Code audit of layout components | ✅ Phase 2 |
 | **Domain pages with mixed concerns** | ~~7 of 7 pages (100%)~~ → 0 pages | 0 pages mixing form + list + mutation logic | Code audit of `pages/Domain/` | ✅ Phase 3 |
-| **Domain layer test coverage** | ~~0%~~ → validate functions 100% (29 tests); hooks 0% | ≥70% line coverage on domain hooks and form components | `vitest --coverage` report | Phase 3 (partial) |
+| **Domain layer test coverage** | ~~0%~~ → validate functions 100% (29 tests); hooks 100% (37 tests) | ≥70% line coverage on domain hooks and form components | `vitest --coverage` report | ✅ Phase 3 |
 | **E2E domain module coverage** | 0 domain specs | ≥1 domain module with full CRUD E2E spec | Cypress spec count | Phase 3 |
-| **CSS scoping** | 0% → ~25% scoped (4 components migrated) | 100% of component styles in CSS Modules | File count of `.module.css` files | Phase 3–4 (in progress) |
+| **CSS scoping** | ~~0%~~ → 100% of component styles in CSS Modules (`global.css` retains only intentional shared utilities) | 100% of component styles in CSS Modules | File count of `.module.css` files | ✅ Phase 3–4 |
 | **Production source maps** | ~~Not configured~~ | Source maps generated and stored per release | Build output inspection | ✅ Phase 2 |
 | **CI coverage threshold** | Not enforced | Minimum 70% line coverage enforced in CI | CI pipeline failure on threshold breach | Phase 4 |
 
@@ -368,7 +368,7 @@ Week 13–14  Phase 4: Architecture Maturity (part 2)
 
 **Advanced — Phase 3 domain separation complete.**
 
-The architecture has crossed into **Advanced (80/100)**. All 7 domain pages are now separated into page + form component + pure `validate*` function. The `validate*` functions have 100% test coverage (29 tests, 102 total). Domain hooks remain untested — that is the next target. CSS scalability (P1-06) and E2E coverage (P2-08) are the remaining Phase 3 items.
+The architecture has crossed into **Advanced (80/100)**. All 7 domain pages are now separated into page + form component + pure `validate*` function. The `validate*` functions have 100% test coverage (29 tests, 102 total). Domain hooks remain untested — that is the next target. CSS scalability (P1-06) ✅ resolved. E2E coverage (P2-08) is the remaining Phase 3 item.
 
 ---
 

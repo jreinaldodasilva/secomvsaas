@@ -6,6 +6,7 @@ import { ThemeToggle } from '../../components/UI';
 import { PermissionGate } from '../../components/Auth/PermissionGate/PermissionGate';
 import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
 import { MdDashboard, MdPeople, MdPerson, MdArticle, MdContacts, MdContentCut, MdEvent, MdSchedule, MdAccountBox, MdShare } from 'react-icons/md';
+import styles from './DashboardLayout.module.css';
 
 export function DashboardLayout() {
   const { user, logout } = useAuth();
@@ -18,16 +19,17 @@ export function DashboardLayout() {
     navigate('/login');
   };
 
-  const navCls = ({ isActive }: { isActive: boolean }) => isActive ? 'nav-link active' : 'nav-link';
+  const navCls = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
   return (
-    <div className={`dashboard-layout ${sidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
-      <aside className="sidebar">
-        <div className="sidebar-header">
-          <img src="/logo192.png" alt={t('common.brand')} className="brand-logo" />
-          <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Toggle sidebar">☰</button>
+    <div className={`${styles.layout} ${sidebarOpen ? '' : styles.sidebarClosed}`}>
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarHeader}>
+          <img src="/logo192.png" alt={t('common.brand')} className={styles.brandLogo} />
+          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label="Toggle sidebar">☰</button>
         </div>
-        <nav className="sidebar-nav">
+        <nav className={styles.sidebarNav}>
           <NavLink to="/admin/dashboard" className={navCls}><MdDashboard />{t('nav.dashboard')}</NavLink>
 
           <PermissionGate permissions={['users:read']}>
@@ -36,7 +38,7 @@ export function DashboardLayout() {
 
           <NavLink to="/settings/profile" className={navCls}><MdPerson />{t('nav.profile')}</NavLink>
 
-          <div className="nav-section-label">{t('nav.modules')}</div>
+          <div className={styles.navSectionLabel}>{t('nav.modules')}</div>
 
           <PermissionGate permissions={['press-releases:read']}>
             <NavLink to="/press-releases" className={navCls}><MdArticle />{t('nav.pressReleases')}</NavLink>
@@ -60,21 +62,21 @@ export function DashboardLayout() {
             <NavLink to="/social-media" className={navCls}><MdShare />{t('nav.socialMedia')}</NavLink>
           </PermissionGate>
         </nav>
-        <div className="sidebar-footer">
+        <div className={styles.sidebarFooter}>
           <ThemeToggle />
           <select
             value={locale}
             onChange={(e) => setLocale(e.target.value)}
             aria-label="Language"
-            className="locale-select"
+            className={styles.localeSelect}
           >
             {SUPPORTED_LOCALES.map(l => <option key={l} value={l}>{l}</option>)}
           </select>
-          <span className="sidebar-user">{user?.name}</span>
+          <span className={styles.sidebarUser}>{user?.name}</span>
           <button className="btn btn-ghost btn-sm" onClick={handleLogout}>{t('auth.logout')}</button>
         </div>
       </aside>
-      <main className="main-content">
+      <main className={styles.mainContent}>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>

@@ -1,9 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { http, ApiError } from '../../services/http';
-import { Button, PasswordInput } from '../../components/UI';
+import { PasswordInput } from '../../components/UI';
 import { useTranslation } from '../../i18n';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import s from '../Auth.module.css';
 
 export function AcceptInvitePage() {
   const navigate = useNavigate();
@@ -11,18 +12,13 @@ export function AcceptInvitePage() {
   usePageTitle(t('auth.acceptInvite'));
   const [params] = useSearchParams();
   const token = params.get('token') || '';
+
   const [form, setForm] = useState({ name: '', password: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  if (!token) {
-    return (
-      <div className="accept-invite-page">
-        <h2>{t('auth.acceptInvite')}</h2>
-        <Link to="/login">{t('auth.login')}</Link>
-      </div>
-    );
-  }
+  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
+    setForm(prev => ({ ...prev, [field]: e.target.value }));
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -38,23 +34,67 @@ export function AcceptInvitePage() {
     }
   };
 
-  const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
-    setForm(prev => ({ ...prev, [field]: e.target.value }));
-
   return (
-    <div className="accept-invite-page">
-      <h2>{t('auth.acceptInvite')}</h2>
-      <form onSubmit={handleSubmit}>
-        {error && <div className="form-error" role="alert">{error}</div>}
-        <div className="form-field">
-          <label htmlFor="name">{t('auth.name')}</label>
-          <input id="name" type="text" value={form.name} onChange={set('name')} required minLength={2} />
+    <div className={s.page}>
+      <div className={s.card}>
+        <div className={s.header}>
+          <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
+          <h1 className={s.title}>{t('auth.acceptInvite')}</h1>
+          <p className={s.subtitle}>{t('auth.acceptInviteSubtitle')}</p>
         </div>
-        <div className="form-field">
-          <PasswordInput id="password" label={t('auth.password')} value={form.password} onChange={set('password')} required minLength={8} showStrength />
+
+        <div className={s.body}>
+          {!token ? (
+            <div className={s.errorBanner} role="alert">
+              <span>⚠</span> {t('auth.acceptInviteInvalidToken')}
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} noValidate>
+              {error && (
+                <div className={s.errorBanner} role="alert">
+                  <span>⚠</span> {error}
+                </div>
+              )}
+
+              <div className={s.field}>
+                <label htmlFor="name" className={s.label}>{t('auth.name')}</label>
+                <input
+                  id="name"
+                  type="text"
+                  className={s.input}
+                  value={form.name}
+                  onChange={set('name')}
+                  required
+                  minLength={2}
+                  autoComplete="name"
+                  autoFocus
+                />
+              </div>
+
+              <div className={s.field}>
+                <PasswordInput
+                  id="password"
+                  label={t('auth.password')}
+                  value={form.password}
+                  onChange={set('password')}
+                  required
+                  minLength={8}
+                  showStrength
+                  autoComplete="new-password"
+                />
+              </div>
+
+              <button type="submit" className={s.btnPrimary} disabled={loading}>
+                {loading ? t('common.loading') : t('auth.acceptInvite')}
+              </button>
+            </form>
+          )}
         </div>
-        <Button type="submit" isLoading={loading}>{t('auth.acceptInvite')}</Button>
-      </form>
+
+        <div className={s.footer}>
+          <Link to="/login">{t('auth.login')}</Link>
+        </div>
+      </div>
     </div>
   );
 }

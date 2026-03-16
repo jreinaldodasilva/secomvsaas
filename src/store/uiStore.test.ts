@@ -30,27 +30,8 @@ describe('uiStore', () => {
     expect(useUIStore.getState().sidebarOpen).toBe(true);
   });
 
-  it('toggleTheme switches between light and dark', () => {
-    act(() => useUIStore.getState().toggleTheme());
-    expect(useUIStore.getState().theme).toBe('dark');
-
+  it('toggleTheme is a no-op — theme stays light (dark mode removed)', () => {
     act(() => useUIStore.getState().toggleTheme());
     expect(useUIStore.getState().theme).toBe('light');
-  });
-
-  it('toggleTheme persists to localStorage under secom_theme key', () => {
-    act(() => useUIStore.getState().toggleTheme());
-    expect(localStorage.getItem('secom_theme')).toBe('dark');
-
-    act(() => useUIStore.getState().toggleTheme());
-    expect(localStorage.getItem('secom_theme')).toBe('light');
-  });
-
-  it('toggleTheme sets data-theme on documentElement', () => {
-    act(() => useUIStore.getState().toggleTheme());
-    expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
-
-    act(() => useUIStore.getState().toggleTheme());
-    expect(document.documentElement.getAttribute('data-theme')).toBe('light');
   });
 });

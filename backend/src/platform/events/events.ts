@@ -5,7 +5,6 @@ export const AUTH_EVENTS = {
   USER_LOGGED_OUT: 'user.logged_out',
   PASSWORD_CHANGED: 'user.password_changed',
   PASSWORD_RESET_REQUESTED: 'user.password_reset_requested',
-  MFA_ENABLED: 'user.mfa_enabled',
   SUSPICIOUS_LOGIN: 'user.suspicious_login',
   ACCOUNT_LOCKED: 'user.account_locked',
 } as const;

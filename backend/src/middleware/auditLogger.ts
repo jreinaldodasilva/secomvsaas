@@ -12,19 +12,18 @@ export const auditLogger = (req: Request, res: Response, next: NextFunction) => 
   if (!WRITE_METHODS.has(req.method)) return next();
 
   const authReq = req as AuthenticatedRequest;
-  const originalSend = res.send;
 
-  res.send = function (data: any) {
-    res.send = originalSend;
-    if (authReq.user && !authReq.path.includes('/health')) {
-      setImmediate(() => {
-        auditService.logFromRequest(authReq, getActionFromMethod(authReq.method), authReq.path.split('/')[1] || 'unknown', {
-          statusCode: res.statusCode,
-        }).catch(err => logger.error('Audit logging error:', err));
-      });
-    }
-    return res.send(data);
-  };
+  res.on('finish', () => {
+    if (!authReq.user || authReq.path.includes('/health')) return;
+    setImmediate(() => {
+      auditService.logFromRequest(
+        authReq,
+        getActionFromMethod(authReq.method),
+        authReq.path.split('/')[1] || 'unknown',
+        { statusCode: res.statusCode },
+      ).catch(err => logger.error('Audit logging error:', err));
+    });
+  });
 
   next();
 };

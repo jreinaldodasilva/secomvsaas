@@ -190,6 +190,22 @@ class TenantService {
   async getMemberCount(tenantId: string): Promise<number> {
     return User.countDocuments({ tenantId, isDeleted: false });
   }
+
+  async getFeatureFlags(tenantId: string): Promise<Record<string, boolean>> {
+    const tenant = await Tenant.findOne({ _id: tenantId, isDeleted: false }).select('settings.features').lean();
+    if (!tenant) throw new NotFoundError('Tenant');
+    return (tenant as any).settings?.features ?? {};
+  }
+
+  async setFeatureFlag(tenantId: string, flag: string, enabled: boolean): Promise<Record<string, boolean>> {
+    const tenant = await Tenant.findOneAndUpdate(
+      { _id: tenantId, isDeleted: false },
+      { $set: { [`settings.features.${flag}`]: enabled } },
+      { new: true, runValidators: true }
+    );
+    if (!tenant) throw new NotFoundError('Tenant');
+    return tenant.settings.features as Record<string, boolean>;
+  }
 }
 
 export const tenantService = new TenantService();

@@ -36,8 +36,6 @@ const UserSchema = new Schema({
   ...authMixin.fields,
   passwordResetToken: { type: String, select: false },
   passwordResetExpires: { type: Date, select: false },
-  mfaEnabled: { type: Boolean, default: false },
-  mfaSecret: { type: String, select: false },
   phone: { type: String, trim: true },
   passwordHistory: {
     type: [{ password: String, changedAt: Date }],

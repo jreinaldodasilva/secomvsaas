@@ -19,31 +19,46 @@ const normalizeIds = (obj: any, seen = new WeakSet()): any => {
   return normalized;
 };
 
+/**
+ * Response normalization middleware.
+ *
+ * Overrides res.json once per request (captured via closure, never re-patched)
+ * to ensure all successful responses share a consistent envelope shape.
+ * Error responses (4xx/5xx) pass through unchanged — the error handler owns them.
+ *
+ * Ordering note: this middleware does NOT depend on auditLogger because audit
+ * logging now uses res.on('finish') and reads res.statusCode after the response
+ * is fully sent.
+ */
 export const responseWrapper = (req: Request, res: Response, next: NextFunction) => {
-  const oldJson = res.json.bind(res);
-  res.json = (payload: any) => {
+  const originalJson = res.json.bind(res);
+
+  res.json = (payload: any): Response => {
+    // Restore immediately so any recursive call (e.g. from error handler) uses
+    // the original implementation and cannot trigger this wrapper again.
+    res.json = originalJson;
+
     if (res.statusCode >= 200 && res.statusCode < 300) {
-      // Skip re-wrapping if route already returned envelope format
+      // Route already returned envelope — only normalize the data field
       if (payload && typeof payload === 'object' && 'success' in payload) {
-        const normalized = normalizeIds(payload.data ?? payload);
-        payload.data = serializeDates(normalized);
-        return oldJson(payload);
+        payload.data = serializeDates(normalizeIds(payload.data ?? payload));
+        return originalJson(payload);
       }
-      const meta = {
-        timestamp: new Date().toISOString(),
-        requestId: (req as any).requestId || 'unknown',
-        version: 'v1',
-      };
-      const normalized = normalizeIds(payload);
-      const serialized = serializeDates(normalized);
-      return oldJson({
+
+      return originalJson({
         success: true,
-        data: serialized,
+        data: serializeDates(normalizeIds(payload)),
         error: null,
-        meta,
+        meta: {
+          timestamp: new Date().toISOString(),
+          requestId: (req as any).requestId || 'unknown',
+          version: 'v1',
+        },
       });
     }
-    return oldJson(payload);
+
+    return originalJson(payload);
   };
+
   next();
 };

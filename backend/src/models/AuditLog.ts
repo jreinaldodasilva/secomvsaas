@@ -21,7 +21,7 @@ const AuditLogSchema = new Schema<IAuditLog & Document>({
   action: {
     type: String,
     required: true,
-    enum: ['login', 'logout', 'create', 'read', 'update', 'delete', 'failed_login', 'authz_failure', 'password_change', 'mfa_setup', 'mfa_disable', 'export', 'import'],
+    enum: ['login', 'logout', 'create', 'read', 'update', 'delete', 'failed_login', 'authz_failure', 'password_change', 'export', 'import'],
     index: true,
   },
   resource: { type: String, required: true, index: true },

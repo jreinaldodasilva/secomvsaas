@@ -6,6 +6,8 @@ import { validateSchema } from '../../../validation/middleware';
 import { createTenantSchema, updateTenantSchema, tenantFiltersSchema } from '../validators/tenant.validator';
 import { inviteMemberSchema } from '../../../routes/validations/authValidation';
 import { inviteLimiter } from '../../../middleware/rateLimiter';
+import { z } from 'zod';
+import { FEATURE_FLAGS } from '../../../config/rbac/featureFlags';
 
 const router = Router();
 
@@ -152,6 +154,40 @@ router.delete('/:id',
     try {
       await tenantService.softDelete(req.params.id);
       res.status(204).send();
+    } catch (error) { next(error); }
+  }
+);
+
+const setFeatureFlagSchema = z.object({
+  flag: z.enum(Object.keys(FEATURE_FLAGS) as [string, ...string[]]),
+  enabled: z.boolean(),
+});
+
+// Get feature flags (super_admin or own tenant admin)
+router.get('/:id/features',
+  authenticate,
+  authorizeWithPermissions({ roles: ['super_admin', 'admin'] }),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const authReq = req as AuthenticatedRequest;
+      if (authReq.user?.role !== 'super_admin' && authReq.user?.tenantId !== req.params.id) {
+        return res.status(403).json({ success: false, error: { message: 'Acesso negado' } });
+      }
+      const features = await tenantService.getFeatureFlags(req.params.id);
+      res.json({ success: true, data: { features, available: Object.keys(FEATURE_FLAGS) } });
+    } catch (error) { next(error); }
+  }
+);
+
+// Set a feature flag (super_admin only)
+router.patch('/:id/features',
+  authenticate,
+  authorizeWithPermissions({ roles: ['super_admin'] }),
+  validateSchema(setFeatureFlagSchema),
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const features = await tenantService.setFeatureFlag(req.params.id, req.body.flag, req.body.enabled);
+      res.json({ success: true, data: { features } });
     } catch (error) { next(error); }
   }
 );

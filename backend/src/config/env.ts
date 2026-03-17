@@ -88,7 +88,10 @@ const envSchema = z
     AUDIT_LOG_TTL_DAYS: z.coerce.number().int().min(1).default(90),
   })
   .superRefine((data, ctx) => {
-    if (data.NODE_ENV === 'production') {
+    const isProdLike = data.NODE_ENV === 'production' || data.NODE_ENV === 'staging';
+
+    // Secret-length rules apply to both production and staging
+    if (isProdLike) {
       if (data.CSRF_SECRET.length < 32)
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'CSRF_SECRET must be at least 32 characters' });
       if (data.JWT_SECRET.length < 64)
@@ -99,11 +102,18 @@ const envSchema = z
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'PORTAL_JWT_SECRET must be at least 64 characters' });
       if (!data.DATABASE_URL.startsWith('mongodb://') && !data.DATABASE_URL.startsWith('mongodb+srv://'))
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'DATABASE_URL must be a valid MongoDB connection string' });
-      if (!data.SENDGRID_API_KEY?.startsWith('SG.'))
-        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'SENDGRID_API_KEY must be a valid SendGrid API key starting with SG.' });
       if (!/^https?:\/\/.+/.test(data.FRONTEND_URL))
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'FRONTEND_URL must be a valid URL' });
-    } else {
+    }
+
+    // SendGrid required only in production (staging may use Ethereal or another provider)
+    if (data.NODE_ENV === 'production') {
+      if (!data.SENDGRID_API_KEY?.startsWith('SG.'))
+        ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'SENDGRID_API_KEY must be a valid SendGrid API key starting with SG.' });
+    }
+
+    // JWT length enforced in all environments
+    if (!isProdLike) {
       if (data.JWT_SECRET.length < 64)
         ctx.addIssue({ code: z.ZodIssueCode.custom, message: 'JWT_SECRET must be at least 64 characters' });
       if (data.JWT_REFRESH_SECRET.length < 64)
@@ -125,15 +135,29 @@ const parsed = (() => {
 
 // ─── Warnings (non-fatal, production only) ────────────────────────────────────
 const logEnvWarnings = (): void => {
-  if (parsed.NODE_ENV !== 'production') return;
-  if (parsed.COOKIE_SECURE !== 'true')
-    logger.warn('COOKIE_SECURE should be true in production');
-  if (parsed.DETAILED_ERRORS === 'true')
-    logger.warn('DETAILED_ERRORS should be false in production');
-  if (!parsed.SENDGRID_API_KEY && !parsed.ETHEREAL_USER)
-    logger.warn('No email service configured (SENDGRID_API_KEY or ETHEREAL_USER)');
-  if (parsed.SECRETS_BACKEND === 'env')
-    logger.warn('SECRETS_BACKEND=env in production: secrets are loaded from environment variables with no rotation mechanism. Set SECRETS_BACKEND=aws-secrets or aws-ssm and configure a managed secrets store.');
+  if (parsed.NODE_ENV === 'production') {
+    if (parsed.COOKIE_SECURE !== 'true')
+      logger.warn('COOKIE_SECURE should be true in production');
+    if (parsed.DETAILED_ERRORS === 'true')
+      logger.warn('DETAILED_ERRORS should be false in production');
+    if (!parsed.SENDGRID_API_KEY && !parsed.ETHEREAL_USER)
+      logger.warn('No email service configured (SENDGRID_API_KEY or ETHEREAL_USER)');
+    if (parsed.SECRETS_BACKEND === 'env')
+      logger.warn('SECRETS_BACKEND=env in production: secrets are loaded from environment variables with no rotation mechanism. Set SECRETS_BACKEND=aws-secrets or aws-ssm and configure a managed secrets store.');
+  }
+
+  if (parsed.NODE_ENV === 'staging') {
+    if (parsed.COOKIE_SECURE !== 'true')
+      logger.warn('COOKIE_SECURE should be true in staging');
+    if (parsed.DETAILED_ERRORS === 'true')
+      logger.warn('DETAILED_ERRORS should be false in staging');
+    if (parsed.MOCK_EMAIL_SERVICE === 'true')
+      logger.warn('MOCK_EMAIL_SERVICE=true in staging: email delivery will not be tested. Set to false to validate email templates against a real provider.');
+    if (parsed.SECRETS_BACKEND === 'env')
+      logger.warn('SECRETS_BACKEND=env in staging: consider using aws-ssm to validate the secrets rotation runbook before production deployment.');
+    if (!parsed.SENTRY_DSN)
+      logger.warn('SENTRY_DSN not set in staging: errors will not be reported to Sentry.');
+  }
 };
 
 // ─── Shaped config (same structure as before — no consumer changes needed) ────

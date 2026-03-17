@@ -1,5 +1,6 @@
 import { PERMISSIONS, Permission } from './permissions';
 import { ROLES, UserRole } from './roles';
+import { flagForPermission } from './featureFlags';
 
 const P = PERMISSIONS;
 
@@ -67,4 +68,19 @@ export const hasAllPermissions = (role: UserRole, permissions: Permission[]): bo
 export const getRolePermissions = (role: UserRole): Permission[] => {
   if (role === ROLES.SUPER_ADMIN) return Object.values(PERMISSIONS) as Permission[];
   return ROLE_PERMISSIONS[role] || [];
+};
+
+/**
+ * Like `hasPermission` but also checks tenant feature flags.
+ * `tenantFeatures` is `tenant.settings.features` — absent keys default to `true`.
+ */
+export const hasPermissionForTenant = (
+  role: UserRole,
+  permission: Permission,
+  tenantFeatures: Record<string, boolean>,
+): boolean => {
+  if (!hasPermission(role, permission)) return false;
+  const flag = flagForPermission(permission);
+  if (flag === null) return true;
+  return tenantFeatures[flag] !== false;
 };

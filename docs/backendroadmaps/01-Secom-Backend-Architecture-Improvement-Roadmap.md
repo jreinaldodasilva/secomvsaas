@@ -86,13 +86,13 @@
 
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Status | Source |
 |---|---|---|---|---|---|---|---|
-| P2-1 | `routes/auth.ts` contains 300 LOC of inline async handler logic, inconsistent with the controller pattern used by all seven domain modules. | Structural inconsistency; harder to test auth handlers in isolation | Layering / HTTP Layer | 1–2 days | None | Open | Part 1 §3.4, Part 3 §8 M4 |
+| P2-1 | `routes/auth.ts` contains 300 LOC of inline async handler logic, inconsistent with the controller pattern used by all seven domain modules. | Structural inconsistency; harder to test auth handlers in isolation | Layering / HTTP Layer | 1–2 days | None | ✅ Closed | Part 1 §3.4, Part 3 §8 M4 |
 | P2-2 | CSRF skip list is hardcoded inline in `app.ts`. A security-critical configuration is not in a named, auditable constant. | Maintainability; security configuration visibility | Middleware / Configuration | < 1 day | None | ✅ Closed (QW-3) | Part 2 §5.4, Part 3 §8 M3 |
 | P2-3 | `isomorphic-dompurify` is a production dependency with no observed usage in route handlers or services. An unused security library creates a false sense of protection. | Dependency hygiene; misleading security posture | Dependency Structure | < 1 day | None | ✅ Closed (QW-5) | Part 1 §2.2, Part 2 §4.3, Part 3 §8 M1 |
-| P2-4 | MFA feature is partially implemented: `mfaEnabled`/`mfaSecret` fields on `User` model, `otplib` dependency, and security policy constants exist, but no enrollment or verification routes are present. The `mfaEnabled` flag can be set with no enforcement path. | Incomplete feature creates a false security signal | Auth Layer / Modularity | 3–5 days (complete) or < 1 day (remove) | None | Open | Part 1 §2.2, Part 2 §4.3, Part 3 §8 M2 |
-| P2-5 | RBAC registry is static (compile-time). No mechanism for runtime permission customization per tenant (e.g., feature flags per tenant plan). | Scalability of access control model as tenant plans diverge | RBAC / Multi-tenancy | 3–5 days | None | Open | Part 3 §7.5 |
-| P2-6 | No staging environment configuration or staging-specific validation rules. Only development and production environments are differentiated. | Deployment safety; no pre-production validation gate | Configuration / Deployment | 1–2 days | None | Open | Part 3 §6.5 |
-| P2-7 | `res.send`/`res.json` monkey-patching in `auditLogger.ts` and `normalizeResponse.ts` introduces subtle ordering dependencies. Incorrect middleware ordering can silently break audit logging or response normalization. | Middleware fragility; ordering-sensitive behavior | Middleware Layer | 2–3 days | None | Open | Part 1 §3.2, Part 2 §5.4 |
+| P2-4 | MFA feature is partially implemented: `mfaEnabled`/`mfaSecret` fields on `User` model, `otplib` dependency, and security policy constants exist, but no enrollment or verification routes are present. The `mfaEnabled` flag can be set with no enforcement path. | Incomplete feature creates a false security signal | Auth Layer / Modularity | 3–5 days (complete) or < 1 day (remove) | None | ✅ Closed (removed stub) | Part 1 §2.2, Part 2 §4.3, Part 3 §8 M2 |
+| P2-5 | RBAC registry is static (compile-time). No mechanism for runtime permission customization per tenant (e.g., feature flags per tenant plan). | Scalability of access control model as tenant plans diverge | RBAC / Multi-tenancy | 3–5 days | None | ✅ Closed | Part 3 §7.5 |
+| P2-6 | No staging environment configuration or staging-specific validation rules. Only development and production environments are differentiated. | Deployment safety; no pre-production validation gate | Configuration / Deployment | 1–2 days | None | ✅ Closed | Part 3 §6.5 |
+| P2-7 | `res.send`/`res.json` monkey-patching in `auditLogger.ts` and `normalizeResponse.ts` introduces subtle ordering dependencies. Incorrect middleware ordering can silently break audit logging or response normalization. | Middleware fragility; ordering-sensitive behavior | Middleware Layer | 2–3 days | None | ✅ Closed | Part 1 §3.2, Part 2 §5.4 |
 
 #### 🟩 P3 — Optimization & Future Enhancements
 
@@ -176,8 +176,8 @@
 | ~~Extract CSRF skip list to a named constant in `config/`~~ | P2-2 | 0.5 days | ✅ Done (QW-3) |
 | Route webhook delivery through BullMQ; add retry, dead-letter queue, delivery status model | P1-1 | 3 days | ✅ Done (P1-1) |
 | Standardize all routes to `authorizeWithPermissions`; deprecate and remove `authorize` | P1-6 | 2 days | ✅ Done (P1-6) |
-| Extract auth route handlers to `controllers/auth.controller.ts` | P2-1 | 1.5 days | Open |
-| Add `.env.staging` template and staging-specific Zod validation rules | P2-6 | 1.5 days | Open |
+| Extract auth route handlers to `controllers/auth.controller.ts` | P2-1 | 1.5 days | ✅ Closed |
+| Add `.env.staging` template and staging-specific Zod validation rules | P2-6 | 1.5 days | ✅ Closed |
 | Evaluate secrets manager integration (AWS Secrets Manager); implement or document rotation procedure | P1-4 | 3 days | ✅ Done (P1-4) |
 
 **Remaining effort:** 11 days (down from 12.5 days)
@@ -196,9 +196,9 @@
 |---|---|---|---|
 | ~~Resolve `isomorphic-dompurify`: removed (no HTML fields in current models; apply when domain modules introduce HTML-accepting fields)~~ | P2-3 | 0.5 days | ✅ Done (QW-5) |
 | Provision MongoDB replica set and Redis Sentinel/Cluster; update connection config | P1-5 | 3 days | ✅ Done (P1-5) |
-| Resolve MFA: implement enrollment/verification/recovery routes or remove model fields and `otplib` | P2-4 | 4 days (implement) or 0.5 days (remove) | Open |
-| Design per-tenant feature flag layer on top of static RBAC registry | P2-5 | 4 days | Open |
-| Replace `res.send`/`res.json` monkey-patching in `auditLogger` and `normalizeResponse` with explicit response interceptors or route-level wrappers | P2-7 | 2 days | Open |
+| Resolve MFA: removed `mfaEnabled`/`mfaSecret` from User model, `mfa_setup`/`mfa_disable` from AuditLog enum, `MFA_ENABLED` event, and uninstalled `otplib` | P2-4 | 0.5 days | ✅ Closed |
+| Design per-tenant feature flag layer on top of static RBAC registry | P2-5 | 4 days | ✅ Closed |
+| Replace `res.send`/`res.json` monkey-patching in `auditLogger` and `normalizeResponse` with explicit response interceptors or route-level wrappers | P2-7 | 2 days | ✅ Closed |
 
 **Remaining effort:** 9.5–13.5 days (down from 10–14 days)
 **Dependencies:** Phase 2 complete. Infrastructure provisioning for replica set/sentinel is a prerequisite for the MongoDB/Redis tasks.

@@ -1,0 +1,63 @@
+version: '3.8'
+
+# Staging overlay — apply on top of docker-compose.yml:
+#   docker compose -f docker-compose.yml -f docker-compose.staging.yml up -d
+#
+# Differences from base:
+#   - No MailHog (real email provider used in staging)
+#   - Redis requires a password (set REDIS_PASSWORD in the deploy environment)
+#   - API and worker services use NODE_ENV=staging and .env.staging
+#   - Named volumes are prefixed with "staging_" to avoid collisions with dev data
+
+services:
+  mongo:
+    volumes:
+      - staging_mongo_data:/data/db
+
+  redis:
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - staging_redis_data:/data
+
+  mailhog:
+    # Disabled in staging — real email provider is used
+    profiles: ["disabled"]
+
+  api:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+      target: production
+    env_file: ../../backend/.env.staging
+    environment:
+      NODE_ENV: staging
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - vsaas-network
+
+  worker:
+    build:
+      context: ../../backend
+      dockerfile: Dockerfile
+      target: production
+    command: ["node", "dist/worker.js"]
+    env_file: ../../backend/.env.staging
+    environment:
+      NODE_ENV: staging
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - vsaas-network
+
+volumes:
+  staging_mongo_data:
+  staging_redis_data:

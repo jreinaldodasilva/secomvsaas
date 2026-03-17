@@ -5,8 +5,10 @@ import { ApiResponse } from '../../utils/responseHelpers';
 import { env } from '../../config/env';
 import redisClient from '../../config/database/redis';
 import { auditService } from '../../services/admin/auditService';
-import { hasAnyPermission, hasAllPermissions } from '../../config/rbac/registry';
+import { hasAnyPermission, hasAllPermissions, hasPermissionForTenant } from '../../config/rbac/registry';
 import type { Permission } from '../../config/rbac/permissions';
+import type { FeatureFlag } from '../../config/rbac/featureFlags';
+import { Tenant } from '../../platform/tenants/models/Tenant';
 
 export interface AuthUser {
   id: string;
@@ -72,8 +74,8 @@ const staffAuth = new StaffAuthMiddleware();
 export const authenticate = staffAuth.authenticate.bind(staffAuth);
 export const optionalAuth = staffAuth.optionalAuth.bind(staffAuth);
 
-export const authorizeWithPermissions = (options: { roles?: string[]; permissions?: Permission[]; requireAll?: boolean }) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+export const authorizeWithPermissions = (options: { roles?: string[]; permissions?: Permission[]; requireAll?: boolean; features?: FeatureFlag[] }) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const authReq = req as AuthenticatedRequest;
     if (!authReq.user) { ApiResponse.unauthorized(res, 'Autenticação obrigatória', 'NOT_AUTHENTICATED'); return; }
 
@@ -96,6 +98,49 @@ export const authorizeWithPermissions = (options: { roles?: string[]; permission
         ApiResponse.forbidden(res, 'Permissões insuficientes', 'INSUFFICIENT_PERMISSIONS');
         return;
       }
+    }
+
+    if (options.features?.length && authReq.user.tenantId) {
+      try {
+        const tenant = await Tenant.findById(authReq.user.tenantId).select('settings.features').lean();
+        const tenantFeatures: Record<string, boolean> = (tenant as any)?.settings?.features ?? {};
+        const blocked = options.features.filter(f => tenantFeatures[f] === false);
+        if (blocked.length) {
+          logAuthzFailure(req, `feature(s) disabled: [${blocked.join(', ')}]`);
+          ApiResponse.forbidden(res, 'Funcionalidade não disponível neste plano', 'FEATURE_DISABLED');
+          return;
+        }
+      } catch {
+        ApiResponse.forbidden(res, 'Erro ao verificar funcionalidades do tenant', 'FEATURE_CHECK_ERROR');
+        return;
+      }
+    }
+
+    next();
+  };
+};
+
+/**
+ * Standalone middleware that blocks a route when a tenant feature flag is disabled.
+ * Use when you don't need role/permission checks, only feature gating.
+ */
+export const requireFeature = (...flags: FeatureFlag[]) => {
+  return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const authReq = req as AuthenticatedRequest;
+    if (!authReq.user?.tenantId) { next(); return; }
+    if (authReq.user.role === 'super_admin') { next(); return; }
+    try {
+      const tenant = await Tenant.findById(authReq.user.tenantId).select('settings.features').lean();
+      const tenantFeatures: Record<string, boolean> = (tenant as any)?.settings?.features ?? {};
+      const blocked = flags.filter(f => tenantFeatures[f] === false);
+      if (blocked.length) {
+        logAuthzFailure(req, `feature(s) disabled: [${blocked.join(', ')}]`);
+        ApiResponse.forbidden(res, 'Funcionalidade não disponível neste plano', 'FEATURE_DISABLED');
+        return;
+      }
+    } catch {
+      ApiResponse.forbidden(res, 'Erro ao verificar funcionalidades do tenant', 'FEATURE_CHECK_ERROR');
+      return;
     }
     next();
   };

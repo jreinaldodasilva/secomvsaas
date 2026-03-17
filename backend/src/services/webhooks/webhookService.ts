@@ -1,10 +1,8 @@
 import crypto from 'crypto';
 import { WebhookSubscription } from '../../models/WebhookSubscription';
+import { WebhookDelivery } from '../../models/WebhookDelivery';
+import { addWebhookToQueue } from '../../queues/webhookQueue';
 import logger from '../../config/logger';
-
-function signPayload(payload: string, secret: string): string {
-  return crypto.createHmac('sha256', secret).update(payload).digest('hex');
-}
 
 class WebhookService {
   async create(tenantId: string, url: string, events: string[], createdBy: string) {
@@ -22,27 +20,36 @@ class WebhookService {
 
   async dispatch(tenantId: string, event: string, payload: Record<string, any>) {
     const subs = await WebhookSubscription.find({ tenantId, isActive: true, events: event }).lean();
+
     for (const sub of subs) {
-      this.deliver(sub.url, sub.secret, sub._id.toString(), event, payload).catch((err) =>
-        logger.error({ err, webhookId: sub._id, event }, 'Webhook delivery failed'),
-      );
+      // Create a delivery record first so status is trackable from the moment of dispatch
+      const delivery = await WebhookDelivery.create({
+        webhookId: sub._id,
+        tenantId,
+        event,
+        payload,
+        status: 'pending',
+      });
+
+      await addWebhookToQueue({
+        deliveryId: delivery._id.toString(),
+        webhookId: sub._id.toString(),
+        tenantId,
+        url: sub.url,
+        secret: sub.secret,
+        event,
+        payload,
+      });
+
+      logger.debug({ webhookId: sub._id, deliveryId: delivery._id, event }, 'Webhook delivery enqueued');
     }
   }
 
-  private async deliver(url: string, secret: string, webhookId: string, event: string, payload: Record<string, any>) {
-    const body = JSON.stringify({ event, data: payload, timestamp: new Date().toISOString() });
-    const signature = signPayload(body, secret);
-
-    const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'X-Webhook-Signature': signature, 'X-Webhook-Event': event },
-      body,
-      signal: AbortSignal.timeout(10000),
-    });
-
-    if (!res.ok) {
-      logger.warn({ webhookId, status: res.status, event }, 'Webhook delivery non-2xx');
-    }
+  async listDeliveries(tenantId: string, webhookId?: string, status?: string) {
+    const filter: Record<string, any> = { tenantId };
+    if (webhookId) filter.webhookId = webhookId;
+    if (status) filter.status = status;
+    return WebhookDelivery.find(filter).sort({ createdAt: -1 }).limit(100).lean();
   }
 }
 

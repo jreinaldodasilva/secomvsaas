@@ -5,15 +5,27 @@ services:
     image: mongo:8
     ports:
       - "27017:27017"
+    # --replSet enables replica set mode required for multi-document transactions (P0-1)
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - mongo-data:/data/db
     networks:
       - vsaas-network
     healthcheck:
-      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      # Wait until the replica set is initiated before reporting healthy
+      test: >
+        mongosh --quiet --eval "
+          try {
+            rs.status().ok === 1 ? quit(0) : quit(1)
+          } catch(e) {
+            rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] });
+            quit(0)
+          }
+        "
       interval: 10s
-      timeout: 5s
-      retries: 5
+      timeout: 10s
+      retries: 10
+      start_period: 20s
 
   redis:
     image: redis:7-alpine

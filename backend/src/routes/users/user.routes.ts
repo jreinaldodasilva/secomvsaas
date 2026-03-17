@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { authenticate, authorize, AuthenticatedRequest } from '../../middleware/auth/auth';
+import { authenticate, authorizeWithPermissions, AuthenticatedRequest } from '../../middleware/auth/auth';
 import { UserService } from '../../services/admin/userService';
 
 const router = Router();
 const service = new UserService();
 
 router.use(authenticate);
-router.use(authorize('super_admin', 'admin'));
+router.use(authorizeWithPermissions({ roles: ['super_admin', 'admin'] }));
 
 /**
  * @swagger

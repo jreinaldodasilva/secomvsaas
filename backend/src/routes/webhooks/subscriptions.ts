@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from 'express';
-import { authenticate, authorize, AuthenticatedRequest } from '../../middleware/auth/auth';
+import { authenticate, authorizeWithPermissions, AuthenticatedRequest } from '../../middleware/auth/auth';
 import { webhookService } from '../../services/webhooks/webhookService';
 
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize('super_admin', 'admin'));
+router.use(authorizeWithPermissions({ roles: ['super_admin', 'admin'] }));
 
 /**
  * @swagger
@@ -54,6 +54,28 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
     if (!url || !events?.length) return res.status(422).json({ success: false, error: { message: 'url and events are required' } });
     const sub = await webhookService.create(tenantId, url, events, authReq.user!.id);
     res.status(201).json({ success: true, data: sub });
+  } catch (error) { next(error); }
+});
+
+/**
+ * @swagger
+ * /api/v1/webhooks/subscriptions/{id}/deliveries:
+ *   get:
+ *     tags: [Webhooks]
+ *     summary: List delivery attempts for a webhook subscription
+ *     security: [{ cookieAuth: [] }]
+ *     parameters:
+ *       - { in: path, name: id, required: true, schema: { type: string } }
+ *       - { in: query, name: status, schema: { type: string, enum: [pending, delivered, failed] } }
+ *     responses:
+ *       200: { description: List of delivery attempts }
+ */
+router.get('/:id/deliveries', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const tenantId = (req as AuthenticatedRequest).user!.tenantId;
+    if (!tenantId) return res.status(400).json({ success: false, error: { message: 'No tenant' } });
+    const deliveries = await webhookService.listDeliveries(tenantId, req.params.id, req.query.status as string | undefined);
+    res.json({ success: true, data: deliveries });
   } catch (error) { next(error); }
 });
 

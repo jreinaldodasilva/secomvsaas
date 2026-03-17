@@ -20,6 +20,10 @@ const envSchema = z
     REDIS_URL: z.string().default('redis://localhost:6379'),
     REDIS_HOST: z.string().default('localhost'),
     REDIS_PORT: z.coerce.number().default(6379),
+    // Redis Sentinel — set REDIS_SENTINEL_HOSTS to activate (comma-separated host:port list)
+    // Example: REDIS_SENTINEL_HOSTS=sentinel1:26379,sentinel2:26379,sentinel3:26379
+    REDIS_SENTINEL_HOSTS: z.string().optional(),
+    REDIS_SENTINEL_NAME: z.string().default('mymaster'),
 
     // JWT — required in all environments, no fallback
     JWT_SECRET: z.string().min(1, 'JWT_SECRET is required'),
@@ -74,6 +78,12 @@ const envSchema = z
     // Monitoring
     SENTRY_DSN: z.string().optional(),
 
+    // Secrets backend
+    // 'env'            — secrets are read from environment variables (default, dev/CI only)
+    // 'aws-ssm'        — secrets are injected via AWS SSM Parameter Store at deploy time
+    // 'aws-secrets'    — secrets are fetched from AWS Secrets Manager at startup
+    SECRETS_BACKEND: z.enum(['env', 'aws-ssm', 'aws-secrets']).default('env'),
+
     // Audit
     AUDIT_LOG_TTL_DAYS: z.coerce.number().int().min(1).default(90),
   })
@@ -122,6 +132,8 @@ const logEnvWarnings = (): void => {
     logger.warn('DETAILED_ERRORS should be false in production');
   if (!parsed.SENDGRID_API_KEY && !parsed.ETHEREAL_USER)
     logger.warn('No email service configured (SENDGRID_API_KEY or ETHEREAL_USER)');
+  if (parsed.SECRETS_BACKEND === 'env')
+    logger.warn('SECRETS_BACKEND=env in production: secrets are loaded from environment variables with no rotation mechanism. Set SECRETS_BACKEND=aws-secrets or aws-ssm and configure a managed secrets store.');
 };
 
 // ─── Shaped config (same structure as before — no consumer changes needed) ────
@@ -133,6 +145,8 @@ export const env = {
     url: parsed.REDIS_URL,
     host: parsed.REDIS_HOST,
     port: parsed.REDIS_PORT,
+    sentinelHosts: parsed.REDIS_SENTINEL_HOSTS,
+    sentinelName: parsed.REDIS_SENTINEL_NAME,
   },
   jwt: {
     secret: parsed.JWT_SECRET,
@@ -184,6 +198,7 @@ export const env = {
   },
   csrf: { secret: parsed.CSRF_SECRET },
   mobile: { url: parsed.MOBILE_URL },
+  secretsBackend: parsed.SECRETS_BACKEND,
   audit: {
     // Number of days audit log entries are retained before automatic deletion.
     // Used by both the MongoDB TTL index (AuditLog model) and the daily cleanup job.

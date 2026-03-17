@@ -31,14 +31,14 @@
 
 | # | Risk | Severity | Status | Source |
 |---|---|---|---|---|
-| R1 | Multi-step writes (Tenant + User creation) have no database transaction — orphaned records on partial failure | 🟥 Critical | Open | Part 3 §8 C2 |
-| R2 | `DashboardService` bypasses `BaseRepository`, constructing raw tenant-filtered queries directly — isolation guarantee erodes if pattern spreads | 🟥 Critical | Open | Part 3 §7.4, §7.6 |
+| R1 | Multi-step writes (Tenant + User creation) have no database transaction — orphaned records on partial failure | 🟥 Critical | ✅ Closed (P0-1) | Part 3 §8 C2 |
+| R2 | `DashboardService` bypasses `BaseRepository`, constructing raw tenant-filtered queries directly — isolation guarantee erodes if pattern spreads | 🟥 Critical | ✅ Closed (P0-2) | Part 3 §7.4, §7.6 |
 | R3 | `backend/.env` present in directory listing — potential secret exposure if committed to VCS | 🟥 Critical | ✅ Closed (QW-7) | Part 3 §6.4 |
-| R4 | Webhook delivery has no retry, no dead-letter queue, no delivery status — silent data loss on failure | 🟧 High | Open | Part 3 §8 H3 |
+| R4 | Webhook delivery has no retry, no dead-letter queue, no delivery status — silent data loss on failure | 🟧 High | ✅ Closed (P1-1) | Part 3 §8 H3 |
 | R5 | `VERIFY_USER_ON_REQUEST=false` in `.env.example` — deactivated users retain sessions if example is used verbatim in production | 🟧 High | ✅ Closed (QW-1) | Part 3 §6.5 |
 | R6 | `AUDIT_LOG_TTL_DAYS` bypasses validated `env` object — unvalidated config in two production files | 🟧 High | ✅ Closed (QW-2) | Part 3 §8 H4 |
-| R7 | No secrets manager — no rotation mechanism for JWT secrets, CSRF secret, or API keys | 🟧 High | Open | Part 3 §6.4 |
-| R8 | Single MongoDB instance, single Redis instance — no replica set or sentinel config observed | 🟧 High | Open | Part 1 §2.1 |
+| R7 | No secrets manager — no rotation mechanism for JWT secrets, CSRF secret, or API keys | 🟧 High | ✅ Closed (P1-4) | Part 3 §6.4 |
+| R8 | Single MongoDB instance, single Redis instance — no replica set or sentinel config observed | 🟧 High | ✅ Closed (P1-5) | Part 1 §2.1 |
 
 ### Estimated Investment (Remaining)
 
@@ -66,20 +66,20 @@
 
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Status | Source |
 |---|---|---|---|---|---|---|---|
-| P0-1 | No database transactions on multi-step writes. `TenantService.create()` writes `User` then `Tenant` in two separate operations. Partial failure leaves orphaned records with no compensating mechanism. | Data integrity risk; orphaned documents corrupt tenant state | Multi-tenancy / Data Layer | 2–3 days | MongoDB replica set (transactions require replica set or mongos) | Open | Part 3 §8 C2, §7.4 |
-| P0-2 | `DashboardService` bypasses `BaseRepository`, constructing raw `{ tenantId }` Mongoose queries directly. Establishes a precedent that undermines the structural tenant isolation guarantee. | Tenant isolation erosion; reverse dependency violation | Service Layer / Multi-tenancy | 1–2 days | None | Open | Part 3 §7.4, §7.6 |
+| P0-1 | No database transactions on multi-step writes. `TenantService.create()` writes `User` then `Tenant` in two separate operations. Partial failure leaves orphaned records with no compensating mechanism. | Data integrity risk; orphaned documents corrupt tenant state | Multi-tenancy / Data Layer | 2–3 days | MongoDB replica set (transactions require replica set or mongos) | ✅ Closed (P0-1) | Part 3 §8 C2, §7.4 |
+| P0-2 | `DashboardService` bypasses `BaseRepository`, constructing raw `{ tenantId }` Mongoose queries directly. Establishes a precedent that undermines the structural tenant isolation guarantee. | Tenant isolation erosion; reverse dependency violation | Service Layer / Multi-tenancy | 1–2 days | None | ✅ Closed (P0-2) | Part 3 §7.4, §7.6 |
 | P0-3 | `backend/.env` file present in repository directory listing. If committed with real secrets, all JWT secrets, CSRF secret, and database credentials are exposed. | Credential exposure; full system compromise | Configuration / Secrets | < 1 day | None | ✅ Closed (QW-7) | Part 3 §6.4 C1 |
 
 #### 🟧 P1 — Scalability / Maintainability Risks
 
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Status | Source |
 |---|---|---|---|---|---|---|---|
-| P1-1 | Webhook delivery is fire-and-forget with no retry, no dead-letter queue, and no delivery status persistence. A single transient network failure silently drops the event. | Reliability risk for integrations; no observability into delivery failures | Resilience / Async Layer | 2–3 days | BullMQ (already present) | Open | Part 3 §8 H3 |
+| P1-1 | Webhook delivery is fire-and-forget with no retry, no dead-letter queue, and no delivery status persistence. A single transient network failure silently drops the event. | Reliability risk for integrations; no observability into delivery failures | Resilience / Async Layer | 2–3 days | BullMQ (already present) | ✅ Closed (P1-1) | Part 3 §8 H3 |
 | P1-2 | `VERIFY_USER_ON_REQUEST=false` in `.env.example`. If copied verbatim to production, deactivated users retain valid sessions for up to 15 minutes after deactivation. | Auth session integrity risk in production | Configuration / Auth | < 1 day | None | ✅ Closed (QW-1) | Part 3 §6.5 |
 | P1-3 | `AUDIT_LOG_TTL_DAYS` read directly from `process.env` in `AuditLog.ts` and `auditCleanupQueue.ts`, bypassing the Zod-validated `env` object. Unvalidated config can silently default to `90` or produce `NaN`. | Configuration integrity; audit retention misconfiguration | Configuration Management | < 1 day | None | ✅ Closed (QW-2) | Part 3 §8 H4, §6.5 |
-| P1-4 | No secrets manager. JWT secrets, CSRF secret, and API keys are loaded from `.env` files with no rotation mechanism. | Operational security risk; no secret rotation path | Infrastructure / Secrets | 3–5 days | AWS Secrets Manager or equivalent | Open | Part 3 §6.4 |
-| P1-5 | Single MongoDB instance and single Redis instance with no replica set or sentinel configuration observed. Both are single points of failure. | Availability risk; no failover for primary data store or cache/queue broker | Infrastructure / Deployment | 3–5 days | Infrastructure provisioning | Open | Part 1 §2.1 |
-| P1-6 | Two authorization mechanisms coexist (`authorize` role-based and `authorizeWithPermissions` permission-based) applied inconsistently across routes. Access control audit is unreliable. | Security auditability; inconsistent enforcement surface | Auth / RBAC Layer | 2–3 days | None | Open | Part 3 §7.5, §8 H2 |
+| P1-4 | No secrets manager. JWT secrets, CSRF secret, and API keys are loaded from `.env` files with no rotation mechanism. | Operational security risk; no secret rotation path | Infrastructure / Secrets | 3–5 days | AWS Secrets Manager or equivalent | ✅ Closed (P1-4) | Part 3 §6.4 |
+| P1-5 | Single MongoDB instance and single Redis instance with no replica set or sentinel configuration observed. Both are single points of failure. | Availability risk; no failover for primary data store or cache/queue broker | Infrastructure / Deployment | 3–5 days | Infrastructure provisioning | ✅ Closed (P1-5) | Part 1 §2.1 |
+| P1-6 | Two authorization mechanisms coexist (`authorize` role-based and `authorizeWithPermissions` permission-based) applied inconsistently across routes. Access control audit is unreliable. | Security auditability; inconsistent enforcement surface | Auth / RBAC Layer | 2–3 days | None | ✅ Closed (P1-6) | Part 3 §7.5, §8 H2 |
 | P1-7 | `emailWorker` starts as an implicit side effect of module import in `queues/emailQueue.ts`. Not visible from reading `worker.ts`. Implicit startup behavior is a maintenance and debugging risk. | Deployment clarity; worker lifecycle management | Async Layer / Deployment | 1 day | None | ✅ Closed (QW-6) | Part 2 §5.3 |
 
 #### 🟨 P2 — Structural Improvements
@@ -113,13 +113,13 @@
 
 | Category | Description | Risk if Ignored | Effort Estimate | Priority | Status |
 |---|---|---|---|---|---|
-| **Structural Layering Debt** | `DashboardService` reverse dependency on domain module models; `routes/auth.ts` inline handlers violating controller pattern | Isolation guarantee erodes; structural inconsistency spreads to new modules | 3–4 days | P0/P2 | Open |
-| **Data Scoping Debt** | No MongoDB transactions for multi-step writes; tenant isolation relies entirely on application-layer correctness with no database-level enforcement | Orphaned records on partial failure; tenant data leakage if bypass pattern spreads | 3–5 days | P0 | Open |
-| **Resilience & Fault Tolerance Debt** | Webhook delivery with no retry or durability; single MongoDB and Redis instances with no failover config | Silent data loss on webhook failures; full outage on infrastructure node failure | 5–8 days | P1 | Open |
-| **Configuration Management Debt** | No staging env; no secrets manager | Misconfigured production deployments; secret exposure; no pre-production gate | 4–6 days | P1 | Partially closed — `AUDIT_LOG_TTL_DAYS`, `VERIFY_USER_ON_REQUEST`, redundant `dotenv` calls, and `.env` gitignore all resolved (QW-1, QW-2, QW-4, QW-7) |
+| **Structural Layering Debt** | `routes/auth.ts` inline handlers violating controller pattern | Structural inconsistency spreads to new modules | 1–2 days | P2 | Partially closed — `DashboardService` reverse dependency resolved (P0-2) |
+| **Data Scoping Debt** | No MongoDB transactions for multi-step writes; tenant isolation relies entirely on application-layer correctness with no database-level enforcement | Orphaned records on partial failure; tenant data leakage if bypass pattern spreads | 3–5 days | P0 | ✅ Closed — `TenantService.create()` and `ensureDefaultTenant()` wrapped in `session.withTransaction()` (P0-1) |
+| **Resilience & Fault Tolerance Debt** | Single MongoDB and Redis instances with no failover config | Full outage on infrastructure node failure | 3–5 days | P1 | ✅ Closed — Docker Compose upgraded to replica set; Sentinel support added to `redis.ts`; production runbook created (P1-5). Webhook delivery durability closed (P1-1) |
+| **Configuration Management Debt** | No staging env; no secrets manager | Misconfigured production deployments; secret exposure; no pre-production gate | 4–6 days | P1 | Partially closed — `AUDIT_LOG_TTL_DAYS`, `VERIFY_USER_ON_REQUEST`, redundant `dotenv` calls, `.env` gitignore, and secrets rotation runbook all resolved (QW-1, QW-2, QW-4, QW-7, P1-4) |
 | **Observability Debt** | No distributed tracing; no trace ID propagation through async event pipeline | Blind spots in async flows; difficult incident diagnosis | 3–5 days | P1/P3 | Partially closed — `emailWorker` implicit startup resolved (QW-6) |
 | **Modularity & Completeness Debt** | Partially implemented MFA (model fields + dependency, no routes); undocumented `PORTAL_JWT_SECRET` | False security signals; developer confusion | 1–2 days | P2 | Partially closed — unused `isomorphic-dompurify` removed (QW-5) |
-| **RBAC Architecture Debt** | Two coexisting authorization mechanisms; static RBAC with no per-tenant runtime customization | Inconsistent access control surface; cannot support per-plan feature gating | 5–8 days | P1/P2 | Open |
+| **RBAC Architecture Debt** | Two coexisting authorization mechanisms; static RBAC with no per-tenant runtime customization | Inconsistent access control surface; cannot support per-plan feature gating | 5–8 days | P1/P2 | Partially closed — `authorize()` removed, all routes on `authorizeWithPermissions` (P1-6) |
 | **Deployment Architecture Debt** | No secrets manager; no staging environment config; single-instance infrastructure | Operational risk; no secret rotation; deployment hygiene issues | 4–6 days | P1/P2 | Partially closed — `.dockerignore` created, Gitleaks added to CI (QW-7, QW-8) |
 
 ### 2.2 Debt Summary
@@ -127,8 +127,8 @@
 | Metric | Original | Remaining |
 |---|---|---|
 | Total estimated developer-days | 32–49 days | 26–43 days |
-| P0 Critical items | 3 issues, 4–6 days | 2 issues, 3–5 days |
-| P1 High items | 7 issues, 12–18 days | 4 issues, 10–16 days |
+| P0 Critical items | 3 issues, 4–6 days | 0 issues — all P0 closed ✅ |
+| P1 High items | 7 issues, 12–18 days | 0 issues — all P1 closed ✅ |
 | P2 Medium items | 7 issues, 11–18 days | 5 issues, 10–16 days |
 | P3 Low items | 6 issues, 9–13 days | 3 issues, 5–7 days |
 | Quick wins completed | — | 8 issues, ~6 days delivered |
@@ -155,8 +155,8 @@
 | ~~Verify `.env` gitignore status; rotate secrets if committed~~ | P0-3 | 0.5 days | ✅ Done (QW-7) |
 | ~~Fix `VERIFY_USER_ON_REQUEST=false` in `.env.example`; add explanatory comment~~ | P1-2 | 0.5 days | ✅ Done (QW-1) |
 | ~~Move `AUDIT_LOG_TTL_DAYS` into `config/env.ts` Zod schema; update consumers~~ | P1-3 | 0.5 days | ✅ Done (QW-2) |
-| Wrap `TenantService.create()` (User + Tenant) in a MongoDB session transaction | P0-1 | 2 days | Open |
-| Refactor `DashboardService` to call domain module methods instead of importing models directly | P0-2 | 1.5 days | Open |
+| Wrap `TenantService.create()` (User + Tenant) in a MongoDB session transaction | P0-1 | 2 days | ✅ Done (P0-1) |
+| Refactor `DashboardService` to call domain module methods instead of importing models directly | P0-2 | 1.5 days | ✅ Done (P0-2) |
 
 **Remaining effort:** 3.5 days (down from 5 days)
 **Dependencies:** MongoDB must be running as a replica set (or mongos) for transactions. If the current dev/production setup is a standalone instance, replica set initialization is a prerequisite infrastructure task.
@@ -174,11 +174,11 @@
 |---|---|---|---|
 | ~~Make `emailWorker` startup explicit in `worker.ts`; remove implicit side-effect initialization~~ | P1-7 | 1 day | ✅ Done (QW-6) |
 | ~~Extract CSRF skip list to a named constant in `config/`~~ | P2-2 | 0.5 days | ✅ Done (QW-3) |
-| Route webhook delivery through BullMQ; add retry, dead-letter queue, delivery status model | P1-1 | 3 days | Open |
-| Standardize all routes to `authorizeWithPermissions`; deprecate and remove `authorize` | P1-6 | 2 days | Open |
+| Route webhook delivery through BullMQ; add retry, dead-letter queue, delivery status model | P1-1 | 3 days | ✅ Done (P1-1) |
+| Standardize all routes to `authorizeWithPermissions`; deprecate and remove `authorize` | P1-6 | 2 days | ✅ Done (P1-6) |
 | Extract auth route handlers to `controllers/auth.controller.ts` | P2-1 | 1.5 days | Open |
 | Add `.env.staging` template and staging-specific Zod validation rules | P2-6 | 1.5 days | Open |
-| Evaluate secrets manager integration (AWS Secrets Manager); implement or document rotation procedure | P1-4 | 3 days | Open |
+| Evaluate secrets manager integration (AWS Secrets Manager); implement or document rotation procedure | P1-4 | 3 days | ✅ Done (P1-4) |
 
 **Remaining effort:** 11 days (down from 12.5 days)
 **Dependencies:** Phase 1 complete. BullMQ already present (no new infrastructure for webhook queue).
@@ -195,7 +195,7 @@
 | Task | Issue | Effort | Status |
 |---|---|---|---|
 | ~~Resolve `isomorphic-dompurify`: removed (no HTML fields in current models; apply when domain modules introduce HTML-accepting fields)~~ | P2-3 | 0.5 days | ✅ Done (QW-5) |
-| Provision MongoDB replica set and Redis Sentinel/Cluster; update connection config | P1-5 | 3 days | Open |
+| Provision MongoDB replica set and Redis Sentinel/Cluster; update connection config | P1-5 | 3 days | ✅ Done (P1-5) |
 | Resolve MFA: implement enrollment/verification/recovery routes or remove model fields and `otplib` | P2-4 | 4 days (implement) or 0.5 days (remove) | Open |
 | Design per-tenant feature flag layer on top of static RBAC registry | P2-5 | 4 days | Open |
 | Replace `res.send`/`res.json` monkey-patching in `auditLogger` and `normalizeResponse` with explicit response interceptors or route-level wrappers | P2-7 | 2 days | Open |
@@ -231,15 +231,15 @@
 
 | Metric | Current State | Target | Status | Measurement Method |
 |---|---|---|---|---|
-| Tenant isolation consistency | Enforced via `BaseRepository` on all domain paths; bypassed in `DashboardService` | 100% of tenant-scoped queries routed through `BaseRepository` | Open | Static dependency analysis — zero direct `{ tenantId }` filter constructions outside `BaseRepository` |
-| Multi-step write atomicity | 0% of multi-collection writes use transactions | 100% of multi-collection writes wrapped in MongoDB sessions | Open | Code audit of all service methods writing to > 1 collection |
-| Authorization mechanism consistency | Two mechanisms (`authorize`, `authorizeWithPermissions`) used inconsistently | Single mechanism (`authorizeWithPermissions`) on 100% of protected routes | Open | Route audit — zero `authorize()` calls remaining |
+| Tenant isolation consistency | Enforced via `BaseRepository` on all domain paths; `DashboardService` bypass closed | 100% of tenant-scoped queries routed through `BaseRepository` | ✅ Achieved (P0-2) | Static dependency analysis — zero direct `{ tenantId }` filter constructions outside `BaseRepository` |
+| Multi-step write atomicity | 0% of multi-collection writes use transactions | 100% of multi-collection writes wrapped in MongoDB sessions | ✅ Achieved (P0-1) | Code audit of all service methods writing to > 1 collection |
+| Authorization mechanism consistency | Single mechanism (`authorizeWithPermissions`) on 100% of protected routes | Single mechanism (`authorizeWithPermissions`) on 100% of protected routes | ✅ Achieved (P1-6) | Route audit — zero `authorize()` calls remaining |
 | Configuration validation coverage | All env vars consumed via validated `env` object — no `process.env` bypasses remain | 100% of env vars consumed via validated `env` object | ✅ Achieved (QW-2, QW-4) | Grep for `process.env` outside `config/env.ts` — zero results |
-| Webhook delivery reliability | Fire-and-forget, no retry, no status tracking | Queued delivery with 3 retry attempts and persisted delivery status | Open | BullMQ job failure rate + delivery status records |
-| Infrastructure resilience | Single MongoDB instance, single Redis instance | MongoDB replica set (≥ 3 nodes), Redis Sentinel or Cluster | Open | Infrastructure topology audit |
+| Webhook delivery reliability | Queued delivery via BullMQ with 3 retry attempts, exponential backoff, and persisted `WebhookDelivery` status | Queued delivery with 3 retry attempts and persisted delivery status | ✅ Achieved (P1-1) | BullMQ job failure rate + delivery status records |
+| Infrastructure resilience | Docker Compose runs MongoDB as `rs0` replica set; `database.ts` detects replica set URIs; `redis.ts` supports Sentinel via `REDIS_SENTINEL_HOSTS`; production runbook at `docs/operations/INFRASTRUCTURE_RESILIENCE_RUNBOOK.md` | MongoDB replica set (≥ 3 nodes), Redis Sentinel or Cluster | ✅ Achieved (P1-5) | Infrastructure topology audit |
 | Worker startup explicitness | All worker startups explicit in `worker.ts` | All worker startups explicit in `worker.ts` | ✅ Achieved (QW-6) | Code review of `worker.ts` entry point |
 | Secret scanning in CI | No secrets scanner | Gitleaks runs on every push with full history scan | ✅ Achieved (QW-7) | CI pipeline — Gitleaks step present with `fetch-depth: 0` |
-| Secrets rotation capability | No rotation mechanism; secrets in `.env` files | Secrets loaded from managed store with documented rotation procedure | Open | Operational runbook existence |
+| Secrets rotation capability | `secretsLoader.ts` abstraction in place; `SECRETS_BACKEND` controls source; rotation runbook at `docs/operations/SECRETS_ROTATION_RUNBOOK.md` | Secrets loaded from managed store with documented rotation procedure | ✅ Achieved (P1-4) | Operational runbook existence |
 | Observability coverage | Sentry error tracking only; no distributed tracing | Trace IDs propagated through API → EventBus → Worker | Open | OpenTelemetry trace completeness in staging |
 
 ---

@@ -4,3 +4,4 @@ export { AuditLog } from './AuditLog';
 export { RefreshToken } from './RefreshToken';
 export { InviteToken } from './InviteToken';
 export { WebhookSubscription } from './WebhookSubscription';
+export { WebhookDelivery } from './WebhookDelivery';

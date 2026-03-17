@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { tenantService } from '../services/tenant.service';
 import { authService } from '../../../services/auth';
-import { authenticate, authorize, AuthenticatedRequest } from '../../../middleware/auth/auth';
+import { authenticate, authorizeWithPermissions, AuthenticatedRequest } from '../../../middleware/auth/auth';
 import { validateSchema } from '../../../validation/middleware';
 import { createTenantSchema, updateTenantSchema, tenantFiltersSchema } from '../validators/tenant.validator';
 import { inviteMemberSchema } from '../../../routes/validations/authValidation';
@@ -12,7 +12,7 @@ const router = Router();
 // Create tenant (super_admin only)
 router.post('/',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   validateSchema(createTenantSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -31,7 +31,7 @@ router.post('/',
 // List tenants (super_admin only)
 router.get('/',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   validateSchema(tenantFiltersSchema, 'query'),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -74,7 +74,7 @@ router.get('/current',
 // Get tenant by ID (super_admin only)
 router.get('/:id',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tenant = await tenantService.findById(req.params.id);
@@ -87,7 +87,7 @@ router.get('/:id',
 // Update tenant (super_admin or tenant admin)
 router.patch('/:id',
   authenticate,
-  authorize('super_admin', 'admin'),
+  authorizeWithPermissions({ roles: ['super_admin', 'admin'] }),
   validateSchema(updateTenantSchema),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -105,7 +105,7 @@ router.patch('/:id',
 // Invite member (admin+)
 router.post('/:id/invite',
   authenticate,
-  authorize('super_admin', 'admin'),
+  authorizeWithPermissions({ roles: ['super_admin', 'admin'] }),
   inviteLimiter,
   validateSchema(inviteMemberSchema),
   async (req: Request, res: Response, next: NextFunction) => {
@@ -123,7 +123,7 @@ router.post('/:id/invite',
 // Suspend tenant (super_admin only)
 router.post('/:id/suspend',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tenant = await tenantService.suspend(req.params.id, req.body.reason || 'Suspended by admin');
@@ -135,7 +135,7 @@ router.post('/:id/suspend',
 // Reactivate tenant (super_admin only)
 router.post('/:id/reactivate',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const tenant = await tenantService.reactivate(req.params.id);
@@ -147,7 +147,7 @@ router.post('/:id/reactivate',
 // Delete tenant (super_admin only)
 router.delete('/:id',
   authenticate,
-  authorize('super_admin'),
+  authorizeWithPermissions({ roles: ['super_admin'] }),
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       await tenantService.softDelete(req.params.id);

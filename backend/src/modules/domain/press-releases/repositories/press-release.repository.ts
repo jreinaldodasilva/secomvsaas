@@ -23,4 +23,16 @@ export class PressReleaseRepository extends BaseRepository<IPressRelease> {
       sort: filters.sort || { createdAt: -1 },
     });
   }
+
+  async findRecent(limit: number) {
+    return this.find(
+      { isDeleted: false } as any,
+      { sort: { createdAt: -1 }, lean: true }
+    ).then(docs => (docs as any[]).slice(0, limit).map(d => ({
+      _id: d._id,
+      title: d.title,
+      status: d.status,
+      createdAt: d.createdAt,
+    })));
+  }
 }

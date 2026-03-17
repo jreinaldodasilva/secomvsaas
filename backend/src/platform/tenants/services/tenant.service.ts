@@ -1,53 +1,78 @@
+import mongoose from 'mongoose';
 import { Tenant, ITenant } from '../models/Tenant';
 import { User } from '../../../models/User';
 import { CreateTenantDto, UpdateTenantDto, TenantFilters } from '../types';
 import { eventBus, TENANT_EVENTS } from '../../events';
-import { AppError, ConflictError, NotFoundError } from '../../../utils/errors/errors';
+import { ConflictError, NotFoundError } from '../../../utils/errors/errors';
 import logger from '../../../config/logger';
 
 class TenantService {
   async create(data: CreateTenantDto): Promise<{ tenant: ITenant; owner: any }> {
+    // Pre-checks outside the transaction — read-only guards, no writes yet.
     const existingSlug = await Tenant.findOne({ slug: data.slug });
     if (existingSlug) throw new ConflictError('Slug já está em uso');
 
     const existingEmail = await User.findOne({ email: data.ownerEmail.toLowerCase() });
     if (existingEmail) throw new ConflictError('E-mail do proprietário já está em uso');
 
-    // Create owner user first (without tenantId — will be set after tenant creation)
-    const owner = await User.create({
-      name: data.ownerName,
-      email: data.ownerEmail.toLowerCase(),
-      password: data.ownerPassword,
-      role: 'admin',
-    });
-
     const trialEndsAt = new Date();
     trialEndsAt.setDate(trialEndsAt.getDate() + 14);
 
-    const tenant = await Tenant.create({
-      name: data.name,
-      slug: data.slug,
-      domain: data.domain,
-      plan: data.plan || 'trial',
-      status: 'trial',
-      owner: owner._id,
-      trialEndsAt,
-    });
+    // All three writes are atomic: if any step fails the session aborts and
+    // both collections are rolled back, preventing orphaned documents.
+    const session = await mongoose.startSession();
+    let owner: any;
+    let tenant: ITenant;
 
-    // Set tenantId on the owner
-    (owner as any).tenantId = tenant._id;
-    await owner.save();
+    try {
+      await session.withTransaction(async () => {
+        // Step 1 — create owner without tenantId (not yet known)
+        const [createdOwner] = await User.create(
+          [{
+            name: data.ownerName,
+            email: data.ownerEmail.toLowerCase(),
+            password: data.ownerPassword,
+            role: 'admin',
+          }],
+          { session }
+        );
+        owner = createdOwner;
 
+        // Step 2 — create tenant referencing the owner
+        const [createdTenant] = await Tenant.create(
+          [{
+            name: data.name,
+            slug: data.slug,
+            domain: data.domain,
+            plan: data.plan || 'trial',
+            status: 'trial',
+            owner: owner._id,
+            trialEndsAt,
+          }],
+          { session }
+        );
+        tenant = createdTenant;
+
+        // Step 3 — back-fill tenantId on the owner
+        owner.tenantId = tenant._id;
+        await owner.save({ session });
+      });
+    } finally {
+      await session.endSession();
+    }
+
+    // Event emission is intentionally outside the transaction: it must only
+    // fire after the commit succeeds, never during a potential retry or rollback.
     await eventBus.emit(TENANT_EVENTS.TENANT_CREATED, {
-      tenantId: tenant._id?.toString(),
-      name: tenant.name,
-      slug: tenant.slug,
+      tenantId: tenant!._id?.toString(),
+      name: tenant!.name,
+      slug: tenant!.slug,
       ownerId: owner._id?.toString(),
       ownerEmail: owner.email,
     });
 
-    logger.info({ tenantId: tenant._id, slug: tenant.slug }, 'Tenant created');
-    return { tenant, owner };
+    logger.info({ tenantId: tenant!._id, slug: tenant!.slug }, 'Tenant created');
+    return { tenant: tenant!, owner };
   }
 
   async findById(id: string): Promise<ITenant> {

@@ -23,4 +23,8 @@ export class AppointmentRepository extends BaseRepository<IAppointment> {
       sort: filters.sort || { scheduledAt: 1 },
     });
   }
+
+  async countPending() {
+    return this.count({ isDeleted: false, status: 'pending' } as any);
+  }
 }

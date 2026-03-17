@@ -1,9 +1,11 @@
 import { validateEnv } from './config/env';
+import { loadSecrets } from './config/secrets/secretsLoader';
 import { connectToDatabase, closeDatabaseConnection } from './config/database/database';
 import redisClient from './config/database/redis';
 import { emailQueue, startEmailWorker } from './queues/emailQueue';
 import { auditCleanupQueue, auditCleanupWorker, scheduleAuditCleanup } from './queues/auditCleanupQueue';
 import { domainEventsQueue, domainEventsWorker } from './queues/domainEventsQueue';
+import { webhookQueue, startWebhookWorker } from './queues/webhookQueue';
 import { eventBus } from './platform/events';
 import { registerAuthEventListeners } from './services/auth/authEventListeners';
 import logger from './config/logger';
@@ -11,10 +13,12 @@ import logger from './config/logger';
 validateEnv();
 
 const start = async () => {
+  await loadSecrets();
   await connectToDatabase();
   registerAuthEventListeners();
   eventBus.startWorker();
   const emailWorker = startEmailWorker();
+  const webhookWorker = startWebhookWorker();
   await scheduleAuditCleanup();
 
   logger.info('🔧 ===================================');
@@ -27,6 +31,8 @@ const start = async () => {
     try {
       await emailWorker?.close();
       await emailQueue.close();
+      await webhookWorker?.close();
+      await webhookQueue.close();
       await auditCleanupWorker?.close();
       await auditCleanupQueue.close();
       if (domainEventsWorker) await domainEventsWorker.close();

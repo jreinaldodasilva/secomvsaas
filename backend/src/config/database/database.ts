@@ -1,16 +1,24 @@
 import mongoose from 'mongoose';
 import logger from '../logger';
+import { env } from '../env';
 import { DATABASE } from '../../constants/validation';
 
-const getDatabaseConfig = () => ({
-  uri: process.env.DATABASE_URL || 'mongodb://localhost:27017/vsaas',
-  options: {
-    maxPoolSize: 50,
-    serverSelectionTimeoutMS: DATABASE.CONNECTION_TIMEOUT_MS,
-    socketTimeoutMS: DATABASE.SOCKET_TIMEOUT_MS,
-    bufferCommands: false,
-  } as mongoose.ConnectOptions,
-});
+const getDatabaseConfig = () => {
+  const uri = env.database.url;
+  const isReplicaSet = uri.includes('replicaSet=') || uri.includes('mongodb+srv://');
+
+  return {
+    uri,
+    options: {
+      maxPoolSize: 50,
+      serverSelectionTimeoutMS: DATABASE.CONNECTION_TIMEOUT_MS,
+      socketTimeoutMS: DATABASE.SOCKET_TIMEOUT_MS,
+      bufferCommands: false,
+      // Read from secondaries when replica set is available — reduces primary load
+      ...(isReplicaSet && { readPreference: 'primaryPreferred' }),
+    } as mongoose.ConnectOptions,
+  };
+};
 
 const MAX_RETRIES = DATABASE.MAX_RETRIES;
 const INITIAL_RETRY_DELAY = DATABASE.RETRY_DELAY_MS;

@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import redisClient from '../../config/database/redis';
-import { authenticate, authorize } from '../../middleware/auth/auth';
+import { authenticate, authorizeWithPermissions } from '../../middleware/auth/auth';
 
 const router: Router = Router();
 
@@ -50,7 +50,7 @@ router.get('/ready', async (_req: Request, res: Response) => {
 
 router.get('/live', (_req: Request, res: Response) => res.status(200).json({ status: 'alive' }));
 
-router.get('/metrics', authenticate, authorize('super_admin', 'admin'), (_req: Request, res: Response) => {
+router.get('/metrics', authenticate, authorizeWithPermissions({ roles: ['super_admin', 'admin'] }), (_req: Request, res: Response) => {
   const mem = process.memoryUsage();
   return res.json({
     success: true,

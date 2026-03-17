@@ -72,24 +72,6 @@ const staffAuth = new StaffAuthMiddleware();
 export const authenticate = staffAuth.authenticate.bind(staffAuth);
 export const optionalAuth = staffAuth.optionalAuth.bind(staffAuth);
 
-export const authorize = (...allowedRoles: string[]) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
-    const authReq = req as AuthenticatedRequest;
-    if (!authReq.user) { ApiResponse.unauthorized(res, 'Autenticação obrigatória', 'NOT_AUTHENTICATED'); return; }
-
-    const { role } = authReq.user;
-    if (!role) { ApiResponse.forbidden(res, 'Permissões de usuário não definidas', 'NO_ROLE'); return; }
-    if (role === 'super_admin') { next(); return; }
-
-    if (allowedRoles.length > 0 && !allowedRoles.includes(role)) {
-      logAuthzFailure(req, `role '${role}' not in [${allowedRoles.join(', ')}]`);
-      ApiResponse.insufficientRole(res);
-      return;
-    }
-    next();
-  };
-};
-
 export const authorizeWithPermissions = (options: { roles?: string[]; permissions?: Permission[]; requireAll?: boolean }) => {
   return (req: Request, res: Response, next: NextFunction): void => {
     const authReq = req as AuthenticatedRequest;

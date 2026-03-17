@@ -23,4 +23,16 @@ export class EventRepository extends BaseRepository<IEvent> {
       sort: filters.sort || { startsAt: 1 },
     });
   }
+
+  async findUpcoming(limit: number) {
+    return this.find(
+      { isDeleted: false, startsAt: { $gte: new Date() } } as any,
+      { sort: { startsAt: 1 }, lean: true }
+    ).then(docs => (docs as any[]).slice(0, limit).map(d => ({
+      _id: d._id,
+      title: d.title,
+      startsAt: d.startsAt,
+      location: d.location,
+    })));
+  }
 }

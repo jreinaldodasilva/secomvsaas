@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Tenant } from '../platform/tenants/models/Tenant';
 import { User } from '../models/User';
 import logger from '../config/logger';
@@ -36,20 +37,30 @@ export async function ensureDefaultTenant(): Promise<void> {
     return;
   }
 
-  const admin = await User.create({
-    name: DEFAULT_ADMIN.name,
-    email: DEFAULT_ADMIN.email,
-    password,
-    role: DEFAULT_ADMIN.role,
-  });
+  const session = await mongoose.startSession();
+  let admin: any;
+  let tenant: any;
 
-  const tenant = await Tenant.create({
-    ...DEFAULT_TENANT,
-    owner: admin._id,
-  });
+  try {
+    await session.withTransaction(async () => {
+      const [createdAdmin] = await User.create(
+        [{ name: DEFAULT_ADMIN.name, email: DEFAULT_ADMIN.email, password, role: DEFAULT_ADMIN.role }],
+        { session }
+      );
+      admin = createdAdmin;
 
-  (admin as any).tenantId = tenant._id;
-  await admin.save();
+      const [createdTenant] = await Tenant.create(
+        [{ ...DEFAULT_TENANT, owner: admin._id }],
+        { session }
+      );
+      tenant = createdTenant;
+
+      admin.tenantId = tenant._id;
+      await admin.save({ session });
+    });
+  } finally {
+    await session.endSession();
+  }
 
   logger.info({ tenantId: tenant._id, slug: tenant.slug, adminEmail: admin.email }, 'Tenant padrão criado com sucesso');
   logger.info('⚠️  Altere a senha do administrador padrão após o primeiro login!');

@@ -1,7 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import dotenv from 'dotenv';
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import { v4 as uuidv4 } from 'uuid';
@@ -12,6 +11,7 @@ import { checkDatabaseConnection } from './middleware/database';
 import { errorHandler } from './middleware/errorHandler';
 import { NotFoundError } from './utils/errors/errors';
 import { csrfProtection, generateToken, mongoSanitization } from './middleware/security/security';
+import { CSRF_SKIP_PATHS } from './config/security/policy';
 import logger from './config/logger';
 import { responseWrapper } from './middleware/normalizeResponse';
 import { auditLogger } from './middleware/auditLogger';
@@ -21,8 +21,6 @@ import { apiLimiter, authLimiter, refreshLimiter, passwordResetLimiter, contactL
 import healthRoutes from './routes/monitoring/health';
 import v1Routes from './routes/v1';
 import { resolveTenant, setTenantContext } from './platform/tenants';
-
-dotenv.config();
 
 const app: express.Application = express();
 
@@ -140,7 +138,7 @@ app.get('/api/csrf-token', (req: any, res: any) => res.json({ csrfToken: generat
 app.use('/api', (req: any, res: any, next: any) => {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return next();
   if (process.env.NODE_ENV === 'test') return next();
-  const skipPaths = ['/api/v1/auth/refresh', '/api/v1/auth/logout', '/api/v1/auth/login', '/api/v1/auth/register', '/api/v1/auth/accept-invite', '/api/csrf-token'];
+  const skipPaths = CSRF_SKIP_PATHS;
   if (skipPaths.some(p => req.originalUrl.startsWith(p))) return next();
   csrfProtection(req, res, next);
 });

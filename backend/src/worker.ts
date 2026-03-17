@@ -1,7 +1,7 @@
 import { validateEnv } from './config/env';
 import { connectToDatabase, closeDatabaseConnection } from './config/database/database';
 import redisClient from './config/database/redis';
-import { emailQueue, emailWorker } from './queues/emailQueue';
+import { emailQueue, startEmailWorker } from './queues/emailQueue';
 import { auditCleanupQueue, auditCleanupWorker, scheduleAuditCleanup } from './queues/auditCleanupQueue';
 import { domainEventsQueue, domainEventsWorker } from './queues/domainEventsQueue';
 import { eventBus } from './platform/events';
@@ -14,6 +14,7 @@ const start = async () => {
   await connectToDatabase();
   registerAuthEventListeners();
   eventBus.startWorker();
+  const emailWorker = startEmailWorker();
   await scheduleAuditCleanup();
 
   logger.info('🔧 ===================================');

@@ -9,7 +9,7 @@
 
 ---
 
-## Quick Win #1 — Fix `VERIFY_USER_ON_REQUEST=false` in `.env.example`
+## ✅ Quick Win #1 — Fix `VERIFY_USER_ON_REQUEST=false` in `.env.example` — COMPLETED
 
 **Architecture Problem**
 `config/env.ts` defaults `VERIFY_USER_ON_REQUEST` to `true`, but `.env.example` explicitly sets it to `false`. Any developer or deployment pipeline that copies `.env.example` verbatim to production disables per-request user status verification. Deactivated users retain valid sessions for up to 15 minutes after deactivation. *(Part 3 §6.5, P1-2)*
@@ -27,9 +27,11 @@ Auth session integrity. A deactivated user account continues to have API access 
 
 **Risk Level:** None. This is a documentation/example fix. No code changes required.
 
+**Status:** ✅ Completed — `VERIFY_USER_ON_REQUEST` changed to `true` in `backend/.env.example` with explanatory comment added.
+
 ---
 
-## Quick Win #2 — Move `AUDIT_LOG_TTL_DAYS` into the Validated `env` Object
+## ✅ Quick Win #2 — Move `AUDIT_LOG_TTL_DAYS` into the Validated `env` Object — COMPLETED
 
 **Architecture Problem**
 `AUDIT_LOG_TTL_DAYS` is read directly via `process.env` in two production files (`AuditLog.ts` and `auditCleanupQueue.ts`), bypassing the Zod-validated `env` object. This breaks the architectural invariant that all configuration is validated at startup. A missing or non-numeric value silently defaults to `90` or produces `NaN` in the TTL calculation. *(Part 3 §6.5, §8 H4, P1-3)*
@@ -48,9 +50,11 @@ Configuration integrity. Audit log retention could be silently misconfigured, ca
 
 **Risk Level:** Low. Purely additive change to the env schema. Existing behavior is preserved.
 
+**Status:** ✅ Completed — `AUDIT_LOG_TTL_DAYS` added to Zod schema in `config/env.ts` as `z.coerce.number().int().min(1).default(90)`, exposed as `env.audit.logTtlDays`. Both `AuditLog.ts` and `auditCleanupQueue.ts` updated to consume `env.audit.logTtlDays`. TypeScript compilation verified clean.
+
 ---
 
-## Quick Win #3 — Extract the CSRF Skip List to a Named Constant
+## ✅ Quick Win #3 — Extract the CSRF Skip List to a Named Constant — COMPLETED
 
 **Architecture Problem**
 The array of paths that bypass CSRF protection is hardcoded inline inside `app.ts`. A security-critical configuration — which routes are exempt from CSRF enforcement — is not in a named, auditable location. Adding or removing a path requires editing the application bootstrap file with no indication of the security implication. *(Part 2 §5.4, Part 3 §8 M3, P2-2)*
@@ -78,9 +82,11 @@ Security configuration visibility and maintainability. An incorrect edit to this
 
 **Risk Level:** None. Pure refactor — no behavioral change.
 
+**Status:** ✅ Completed — `CSRF_SKIP_PATHS` constant added to `src/config/security/policy.ts` with full JSDoc. `app.ts` updated to import and use it. TypeScript compilation verified clean.
+
 ---
 
-## Quick Win #4 — Remove Redundant `dotenv.config()` Calls
+## ✅ Quick Win #4 — Remove Redundant `dotenv.config()` Calls — COMPLETED
 
 **Architecture Problem**
 `dotenv.config()` is called in three files: `src/app.ts`, `src/config/database/redis.ts`, and `src/config/env.ts`. Since `server.ts` imports `config/env.ts` first (which calls `dotenv.config()`), the subsequent calls are no-ops. The redundant calls create a misleading impression that each module independently manages its own environment loading. *(Part 2 §4.3, Part 3 §8 L1, P3-4)*
@@ -99,9 +105,11 @@ Code clarity. A developer reading `redis.ts` in isolation might believe it can b
 
 **Risk Level:** None. The calls are already no-ops at runtime.
 
+**Status:** ✅ Completed — `import dotenv` and `dotenv.config()` removed from `src/app.ts` and `src/config/database/redis.ts`. `redis.ts` now consumes `env.redis.url` instead of `process.env.REDIS_URL`. Single authoritative call remains in `src/config/env.ts`. TypeScript compilation verified clean.
+
 ---
 
-## Quick Win #5 — Resolve `isomorphic-dompurify` (Remove or Apply)
+## ✅ Quick Win #5 — Resolve `isomorphic-dompurify` (Remove or Apply) — COMPLETED
 
 **Architecture Problem**
 `isomorphic-dompurify` is listed as a production dependency but no active usage was observed in route handlers, services, or middleware. An unused security library creates a false sense of protection — a developer might assume HTML content is being sanitized when it is not. *(Part 1 §2.2, Part 2 §4.3, Part 3 §8 M1, P2-3)*
@@ -124,9 +132,11 @@ Dependency hygiene and security posture clarity. If user-generated HTML is store
 
 **Risk Level:** Low (remove) / Medium (apply — requires identifying all HTML-accepting fields).
 
+**Status:** ✅ Completed — Option A (remove) selected. No call sites for `DOMPurify` or `isomorphic-dompurify` exist anywhere in `src/`. The boilerplate has no domain models yet; when HTML-accepting fields are introduced (e.g., `PressRelease.content`), `DOMPurify.sanitize()` must be applied in the relevant service layer before persistence. `npm uninstall isomorphic-dompurify` removed 45 packages. TypeScript compilation verified clean.
+
 ---
 
-## Quick Win #6 — Make `emailWorker` Startup Explicit in `worker.ts`
+## ✅ Quick Win #6 — Make `emailWorker` Startup Explicit in `worker.ts` — COMPLETED
 
 **Architecture Problem**
 `emailWorker` is instantiated as a module-level side effect when `queues/emailQueue.ts` is imported. It starts automatically without any explicit call in `worker.ts`. This is invisible from reading the worker entry point and makes the worker lifecycle harder to reason about, test, or modify. *(Part 2 §5.3, P1-7)*
@@ -146,9 +156,11 @@ Deployment clarity and worker lifecycle management. If a future developer adds a
 
 **Risk Level:** Low. Behavioral change is zero — the worker starts at the same point in the lifecycle. The change is purely structural.
 
+**Status:** ✅ Completed — `emailQueue.ts` refactored: module-level `emailWorker` instantiation replaced with `startEmailWorker(): Worker | null` factory, matching the existing `createDomainEventsWorker` pattern in `domainEventsQueue.ts`. `worker.ts` updated to call `startEmailWorker()` explicitly and capture the returned instance for graceful shutdown. `NODE_ENV=test` guard preserved (factory returns `null` in test). TypeScript compilation verified clean.
+
 ---
 
-## Quick Win #7 — Verify and Document `.env` Gitignore Status
+## ✅ Quick Win #7 — Verify and Document `.env` Gitignore Status — COMPLETED
 
 **Architecture Problem**
 `backend/.env` appears in the repository directory listing. If this file has been committed to version control with real secrets, all JWT secrets, CSRF secret, database credentials, and API keys are exposed. *(Part 3 §6.4, §8 C1, P0-3)*
@@ -168,9 +180,11 @@ Potentially critical. If real secrets are in version control history, the entire
 
 **Risk Level:** The verification step is zero-risk. The remediation step (if needed) requires secret rotation and history rewrite, which is a coordinated team operation.
 
+**Status:** ✅ Completed — Verified: `backend/.env` has never been committed (`git log` returned empty). `backend/.env` is correctly listed in the root `.gitignore`. No secret rotation required. Added `gitleaks/gitleaks-action@v2` as the first step in `.github/workflows/ci.yml` (with `fetch-depth: 0` so full history is scanned on every push) to prevent future secret commits.
+
 ---
 
-## Quick Win #8 — Add `uploads/` to `.dockerignore`
+## ✅ Quick Win #8 — Add `uploads/` to `.dockerignore` — COMPLETED
 
 **Architecture Problem**
 The `backend/uploads/` directory is committed to the repository for development convenience. It is the local file storage path used when `AWS_S3_BUCKET` is not configured. If not excluded from the Docker build context, it will be copied into production images, potentially including test files and increasing image size unnecessarily. *(Part 1 §3.4, P3-6)*
@@ -189,20 +203,22 @@ Deployment hygiene. Production Docker images should not contain local developmen
 
 **Risk Level:** None. No code changes. No behavioral change in production (S3 adapter is used when configured).
 
+**Status:** ✅ Completed — Created `.dockerignore` at repo root (the Docker build context for `Dockerfile.api`, which uses `COPY backend/ ./backend/`). `backend/uploads/` excluded along with `node_modules/`, `dist/`, `.env` files, logs, coverage, `.git/`, and `docs/`. Added `backend/uploads/.gitkeep` to preserve the directory structure in the repository.
+
 ---
 
 ## Quick Win Summary
 
 | # | Title | Effort | Severity Addressed | Source |
 |---|---|---|---|---|
-| QW-1 | Fix `VERIFY_USER_ON_REQUEST=false` in `.env.example` | < 0.5 days | 🟧 P1-2 | Part 3 §6.5 |
-| QW-2 | Move `AUDIT_LOG_TTL_DAYS` into validated `env` object | 0.5 days | 🟧 P1-3 | Part 3 §6.5, §8 H4 |
-| QW-3 | Extract CSRF skip list to named constant | 0.5 days | 🟨 P2-2 | Part 2 §5.4, Part 3 §8 M3 |
-| QW-4 | Remove redundant `dotenv.config()` calls | < 0.5 days | 🟩 P3-4 | Part 2 §4.3, Part 3 §8 L1 |
-| QW-5 | Resolve `isomorphic-dompurify` (remove or apply) | 0.5–2 days | 🟨 P2-3 | Part 1 §2.2, Part 2 §4.3 |
-| QW-6 | Make `emailWorker` startup explicit in `worker.ts` | 1 day | 🟧 P1-7 | Part 2 §5.3 |
-| QW-7 | Verify and document `.env` gitignore status | < 0.5 days | 🟥 P0-3 | Part 3 §6.4, §8 C1 |
-| QW-8 | Add `uploads/` to `.dockerignore` | < 0.5 days | 🟩 P3-6 | Part 1 §3.4 |
+| QW-1 | ~~Fix `VERIFY_USER_ON_REQUEST=false` in `.env.example`~~ ✅ | < 0.5 days | 🟧 P1-2 | Part 3 §6.5 |
+| QW-2 | ~~Move `AUDIT_LOG_TTL_DAYS` into validated `env` object~~ ✅ | 0.5 days | 🟧 P1-3 | Part 3 §6.5, §8 H4 |
+| QW-3 | ~~Extract CSRF skip list to named constant~~ ✅ | 0.5 days | 🟨 P2-2 | Part 2 §5.4, Part 3 §8 M3 |
+| QW-4 | ~~Remove redundant `dotenv.config()` calls~~ ✅ | < 0.5 days | 🟩 P3-4 | Part 2 §4.3, Part 3 §8 L1 |
+| QW-5 | ~~Resolve `isomorphic-dompurify` (remove or apply)~~ ✅ | 0.5–2 days | 🟨 P2-3 | Part 1 §2.2, Part 2 §4.3 |
+| QW-6 | ~~Make `emailWorker` startup explicit in `worker.ts`~~ ✅ | 1 day | 🟧 P1-7 | Part 2 §5.3 |
+| QW-7 | ~~Verify and document `.env` gitignore status~~ ✅ | < 0.5 days | 🟥 P0-3 | Part 3 §6.4, §8 C1 |
+| QW-8 | ~~Add `uploads/` to `.dockerignore`~~ ✅ | < 0.5 days | 🟩 P3-6 | Part 1 §3.4 |
 
 **Total estimated effort: 4–6 days**
 **Issues addressed: 2× 🟥 P0, 3× 🟧 P1, 2× 🟨 P2, 2× 🟩 P3**

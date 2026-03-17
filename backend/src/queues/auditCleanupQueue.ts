@@ -4,7 +4,7 @@ import logger from '../config/logger';
 import { env } from '../config/env';
 
 const connection = { host: env.redis.host, port: env.redis.port };
-const RETENTION_DAYS = parseInt(process.env.AUDIT_LOG_TTL_DAYS || '90', 10);
+const RETENTION_DAYS = env.audit.logTtlDays;
 const isTest = process.env.NODE_ENV === 'test';
 
 export const auditCleanupQueue = new Queue('audit-cleanup', { connection });

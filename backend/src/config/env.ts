@@ -73,6 +73,9 @@ const envSchema = z
 
     // Monitoring
     SENTRY_DSN: z.string().optional(),
+
+    // Audit
+    AUDIT_LOG_TTL_DAYS: z.coerce.number().int().min(1).default(90),
   })
   .superRefine((data, ctx) => {
     if (data.NODE_ENV === 'production') {
@@ -181,6 +184,11 @@ export const env = {
   },
   csrf: { secret: parsed.CSRF_SECRET },
   mobile: { url: parsed.MOBILE_URL },
+  audit: {
+    // Number of days audit log entries are retained before automatic deletion.
+    // Used by both the MongoDB TTL index (AuditLog model) and the daily cleanup job.
+    logTtlDays: parsed.AUDIT_LOG_TTL_DAYS,
+  },
 };
 
 // ─── validateEnv ──────────────────────────────────────────────────────────────

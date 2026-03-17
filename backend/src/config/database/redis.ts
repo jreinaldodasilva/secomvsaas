@@ -1,10 +1,8 @@
 import logger from '../logger';
 import Redis from 'ioredis';
-import dotenv from 'dotenv';
+import { env } from '../env';
 
-dotenv.config();
-
-const redisClient = new Redis(process.env.REDIS_URL || 'redis://localhost:6379', {
+const redisClient = new Redis(env.redis.url, {
   lazyConnect: true,
   maxRetriesPerRequest: process.env.NODE_ENV === 'test' ? 1 : 3,
 });

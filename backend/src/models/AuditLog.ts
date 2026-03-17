@@ -1,4 +1,5 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { env } from '../config/env';
 
 export interface IAuditLog {
   user?: mongoose.Types.ObjectId;
@@ -46,7 +47,7 @@ const AuditLogSchema = new Schema<IAuditLog & Document>({
 });
 
 AuditLogSchema.index({ createdAt: -1 });
-AuditLogSchema.index({ createdAt: 1 }, { expireAfterSeconds: parseInt(process.env.AUDIT_LOG_TTL_DAYS || '90', 10) * 86400 });
+AuditLogSchema.index({ createdAt: 1 }, { expireAfterSeconds: env.audit.logTtlDays * 86400 });
 AuditLogSchema.index({ user: 1, createdAt: -1 });
 AuditLogSchema.index({ tenantId: 1, createdAt: -1 });
 AuditLogSchema.index({ action: 1, createdAt: -1 });

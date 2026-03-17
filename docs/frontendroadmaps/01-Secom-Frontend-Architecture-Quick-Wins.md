@@ -9,7 +9,7 @@
 
 ---
 
-## Quick Win #1: Scope Production Source Maps
+## ✅ Quick Win #1: Scope Production Source Maps — COMPLETED
 
 **Architecture Problem**  
 `vite.config.ts` sets `build.sourcemap: true`, which publishes the full original TypeScript source to the production build artifact. Any user can read the application's source code via browser DevTools on the live government-facing deployment. (Part 2 §6.2, FE-P0-02)
@@ -34,7 +34,9 @@ Part 2 §6.2 — "For a government-facing application, consider `build.sourcemap
 
 ---
 
-## Quick Win #2: Add CI `node_modules` Cache
+## ✅ Quick Win #2: Add CI `node_modules` Cache — COMPLETED
+
+> **Note:** `actions/setup-node@v4` with `cache: 'npm'` was already present in `ci.yml` — this is the official equivalent of a manual `actions/cache` step and fully satisfies the intent of this quick win. No change required.
 
 **Architecture Problem**  
 The GitHub Actions `ci.yml` pipeline runs `npm ci` on every push with no caching. Full dependency installation takes ~60 seconds on every run. (Part 2 §6.3, FE-P2-08)
@@ -67,7 +69,7 @@ Part 2 §6.3 — "Adding `actions/cache` for the npm cache would reduce install 
 
 ---
 
-## Quick Win #3: Fix Render-Blocking Google Fonts Load
+## ✅ Quick Win #3: Fix Render-Blocking Google Fonts Load — COMPLETED
 
 **Architecture Problem**  
 `src/styles/global.css` loads the Inter typeface via `@import url(https://fonts.googleapis.com/...)`. CSS `@import` is render-blocking — the browser cannot begin rendering until the font stylesheet is fetched. This degrades First Contentful Paint on every cold load. (Part 1 §4.3, FE-P2-04)
@@ -102,7 +104,7 @@ Part 1 §4.3 — "The recommended approach is `<link rel='preconnect'>` + `<link
 
 ---
 
-## Quick Win #4: Add `VITE_APP_ENV` Environment Variable
+## ✅ Quick Win #4: Add `VITE_APP_ENV` Environment Variable — COMPLETED
 
 **Architecture Problem**  
 The frontend has no environment awareness variable. `config/env.ts` exposes only `VITE_API_URL`. The frontend cannot distinguish `development`, `staging`, and `production` at runtime, making environment-specific behaviour (banners, feature flags, conditional logging) impossible without build-time workarounds. (Part 2 §6.1, FE-P2-03)
@@ -134,7 +136,7 @@ Part 2 §6.1 — "There is no `VITE_APP_ENV` or equivalent variable to distingui
 
 ---
 
-## Quick Win #5: Migrate `useHealthCheck` to TanStack Query
+## ✅ Quick Win #5: Migrate `useHealthCheck` to TanStack Query — COMPLETED
 
 **Architecture Problem**  
 `useHealthCheck` polls `GET /api/v1/health` every 30 seconds using a raw `setInterval`. This bypasses the established TanStack Query server-state layer and continues polling even when the browser tab is hidden, generating unnecessary network requests. (Part 2 §5.6, FE-P2-01)
@@ -172,7 +174,7 @@ Part 2 §5.6 — "The health check uses `setInterval` directly rather than TanSt
 
 ---
 
-## Quick Win #6: Move RBAC Permission Map to `@vsaas/types`
+## ✅ Quick Win #6: Move RBAC Permission Map to `@vsaas/types` — COMPLETED
 
 **Architecture Problem**  
 `config/permissions.ts` contains `ROLE_PERMISSIONS: Record<Role, Permission[]>` — a manual duplicate of the backend RBAC configuration. There is no shared source of truth. A backend permission change that is not mirrored to the frontend silently produces incorrect UI. (Part 1 §1, Part 2 §7.3, FE-P0-03)
@@ -205,7 +207,7 @@ Part 2 §7.3 — "Moving the canonical permission definitions to the shared `@vs
 
 ---
 
-## Quick Win #7: Encode Provider Ordering Constraint Structurally
+## ✅ Quick Win #7: Encode Provider Ordering Constraint Structurally — COMPLETED
 
 **Architecture Problem**  
 The `TenantProvider` ordering constraint (must be inside `AuthProvider`) is documented only as a comment in `TenantContext.tsx`. A future refactor that reorders providers in `index.tsx` would silently break tenant resolution with no compile-time or test-time guard. (Part 2 §5.1, FE-P0-01)
@@ -248,7 +250,7 @@ Part 2 §5.1 — "The `TenantProvider` ordering constraint is documented in a co
 
 ---
 
-## Quick Win #8: Replace `ThemeToggle` No-Op with Honest UI
+## ✅ Quick Win #8: Replace `ThemeToggle` No-Op with Honest UI — COMPLETED
 
 **Architecture Problem**  
 `ThemeToggle` calls `toggleTheme()` in `uiStore`, which updates Zustand state, but the dark mode CSS custom property token set is not defined in `tokens/index.css`. The toggle appears functional but has no effect. Users clicking it receive no feedback and no visual change. (Part 1 §1, Part 2 §8.3, FE-P3-04)
@@ -278,14 +280,14 @@ Part 1 §1 — "dark mode is wired but not implemented (ThemeToggle is a no-op)"
 
 | # | Title | Issue ID | Effort | Risk | Phase |
 |---|---|---|---|---|---|
-| QW-1 | Scope production source maps | FE-P0-02 | 5 min | None | Phase 1 |
-| QW-2 | Add CI `node_modules` cache | FE-P2-08 | 15 min | None | Phase 1 |
-| QW-3 | Fix render-blocking Google Fonts load | FE-P2-04 | 1h | Low | Phase 3 |
-| QW-4 | Add `VITE_APP_ENV` environment variable | FE-P2-03 | 2h | None | Phase 1 |
-| QW-5 | Migrate `useHealthCheck` to TanStack Query | FE-P2-01 | 30 min | Low | Phase 2 |
-| QW-6 | Move RBAC permission map to `@vsaas/types` | FE-P0-03 | 0.5d | Low | Phase 1 |
-| QW-7 | Encode provider ordering constraint structurally | FE-P0-01 | 0.5d | Low | Phase 1 |
-| QW-8 | Replace `ThemeToggle` no-op with honest UI | FE-P3-04 | 1h | None | Phase 4 |
+| QW-1 | ~~Scope production source maps~~ ✅ | FE-P0-02 | 5 min | None | Phase 1 |
+| QW-2 | ~~Add CI `node_modules` cache~~ ✅ | FE-P2-08 | 15 min | None | Phase 1 |
+| QW-3 | ~~Fix render-blocking Google Fonts load~~ ✅ | FE-P2-04 | 1h | Low | Phase 3 |
+| QW-4 | ~~Add `VITE_APP_ENV` environment variable~~ ✅ | FE-P2-03 | 2h | None | Phase 1 |
+| QW-5 | ~~Migrate `useHealthCheck` to TanStack Query~~ ✅ | FE-P2-01 | 30 min | Low | Phase 2 |
+| QW-6 | ~~Move RBAC permission map to `@vsaas/types`~~ ✅ | FE-P0-03 | 0.5d | Low | Phase 1 |
+| QW-7 | ~~Encode provider ordering constraint structurally~~ ✅ | FE-P0-01 | 0.5d | Low | Phase 1 |
+| QW-8 | ~~Replace `ThemeToggle` no-op with honest UI~~ ✅ | FE-P3-04 | 1h | None | Phase 4 |
 
 **Total quick win effort:** ~1.5 days  
 **Combined impact:** Closes all 3 P0 issues; eliminates render-blocking font load; removes dead state; unifies health check with server-state layer; enables environment-aware behaviour; accelerates CI by ~55s per run.

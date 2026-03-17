@@ -6,7 +6,7 @@ import { useAuth } from '../../../contexts/AuthContext';
 import { useTenant } from '../../../contexts/TenantContext';
 import { useTranslation } from '../../../i18n';
 import { usePageTitle } from '../../../hooks/usePageTitle';
-import { ROLES } from '../../../config/permissions';
+import { ROLES } from '@vsaas/types';
 
 interface UserItem {
   id: string;

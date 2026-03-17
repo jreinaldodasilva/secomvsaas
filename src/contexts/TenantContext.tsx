@@ -1,10 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { Tenant } from '@vsaas/types';
 import { http } from '../services/http';
-import { useAuth } from './AuthContext';
-
-// TenantProvider must be rendered inside AuthProvider — it calls useAuth() internally.
-// Reversing the provider order in App.tsx will throw at runtime.
+import { useAuth, AuthContext } from './AuthContext';
 
 interface TenantContextValue {
   tenant: Tenant | null;
@@ -16,6 +13,14 @@ interface TenantContextValue {
 const TenantContext = createContext<TenantContextValue | null>(null);
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
+  if (import.meta.env.DEV && !useContext(AuthContext)) {
+    throw new Error(
+      '[TenantProvider] Must be rendered inside <AuthProvider>. ' +
+      'Check AppProviders — TenantProvider must be nested within AuthProvider. ' +
+      'See docs/frontend/02-Secom-Frontend-Architecture-Overview-Part2.md §5.1',
+    );
+  }
+
   const { isAuthenticated, user } = useAuth();
   const [tenant, setTenant] = useState<Tenant | null>(null);
   const [isLoading, setIsLoading] = useState(false);

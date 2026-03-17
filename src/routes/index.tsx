@@ -5,7 +5,7 @@ import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
 import { CitizenPortalLayout } from '../layouts/CitizenPortalLayout/CitizenPortalLayout';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
 import { ProtectedCitizenRoute } from '../components/Auth/ProtectedRoute/ProtectedCitizenRoute';
-import { rolesWithPermission } from '../config/permissions';
+import { rolesWithPermission } from '@vsaas/types';
 
 const LandingPage = lazy(() => import('../pages/Landing/LandingPage').then(m => ({ default: m.LandingPage })));
 const PrivacyPage = lazy(() => import('../pages/Legal/PrivacyPage').then(m => ({ default: m.PrivacyPage })));

@@ -53,6 +53,7 @@ jobs:
       - name: Build frontend
         env:
           VITE_API_URL: https://api.placeholder.example
+          VITE_APP_ENV: production
         run: npm run build
 
       - name: Backend tests

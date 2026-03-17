@@ -6,6 +6,7 @@ if (!apiUrl && import.meta.env.MODE !== 'test') {
 
 export const ENV = {
   API_URL: (apiUrl ?? 'http://localhost:5000') as string,
+  APP_ENV: (import.meta.env.VITE_APP_ENV ?? 'development') as 'development' | 'staging' | 'production',
   IS_DEV:  import.meta.env.DEV,
   IS_PROD: import.meta.env.PROD,
   MODE:    import.meta.env.MODE,

@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
-import { hasAnyPermission } from '../../../config/permissions';
+import { hasAnyPermission } from '@vsaas/types';
 
 interface PermissionGateProps {
   permissions: string[];

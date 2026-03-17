@@ -4,14 +4,12 @@ import { act } from '@testing-library/react';
 describe('uiStore', () => {
   beforeEach(() => {
     localStorage.clear();
-    // Reset store to initial state
-    useUIStore.setState({ sidebarOpen: true, theme: 'light' });
+    useUIStore.setState({ sidebarOpen: true });
   });
 
   it('has correct initial state', () => {
     const state = useUIStore.getState();
     expect(state.sidebarOpen).toBe(true);
-    expect(state.theme).toBe('light');
   });
 
   it('toggleSidebar flips sidebarOpen', () => {
@@ -28,10 +26,5 @@ describe('uiStore', () => {
 
     act(() => useUIStore.getState().setSidebarOpen(true));
     expect(useUIStore.getState().sidebarOpen).toBe(true);
-  });
-
-  it('toggleTheme is a no-op — theme stays light (dark mode removed)', () => {
-    act(() => useUIStore.getState().toggleTheme());
-    expect(useUIStore.getState().theme).toBe('light');
   });
 });

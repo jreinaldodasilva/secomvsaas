@@ -1,27 +1,23 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { ENV } from '../config/env';
 
 const HEALTH_URL = `${ENV.API_URL}/api/v1/health`;
-const POLL_INTERVAL = 30_000;
 
-export function useHealthCheck(interval = POLL_INTERVAL) {
-  const [isApiReachable, setIsApiReachable] = useState(true);
-  const timer = useRef<ReturnType<typeof setInterval>>();
+async function fetchHealth(): Promise<boolean> {
+  const res = await fetch(HEALTH_URL, { method: 'GET', cache: 'no-store' });
+  if (!res.ok) throw new Error('API unreachable');
+  return true;
+}
 
-  const check = useCallback(async () => {
-    try {
-      const res = await fetch(HEALTH_URL, { method: 'GET', cache: 'no-store' });
-      setIsApiReachable(res.ok);
-    } catch {
-      setIsApiReachable(false);
-    }
-  }, []);
+export function useHealthCheck() {
+  const { isError, refetch } = useQuery({
+    queryKey: ['health'],
+    queryFn: fetchHealth,
+    refetchInterval: 30_000,
+    refetchIntervalInBackground: false,
+    retry: false,
+    throwOnError: false,
+  });
 
-  useEffect(() => {
-    check();
-    timer.current = setInterval(check, interval);
-    return () => clearInterval(timer.current);
-  }, [check, interval]);
-
-  return { isApiReachable, recheckNow: check };
+  return { isApiReachable: !isError, recheckNow: refetch };
 }

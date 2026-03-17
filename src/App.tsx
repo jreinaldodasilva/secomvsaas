@@ -1,6 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import { QueryProvider } from './providers/QueryProvider';
 import { AuthProvider } from './contexts/AuthContext';
+import { CitizenAuthProvider } from './contexts/CitizenAuthContext';
 import { TenantProvider } from './contexts/TenantContext';
 import { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 import { ConnectionBanner } from './components/UI/ConnectionBanner/ConnectionBanner';
@@ -17,7 +18,8 @@ export default function App() {
       <QueryProvider>
         <BrowserRouter>
           <AuthProvider>
-            <TenantProvider>
+            <CitizenAuthProvider>
+              <TenantProvider>
               <a href="#main-content" className="skip-link">Ir para o conteúdo principal</a>
               <TopLoadingBar />
               <ScrollToTop />
@@ -36,7 +38,8 @@ export default function App() {
                   },
                 }}
               />
-            </TenantProvider>
+              </TenantProvider>
+            </CitizenAuthProvider>
           </AuthProvider>
         </BrowserRouter>
       </QueryProvider>

@@ -100,7 +100,7 @@
 |---|---|---|---|---|---|---|---|
 | P3-1 | No OpenTelemetry or distributed tracing beyond Sentry. No structured trace IDs propagated through the async event pipeline. | Observability ceiling; difficult to trace a request through API → EventBus → Worker | Observability | 3–5 days | OpenTelemetry SDK | Open | Part 1 §2.2 |
 | P3-2 | No DI container. Services use constructor instantiation and module-level singletons. Unit tests require Jest module-level mocking rather than constructor injection. | Testability ceiling; harder to isolate units as complexity grows | Modularity / Testability | 3–5 days | None | Open | Part 3 §7.7 |
-| P3-3 | `PORTAL_JWT_SECRET` is validated and required at startup but its usage in a citizen portal auth flow is not present in current routes. A required secret with no implementation path. | Configuration clarity; dead configuration weight | Configuration / Auth | 1 day (document) or 3–5 days (implement) | None | Open | Part 3 §8 L4 |
+| P3-3 | `PORTAL_JWT_SECRET` is validated and required at startup but its usage in a citizen portal auth flow is not present in current routes. A required secret with no implementation path. | Configuration clarity; dead configuration weight | Configuration / Auth | 1 day (document) or 3–5 days (implement) | None | ✅ Closed (implemented) | Part 3 §8 L4 |
 | P3-4 | Redundant `dotenv.config()` calls in `app.ts`, `config/database/redis.ts`, and `config/env.ts`. | Code clarity; misleading initialization sequence | Configuration | < 1 day | None | ✅ Closed (QW-4) | Part 2 §4.3, Part 3 §8 L1 |
 | P3-5 | ESLint v8 and `@typescript-eslint` v6 are in maintenance mode. Stricter type-aware rules available in v9/v8 are not enforced. | Toolchain debt; missed static analysis coverage | Dev Tooling | 1 day | None | Open | Part 2 §4.2, Part 3 §8 L2 |
 | P3-6 | `uploads/` directory committed to repository. Appropriate for development but must be excluded from production Docker images. | Deployment hygiene; image bloat | Deployment | < 1 day | None | ✅ Closed (QW-8) | Part 1 §3.4 |
@@ -218,7 +218,7 @@
 | ~~Add `uploads/` to `.dockerignore`; verify production image excludes local storage~~ | P3-6 | 0.5 days | ✅ Done (QW-8) |
 | Add OpenTelemetry instrumentation; propagate trace IDs through API → EventBus → Worker | P3-1 | 4 days | Open |
 | Introduce constructor injection for service dependencies; remove `jest.mock` dependency in unit tests | P3-2 | 3 days | Open |
-| Document or implement `PORTAL_JWT_SECRET` citizen portal auth flow | P3-3 | 1 day | Open |
+| Document or implement `PORTAL_JWT_SECRET` citizen portal auth flow | P3-3 | 1 day | ✅ Closed (implemented) |
 | Upgrade ESLint to v9 and `@typescript-eslint` to v8 | P3-5 | 1 day | Open |
 
 **Remaining effort:** 9 days (down from 10 days)

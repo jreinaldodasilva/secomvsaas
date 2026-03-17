@@ -1,0 +1,82 @@
+import { useState, FormEvent } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useCitizenAuth } from '../../contexts/CitizenAuthContext';
+import { usePageTitle } from '../../hooks/usePageTitle';
+import { ApiError } from '../../services/http';
+import { PasswordInput } from '../../components/UI';
+import s from '../Auth.module.css';
+
+export function CitizenLoginPage() {
+  usePageTitle('Entrar — Portal do Cidadão');
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useCitizenAuth();
+  const from = (location.state as any)?.from?.pathname || '/portal/dashboard';
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+    try {
+      await login(email, password);
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(err instanceof ApiError ? err.message : 'Erro ao fazer login');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className={s.page}>
+      <div className={s.card}>
+        <div className={s.header}>
+          <h1 className={s.title}>Entrar</h1>
+          <p className={s.subtitle}>Acesse o Portal do Cidadão</p>
+        </div>
+        <div className={s.body}>
+          {error && (
+            <div className={s.errorBanner} role="alert">
+              <span>⚠</span> {error}
+            </div>
+          )}
+          <form onSubmit={handleSubmit} noValidate>
+            <div className={s.field}>
+              <label htmlFor="email" className={s.label}>E-mail</label>
+              <input
+                id="email"
+                type="email"
+                className={s.input}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                autoFocus
+              />
+            </div>
+            <PasswordInput
+              id="password"
+              label="Senha"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              autoComplete="current-password"
+              wrapperClassName={s.field}
+            />
+            <button type="submit" className={s.btnPrimary} disabled={loading}>
+              {loading ? 'Entrando...' : 'Entrar'}
+            </button>
+          </form>
+        </div>
+        <div className={s.footer}>
+          Não tem conta? <Link to="/portal/register">Cadastrar</Link>
+        </div>
+      </div>
+    </div>
+  );
+}

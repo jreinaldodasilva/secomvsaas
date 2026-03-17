@@ -2,7 +2,9 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { PublicLayout } from '../layouts/PublicLayout/PublicLayout';
 import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
+import { CitizenPortalLayout } from '../layouts/CitizenPortalLayout/CitizenPortalLayout';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
+import { ProtectedCitizenRoute } from '../components/Auth/ProtectedRoute/ProtectedCitizenRoute';
 import { rolesWithPermission } from '../config/permissions';
 
 const LandingPage = lazy(() => import('../pages/Landing/LandingPage').then(m => ({ default: m.LandingPage })));
@@ -25,6 +27,11 @@ const EventsPage = lazy(() => import('../pages/Domain/Events/EventsPage').then(m
 const AppointmentsPage = lazy(() => import('../pages/Domain/Appointments/AppointmentsPage').then(m => ({ default: m.AppointmentsPage })));
 const CitizenPortalPage = lazy(() => import('../pages/Domain/CitizenPortal/CitizenPortalPage').then(m => ({ default: m.CitizenPortalPage })));
 const SocialMediaPage = lazy(() => import('../pages/Domain/SocialMedia/SocialMediaPage').then(m => ({ default: m.SocialMediaPage })));
+const CitizenPortalHomePage = lazy(() => import('../pages/CitizenPortal/CitizenPortalHomePage').then(m => ({ default: m.CitizenPortalHomePage })));
+const CitizenLoginPage = lazy(() => import('../pages/CitizenPortal/CitizenLoginPage').then(m => ({ default: m.CitizenLoginPage })));
+const CitizenRegisterPage = lazy(() => import('../pages/CitizenPortal/CitizenRegisterPage').then(m => ({ default: m.CitizenRegisterPage })));
+const CitizenDashboardPage = lazy(() => import('../pages/CitizenPortal/CitizenDashboardPage').then(m => ({ default: m.CitizenDashboardPage })));
+const CitizenProfilePage = lazy(() => import('../pages/CitizenPortal/CitizenProfilePage').then(m => ({ default: m.CitizenProfilePage })));
 
 function LazyFallback() {
   return <div className="loading-screen"><div className="spinner spinner-lg" /></div>;
@@ -62,6 +69,15 @@ export function AppRoutes() {
           <Route path="/appointments" element={<ProtectedRoute allowedRoles={rolesWithPermission('appointments:read')}><AppointmentsPage /></ProtectedRoute>} />
           <Route path="/citizen-portal" element={<ProtectedRoute allowedRoles={rolesWithPermission('citizen-portal:read')}><CitizenPortalPage /></ProtectedRoute>} />
           <Route path="/social-media" element={<ProtectedRoute allowedRoles={rolesWithPermission('social-media:read')}><SocialMediaPage /></ProtectedRoute>} />
+        </Route>
+
+        {/* Citizen Portal */}
+        <Route element={<CitizenPortalLayout />}>
+          <Route path="/portal" element={<CitizenPortalHomePage />} />
+          <Route path="/portal/login" element={<CitizenLoginPage />} />
+          <Route path="/portal/register" element={<CitizenRegisterPage />} />
+          <Route path="/portal/dashboard" element={<ProtectedCitizenRoute><CitizenDashboardPage /></ProtectedCitizenRoute>} />
+          <Route path="/portal/profile" element={<ProtectedCitizenRoute><CitizenProfilePage /></ProtectedCitizenRoute>} />
         </Route>
 
         {/* Fallback */}

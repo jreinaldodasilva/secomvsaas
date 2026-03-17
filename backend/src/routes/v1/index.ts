@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import authRoutes from '../auth';
+import citizenAuthRoutes from '../citizen-auth';
 import healthRoutes from '../monitoring/health';
 import { tenantRoutes } from '../../platform/tenants';
 import userRoutes from '../users/user.routes';
@@ -20,6 +21,7 @@ const router: Router = Router();
 
 // Platform
 router.use('/auth', authRoutes);
+router.use('/citizen-auth', citizenAuthRoutes);
 router.use('/health', healthRoutes);
 router.use('/tenants', tenantRoutes);
 router.use('/users', userRoutes);

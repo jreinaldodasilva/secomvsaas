@@ -1,8 +1,20 @@
 import { Request, Response, NextFunction } from 'express';
+import jwt from 'jsonwebtoken';
 import { tenantService } from '../services/tenant.service';
 import { TenantContext, TenantContextData } from '../TenantContext';
 import { AuthenticatedRequest } from '../../../middleware/auth/auth';
 import logger from '../../../config/logger';
+
+function extractTenantIdFromCookie(req: Request): string | undefined {
+  try {
+    const token = req.cookies?.['secom_access_token'];
+    if (!token) return undefined;
+    const decoded = jwt.decode(token) as Record<string, any> | null;
+    return decoded?.tenantId ?? undefined;
+  } catch {
+    return undefined;
+  }
+}
 
 /**
  * Resolves the tenant from the request and attaches it to req.tenant.
@@ -16,8 +28,8 @@ export const resolveTenant = async (req: Request, res: Response, next: NextFunct
   try {
     const authReq = req as AuthenticatedRequest;
 
-    // 1. From authenticated user's JWT
-    const tenantIdFromToken = authReq.user?.tenantId;
+    // 1. From authenticated user's JWT (already verified) or decoded cookie (pre-auth)
+    const tenantIdFromToken = authReq.user?.tenantId ?? extractTenantIdFromCookie(req);
 
     // 2. From header (used by super_admin or API clients)
     const tenantIdFromHeader = req.headers['x-tenant-id'] as string | undefined;

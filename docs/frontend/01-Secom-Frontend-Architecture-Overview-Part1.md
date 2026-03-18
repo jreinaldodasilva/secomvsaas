@@ -1,8 +1,8 @@
 # Secom Frontend — Architecture Overview
 ## Part 1: Technology Stack, Project Structure & Dependency Analysis
 
-**Document version:** 1.0  
-**Codebase snapshot:** post-commit `f2a9d48`  
+**Document version:** 1.2  
+**Codebase snapshot:** post-commit `7972600`  
 **Scope:** `src/` (frontend), `packages/types/`, `vite.config.ts`, `tsconfig.json`, `package.json`, CI pipeline  
 
 ---
@@ -15,7 +15,7 @@ The architecture is **layered and type-safe**: TypeScript strict mode is enabled
 
 **Strengths:** clean separation between server state (TanStack Query) and client state (Zustand), consistent domain hook pattern, strong TypeScript coverage, well-structured CI pipeline, and a coherent design token system.
 
-**Primary risks:** dark mode is wired but not implemented (ThemeToggle is a no-op), the RBAC permission map is duplicated between frontend and backend with no shared source of truth, domain page components co-locate form logic and validation in a way that will not scale beyond the current module count, and the `CrudPage` component directory exists but contains no implementation.
+**Current state:** all architecture improvement roadmap items resolved (21 of 22; FE-P3-01 skipped by decision). Architecture maturity score: 83/100 — "Advanced" tier. The sole remaining gap is the `framer-motion` bundle (~100KB gzipped), retained by explicit decision.
 
 ---
 
@@ -31,21 +31,21 @@ The architecture is **layered and type-safe**: TypeScript strict mode is enabled
 | React Router DOM | Routing | 6.30.1 | Client-side routing | Config-based, nested routes, lazy loading |
 | TanStack Query | Server state | 5.89.0 | Data fetching, caching, mutations | Global `QueryClient` with custom retry logic |
 | Zustand | Client state | 4.5.7 | UI state (sidebar, theme) | Single store; minimal usage |
-| framer-motion | Animation | 12.37.0 | Landing page animations + top loading bar | Used in 5 files; heavy bundle impact |
+| framer-motion | Animation | 12.37.0 | Landing page animations + top loading bar | Used in 5 files; ~100KB gzipped — retained by decision (FE-P3-01) |
 | react-hot-toast | Notifications | 2.6.0 | Toast notifications | Thin `useToast` wrapper |
-| react-icons | Icons | 4.12.0 | Icon set (Material Design subset) | Wrapped in custom `Icon` component |
+| react-icons | Icons | 5.6.0 | Icon set (Material Design subset) | Wrapped in custom `Icon` component; upgraded from v4 (FE-P3-02) |
 | `@vsaas/types` | Shared types | local | API contract types shared with backend | File-system workspace package |
 | CSS Modules | Styling | — | Component-scoped styles | All layout/component CSS |
 | CSS Custom Properties | Design tokens | — | Theming and design system | `src/styles/tokens/index.css` |
 | Vitest | Unit testing | 2.0.0 | Component and hook tests | jsdom environment |
 | @testing-library/react | Testing utilities | 16.3.0 | Component rendering in tests | |
 | Cypress | E2E testing | 15.1.0 | End-to-end browser tests | 2 spec files in CI |
-| ESLint | Linting | 8.57.1 | Static analysis | v8 (maintenance mode — see §3) |
+| ESLint | Linting | 9.39.4 | Static analysis | v9 flat config (`eslint.config.js`) — 0 errors (FE-P1-06) |
 | @typescript-eslint | TS linting | 8.57.0 | TypeScript-aware lint rules | |
 | Prettier | Formatting | 3.6.2 | Code formatting | `printWidth: 100`, single quotes |
 | Husky + lint-staged | Git hooks | 9.1.7 / 16.2.3 | Pre-commit lint + format | |
 | GitHub Actions | CI | — | Type-check, lint, test, build, E2E | Single `ci.yml` job |
-| Inter (Google Fonts) | Typography | — | Primary typeface | Loaded via `@import` in `global.css` |
+| Inter (Google Fonts) | Typography | — | Primary typeface | Non-blocking `<link>` tags in `index.html` (FE-P2-04) |
 
 ### 2.2 Key React Features in Use
 
@@ -59,7 +59,7 @@ The architecture is **layered and type-safe**: TypeScript strict mode is enabled
 | Concurrent features (useTransition, useDeferredValue) | ❌ | Not used |
 | React.memo | ❌ | Not used |
 | useReducer | ❌ | Not used |
-| Portals | ❌ | Modal uses inline DOM, not `createPortal` |
+| Portals | ✅ | `Modal` uses `createPortal` targeting `document.body` (FE-P2-07) |
 | Ref forwarding | ❌ | Not used |
 
 ### 2.3 TypeScript Configuration
@@ -79,7 +79,7 @@ Key `tsconfig.json` settings:
 | `jsx` | `react-jsx` | New JSX transform; no `import React` required |
 | Test files | excluded | `*.test.ts(x)` excluded from main `tsconfig.json` |
 
-**Observation:** `@/*` path alias is defined but not used in the codebase — all imports use relative paths. The alias is available but unadopted.
+**Note:** `@/*` path alias is fully adopted — 244 relative parent imports rewritten across 84 files (FE-P2-02). ESLint `no-restricted-imports` rule blocks relative parent imports going forward.
 
 ### 2.4 State Management Architecture
 
@@ -99,14 +99,15 @@ Key `tsconfig.json` settings:
 │  └── TenantContext: current tenant + feature flags      │
 │                                                         │
 │  Client State (Zustand)                                 │
-│  └── uiStore: sidebarOpen, theme (toggleTheme is no-op) │
+│  └── uiStore: sidebarOpen (theme/toggleTheme removed)   │
 │                                                         │
 │  i18n State (Zustand)                                   │
-│  └── useI18nStore: locale (pt-BR only, hardcoded)       │
+│  └── useI18nStore: locale (pt-BR); useTranslation       │
+│      returns locale-bound t/tArray via useCallback      │
 └─────────────────────────────────────────────────────────┘
 ```
 
-**Observation:** `TenantContext` fetches tenant data via raw `http.get()` rather than TanStack Query, bypassing the cache layer. This means tenant data is not deduplicated, not cached with stale-while-revalidate semantics, and not invalidatable from other query operations.
+**Note:** `TenantContext` migrated to TanStack Query `useQuery` (FE-P1-02). All data fetching runs through a single server-state layer. No parallel fetching paths remain.
 
 ---
 
@@ -127,14 +128,15 @@ src/
 │   └── UI/              # Design system component library (20 components)
 │
 ├── config/              # App-level configuration
-│   ├── env.ts           # VITE_API_URL validation + ENV object
-│   ├── permissions.ts   # Frontend RBAC map (duplicates backend)
+│   ├── env.ts           # VITE_API_URL + VITE_APP_ENV validation + ENV object
 │   └── queryClient.ts   # TanStack Query global config
+│   # permissions.ts deleted — PERMISSIONS/ROLE_PERMISSIONS moved to @vsaas/types (FE-P0-03)
 │
 ├── contexts/            # React Context providers
 │   ├── AuthContext.tsx       # Staff auth session
 │   ├── CitizenAuthContext.tsx # Citizen portal session
-│   └── TenantContext.tsx     # Tenant data + feature flags
+│   ├── TenantContext.tsx     # Tenant data + feature flags (TanStack Query)
+│   └── index.ts             # Barrel export (FE-P3-06)
 │
 ├── hooks/               # Custom React hooks
 │   ├── useApi.ts        # TanStack Query wrappers (useApiQuery, useApiMutation)
@@ -144,23 +146,25 @@ src/
 │   ├── usePageTitle.ts  # document.title management
 │   ├── useSessionTimeout.ts # Inactivity logout
 │   ├── useToast.ts      # react-hot-toast wrapper
-│   └── use{Domain}.ts   # 7 domain-specific hooks (one per module)
+│   ├── use{Domain}.ts   # 7 domain-specific hooks (one per module)
+│   └── index.ts         # Barrel export — all 14 hooks (FE-P3-06)
 │
 ├── i18n/                # Internationalisation
-│   ├── index.ts         # Zustand-based i18n store + t() function
-│   └── locales/pt-BR.json # Single locale (Portuguese Brazil)
+│   ├── index.ts         # Zustand store; useTranslation returns locale-bound callbacks (FE-P3-03)
+│   └── locales/pt-BR.json # Single locale; includes breadcrumbs.* section (FE-P2-05)
 │
 ├── layouts/             # Page layout shells
 │   ├── AuthLayout/      # Minimal layout (ErrorBoundary + Outlet)
 │   ├── CitizenPortalLayout/ # Citizen portal header/footer
 │   ├── DashboardLayout/ # Staff sidebar + main content
-│   └── PublicLayout/    # Public site header/footer
+│   ├── PublicLayout/    # Public site header/footer
+│   └── index.ts         # Barrel export (FE-P3-06)
 │
 ├── pages/               # Route-level page components
 │   ├── AcceptInvite/
 │   ├── Admin/           # Dashboard, Users
 │   ├── CitizenPortal/   # Citizen-facing portal pages (new)
-│   ├── Domain/          # 7 domain modules (Page + Form per module)
+│   ├── Domain/          # 7 domain modules — all use CrudPage abstraction (FE-P1-01)
 │   ├── Error/           # 404, 403
 │   ├── ForgotPassword/
 │   ├── Landing/
@@ -177,10 +181,10 @@ src/
 │   └── index.tsx        # All routes, lazy imports, layout nesting
 │
 ├── services/            # API communication layer
-│   ├── api/             # Domain-specific service modules
-│   ├── base/            # Placeholder (empty)
-│   ├── interceptors/    # Placeholder (documented intent, not implemented)
-│   └── http.ts          # Fetch wrapper with token refresh logic
+│   ├── api/             # 10 domain service modules + barrel index.ts (FE-P3-06)
+│   ├── base/            # ApiError, buildUrl, baseRequest (FE-P1-03)
+│   ├── interceptors/    # withRefreshInterceptor (FE-P1-03)
+│   └── http.ts          # Thin composition layer (fetch + interceptors)
 │
 ├── store/               # Zustand stores
 │   ├── index.ts         # Barrel export
@@ -189,6 +193,10 @@ src/
 ├── styles/              # Global styles
 │   ├── global.css       # Reset, typography, utility classes
 │   └── tokens/index.css # CSS custom property design tokens
+│
+├── validation/          # Form validation layer (FE-P1-07)
+│   └── domain/          # 7 files (one per domain) + barrel index.ts
+│                        # each exports FormState type, emptyForm, validate*, domain constants
 │
 └── tests/
     └── setup.ts         # Vitest global setup (jest-dom, locale, matchMedia mock)
@@ -201,18 +209,19 @@ src/
 | `components/UI/` | 20 | 9 | ~35 | `DataTable.tsx` (123) |
 | `components/Landing/` | 8 | 0 | ~45 | `landing.data.ts` (135) |
 | `components/Auth/` | 4 | 1 | ~20 | `PermissionGate.tsx` (15) |
-| `pages/Domain/` | 14 | 1 | ~85 | `CitizenPortalPage.tsx` (102) |
+| `pages/Domain/` | 14 | 7 | ~85 | `CitizenPortalPage.tsx` (102) |
 | `pages/Admin/` | 2 | 0 | ~135 | `UsersPage.tsx` (166) |
 | `pages/CitizenPortal/` | 5 | 0 | ~65 | `CitizenRegisterPage.tsx` (96) |
 | `pages/` (auth) | 8 | 5 | ~80 | `RegisterPage.tsx` (118) |
 | `hooks/` | 15 | 3 | ~30 | `domain-hooks.test.ts` (328) |
-| `contexts/` | 3 | 1 | ~55 | `TenantContext.tsx` (60) |
-| `services/` | 10 | 1 | ~30 | `http.ts` (93) |
+| `contexts/` | 3 | 2 | ~55 | `TenantContext.tsx` (60) |
+| `services/` | 13 | 1 | ~30 | `http.ts` (thin composition) |
+| `validation/domain/` | 8 | 1 | ~40 | `pressRelease.ts` |
 | `layouts/` | 5 | 1 | ~60 | `DashboardLayout.tsx` (96) |
 | `store/` | 2 | 1 | ~20 | `uiStore.ts` (20) |
 | `i18n/` | 2 | 0 | ~35 | `index.ts` (50) |
 | `config/` | 3 | 0 | ~35 | `permissions.ts` (55) |
-| **Total** | **117** | **26** | **~49** | `UsersPage.tsx` (166) |
+| **Total** | **125** | **35** | **~49** | `UsersPage.tsx` (166) |
 
 **No file exceeds 200 LOC.** The codebase is well-decomposed.
 
@@ -228,17 +237,17 @@ src/
 | `Layout` suffix for layouts | ✅ Consistent | `DashboardLayout`, `PublicLayout` |
 | `Context` suffix for contexts | ✅ Consistent | `AuthContext`, `TenantContext` |
 | CSS Module files co-located | ✅ Consistent | `Component.tsx` + `Component.module.css` |
-| Barrel `index.ts` exports | ✅ Partial | `components/UI/index.ts`, `store/index.ts` |
+| Barrel `index.ts` exports | ✅ Complete | `components/UI/`, `store/`, `contexts/`, `hooks/`, `services/api/`, `layouts/` |
 
 ### 3.4 Architectural Observations
 
 **🟩 Strength — Consistent domain hook pattern.** Every domain module follows the same structure: `use{Domain}List`, `use{Domain}Detail`, `useCreate{Domain}`, `useUpdate{Domain}`, `useDelete{Domain}`. This makes the data layer predictable and easy to extend.
 
-**🟨 Medium — Form logic co-located with page components.** Each domain page directory contains `{Domain}Page.tsx` and `{Domain}Form.tsx`. The form component exports its state type, empty state factory, and validation function. This works at the current scale (7 modules) but couples form validation to the page layer rather than a dedicated validation layer. The `FormField` UI component exists but is not used by domain forms — they use raw `<label>/<input>` elements instead.
+**🟩 Strength — `CrudPage` abstraction implemented.** `src/components/UI/CrudPage/CrudPage.tsx` provides the shared DataTable + Modal + ConfirmDialog + state pattern. All 7 domain pages use it — ~400 LOC of duplication eliminated (FE-P1-01).
 
-**🟨 Medium — `CrudPage` component directory is empty.** `src/components/UI/CrudPage/` exists with no implementation. All 7 domain pages implement the same CRUD pattern (DataTable + Modal + ConfirmDialog) independently. A `CrudPage` abstraction would eliminate ~400 LOC of duplication across domain pages.
+**🟩 Strength — Dedicated validation layer.** `src/validation/domain/` owns all form state types, empty-state factories, and validation functions for all 7 domain modules. Domain `*Form.tsx` files re-export from this layer. Form logic is fully decoupled from the page layer (FE-P1-07).
 
-**🟨 Medium — `services/base/` and `services/interceptors/` are placeholders.** Both directories contain only a `.gitkeep` and a comment file. The interceptor comment documents the intent to extract token refresh and error handling from `http.ts`, but this has not been done.
+**🟩 Strength — `services/base/` and `services/interceptors/` fully populated.** `ApiError`, `buildUrl`, and `baseRequest` live in `services/base/`; `withRefreshInterceptor` lives in `services/interceptors/`. `http.ts` is a thin composition layer (FE-P1-03).
 
 **🟩 Strength — No "god files".** The largest source file is `UsersPage.tsx` at 166 LOC. The codebase has no files approaching 300 LOC.
 
@@ -257,7 +266,7 @@ src/
 | `zustand` | 4.5.7 | Client state | None | ✅ Current |
 | `framer-motion` | 12.37.0 | Animations | 🟨 Bundle weight | ✅ Current — see note |
 | `react-hot-toast` | 2.6.0 | Notifications | None | ✅ Current |
-| `react-icons` | 4.12.0 | Icon set | 🟨 Bundle weight | 🟧 v4 — v5 available |
+| `react-icons` | 5.6.0 | Icon set | None | ✅ v5 — upgraded (FE-P3-02) |
 | `@vsaas/types` | local | Shared types | None | ✅ Workspace package |
 
 ### 4.2 Development Dependencies
@@ -272,7 +281,7 @@ src/
 | `@testing-library/jest-dom` | 6.8.0 | DOM matchers | None | ✅ Current |
 | `@testing-library/user-event` | 14.6.1 | User interaction simulation | None | ✅ Current |
 | `cypress` | 15.1.0 | E2E testing | None | ✅ Current |
-| `eslint` | 8.57.1 | Linting | 🟨 Maintenance mode | 🟧 v8 — v9 available |
+| `eslint` | 9.39.4 | Linting | None | ✅ v9 flat config — 0 errors (FE-P1-06) |
 | `@typescript-eslint/parser` | 8.57.0 | TS ESLint parser | None | ✅ Current |
 | `@typescript-eslint/eslint-plugin` | 8.57.0 | TS lint rules | None | ✅ Current |
 | `eslint-plugin-react` | 7.37.5 | React lint rules | None | ✅ Current |
@@ -288,17 +297,17 @@ src/
 
 ### 4.3 Risk Classification
 
-**🟧 High — `react-icons` v4 (v5 available)**  
-`react-icons` v4 ships the entire icon library as a single package. v5 introduced per-icon tree-shaking improvements and a smaller runtime. The current `Icon.tsx` wrapper imports 28 named icons from `react-icons/md`, which is already tree-shakeable, but upgrading to v5 would reduce the icons chunk size and align with the current major version.
+**✅ Resolved — ESLint v9**  
+ESLint upgraded to v9.39.4. `.eslintrc.json` replaced with `eslint.config.js` flat config. `globals` package added. `react/prop-types` disabled for TypeScript. Vitest globals scoped to test files. 0 errors, 65 warnings (all pre-existing) (FE-P1-06).
 
-**🟧 High — `eslint` v8 in maintenance mode**  
-ESLint v8 reached end-of-life in October 2024. v9 introduces a flat config format (`eslint.config.js`) and stricter type-aware rules. The current `.eslintrc.json` format is not compatible with v9 without migration. This is tracked as P3-5 in the backend roadmap but applies equally to the frontend. The `@typescript-eslint` packages are already at v8, which supports both ESLint v8 and v9.
+**🔴 Retained by decision — `framer-motion` bundle weight**  
+`framer-motion` v12 (~100KB gzipped) is used in 5 files: 4 landing page section components and `TopLoadingBar`. The `motion` chunk is isolated via `manualChunks` in `vite.config.ts`. Removal was evaluated and skipped by explicit decision (FE-P3-01).
 
-**🟨 Medium — `framer-motion` bundle weight**  
-`framer-motion` v12 is a large dependency (~100KB gzipped). It is used in 5 files: 4 landing page section components and `TopLoadingBar`. The landing page animations (fade-in, slide-up) could be replaced with CSS animations at zero bundle cost. `TopLoadingBar` uses `AnimatePresence` + `motion.div` for a simple progress bar that could equally be implemented with a CSS transition. The `motion` chunk is isolated in `vite.config.ts` (`manualChunks: { motion: ['framer-motion'] }`), which prevents it from blocking the main bundle, but it is still downloaded on first visit.
+**✅ Resolved — Google Fonts loading**  
+Render-blocking `@import` removed from `global.css`. Non-blocking `<link rel="preconnect">` + `<link rel="stylesheet">` added to `index.html` (FE-P2-04).
 
-**🟨 Medium — Google Fonts loaded via `@import` in CSS**  
-`global.css` loads Inter from Google Fonts via `@import url(...)`. This is a render-blocking request on first load. The recommended approach is `<link rel="preconnect">` + `<link rel="stylesheet">` in `index.html`, or self-hosting the font.
+**✅ Resolved — `react-icons` v5**  
+Upgraded from v4.12.0 to v5.6.0. `Icon.tsx` wrapper required no changes. Improved tree-shaking active (FE-P3-02).
 
 **🟩 Low — No unused production dependencies detected**  
 All 8 production dependencies have observable usage in source files.

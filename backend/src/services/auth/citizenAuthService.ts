@@ -73,11 +73,10 @@ class CitizenAuthService {
     const existing = await User.findOne({ email: data.email.toLowerCase(), tenantId: data.tenantId });
     if (existing) throw new ConflictError('E-mail já está em uso neste portal');
 
-    const hashed = await bcrypt.hash(data.password, 12);
     const user = await User.create({
       name: data.name,
       email: data.email.toLowerCase(),
-      password: hashed,
+      password: data.password,
       role: 'citizen',
       tenantId: data.tenantId,
     });

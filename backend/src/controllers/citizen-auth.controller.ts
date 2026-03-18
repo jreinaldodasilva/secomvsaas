@@ -18,7 +18,7 @@ const clearOpts = {
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tenantId = (req as any).tenantId || req.body.tenantId;
+    const tenantId = (req as any).tenant?.id || req.body.tenantId;
     const result = await citizenAuthService.register({ ...req.body, tenantId });
     res.cookie(PORTAL_COOKIE, result.accessToken, cookieOpts(15 * 60 * 1000));
     res.cookie(PORTAL_REFRESH_COOKIE, result.refreshToken, cookieOpts(env.auth.portalRefreshTokenExpiresDays * 86400 * 1000));
@@ -28,7 +28,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tenantId = (req as any).tenantId || req.body.tenantId;
+    const tenantId = (req as any).tenant?.id || req.body.tenantId;
     const result = await citizenAuthService.login({ ...req.body, tenantId });
     res.cookie(PORTAL_COOKIE, result.accessToken, cookieOpts(15 * 60 * 1000));
     res.cookie(PORTAL_REFRESH_COOKIE, result.refreshToken, cookieOpts(env.auth.portalRefreshTokenExpiresDays * 86400 * 1000));

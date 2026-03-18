@@ -21,6 +21,10 @@ export const CSRF_SKIP_PATHS = [
   '/api/v1/auth/login',
   '/api/v1/auth/register',
   '/api/v1/auth/accept-invite',
+  '/api/v1/citizen-auth/register',
+  '/api/v1/citizen-auth/login',
+  '/api/v1/citizen-auth/refresh',
+  '/api/v1/citizen-auth/logout',
   '/api/csrf-token',
 ] as const;
 

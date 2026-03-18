@@ -1,4 +1,4 @@
-import { Button } from '@/components/UI';
+import { Button, FormField } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import type { FormComponentProps } from '@/components/UI';
 import {
@@ -19,41 +19,32 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
 
   return (
     <form onSubmit={onSubmit} className="form-stack" noValidate>
-      <label className={errors.title ? 'form-field-error' : ''}>
-        {t('domain.pressReleases.fields.title')}
-        <input type="text" value={form.title} onChange={e => set('title', e.target.value)} />
-        {errors.title && <span className="form-error">{errors.title}</span>}
-      </label>
-      <label>
-        {t('domain.pressReleases.fields.subtitle')}
-        <input type="text" value={form.subtitle} onChange={e => set('subtitle', e.target.value)} />
-      </label>
-      <label className={errors.content ? 'form-field-error' : ''}>
-        {t('domain.pressReleases.fields.content')}
-        <textarea value={form.content} onChange={e => set('content', e.target.value)} rows={6} />
-        {errors.content && <span className="form-error">{errors.content}</span>}
-      </label>
-      <label>
-        {t('domain.pressReleases.fields.summary')}
-        <textarea value={form.summary} onChange={e => set('summary', e.target.value)} rows={2} />
-      </label>
-      <label>
-        {t('domain.pressReleases.fields.category')}
-        <select value={form.category} onChange={e => set('category', e.target.value)}>
+      <FormField name="title" label={t('domain.pressReleases.fields.title')} error={errors.title} required>
+        <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} />
+      </FormField>
+      <FormField name="subtitle" label={t('domain.pressReleases.fields.subtitle')}>
+        <input id="subtitle" type="text" value={form.subtitle} onChange={e => set('subtitle', e.target.value)} />
+      </FormField>
+      <FormField name="content" label={t('domain.pressReleases.fields.content')} error={errors.content} required>
+        <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} rows={6} />
+      </FormField>
+      <FormField name="summary" label={t('domain.pressReleases.fields.summary')}>
+        <textarea id="summary" value={form.summary} onChange={e => set('summary', e.target.value)} rows={2} />
+      </FormField>
+      <FormField name="category" label={t('domain.pressReleases.fields.category')}>
+        <select id="category" value={form.category} onChange={e => set('category', e.target.value)}>
           {PRESS_RELEASE_CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
         </select>
-      </label>
-      <label>
-        {t('domain.pressReleases.fields.tags')}
-        <input type="text" value={form.tags} onChange={e => set('tags', e.target.value)} placeholder={t('domain.pressReleases.tagsHint')} />
-      </label>
+      </FormField>
+      <FormField name="tags" label={t('domain.pressReleases.fields.tags')} helpText={t('domain.pressReleases.tagsHint')}>
+        <input id="tags" type="text" value={form.tags} onChange={e => set('tags', e.target.value)} />
+      </FormField>
       {editing && (
-        <label>
-          {t('domain.pressReleases.fields.status')}
-          <select value={form.status} onChange={e => set('status', e.target.value)}>
+        <FormField name="status" label={t('domain.pressReleases.fields.status')}>
+          <select id="status" value={form.status} onChange={e => set('status', e.target.value)}>
             {PRESS_RELEASE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
-        </label>
+        </FormField>
       )}
       <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
     </form>

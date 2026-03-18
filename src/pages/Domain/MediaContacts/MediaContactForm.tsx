@@ -1,4 +1,4 @@
-import { Button } from '@/components/UI';
+import { Button, FormField } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import type { FormComponentProps } from '@/components/UI';
 import { type MediaContactFormState } from '@/validation/domain';
@@ -15,32 +15,24 @@ export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }:
 
   return (
     <form onSubmit={onSubmit} className="form-stack" noValidate>
-      <label className={errors.name ? 'form-field-error' : ''}>
-        {t('domain.mediaContacts.fields.name')}
-        <input type="text" value={form.name} onChange={e => set('name', e.target.value)} />
-        {errors.name && <span className="form-error">{errors.name}</span>}
-      </label>
-      <label className={errors.outlet ? 'form-field-error' : ''}>
-        {t('domain.mediaContacts.fields.outlet')}
-        <input type="text" value={form.outlet} onChange={e => set('outlet', e.target.value)} />
-        {errors.outlet && <span className="form-error">{errors.outlet}</span>}
-      </label>
-      <label>
-        {t('domain.mediaContacts.fields.email')}
-        <input type="email" value={form.email} onChange={e => set('email', e.target.value)} />
-      </label>
-      <label>
-        {t('domain.mediaContacts.fields.phone')}
-        <input type="text" value={form.phone} onChange={e => set('phone', e.target.value)} />
-      </label>
-      <label>
-        {t('domain.mediaContacts.fields.beat')}
-        <input type="text" value={form.beat} onChange={e => set('beat', e.target.value)} />
-      </label>
-      <label>
-        {t('domain.mediaContacts.fields.notes')}
-        <textarea value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} />
-      </label>
+      <FormField name="name" label={t('domain.mediaContacts.fields.name')} error={errors.name} required>
+        <input id="name" type="text" value={form.name} onChange={e => set('name', e.target.value)} />
+      </FormField>
+      <FormField name="outlet" label={t('domain.mediaContacts.fields.outlet')} error={errors.outlet} required>
+        <input id="outlet" type="text" value={form.outlet} onChange={e => set('outlet', e.target.value)} />
+      </FormField>
+      <FormField name="email" label={t('domain.mediaContacts.fields.email')}>
+        <input id="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} />
+      </FormField>
+      <FormField name="phone" label={t('domain.mediaContacts.fields.phone')}>
+        <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} />
+      </FormField>
+      <FormField name="beat" label={t('domain.mediaContacts.fields.beat')}>
+        <input id="beat" type="text" value={form.beat} onChange={e => set('beat', e.target.value)} />
+      </FormField>
+      <FormField name="notes" label={t('domain.mediaContacts.fields.notes')}>
+        <textarea id="notes" value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} />
+      </FormField>
       <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
     </form>
   );

@@ -1,4 +1,4 @@
-import { useHealthCheck } from '@/hooks/useHealthCheck';
+import { useHealthCheck } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { Icon } from '@/components/UI/Icon/Icon';
 import styles from './ConnectionBanner.module.css';

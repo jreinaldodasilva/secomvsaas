@@ -9,14 +9,14 @@ const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
-vi.mock('@/hooks/useClipping', () => ({
+vi.mock('@/hooks', () => ({
   useClippingList:   (...a: unknown[]) => mockList(...a),
   useCreateClipping: () => mockCreate(),
   useUpdateClipping: () => mockUpdate(),
   useDeleteClipping: () => mockDelete(),
+  useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
+  usePageTitle: () => {},
 }));
-vi.mock('@/hooks/useToast',     () => ({ useToast:     () => ({ success: vi.fn(), error: vi.fn() }) }));
-vi.mock('@/hooks/usePageTitle', () => ({ usePageTitle: () => {} }));
 
 import { ClippingsPage } from './ClippingsPage';
 

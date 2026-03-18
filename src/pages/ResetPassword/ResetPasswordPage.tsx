@@ -1,9 +1,9 @@
 import { useState, FormEvent } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { authService } from '@/services/api/authService';
+import { authService } from '@/services/api';
 import { PasswordInput } from '@/components/UI';
 import { useTranslation } from '@/i18n';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import s from '@/pages/Auth.module.css';
 

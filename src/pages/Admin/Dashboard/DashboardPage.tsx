@@ -1,7 +1,7 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
-import { useDashboard } from '@/hooks/useDashboard';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { useDashboard } from '@/hooks';
+import { usePageTitle } from '@/hooks';
 import { StatusBadge, Skeleton, Card } from '@/components/UI';
 import styles from './DashboardPage.module.css';
 

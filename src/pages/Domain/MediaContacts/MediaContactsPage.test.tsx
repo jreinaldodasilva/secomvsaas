@@ -9,14 +9,14 @@ const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
-vi.mock('@/hooks/useMediaContact', () => ({
+vi.mock('@/hooks', () => ({
   useMediaContactList:   (...a: unknown[]) => mockList(...a),
   useCreateMediaContact: () => mockCreate(),
   useUpdateMediaContact: () => mockUpdate(),
   useDeleteMediaContact: () => mockDelete(),
+  useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
+  usePageTitle: () => {},
 }));
-vi.mock('@/hooks/useToast',     () => ({ useToast:     () => ({ success: vi.fn(), error: vi.fn() }) }));
-vi.mock('@/hooks/usePageTitle', () => ({ usePageTitle: () => {} }));
 
 import { MediaContactsPage } from './MediaContactsPage';
 

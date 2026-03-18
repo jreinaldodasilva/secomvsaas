@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Tenant } from '@vsaas/types';
-import { tenantService } from '@/services/api/tenantService';
+import { tenantService } from '@/services/api';
 import { useAuth, AuthContext } from './AuthContext';
 
 export const TENANT_QUERY_KEY = ['tenant', 'me'] as const;

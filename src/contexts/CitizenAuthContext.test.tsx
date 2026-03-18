@@ -8,7 +8,7 @@ const mockCitizenAuthService = vi.hoisted(() => ({
   logout:   vi.fn(),
 }));
 
-vi.mock('@/services/api/citizenAuthService', () => ({
+vi.mock('@/services/api', () => ({
   citizenAuthService: mockCitizenAuthService,
 }));
 

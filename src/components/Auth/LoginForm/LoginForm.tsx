@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { Button } from '@/components/UI';
 import { ApiError } from '@/services/http';

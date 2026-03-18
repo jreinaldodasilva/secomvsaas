@@ -4,19 +4,19 @@ import { MemoryRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 
-const mockList     = vi.fn();
-const mockCreate   = vi.fn();
-const mockUpdate   = vi.fn();
-const mockDelete   = vi.fn();
+const mockList   = vi.fn();
+const mockCreate = vi.fn();
+const mockUpdate = vi.fn();
+const mockDelete = vi.fn();
 
-vi.mock('@/hooks/usePressRelease', () => ({
+vi.mock('@/hooks', () => ({
   usePressReleaseList:   (...a: unknown[]) => mockList(...a),
   useCreatePressRelease: () => mockCreate(),
   useUpdatePressRelease: () => mockUpdate(),
   useDeletePressRelease: () => mockDelete(),
+  useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
+  usePageTitle: () => {},
 }));
-vi.mock('@/hooks/useToast',     () => ({ useToast:     () => ({ success: vi.fn(), error: vi.fn() }) }));
-vi.mock('@/hooks/usePageTitle', () => ({ usePageTitle: () => {} }));
 
 import { PressReleasesPage } from './PressReleasesPage';
 
@@ -24,11 +24,7 @@ function idle() { return { isPending: false, mutate: vi.fn() }; }
 
 function wrapper({ children }: { children: React.ReactNode }) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });
-  return (
-    <QueryClientProvider client={qc}>
-      <MemoryRouter>{children}</MemoryRouter>
-    </QueryClientProvider>
-  );
+  return <QueryClientProvider client={qc}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>;
 }
 
 beforeEach(() => {

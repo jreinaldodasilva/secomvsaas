@@ -9,14 +9,14 @@ const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
-vi.mock('@/hooks/useSocialMedia', () => ({
+vi.mock('@/hooks', () => ({
   useSocialMediaList:   (...a: unknown[]) => mockList(...a),
   useCreateSocialMedia: () => mockCreate(),
   useUpdateSocialMedia: () => mockUpdate(),
   useDeleteSocialMedia: () => mockDelete(),
+  useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
+  usePageTitle: () => {},
 }));
-vi.mock('@/hooks/useToast',     () => ({ useToast:     () => ({ success: vi.fn(), error: vi.fn() }) }));
-vi.mock('@/hooks/usePageTitle', () => ({ usePageTitle: () => {} }));
 
 import { SocialMediaPage } from './SocialMediaPage';
 

@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { authService } from '@/services/api/authService';
+import { useAuth } from '@/contexts';
+import { authService } from '@/services/api';
 import { PasswordInput } from '@/components/UI';
-import { useToast } from '@/hooks/useToast';
+import { useToast } from '@/hooks';
 import { useTranslation } from '@/i18n';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import styles from './ProfilePage.module.css';
 

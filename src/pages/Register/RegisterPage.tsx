@@ -1,8 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput } from '@/components/UI';
 import s from '@/pages/Auth.module.css';

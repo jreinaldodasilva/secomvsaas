@@ -1,5 +1,5 @@
 import { useTranslation } from '@/i18n';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { usePageTitle } from '@/hooks';
 
 export function PrivacyPage() {
   const { t } = useTranslation();

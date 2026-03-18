@@ -16,9 +16,9 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryProvider } from './QueryProvider';
-import { AuthProvider } from '@/contexts/AuthContext';
-import { CitizenAuthProvider } from '@/contexts/CitizenAuthContext';
-import { TenantProvider } from '@/contexts/TenantContext';
+import { AuthProvider } from '@/contexts';
+import { CitizenAuthProvider } from '@/contexts';
+import { TenantProvider } from '@/contexts';
 
 interface AppProvidersProps {
   children: React.ReactNode;

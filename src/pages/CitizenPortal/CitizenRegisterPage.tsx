@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useCitizenAuth } from '@/contexts/CitizenAuthContext';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { useCitizenAuth } from '@/contexts';
+import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput } from '@/components/UI';
 import s from '@/pages/Auth.module.css';

@@ -9,14 +9,14 @@ const mockCreate = vi.fn();
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
-vi.mock('@/hooks/useEvent', () => ({
+vi.mock('@/hooks', () => ({
   useEventList:   (...a: unknown[]) => mockList(...a),
   useCreateEvent: () => mockCreate(),
   useUpdateEvent: () => mockUpdate(),
   useDeleteEvent: () => mockDelete(),
+  useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
+  usePageTitle: () => {},
 }));
-vi.mock('@/hooks/useToast',     () => ({ useToast:     () => ({ success: vi.fn(), error: vi.fn() }) }));
-vi.mock('@/hooks/usePageTitle', () => ({ usePageTitle: () => {} }));
 
 import { EventsPage } from './EventsPage';
 

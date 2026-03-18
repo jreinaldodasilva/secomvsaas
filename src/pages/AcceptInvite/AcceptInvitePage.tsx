@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { http, ApiError } from '@/services/http';
 import { PasswordInput } from '@/components/UI';
 import { useTranslation } from '@/i18n';
-import { usePageTitle } from '@/hooks/usePageTitle';
+import { usePageTitle } from '@/hooks';
 import s from '@/pages/Auth.module.css';
 
 export function AcceptInvitePage() {

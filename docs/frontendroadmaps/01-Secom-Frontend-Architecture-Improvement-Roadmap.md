@@ -65,7 +65,7 @@
 | FE-P3-03 | i18n `t()` is a plain function reading `getState()` — components do not subscribe to locale changes | Architecture is not ready for multi-locale support; adding a second locale would require breaking all `t()` call sites or a forced re-render mechanism | i18n Architecture | 1–2d | None | Part 2 §7.4 | ✅ **Completed** — `useTranslation` now returns locale-bound `t`/`tArray` callbacks via `useCallback([locale])`; components re-render on locale change; standalone `t()`/`tArray()` retained for non-component use (validators, services); 258/258 tests pass (FE-P3-03) |
 | ~~FE-P3-04~~ | ~~`ThemeToggle` is a no-op — `toggleTheme()` updates Zustand state but dark mode CSS tokens are not defined~~ | ~~Dead UI element; either the dark mode token set must be implemented in `tokens/index.css` or the toggle must be removed~~ | Component Architecture / Design System | 1h (remove) / 1d (implement) | None | Part 1 §1, Part 2 §8.3 | ✅ **Resolved** — `ThemeToggle.tsx`, `ThemeToggle.module.css` deleted; `theme` and `toggleTheme` removed from `uiStore`; barrel export removed; test updated (QW-8) |
 | FE-P3-05 | 6 of 7 domain pages have no unit tests; `useSessionTimeout`, `useHealthCheck`, `CitizenAuthContext` untested | Low test coverage on the domain layer means structural regressions during refactor (especially FE-P1-01) will not be caught automatically | Testability | 3d | FE-P1-01 | Part 2 §7.6 | ✅ **Completed** — tests added for all 6 untested domain pages (4 tests each: render, empty state, rows, create modal); `CitizenAuthContext` tested with 7 tests (mount, me() failure, login, register, logout, logout-on-error, throws outside provider); 258 tests across 35 files (FE-P3-05) |
-| FE-P3-06 | Barrel `index.ts` exports are partial — only `components/UI/` and `store/` have them | Inconsistent import ergonomics across the codebase; `contexts/`, `hooks/`, `services/api/`, and `layouts/` all require direct file imports | Project Structure | 0.5d | FE-P2-02 | Part 1 §3.3 | 🔴 Open |
+| FE-P3-06 | Barrel `index.ts` exports are partial — only `components/UI/` and `store/` have them | Inconsistent import ergonomics across the codebase; `contexts/`, `hooks/`, `services/api/`, and `layouts/` all require direct file imports | Project Structure | 0.5d | FE-P2-02 | Part 1 §3.3 | ✅ **Completed** — `contexts/index.ts` created; `hooks/index.ts` created (14 hooks); `services/api/index.ts` completed (10 services); `layouts/index.ts` completed (4 layouts); 40 import sites updated; domain page tests updated to mock `@/hooks` barrel; 258/258 tests pass (FE-P3-06) |
 
 ---
 
@@ -195,7 +195,7 @@
 |---|---|---|---|---|
 | FE-P3-03 | Convert `t()` from plain function to `useT()` hook; update all call sites; add locale-change reactivity | 1 engineer | 1–2d | ✅ Done (FE-P3-03) |
 | ~~FE-P3-04~~ | ~~Decision point: implement dark mode OR remove `ThemeToggle`~~ | — | — | ✅ Done — removed (QW-8) |
-| FE-P3-06 | Add barrel `index.ts` exports to `contexts/`, `hooks/`, `services/api/`, `layouts/`; enforce via ESLint | 1 engineer | 0.5d | 🔴 Pending |
+| FE-P3-06 | Add barrel `index.ts` exports to `contexts/`, `hooks/`, `services/api/`, `layouts/`; enforce via ESLint | 1 engineer | 0.5d | ✅ Done (FE-P3-06) |
 
 **Total Phase 4 effort:** ~2–3 days (FE-P3-04 closed)  
 **Dependencies:** FE-P3-03 requires FE-P2-02 (path alias adoption) to be complete for clean import updates  

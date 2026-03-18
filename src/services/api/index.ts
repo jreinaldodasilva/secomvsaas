@@ -1,1 +1,11 @@
 export { authService } from './authService';
+export { citizenAuthService } from './citizenAuthService';
+export type { CitizenUser } from './citizenAuthService';
+export { tenantService } from './tenantService';
+export { pressReleaseService } from './pressReleaseService';
+export { mediaContactService } from './mediaContactService';
+export { clippingService } from './clippingService';
+export { eventService } from './eventService';
+export { appointmentService } from './appointmentService';
+export { citizenPortalService } from './citizenPortalService';
+export { socialMediaService } from './socialMediaService';

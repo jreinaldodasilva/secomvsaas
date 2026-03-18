@@ -112,37 +112,60 @@ async function seedDatabase(): Promise<SeededData> {
   };
 
   // -------------------------------------------------------------------------
-  // 1. Resolve tenant
+  // 1. Resolve or create tenant + admin
   // -------------------------------------------------------------------------
   console.log('🏛️  Resolving tenant...');
   data.tenant = await Tenant.findOne({ slug: SECOM_SLUG });
+
   if (!data.tenant) {
-    throw new Error(
-      `Tenant "${SECOM_SLUG}" not found. Run "npm run dev" once first so ensureDefaultTenant() creates it.`
-    );
+    console.log('   Tenant not found — bootstrapping tenant + admin...');
+
+    // Create admin first (tenant requires owner ObjectId)
+    const [createdAdmin] = await User.create([{
+      name: 'Administrador Secom',
+      email: 'admin@secom.gov.br',
+      password: TEST_PASSWORD,
+      role: 'admin',
+    }]);
+    data.admin = createdAdmin;
+
+    const [createdTenant] = await Tenant.create([{
+      name: 'Secretaria de Comunicação',
+      slug: SECOM_SLUG,
+      status: 'active',
+      plan: 'enterprise',
+      maxUsers: 1000,
+      owner: data.admin._id,
+      settings: { timezone: 'America/Sao_Paulo', locale: 'pt-BR', currency: 'BRL', features: {} },
+    }]);
+    data.tenant = createdTenant;
+
+    data.admin.tenantId = data.tenant._id;
+    await data.admin.save();
+
+    console.log('   Created tenant + admin@secom.gov.br');
+  } else {
+    // Resolve admin and reset password to TEST_PASSWORD
+    data.admin = await User.findOne({ email: 'admin@secom.gov.br' }).select('+password');
+    if (!data.admin) {
+      const [created] = await User.create([{
+        tenantId: data.tenant._id, name: 'Administrador Secom',
+        email: 'admin@secom.gov.br', password: TEST_PASSWORD, role: 'admin',
+      }]);
+      data.admin = created;
+      console.log('   Created admin@secom.gov.br');
+    } else {
+      data.admin.password = TEST_PASSWORD;
+      await data.admin.save();
+      console.log('   Reset admin@secom.gov.br password to TEST_PASSWORD');
+    }
   }
+
   const tenantId = data.tenant._id;
   console.log(`✅ Tenant: ${data.tenant.name} (${tenantId})\n`);
 
   // -------------------------------------------------------------------------
-  // 2. Admin user (resolve existing or create)
-  // -------------------------------------------------------------------------
-  console.log('👤 Resolving admin user...');
-  data.admin = await User.findOne({ email: 'admin@secom.gov.br' });
-  if (!data.admin) {
-    const [created] = await User.create([{
-      tenantId, name: 'Administrador Secom',
-      email: 'admin@secom.gov.br', password: TEST_PASSWORD, role: 'admin',
-    }]);
-    data.admin = created;
-    console.log('   Created admin@secom.gov.br');
-  } else {
-    console.log('   Found existing admin@secom.gov.br');
-  }
-  console.log('✅ Admin resolved\n');
-
-  // -------------------------------------------------------------------------
-  // 3. Staff users
+  // 2. Staff users
   // -------------------------------------------------------------------------
   console.log('👥 Creating staff users...');
   const staffDefs = [

@@ -19,3 +19,5 @@ export { Breadcrumbs } from './Breadcrumbs/Breadcrumbs';
 export { TopLoadingBar } from './TopLoadingBar/TopLoadingBar';
 export { ScrollToTop } from './ScrollToTop';
 export { SessionTimeoutModal } from './SessionTimeoutModal/SessionTimeoutModal';
+export { CrudPage } from './CrudPage/CrudPage';
+export type { CrudPageProps, FormComponentProps } from './CrudPage/CrudPage';

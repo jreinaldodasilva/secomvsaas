@@ -30,13 +30,13 @@
 
 | ID | Issue | Architectural Impact | System Area | Effort | Dependencies | Source | Status |
 |---|---|---|---|---|---|---|---|
-| FE-P1-01 | `CrudPage` abstraction unimplemented — identical CRUD scaffold repeated 7× (~400 LOC duplication) | Every new domain module requires copy-pasting the full DataTable + Modal + ConfirmDialog + state pattern; bugs fixed in one page do not propagate | Component Architecture | 2d | None | Part 1 §3.4, Part 2 §7.2 | 🔴 Open |
-| FE-P1-02 | `TenantContext` fetches via raw `http.get()`, bypassing TanStack Query cache | Tenant data is not deduplicated, not stale-while-revalidate cached, and not invalidatable from other query operations; creates a parallel data-fetching path outside the established server-state layer | State Management / Layer Separation | 1d | None | Part 1 §2.4 | 🔴 Open |
-| FE-P1-03 | `services/base/` and `services/interceptors/` are empty placeholders — token refresh and error handling are monolithically embedded in `http.ts` | `http.ts` owns fetch, auth headers, token refresh, retry, and error normalization in a single 93-LOC file; cannot be extended or tested in isolation; documented intent to extract has not been acted on | Layer Separation / Services | 1.5d | None | Part 1 §3.4 | 🔴 Open |
-| FE-P1-04 | Single top-level `<Suspense>` boundary for all 20+ lazy routes — full-page spinner on every route transition | All three layout surfaces (Public, Dashboard, CitizenPortal) share one loading state; a slow chunk in any layout degrades the perceived performance of all others | Routing Architecture / Resilience | 0.5d | None | Part 2 §5.3 | 🔴 Open |
-| FE-P1-05 | `ProtectedRoute` enforces authentication only — no role-based route protection at the routing layer | Any authenticated user of any role can navigate to any staff route by URL; RBAC is enforced only at the component level via `PermissionGate`, with no defence-in-depth at the route boundary | Routing Architecture / Security | 0.5d | ~~FE-P0-03 resolved~~ ✅ | Part 2 §7.3, §7.5 | 🔴 Open — dependency unblocked |
-| FE-P1-06 | ESLint v8 at end-of-life (EOL October 2024) — static analysis toolchain is on an unsupported version | No security patches or rule updates for the linting layer; `@typescript-eslint` v8 supports ESLint v9 but the current `.eslintrc.json` flat-config migration has not been done | Build Tooling | 1d | None | Part 1 §4.3 | 🔴 Open |
-| FE-P1-07 | Form validation logic co-located with page components — no dedicated validation layer | At 7 modules the coupling is manageable; at 15+ modules, form state types, empty-state factories, and validation functions scattered across `pages/Domain/` become a maintenance burden with no reuse path | Component Architecture / Layer Separation | 1d | FE-P1-01 | Part 1 §3.4 | 🔴 Open |
+| FE-P1-01 | `CrudPage` abstraction unimplemented — identical CRUD scaffold repeated 7× (~400 LOC duplication) | Every new domain module requires copy-pasting the full DataTable + Modal + ConfirmDialog + state pattern; bugs fixed in one page do not propagate | Component Architecture | 2d | None | Part 1 §3.4, Part 2 §7.2 | ✅ **Completed** — `CrudPage` generic component implemented in `components/UI/CrudPage/CrudPage.tsx`; all 7 domain pages migrated; 8 tests added (FE-P1-01) |
+| FE-P1-02 | `TenantContext` fetches via raw `http.get()`, bypassing TanStack Query cache | Tenant data is not deduplicated, not stale-while-revalidate cached, and not invalidatable from other query operations; creates a parallel data-fetching path outside the established server-state layer | State Management / Layer Separation | 1d | None | Part 1 §2.4 | ✅ **Completed** — `tenantService.ts` added to `services/api/`; `TenantContext` migrated to `useQuery`; `refreshTenant` uses `queryClient.invalidateQueries`; `useState`/`useEffect`/raw `http.get()` removed (FE-P1-02) |
+| FE-P1-03 | `services/base/` and `services/interceptors/` are empty placeholders — token refresh and error handling are monolithically embedded in `http.ts` | `http.ts` owns fetch, auth headers, token refresh, retry, and error normalization in a single 93-LOC file; cannot be extended or tested in isolation; documented intent to extract has not been acted on | Layer Separation / Services | 1.5d | None | Part 1 §3.4 | ✅ **Completed** — `ApiError` + `buildUrl` + `baseRequest` extracted to `services/base/`; `withRefreshInterceptor` extracted to `services/interceptors/`; `http.ts` reduced to a thin composition layer; all 12 existing http tests pass (FE-P1-03) |
+| FE-P1-04 | Single top-level `<Suspense>` boundary for all 20+ lazy routes — full-page spinner on every route transition | All three layout surfaces (Public, Dashboard, CitizenPortal) share one loading state; a slow chunk in any layout degrades the perceived performance of all others | Routing Architecture / Resilience | 0.5d | None | Part 2 §5.3 | ✅ **Completed** — single `<Suspense>` removed; each of the 20+ lazy routes now has its own `<Suspense fallback={<LoadingScreen />}>` boundary scoped to the route element; `LazyFallback` inline component removed (FE-P1-04) |
+| FE-P1-05 | `ProtectedRoute` enforces authentication only — no role-based route protection at the routing layer | Any authenticated user of any role can navigate to any staff route by URL; RBAC is enforced only at the component level via `PermissionGate`, with no defence-in-depth at the route boundary | Routing Architecture / Security | 0.5d | ~~FE-P0-03 resolved~~ ✅ | Part 2 §7.3, §7.5 | ✅ **Completed** — `STAFF_ROLES` constant added to `@vsaas/types`; outer dashboard `ProtectedRoute` now guards with `allowedRoles={STAFF_ROLES}`; `citizen` role redirected to `/unauthorized` on all staff routes; 1 test added (FE-P1-05) |
+| FE-P1-06 | ESLint v8 at end-of-life (EOL October 2024) — static analysis toolchain is on an unsupported version | No security patches or rule updates for the linting layer; `@typescript-eslint` v8 supports ESLint v9 but the current `.eslintrc.json` flat-config migration has not been done | Build Tooling | 1d | None | Part 1 §4.3 | ✅ **Completed** — ESLint upgraded to v9.39.4; `.eslintrc.json` deleted; `eslint.config.js` flat config created with `globals` package; `react/prop-types` disabled for TS; Vitest globals added for test files; 2 pre-existing errors fixed (`TestimonialsSection` unescaped quotes, `TenantContext` eslint-disable for intentional hook guard); lint scripts updated to directory-based pattern; 0 errors, 65 warnings (FE-P1-06) |
+| FE-P1-07 | Form validation logic co-located with page components — no dedicated validation layer | At 7 modules the coupling is manageable; at 15+ modules, form state types, empty-state factories, and validation functions scattered across `pages/Domain/` become a maintenance burden with no reuse path | Component Architecture / Layer Separation | 1d | FE-P1-01 | Part 1 §3.4 | ✅ **Completed** — `src/validation/domain/` layer created with 7 files (one per domain) + barrel `index.ts`; each exports `FormState` type, `emptyForm` constant, `validate*` function, and domain constants (`STATUSES`, `CATEGORIES`, etc.); all 7 `*Form.tsx` files updated to re-export from validation layer; `domain-validators.test.ts` imports updated to point directly to `src/validation/domain`; 227/227 tests pass, `tsc --noEmit` clean (FE-P1-07) |
 
 ---
 
@@ -133,7 +133,7 @@
 | ~~FE-P0-01~~ | Encode provider ordering constraint — `AppProviders` composition component + dev-only invariant in `TenantProvider` | ✅ Done (QW-7) | 0.5d |
 | ~~FE-P0-02~~ | `build.sourcemap: true` → `'hidden'` in `vite.config.ts` | ✅ Done (QW-1) | <0.5h |
 | ~~FE-P0-03~~ | `PERMISSIONS`, `ROLE_PERMISSIONS`, helpers moved to `@vsaas/types`; `src/config/permissions.ts` deleted | ✅ Done (QW-6) | 0.5d |
-| FE-P1-06 | Migrate `.eslintrc.json` to `eslint.config.js` flat config; upgrade ESLint to v9 | 🔴 Pending | 1d |
+| FE-P1-06 | Migrate `.eslintrc.json` to `eslint.config.js` flat config; upgrade ESLint to v9 | ✅ Done (QW-1 → FE-P1-06) | 1d |
 | ~~FE-P2-03~~ | `VITE_APP_ENV` added to `ENV`; `.env.example`, `.env`, CI build step updated | ✅ Done (QW-4) | 2h |
 | ~~FE-P2-08~~ | CI npm cache — already present via `setup-node@v4 cache: 'npm'` | ✅ Done (QW-2) | — |
 
@@ -148,13 +148,13 @@
 
 | Issue | Task | Owner Suggestion | Effort | Status |
 |---|---|---|---|---|
-| FE-P1-01 | Implement `CrudPage` abstraction in `components/UI/CrudPage/`; migrate all 7 domain pages to use it | 1–2 engineers | 2d | 🔴 Pending |
-| FE-P1-02 | Migrate `TenantContext` data fetching from raw `http.get()` to a TanStack Query `useQuery` call | 1 engineer | 1d | 🔴 Pending |
-| FE-P1-03 | Extract token refresh logic from `http.ts` into `services/interceptors/`; extract base request logic into `services/base/` | 1 engineer | 1.5d | 🔴 Pending |
-| FE-P1-04 | Replace single top-level `<Suspense>` with per-layout Suspense boundaries in `routes/index.tsx` | 1 engineer | 0.5d | 🔴 Pending |
-| FE-P1-05 | Add optional `requiredRole` prop to `ProtectedRoute`; apply role guards to staff dashboard routes | 1 engineer | 0.5d | 🔴 Pending — unblocked |
-| FE-P1-06 | Migrate `.eslintrc.json` to `eslint.config.js`; upgrade ESLint to v9 (carried from Phase 1) | 1 engineer | 1d | 🔴 Pending |
-| FE-P1-07 | Extract form validation schemas from page components into a `validation/` layer (after FE-P1-01) | 1 engineer | 1d | 🔴 Pending |
+| FE-P1-01 | Implement `CrudPage` abstraction in `components/UI/CrudPage/`; migrate all 7 domain pages to use it | 1–2 engineers | 2d | ✅ Done (FE-P1-01) |
+| FE-P1-02 | Migrate `TenantContext` data fetching from raw `http.get()` to a TanStack Query `useQuery` call | 1 engineer | 1d | ✅ Done (FE-P1-02) |
+| FE-P1-03 | Extract token refresh logic from `http.ts` into `services/interceptors/`; extract base request logic into `services/base/` | 1 engineer | 1.5d | ✅ Done (FE-P1-03) |
+| FE-P1-04 | Replace single top-level `<Suspense>` with per-layout Suspense boundaries in `routes/index.tsx` | 1 engineer | 0.5d | ✅ Done (FE-P1-04) |
+| FE-P1-05 | Add optional `requiredRole` prop to `ProtectedRoute`; apply role guards to staff dashboard routes | 1 engineer | 0.5d | ✅ Done (FE-P1-05) |
+| FE-P1-06 | Migrate `.eslintrc.json` to `eslint.config.js` flat config; upgrade ESLint to v9 (carried from Phase 1) | 1 engineer | 1d | ✅ Done (FE-P1-06) |
+| FE-P1-07 | Extract form validation schemas from page components into a `validation/` layer (after FE-P1-01) | 1 engineer | 1d | ✅ Done (FE-P1-07) |
 | ~~FE-P2-01~~ | ~~Migrate `useHealthCheck` to TanStack Query `refetchInterval`~~ | — | — | ✅ Done (QW-5) |
 | FE-P2-05 | Wire `Breadcrumbs` `ROUTE_LABELS` map to `t()` keys in `pt-BR.json` | 1 engineer | 2h | 🔴 Pending |
 | FE-P2-06 | Migrate domain forms from raw `<label>/<input>` to `FormField` UI component (after FE-P1-01) | 1 engineer | 1d | 🔴 Pending |
@@ -230,7 +230,7 @@
 | Suspense boundary granularity | 1 global boundary (full-page spinner on all transitions) | 3 per-layout boundaries (scoped loading) | Route config audit | FE-P1-04 |
 | CI install time | ✅ ~5s (cache hit via `setup-node@v4 cache: 'npm'`) | ~5s (cache hit) | GitHub Actions job duration | ~~FE-P2-08~~ ✅ |
 | `framer-motion` chunk presence | Downloaded on first visit (~100KB gzipped) | Eliminated | Bundle analyzer (Rollup output) | FE-P3-01 |
-| ESLint version | v8 (EOL) | v9 (supported) | `npm list eslint` | FE-P1-06 |
+| ESLint version | v9.39.4 (supported) | v9 (supported) | `npm list eslint` | FE-P1-06 ✅ |
 | Path alias adoption | 0% (`@/*` defined but unused) | 100% of `src/` imports | ESLint `no-restricted-imports` rule enforcement | FE-P2-02 |
 | Google Fonts load strategy | ✅ Non-blocking `<link>` tags in `index.html` | Non-blocking `<link>` in `index.html` | Lighthouse / DevTools network waterfall | ~~FE-P2-04~~ ✅ |
 | Dead UI state in Zustand | ✅ `theme` and `toggleTheme` removed from `uiStore` | No dead state | Code audit | ~~FE-P3-04~~ ✅ |

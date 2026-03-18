@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
+import { CrudPage } from '../../../components/UI';
+import { Button, StatusBadge } from '../../../components/UI';
+import type { Column } from '../../../components/UI';
 import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClipping } from '../../../hooks/useClipping';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -24,50 +26,22 @@ export function ClippingsPage() {
   usePageTitle(t('domain.clippings.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<ClippingItem | null>(null);
-  const [form, setForm] = useState<ClippingFormState>(emptyClippingForm);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
-  const { data, isLoading } = useClippingList({ page, limit: 10, ...(search && { search }) });
+  const listQuery = useClippingList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateClipping();
   const update = useUpdateClipping();
   const del = useDeleteClipping();
 
-  const openCreate = () => { setEditing(null); setForm(emptyClippingForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (item: ClippingItem) => {
-    setEditing(item);
-    setForm({ title: item.title, source: item.source, sourceUrl: item.sourceUrl ?? '', publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '', sentiment: item.sentiment, summary: item.summary ?? '', tags: (item.tags ?? []).join(', ') });
-    setErrors({});
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validateClipping(form, t);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [] };
-    if (payload.publishedAt) payload.publishedAt = new Date(payload.publishedAt as string).toISOString();
-    else delete payload.publishedAt;
-    if (!payload.sourceUrl) delete payload.sourceUrl;
-    if (!payload.summary) delete payload.summary;
-    if (editing) {
-      update.mutate({ id: editing.id, ...payload }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    } else {
-      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    }
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
-  };
-
-  const columns: Column<ClippingItem>[] = [
+  const columns = (
+    openEdit: (item: ClippingItem) => void,
+    setDeleteTarget: (id: string) => void
+  ): Column<ClippingItem>[] => [
     { key: 'title', header: t('domain.clippings.fields.title'), sortable: true },
     { key: 'source', header: t('domain.clippings.fields.source'), sortable: true },
-    { key: 'sentiment', header: t('domain.clippings.fields.sentiment'), render: (r) => <StatusBadge status={t(`domain.clippings.sentiments.${r.sentiment}`)} colorMap={{ [t('domain.clippings.sentiments.positive')]: 'green', [t('domain.clippings.sentiments.neutral')]: 'gray', [t('domain.clippings.sentiments.negative')]: 'red' }} /> },
+    {
+      key: 'sentiment', header: t('domain.clippings.fields.sentiment'),
+      render: (r) => <StatusBadge status={t(`domain.clippings.sentiments.${r.sentiment}`)} colorMap={{ [t('domain.clippings.sentiments.positive')]: 'green', [t('domain.clippings.sentiments.neutral')]: 'gray', [t('domain.clippings.sentiments.negative')]: 'red' }} />,
+    },
     { key: 'publishedAt', header: t('domain.clippings.fields.publishedAt'), render: (r) => r.publishedAt ? new Date(r.publishedAt).toLocaleDateString('pt-BR') : '—' },
     {
       key: 'actions', header: '',
@@ -81,20 +55,54 @@ export function ClippingsPage() {
     },
   ];
 
-  const items = data?.data?.items ?? [];
-  const total = data?.data?.total ?? 0;
-
   return (
-    <div className="page-clippings">
-      <div className="page-header">
-        <h1>{t('domain.clippings.title')}</h1>
-        <Button onClick={openCreate}>{t('domain.clippings.create')}</Button>
-      </div>
-      <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.clippings.empty')} />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.clippings.create')} size="md">
-        <ClippingForm form={form} setForm={setForm} errors={errors} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
-      </Modal>
-      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
-    </div>
+    <CrudPage<ClippingItem, ClippingFormState>
+      title={t('domain.clippings.title')}
+      createLabel={t('domain.clippings.create')}
+      emptyMessage={t('domain.clippings.empty')}
+      searchPlaceholder={t('common.search')}
+      editModalTitle={t('common.edit')}
+      createModalTitle={t('domain.clippings.create')}
+      columns={columns}
+      emptyForm={emptyClippingForm}
+      toFormState={(item) => ({
+        title: item.title,
+        source: item.source,
+        sourceUrl: item.sourceUrl ?? '',
+        publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '',
+        sentiment: item.sentiment,
+        summary: item.summary ?? '',
+        tags: (item.tags ?? []).join(', '),
+      })}
+      validate={(form) => validateClipping(form, t)}
+      buildPayload={(form) => {
+        const p: Record<string, unknown> = {
+          ...form,
+          tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [],
+        };
+        if (p.publishedAt) p.publishedAt = new Date(p.publishedAt as string).toISOString();
+        else delete p.publishedAt;
+        if (!p.sourceUrl) delete p.sourceUrl;
+        if (!p.summary) delete p.summary;
+        return p;
+      }}
+      listQuery={listQuery}
+      getItems={(data: any) => data?.data?.items ?? []}
+      getTotal={(data: any) => data?.data?.total ?? 0}
+      page={page}
+      onPageChange={setPage}
+      onSearch={setSearch}
+      onCreate={(payload, cb) => create.mutate(payload, cb)}
+      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onDelete={(id, cb) => del.mutate(id, cb)}
+      isCreatePending={create.isPending}
+      isUpdatePending={update.isPending}
+      isDeletePending={del.isPending}
+      savedMessage={t('common.saved')}
+      deletedMessage={t('common.deleted')}
+      onSuccess={(msg) => toast.success(msg)}
+      onError={(msg) => toast.error(msg)}
+      FormComponent={ClippingForm}
+    />
   );
 }

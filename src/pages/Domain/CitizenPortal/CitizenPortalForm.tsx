@@ -1,37 +1,12 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import { type CitizenFormState } from '../../../validation/domain';
 
-export interface CitizenFormState {
-  userId: string;
-  fullName: string;
-  cpf: string;
-  phone: string;
-  email: string;
-  address: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-}
+export type { CitizenFormState };
+export { emptyCitizenForm, validateCitizen } from '../../../validation/domain';
 
-export const emptyCitizenForm: CitizenFormState = {
-  userId: '', fullName: '', cpf: '', phone: '', email: '', address: '', neighborhood: '', city: '', state: '',
-};
-
-export function validateCitizen(form: CitizenFormState, editing: boolean, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (!editing && !form.userId) e.userId = t('domain.citizenPortal.fields.userId') + ' — obrigatório';
-  if (form.fullName.length < 2) e.fullName = t('domain.citizenPortal.fields.fullName') + ' — mín. 2 caracteres';
-  return e;
-}
-
-interface Props {
-  form: CitizenFormState;
-  setForm: React.Dispatch<React.SetStateAction<CitizenFormState>>;
-  errors: Record<string, string>;
-  editing: boolean;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface Props extends FormComponentProps<CitizenFormState> {}
 
 export function CitizenPortalForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

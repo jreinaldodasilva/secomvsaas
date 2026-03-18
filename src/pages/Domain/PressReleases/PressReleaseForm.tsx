@@ -1,38 +1,16 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import {
+  PRESS_RELEASE_STATUSES,
+  PRESS_RELEASE_CATEGORIES,
+  type PressReleaseFormState,
+} from '../../../validation/domain';
 
-export const STATUSES = ['draft', 'review', 'approved', 'published', 'archived'] as const;
-export const CATEGORIES = ['nota_oficial', 'comunicado', 'convite', 'esclarecimento', 'outro'] as const;
+export type { PressReleaseFormState };
+export { emptyPressReleaseForm, validatePressRelease } from '../../../validation/domain';
 
-export interface PressReleaseFormState {
-  title: string;
-  content: string;
-  subtitle: string;
-  summary: string;
-  category: string;
-  tags: string;
-  status: string;
-}
-
-export const emptyPressReleaseForm: PressReleaseFormState = {
-  title: '', content: '', subtitle: '', summary: '', category: 'comunicado', tags: '', status: 'draft',
-};
-
-export function validatePressRelease(form: PressReleaseFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.title.length < 5) e.title = t('domain.pressReleases.fields.title') + ' — mín. 5 caracteres';
-  if (form.content.length < 10) e.content = t('domain.pressReleases.fields.content') + ' — mín. 10 caracteres';
-  return e;
-}
-
-interface Props {
-  form: PressReleaseFormState;
-  setForm: React.Dispatch<React.SetStateAction<PressReleaseFormState>>;
-  errors: Record<string, string>;
-  editing: boolean;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface Props extends FormComponentProps<PressReleaseFormState> {}
 
 export function PressReleaseForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
   const { t } = useTranslation();
@@ -62,7 +40,7 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
       <label>
         {t('domain.pressReleases.fields.category')}
         <select value={form.category} onChange={e => set('category', e.target.value)}>
-          {CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
+          {PRESS_RELEASE_CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
         </select>
       </label>
       <label>
@@ -73,7 +51,7 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
         <label>
           {t('domain.pressReleases.fields.status')}
           <select value={form.status} onChange={e => set('status', e.target.value)}>
-            {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            {PRESS_RELEASE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </label>
       )}

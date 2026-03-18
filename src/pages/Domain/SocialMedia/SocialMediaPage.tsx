@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
+import { useState, useRef } from 'react';
+import { CrudPage } from '../../../components/UI';
+import { Button, StatusBadge } from '../../../components/UI';
+import type { Column } from '../../../components/UI';
 import { useSocialMediaList, useCreateSocialMedia, useUpdateSocialMedia, useDeleteSocialMedia } from '../../../hooks/useSocialMedia';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -25,48 +27,19 @@ export function SocialMediaPage() {
   usePageTitle(t('domain.socialMedia.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<SocialMediaItem | null>(null);
-  const [form, setForm] = useState<SocialMediaFormState>(emptySocialMediaForm);
   const [editStatus, setEditStatus] = useState('draft');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const editStatusRef = useRef(editStatus);
+  editStatusRef.current = editStatus;
 
-  const { data, isLoading } = useSocialMediaList({ page, limit: 10, ...(search && { search }) });
+  const listQuery = useSocialMediaList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateSocialMedia();
   const update = useUpdateSocialMedia();
   const del = useDeleteSocialMedia();
 
-  const openCreate = () => { setEditing(null); setForm(emptySocialMediaForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (item: SocialMediaItem) => {
-    setEditing(item);
-    setForm({ platform: item.platform, content: item.content, mediaUrl: item.mediaUrl ?? '', scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '' });
-    setEditStatus(item.status);
-    setErrors({});
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validateSocialMedia(form, t);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload: Record<string, unknown> = { ...form };
-    if (payload.scheduledAt) payload.scheduledAt = new Date(payload.scheduledAt as string).toISOString();
-    else delete payload.scheduledAt;
-    if (!payload.mediaUrl) delete payload.mediaUrl;
-    if (editing) {
-      update.mutate({ id: editing.id, ...payload, status: editStatus }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    } else {
-      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    }
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
-  };
-
-  const columns: Column<SocialMediaItem>[] = [
+  const columns = (
+    openEdit: (item: SocialMediaItem) => void,
+    setDeleteTarget: (id: string) => void
+  ): Column<SocialMediaItem>[] => [
     { key: 'platform', header: t('domain.socialMedia.fields.platform'), render: (r) => r.platform.charAt(0).toUpperCase() + r.platform.slice(1) },
     { key: 'content', header: t('domain.socialMedia.fields.content'), render: (r) => r.content.length > 80 ? r.content.slice(0, 80) + '…' : r.content },
     { key: 'scheduledAt', header: t('domain.socialMedia.fields.scheduledAt'), render: (r) => r.scheduledAt ? new Date(r.scheduledAt).toLocaleString('pt-BR') : '—' },
@@ -82,20 +55,52 @@ export function SocialMediaPage() {
     },
   ];
 
-  const items = data?.data?.items ?? [];
-  const total = data?.data?.total ?? 0;
-
   return (
-    <div className="page-social-media">
-      <div className="page-header">
-        <h1>{t('domain.socialMedia.title')}</h1>
-        <Button onClick={openCreate}>{t('domain.socialMedia.create')}</Button>
-      </div>
-      <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.socialMedia.empty')} />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.socialMedia.create')} size="md">
-        <SocialMediaForm form={form} setForm={setForm} errors={errors} editing={!!editing} editStatus={editStatus} setEditStatus={setEditStatus} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
-      </Modal>
-      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
-    </div>
+    <CrudPage<SocialMediaItem, SocialMediaFormState>
+      title={t('domain.socialMedia.title')}
+      createLabel={t('domain.socialMedia.create')}
+      emptyMessage={t('domain.socialMedia.empty')}
+      searchPlaceholder={t('common.search')}
+      editModalTitle={t('common.edit')}
+      createModalTitle={t('domain.socialMedia.create')}
+      columns={columns}
+      emptyForm={emptySocialMediaForm}
+      toFormState={(item) => {
+        setEditStatus(item.status);
+        return {
+          platform: item.platform,
+          content: item.content,
+          mediaUrl: item.mediaUrl ?? '',
+          scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '',
+        };
+      }}
+      validate={(form) => validateSocialMedia(form, t)}
+      buildPayload={(form, editing) => {
+        const p: Record<string, unknown> = { ...form };
+        if (p.scheduledAt) p.scheduledAt = new Date(p.scheduledAt as string).toISOString();
+        else delete p.scheduledAt;
+        if (!p.mediaUrl) delete p.mediaUrl;
+        if (editing) p.status = editStatusRef.current;
+        return p;
+      }}
+      listQuery={listQuery}
+      getItems={(data: any) => data?.data?.items ?? []}
+      getTotal={(data: any) => data?.data?.total ?? 0}
+      page={page}
+      onPageChange={setPage}
+      onSearch={setSearch}
+      onCreate={(payload, cb) => create.mutate(payload, cb)}
+      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onDelete={(id, cb) => del.mutate(id, cb)}
+      isCreatePending={create.isPending}
+      isUpdatePending={update.isPending}
+      isDeletePending={del.isPending}
+      savedMessage={t('common.saved')}
+      deletedMessage={t('common.deleted')}
+      onSuccess={(msg) => toast.success(msg)}
+      onError={(msg) => toast.error(msg)}
+      FormComponent={SocialMediaForm}
+      formExtraProps={{ editStatus, setEditStatus }}
+    />
   );
 }

@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
+import { CrudPage } from '../../../components/UI';
+import { Button, StatusBadge } from '../../../components/UI';
+import type { Column } from '../../../components/UI';
 import { useEventList, useCreateEvent, useUpdateEvent, useDeleteEvent } from '../../../hooks/useEvent';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -26,48 +28,16 @@ export function EventsPage() {
   usePageTitle(t('domain.events.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<EventItem | null>(null);
-  const [form, setForm] = useState<EventFormState>(emptyEventForm);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
-  const { data, isLoading } = useEventList({ page, limit: 10, ...(search && { search }) });
+  const listQuery = useEventList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateEvent();
   const update = useUpdateEvent();
   const del = useDeleteEvent();
 
-  const openCreate = () => { setEditing(null); setForm(emptyEventForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (item: EventItem) => {
-    setEditing(item);
-    setForm({ title: item.title, description: item.description ?? '', location: item.location ?? '', startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '', endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '', isPublic: item.isPublic ?? false });
-    setErrors({});
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validateEvent(form, t);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload: Record<string, unknown> = { ...form };
-    payload.startsAt = new Date(payload.startsAt as string).toISOString();
-    if (payload.endsAt) payload.endsAt = new Date(payload.endsAt as string).toISOString();
-    else delete payload.endsAt;
-    if (!payload.description) delete payload.description;
-    if (!payload.location) delete payload.location;
-    if (editing) {
-      update.mutate({ id: editing.id, ...payload }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    } else {
-      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    }
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
-  };
-
-  const columns: Column<EventItem>[] = [
+  const columns = (
+    openEdit: (item: EventItem) => void,
+    setDeleteTarget: (id: string) => void
+  ): Column<EventItem>[] => [
     { key: 'title', header: t('domain.events.fields.title'), sortable: true },
     { key: 'location', header: t('domain.events.fields.location') },
     { key: 'startsAt', header: t('domain.events.fields.startsAt'), render: (r) => new Date(r.startsAt).toLocaleString('pt-BR') },
@@ -84,20 +54,51 @@ export function EventsPage() {
     },
   ];
 
-  const items = data?.data?.items ?? [];
-  const total = data?.data?.total ?? 0;
-
   return (
-    <div className="page-events">
-      <div className="page-header">
-        <h1>{t('domain.events.title')}</h1>
-        <Button onClick={openCreate}>{t('domain.events.create')}</Button>
-      </div>
-      <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.events.empty')} />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.events.create')} size="md">
-        <EventForm form={form} setForm={setForm} errors={errors} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
-      </Modal>
-      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
-    </div>
+    <CrudPage<EventItem, EventFormState>
+      title={t('domain.events.title')}
+      createLabel={t('domain.events.create')}
+      emptyMessage={t('domain.events.empty')}
+      searchPlaceholder={t('common.search')}
+      editModalTitle={t('common.edit')}
+      createModalTitle={t('domain.events.create')}
+      columns={columns}
+      emptyForm={emptyEventForm}
+      toFormState={(item) => ({
+        title: item.title,
+        description: item.description ?? '',
+        location: item.location ?? '',
+        startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '',
+        endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '',
+        isPublic: item.isPublic ?? false,
+      })}
+      validate={(form) => validateEvent(form, t)}
+      buildPayload={(form) => {
+        const p: Record<string, unknown> = { ...form };
+        p.startsAt = new Date(p.startsAt as string).toISOString();
+        if (p.endsAt) p.endsAt = new Date(p.endsAt as string).toISOString();
+        else delete p.endsAt;
+        if (!p.description) delete p.description;
+        if (!p.location) delete p.location;
+        return p;
+      }}
+      listQuery={listQuery}
+      getItems={(data: any) => data?.data?.items ?? []}
+      getTotal={(data: any) => data?.data?.total ?? 0}
+      page={page}
+      onPageChange={setPage}
+      onSearch={setSearch}
+      onCreate={(payload, cb) => create.mutate(payload, cb)}
+      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onDelete={(id, cb) => del.mutate(id, cb)}
+      isCreatePending={create.isPending}
+      isUpdatePending={update.isPending}
+      isDeletePending={del.isPending}
+      savedMessage={t('common.saved')}
+      deletedMessage={t('common.deleted')}
+      onSuccess={(msg) => toast.success(msg)}
+      onError={(msg) => toast.error(msg)}
+      FormComponent={EventForm}
+    />
   );
 }

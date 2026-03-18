@@ -1,36 +1,12 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import { CLIPPING_SENTIMENTS, type ClippingFormState } from '../../../validation/domain';
 
-export const SENTIMENTS = ['positive', 'neutral', 'negative'] as const;
+export type { ClippingFormState };
+export { emptyClippingForm, validateClipping } from '../../../validation/domain';
 
-export interface ClippingFormState {
-  title: string;
-  source: string;
-  sourceUrl: string;
-  publishedAt: string;
-  sentiment: string;
-  summary: string;
-  tags: string;
-}
-
-export const emptyClippingForm: ClippingFormState = {
-  title: '', source: '', sourceUrl: '', publishedAt: '', sentiment: 'neutral', summary: '', tags: '',
-};
-
-export function validateClipping(form: ClippingFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.title.length < 3) e.title = t('domain.clippings.fields.title') + ' — mín. 3 caracteres';
-  if (form.source.length < 2) e.source = t('domain.clippings.fields.source') + ' — mín. 2 caracteres';
-  return e;
-}
-
-interface Props {
-  form: ClippingFormState;
-  setForm: React.Dispatch<React.SetStateAction<ClippingFormState>>;
-  errors: Record<string, string>;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface Props extends FormComponentProps<ClippingFormState> {}
 
 export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();
@@ -60,7 +36,7 @@ export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Pro
       <label>
         {t('domain.clippings.fields.sentiment')}
         <select value={form.sentiment} onChange={e => set('sentiment', e.target.value)}>
-          {SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
+          {CLIPPING_SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
         </select>
       </label>
       <label>

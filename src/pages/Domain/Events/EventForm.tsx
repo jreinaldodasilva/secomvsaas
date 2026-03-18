@@ -1,33 +1,12 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import { type EventFormState } from '../../../validation/domain';
 
-export interface EventFormState {
-  title: string;
-  description: string;
-  location: string;
-  startsAt: string;
-  endsAt: string;
-  isPublic: boolean;
-}
+export type { EventFormState };
+export { emptyEventForm, validateEvent } from '../../../validation/domain';
 
-export const emptyEventForm: EventFormState = {
-  title: '', description: '', location: '', startsAt: '', endsAt: '', isPublic: false,
-};
-
-export function validateEvent(form: EventFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.title.length < 3) e.title = t('domain.events.fields.title') + ' — mín. 3 caracteres';
-  if (!form.startsAt) e.startsAt = t('domain.events.fields.startsAt') + ' — obrigatório';
-  return e;
-}
-
-interface Props {
-  form: EventFormState;
-  setForm: React.Dispatch<React.SetStateAction<EventFormState>>;
-  errors: Record<string, string>;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface Props extends FormComponentProps<EventFormState> {}
 
 export function EventForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

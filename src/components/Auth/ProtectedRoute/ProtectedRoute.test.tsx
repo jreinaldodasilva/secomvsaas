@@ -52,4 +52,10 @@ describe('ProtectedRoute', () => {
     renderRoute(<ProtectedRoute allowedRoles={['admin']}><div>Admin area</div></ProtectedRoute>);
     expect(screen.getByText('Unauthorized Page')).toBeInTheDocument();
   });
+
+  it('redirects citizen role away from staff-only routes', () => {
+    mockUseAuth.mockReturnValue({ user: { name: 'Cidadão', role: 'citizen' }, isLoading: false, isAuthenticated: true });
+    renderRoute(<ProtectedRoute allowedRoles={['super_admin', 'admin', 'assessor', 'social_media', 'atendente']}><div>Staff area</div></ProtectedRoute>);
+    expect(screen.getByText('Unauthorized Page')).toBeInTheDocument();
+  });
 });

@@ -127,6 +127,15 @@ export type UserRoleType = typeof UserRole[keyof typeof UserRole];
 export const ROLES = UserRole;
 export type Role = UserRoleType;
 
+/** All roles that can access the staff dashboard (excludes citizen) */
+export const STAFF_ROLES: Role[] = [
+  UserRole.SUPER_ADMIN,
+  UserRole.ADMIN,
+  UserRole.ASSESSOR,
+  UserRole.SOCIAL_MEDIA,
+  UserRole.ATENDENTE,
+];
+
 // ─── Permissions ─────────────────────────────────────────────────────────────
 
 export const PERMISSIONS = {

@@ -1,41 +1,20 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import {
+  APPOINTMENT_STATUSES,
+  type AppointmentFormState,
+} from '../../../validation/domain';
 
-export const STATUSES = ['pending', 'confirmed', 'completed', 'cancelled', 'no_show'] as const;
+export type { AppointmentFormState };
+export { emptyAppointmentForm, validateAppointment } from '../../../validation/domain';
 
-export interface AppointmentFormState {
-  citizenName: string;
-  citizenCpf: string;
-  citizenPhone: string;
-  service: string;
-  scheduledAt: string;
-  notes: string;
+interface Props extends FormComponentProps<AppointmentFormState> {
+  editStatus?: string;
+  setEditStatus?: (s: string) => void;
 }
 
-export const emptyAppointmentForm: AppointmentFormState = {
-  citizenName: '', citizenCpf: '', citizenPhone: '', service: '', scheduledAt: '', notes: '',
-};
-
-export function validateAppointment(form: AppointmentFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.citizenName.length < 2) e.citizenName = t('domain.appointments.fields.citizenName') + ' — mín. 2 caracteres';
-  if (!form.service) e.service = t('domain.appointments.fields.service') + ' — obrigatório';
-  if (!form.scheduledAt) e.scheduledAt = t('domain.appointments.fields.scheduledAt') + ' — obrigatório';
-  return e;
-}
-
-interface Props {
-  form: AppointmentFormState;
-  setForm: React.Dispatch<React.SetStateAction<AppointmentFormState>>;
-  errors: Record<string, string>;
-  editing: boolean;
-  editStatus: string;
-  setEditStatus: (s: string) => void;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
-
-export function AppointmentForm({ form, setForm, errors, editing, editStatus, setEditStatus, isPending, onSubmit }: Props) {
+export function AppointmentForm({ form, setForm, errors, editing, editStatus = 'pending', setEditStatus = () => {}, isPending, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof AppointmentFormState>(k: K, v: AppointmentFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -73,7 +52,7 @@ export function AppointmentForm({ form, setForm, errors, editing, editStatus, se
         <label>
           {t('domain.appointments.fields.status')}
           <select value={editStatus} onChange={e => setEditStatus(e.target.value)}>
-            {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            {APPOINTMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </label>
       )}

@@ -5,7 +5,8 @@ import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
 import { CitizenPortalLayout } from '../layouts/CitizenPortalLayout/CitizenPortalLayout';
 import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
 import { ProtectedCitizenRoute } from '../components/Auth/ProtectedRoute/ProtectedCitizenRoute';
-import { rolesWithPermission } from '@vsaas/types';
+import { LoadingScreen } from '../components/UI/Loading/Loading';
+import { STAFF_ROLES, rolesWithPermission } from '@vsaas/types';
 
 const LandingPage = lazy(() => import('../pages/Landing/LandingPage').then(m => ({ default: m.LandingPage })));
 const PrivacyPage = lazy(() => import('../pages/Legal/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
@@ -33,57 +34,47 @@ const CitizenRegisterPage = lazy(() => import('../pages/CitizenPortal/CitizenReg
 const CitizenDashboardPage = lazy(() => import('../pages/CitizenPortal/CitizenDashboardPage').then(m => ({ default: m.CitizenDashboardPage })));
 const CitizenProfilePage = lazy(() => import('../pages/CitizenPortal/CitizenProfilePage').then(m => ({ default: m.CitizenProfilePage })));
 
-function LazyFallback() {
-  return <div className="loading-screen"><div className="spinner spinner-lg" /></div>;
-}
-
 export function AppRoutes() {
   return (
-    <Suspense fallback={<LazyFallback />}>
-      <Routes>
-        {/* Public site */}
-        <Route element={<PublicLayout />}>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-        </Route>
+    <Routes>
+      {/* Public site + Auth routes */}
+      <Route element={<PublicLayout />}>
+        <Route path="/" element={<Suspense fallback={<LoadingScreen />}><LandingPage /></Suspense>} />
+        <Route path="/privacy" element={<Suspense fallback={<LoadingScreen />}><PrivacyPage /></Suspense>} />
+        <Route path="/terms" element={<Suspense fallback={<LoadingScreen />}><TermsPage /></Suspense>} />
+        <Route path="/login" element={<Suspense fallback={<LoadingScreen />}><LoginPage /></Suspense>} />
+        <Route path="/register" element={<Suspense fallback={<LoadingScreen />}><RegisterPage /></Suspense>} />
+        <Route path="/accept-invite" element={<Suspense fallback={<LoadingScreen />}><AcceptInvitePage /></Suspense>} />
+        <Route path="/forgot-password" element={<Suspense fallback={<LoadingScreen />}><ForgotPasswordPage /></Suspense>} />
+        <Route path="/reset-password" element={<Suspense fallback={<LoadingScreen />}><ResetPasswordPage /></Suspense>} />
+      </Route>
 
-        {/* Auth routes — with public header/footer */}
-        <Route element={<PublicLayout />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/accept-invite" element={<AcceptInvitePage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-        </Route>
+      {/* Protected dashboard routes — staff only (excludes citizen role) */}
+      <Route element={<ProtectedRoute allowedRoles={STAFF_ROLES}><DashboardLayout /></ProtectedRoute>}>
+        <Route path="/admin/dashboard" element={<Suspense fallback={<LoadingScreen />}><DashboardPage /></Suspense>} />
+        <Route path="/admin/users" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('users:read')}><UsersPage /></ProtectedRoute></Suspense>} />
+        <Route path="/settings/profile" element={<Suspense fallback={<LoadingScreen />}><ProfilePage /></Suspense>} />
+        <Route path="/press-releases" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('press-releases:read')}><PressReleasesPage /></ProtectedRoute></Suspense>} />
+        <Route path="/media-contacts" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('media-contacts:read')}><MediaContactsPage /></ProtectedRoute></Suspense>} />
+        <Route path="/clippings" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('clippings:read')}><ClippingsPage /></ProtectedRoute></Suspense>} />
+        <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('events:read')}><EventsPage /></ProtectedRoute></Suspense>} />
+        <Route path="/appointments" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('appointments:read')}><AppointmentsPage /></ProtectedRoute></Suspense>} />
+        <Route path="/citizen-portal" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('citizen-portal:read')}><CitizenPortalPage /></ProtectedRoute></Suspense>} />
+        <Route path="/social-media" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('social-media:read')}><SocialMediaPage /></ProtectedRoute></Suspense>} />
+      </Route>
 
-        {/* Protected routes */}
-        <Route element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
-          <Route path="/admin/dashboard" element={<DashboardPage />} />
-          <Route path="/admin/users" element={<ProtectedRoute allowedRoles={rolesWithPermission('users:read')}><UsersPage /></ProtectedRoute>} />
-          <Route path="/settings/profile" element={<ProfilePage />} />
-          <Route path="/press-releases" element={<ProtectedRoute allowedRoles={rolesWithPermission('press-releases:read')}><PressReleasesPage /></ProtectedRoute>} />
-          <Route path="/media-contacts" element={<ProtectedRoute allowedRoles={rolesWithPermission('media-contacts:read')}><MediaContactsPage /></ProtectedRoute>} />
-          <Route path="/clippings" element={<ProtectedRoute allowedRoles={rolesWithPermission('clippings:read')}><ClippingsPage /></ProtectedRoute>} />
-          <Route path="/events" element={<ProtectedRoute allowedRoles={rolesWithPermission('events:read')}><EventsPage /></ProtectedRoute>} />
-          <Route path="/appointments" element={<ProtectedRoute allowedRoles={rolesWithPermission('appointments:read')}><AppointmentsPage /></ProtectedRoute>} />
-          <Route path="/citizen-portal" element={<ProtectedRoute allowedRoles={rolesWithPermission('citizen-portal:read')}><CitizenPortalPage /></ProtectedRoute>} />
-          <Route path="/social-media" element={<ProtectedRoute allowedRoles={rolesWithPermission('social-media:read')}><SocialMediaPage /></ProtectedRoute>} />
-        </Route>
+      {/* Citizen Portal */}
+      <Route element={<CitizenPortalLayout />}>
+        <Route path="/portal" element={<Suspense fallback={<LoadingScreen />}><CitizenPortalHomePage /></Suspense>} />
+        <Route path="/portal/login" element={<Suspense fallback={<LoadingScreen />}><CitizenLoginPage /></Suspense>} />
+        <Route path="/portal/register" element={<Suspense fallback={<LoadingScreen />}><CitizenRegisterPage /></Suspense>} />
+        <Route path="/portal/dashboard" element={<Suspense fallback={<LoadingScreen />}><ProtectedCitizenRoute><CitizenDashboardPage /></ProtectedCitizenRoute></Suspense>} />
+        <Route path="/portal/profile" element={<Suspense fallback={<LoadingScreen />}><ProtectedCitizenRoute><CitizenProfilePage /></ProtectedCitizenRoute></Suspense>} />
+      </Route>
 
-        {/* Citizen Portal */}
-        <Route element={<CitizenPortalLayout />}>
-          <Route path="/portal" element={<CitizenPortalHomePage />} />
-          <Route path="/portal/login" element={<CitizenLoginPage />} />
-          <Route path="/portal/register" element={<CitizenRegisterPage />} />
-          <Route path="/portal/dashboard" element={<ProtectedCitizenRoute><CitizenDashboardPage /></ProtectedCitizenRoute>} />
-          <Route path="/portal/profile" element={<ProtectedCitizenRoute><CitizenProfilePage /></ProtectedCitizenRoute>} />
-        </Route>
-
-        {/* Fallback */}
-        <Route path="/unauthorized" element={<UnauthorizedPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </Suspense>
+      {/* Fallback */}
+      <Route path="/unauthorized" element={<Suspense fallback={<LoadingScreen />}><UnauthorizedPage /></Suspense>} />
+      <Route path="*" element={<Suspense fallback={<LoadingScreen />}><NotFoundPage /></Suspense>} />
+    </Routes>
   );
 }

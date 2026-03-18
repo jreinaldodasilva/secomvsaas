@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
+import { useState, useRef } from 'react';
+import { CrudPage } from '../../../components/UI';
+import { Button, StatusBadge } from '../../../components/UI';
+import type { Column } from '../../../components/UI';
 import { useAppointmentList, useCreateAppointment, useUpdateAppointment, useDeleteAppointment } from '../../../hooks/useAppointment';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -26,49 +28,19 @@ export function AppointmentsPage() {
   usePageTitle(t('domain.appointments.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<AppointmentItem | null>(null);
-  const [form, setForm] = useState<AppointmentFormState>(emptyAppointmentForm);
   const [editStatus, setEditStatus] = useState('pending');
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const editStatusRef = useRef(editStatus);
+  editStatusRef.current = editStatus;
 
-  const { data, isLoading } = useAppointmentList({ page, limit: 10, ...(search && { search }) });
+  const listQuery = useAppointmentList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateAppointment();
   const update = useUpdateAppointment();
   const del = useDeleteAppointment();
 
-  const openCreate = () => { setEditing(null); setForm(emptyAppointmentForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (item: AppointmentItem) => {
-    setEditing(item);
-    setForm({ citizenName: item.citizenName, citizenCpf: item.citizenCpf ?? '', citizenPhone: item.citizenPhone ?? '', service: item.service, scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '', notes: item.notes ?? '' });
-    setEditStatus(item.status);
-    setErrors({});
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validateAppointment(form, t);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload: Record<string, unknown> = { ...form };
-    payload.scheduledAt = new Date(payload.scheduledAt as string).toISOString();
-    if (!payload.citizenCpf) delete payload.citizenCpf;
-    if (!payload.citizenPhone) delete payload.citizenPhone;
-    if (!payload.notes) delete payload.notes;
-    if (editing) {
-      update.mutate({ id: editing.id, ...payload, status: editStatus }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    } else {
-      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    }
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
-  };
-
-  const columns: Column<AppointmentItem>[] = [
+  const columns = (
+    openEdit: (item: AppointmentItem) => void,
+    setDeleteTarget: (id: string) => void
+  ): Column<AppointmentItem>[] => [
     { key: 'citizenName', header: t('domain.appointments.fields.citizenName'), sortable: true },
     { key: 'service', header: t('domain.appointments.fields.service'), sortable: true },
     { key: 'scheduledAt', header: t('domain.appointments.fields.scheduledAt'), render: (r) => new Date(r.scheduledAt).toLocaleString('pt-BR') },
@@ -84,20 +56,55 @@ export function AppointmentsPage() {
     },
   ];
 
-  const items = data?.data?.items ?? [];
-  const total = data?.data?.total ?? 0;
-
   return (
-    <div className="page-appointments">
-      <div className="page-header">
-        <h1>{t('domain.appointments.title')}</h1>
-        <Button onClick={openCreate}>{t('domain.appointments.create')}</Button>
-      </div>
-      <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.appointments.empty')} />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.appointments.create')} size="md">
-        <AppointmentForm form={form} setForm={setForm} errors={errors} editing={!!editing} editStatus={editStatus} setEditStatus={setEditStatus} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
-      </Modal>
-      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
-    </div>
+    <CrudPage<AppointmentItem, AppointmentFormState>
+      title={t('domain.appointments.title')}
+      createLabel={t('domain.appointments.create')}
+      emptyMessage={t('domain.appointments.empty')}
+      searchPlaceholder={t('common.search')}
+      editModalTitle={t('common.edit')}
+      createModalTitle={t('domain.appointments.create')}
+      columns={columns}
+      emptyForm={emptyAppointmentForm}
+      toFormState={(item) => {
+        setEditStatus(item.status);
+        return {
+          citizenName: item.citizenName,
+          citizenCpf: item.citizenCpf ?? '',
+          citizenPhone: item.citizenPhone ?? '',
+          service: item.service,
+          scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '',
+          notes: item.notes ?? '',
+        };
+      }}
+      validate={(form) => validateAppointment(form, t)}
+      buildPayload={(form, editing) => {
+        const p: Record<string, unknown> = { ...form };
+        p.scheduledAt = new Date(p.scheduledAt as string).toISOString();
+        if (!p.citizenCpf) delete p.citizenCpf;
+        if (!p.citizenPhone) delete p.citizenPhone;
+        if (!p.notes) delete p.notes;
+        if (editing) p.status = editStatusRef.current;
+        return p;
+      }}
+      listQuery={listQuery}
+      getItems={(data: any) => data?.data?.items ?? []}
+      getTotal={(data: any) => data?.data?.total ?? 0}
+      page={page}
+      onPageChange={setPage}
+      onSearch={setSearch}
+      onCreate={(payload, cb) => create.mutate(payload, cb)}
+      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onDelete={(id, cb) => del.mutate(id, cb)}
+      isCreatePending={create.isPending}
+      isUpdatePending={update.isPending}
+      isDeletePending={del.isPending}
+      savedMessage={t('common.saved')}
+      deletedMessage={t('common.deleted')}
+      onSuccess={(msg) => toast.success(msg)}
+      onError={(msg) => toast.error(msg)}
+      FormComponent={AppointmentForm}
+      formExtraProps={{ editStatus, setEditStatus }}
+    />
   );
 }

@@ -1,7 +1,10 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useCallback } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import type { Tenant } from '@vsaas/types';
-import { http } from '../services/http';
+import { tenantService } from '../services/api/tenantService';
 import { useAuth, AuthContext } from './AuthContext';
+
+export const TENANT_QUERY_KEY = ['tenant', 'me'] as const;
 
 interface TenantContextValue {
   tenant: Tenant | null;
@@ -13,7 +16,7 @@ interface TenantContextValue {
 const TenantContext = createContext<TenantContextValue | null>(null);
 
 export function TenantProvider({ children }: { children: React.ReactNode }) {
-  if (import.meta.env.DEV && !useContext(AuthContext)) {
+  if (import.meta.env.DEV && !useContext(AuthContext)) { // eslint-disable-line react-hooks/rules-of-hooks
     throw new Error(
       '[TenantProvider] Must be rendered inside <AuthProvider>. ' +
       'Check AppProviders — TenantProvider must be nested within AuthProvider. ' +
@@ -22,28 +25,21 @@ export function TenantProvider({ children }: { children: React.ReactNode }) {
   }
 
   const { isAuthenticated, user } = useAuth();
-  const [tenant, setTenant] = useState<Tenant | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: TENANT_QUERY_KEY,
+    queryFn: () => tenantService.getMe(),
+    enabled: isAuthenticated && !!user?.tenantId,
+    staleTime: 5 * 60 * 1000,
+    retry: false,
+  });
+
+  const tenant = data?.data ?? null;
 
   const refreshTenant = useCallback(async () => {
-    try {
-      setIsLoading(true);
-      const res = await http.get<{ success: true; data: Tenant }>('/api/v1/tenants/me');
-      setTenant(res.data);
-    } catch {
-      setTenant(null);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (isAuthenticated && user?.tenantId) {
-      refreshTenant();
-    } else {
-      setTenant(null);
-    }
-  }, [isAuthenticated, user?.tenantId, refreshTenant]);
+    await queryClient.invalidateQueries({ queryKey: TENANT_QUERY_KEY });
+  }, [queryClient]);
 
   const hasFeature = useCallback(
     (feature: string) => !!tenant?.settings?.features?.[feature],

@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
+import { CrudPage } from '../../../components/UI';
+import { Button, StatusBadge } from '../../../components/UI';
+import type { Column } from '../../../components/UI';
 import { usePressReleaseList, useCreatePressRelease, useUpdatePressRelease, useDeletePressRelease } from '../../../hooks/usePressRelease';
 import { useToast } from '../../../hooks/useToast';
 import { usePageTitle } from '../../../hooks/usePageTitle';
@@ -28,44 +30,16 @@ export function PressReleasesPage() {
   usePageTitle(t('domain.pressReleases.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editing, setEditing] = useState<PressReleaseItem | null>(null);
-  const [form, setForm] = useState<PressReleaseFormState>(emptyPressReleaseForm);
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
 
-  const { data, isLoading } = usePressReleaseList({ page, limit: 10, ...(search && { search }) });
+  const listQuery = usePressReleaseList({ page, limit: 10, ...(search && { search }) });
   const create = useCreatePressRelease();
   const update = useUpdatePressRelease();
   const del = useDeletePressRelease();
 
-  const openCreate = () => { setEditing(null); setForm(emptyPressReleaseForm); setErrors({}); setModalOpen(true); };
-  const openEdit = (item: PressReleaseItem) => {
-    setEditing(item);
-    setForm({ title: item.title, content: item.content, subtitle: item.subtitle ?? '', summary: item.summary ?? '', category: item.category, tags: (item.tags ?? []).join(', '), status: item.status });
-    setErrors({});
-    setModalOpen(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validatePressRelease(form, t);
-    if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload: Record<string, unknown> = { ...form, tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [] };
-    if (editing) {
-      update.mutate({ id: editing.id, ...payload }, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    } else {
-      delete payload.status;
-      create.mutate(payload, { onSuccess: () => { toast.success(t('common.saved')); setModalOpen(false); }, onError: (err) => toast.error(err.message) });
-    }
-  };
-
-  const handleDelete = () => {
-    if (!deleteTarget) return;
-    del.mutate(deleteTarget, { onSuccess: () => { toast.success(t('common.deleted')); setDeleteTarget(null); }, onError: (err) => toast.error(err.message) });
-  };
-
-  const columns: Column<PressReleaseItem>[] = [
+  const columns = (
+    openEdit: (item: PressReleaseItem) => void,
+    setDeleteTarget: (id: string) => void
+  ): Column<PressReleaseItem>[] => [
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
     { key: 'status', header: t('domain.pressReleases.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
@@ -81,20 +55,50 @@ export function PressReleasesPage() {
     },
   ];
 
-  const items = data?.data?.items ?? [];
-  const total = data?.data?.total ?? 0;
-
   return (
-    <div className="page-press-releases">
-      <div className="page-header">
-        <h1>{t('domain.pressReleases.title')}</h1>
-        <Button onClick={openCreate}>{t('domain.pressReleases.create')}</Button>
-      </div>
-      <DataTable columns={columns} data={items} total={total} page={page} limit={10} isLoading={isLoading} onPageChange={setPage} onSearch={setSearch} searchPlaceholder={t('common.search')} emptyMessage={t('domain.pressReleases.empty')} />
-      <Modal isOpen={modalOpen} onClose={() => setModalOpen(false)} title={editing ? t('common.edit') : t('domain.pressReleases.create')} size="md">
-        <PressReleaseForm form={form} setForm={setForm} errors={errors} editing={!!editing} isPending={create.isPending || update.isPending} onSubmit={handleSubmit} />
-      </Modal>
-      <ConfirmDialog isOpen={!!deleteTarget} onClose={() => setDeleteTarget(null)} onConfirm={handleDelete} isLoading={del.isPending} />
-    </div>
+    <CrudPage<PressReleaseItem, PressReleaseFormState>
+      title={t('domain.pressReleases.title')}
+      createLabel={t('domain.pressReleases.create')}
+      emptyMessage={t('domain.pressReleases.empty')}
+      searchPlaceholder={t('common.search')}
+      editModalTitle={t('common.edit')}
+      createModalTitle={t('domain.pressReleases.create')}
+      columns={columns}
+      emptyForm={emptyPressReleaseForm}
+      toFormState={(item) => ({
+        title: item.title,
+        content: item.content,
+        subtitle: item.subtitle ?? '',
+        summary: item.summary ?? '',
+        category: item.category,
+        tags: (item.tags ?? []).join(', '),
+        status: item.status,
+      })}
+      validate={(form) => validatePressRelease(form, t)}
+      buildPayload={(form) => ({
+        ...form,
+        tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [],
+      })}
+      listQuery={listQuery}
+      getItems={(data: any) => data?.data?.items ?? []}
+      getTotal={(data: any) => data?.data?.total ?? 0}
+      page={page}
+      onPageChange={setPage}
+      onSearch={setSearch}
+      onCreate={(payload, cb) => create.mutate(
+        (() => { const p = { ...payload }; delete p.status; return p; })(),
+        cb
+      )}
+      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onDelete={(id, cb) => del.mutate(id, cb)}
+      isCreatePending={create.isPending}
+      isUpdatePending={update.isPending}
+      isDeletePending={del.isPending}
+      savedMessage={t('common.saved')}
+      deletedMessage={t('common.deleted')}
+      onSuccess={(msg) => toast.success(msg)}
+      onError={(msg) => toast.error(msg)}
+      FormComponent={PressReleaseForm}
+    />
   );
 }

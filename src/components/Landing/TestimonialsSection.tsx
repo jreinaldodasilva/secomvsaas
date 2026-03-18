@@ -19,7 +19,7 @@ export function TestimonialsSection() {
                 <Icon key={i} name="star" size="1rem" aria-hidden />
               ))}
             </div>
-            <blockquote className={styles.testimonialQuote}>"{t.content}"</blockquote>
+            <blockquote className={styles.testimonialQuote}>&ldquo;{t.content}&rdquo;</blockquote>
             <div className={styles.testimonialAuthor}>
               <img src={t.avatar} alt={t.name} className={styles.testimonialAvatar} />
               <div>

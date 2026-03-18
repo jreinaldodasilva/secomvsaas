@@ -1,38 +1,21 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import {
+  SOCIAL_MEDIA_PLATFORMS,
+  SOCIAL_MEDIA_STATUSES,
+  type SocialMediaFormState,
+} from '../../../validation/domain';
 
-export const PLATFORMS = ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'] as const;
-export const STATUSES = ['draft', 'scheduled', 'published', 'failed'] as const;
+export type { SocialMediaFormState };
+export { emptySocialMediaForm, validateSocialMedia } from '../../../validation/domain';
 
-export interface SocialMediaFormState {
-  platform: string;
-  content: string;
-  mediaUrl: string;
-  scheduledAt: string;
+interface Props extends FormComponentProps<SocialMediaFormState> {
+  editStatus?: string;
+  setEditStatus?: (s: string) => void;
 }
 
-export const emptySocialMediaForm: SocialMediaFormState = {
-  platform: 'instagram', content: '', mediaUrl: '', scheduledAt: '',
-};
-
-export function validateSocialMedia(form: SocialMediaFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (!form.content.trim()) e.content = t('domain.socialMedia.fields.content') + ' — obrigatório';
-  return e;
-}
-
-interface Props {
-  form: SocialMediaFormState;
-  setForm: React.Dispatch<React.SetStateAction<SocialMediaFormState>>;
-  errors: Record<string, string>;
-  editing: boolean;
-  editStatus: string;
-  setEditStatus: (s: string) => void;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
-
-export function SocialMediaForm({ form, setForm, errors, editing, editStatus, setEditStatus, isPending, onSubmit }: Props) {
+export function SocialMediaForm({ form, setForm, errors, editing, editStatus = 'draft', setEditStatus = () => {}, isPending, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof SocialMediaFormState>(k: K, v: SocialMediaFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -42,7 +25,7 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus, se
       <label>
         {t('domain.socialMedia.fields.platform')}
         <select value={form.platform} onChange={e => set('platform', e.target.value)}>
-          {PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
+          {SOCIAL_MEDIA_PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
         </select>
       </label>
       <label className={errors.content ? 'form-field-error' : ''}>
@@ -62,7 +45,7 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus, se
         <label>
           {t('domain.socialMedia.fields.status')}
           <select value={editStatus} onChange={e => setEditStatus(e.target.value)}>
-            {STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            {SOCIAL_MEDIA_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
           </select>
         </label>
       )}

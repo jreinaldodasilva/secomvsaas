@@ -1,11 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { validatePressRelease, emptyPressReleaseForm } from './PressReleases/PressReleaseForm';
-import { validateAppointment, emptyAppointmentForm } from './Appointments/AppointmentForm';
-import { validateEvent, emptyEventForm } from './Events/EventForm';
-import { validateMediaContact, emptyMediaContactForm } from './MediaContacts/MediaContactForm';
-import { validateClipping, emptyClippingForm } from './Clippings/ClippingForm';
-import { validateCitizen, emptyCitizenForm } from './CitizenPortal/CitizenPortalForm';
-import { validateSocialMedia, emptySocialMediaForm } from './SocialMedia/SocialMediaForm';
+import {
+  validatePressRelease, emptyPressReleaseForm,
+  validateAppointment, emptyAppointmentForm,
+  validateEvent, emptyEventForm,
+  validateMediaContact, emptyMediaContactForm,
+  validateClipping, emptyClippingForm,
+  validateCitizen, emptyCitizenForm,
+  validateSocialMedia, emptySocialMediaForm,
+} from '../../validation/domain';
 
 const t = (k: string) => k;
 

@@ -17,7 +17,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@vsaas/types': path.resolve(__dirname, './packages/types/src'),
+      '@vsaas/types': path.resolve(__dirname, './packages/types/src/index.ts'),
     },
   },
   server: {

@@ -1,33 +1,12 @@
 import { Button } from '../../../components/UI';
 import { useTranslation } from '../../../i18n';
+import type { FormComponentProps } from '../../../components/UI';
+import { type MediaContactFormState } from '../../../validation/domain';
 
-export interface MediaContactFormState {
-  name: string;
-  outlet: string;
-  email: string;
-  phone: string;
-  beat: string;
-  notes: string;
-}
+export type { MediaContactFormState };
+export { emptyMediaContactForm, validateMediaContact } from '../../../validation/domain';
 
-export const emptyMediaContactForm: MediaContactFormState = {
-  name: '', outlet: '', email: '', phone: '', beat: '', notes: '',
-};
-
-export function validateMediaContact(form: MediaContactFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.name.length < 2) e.name = t('domain.mediaContacts.fields.name') + ' — mín. 2 caracteres';
-  if (form.outlet.length < 2) e.outlet = t('domain.mediaContacts.fields.outlet') + ' — mín. 2 caracteres';
-  return e;
-}
-
-interface Props {
-  form: MediaContactFormState;
-  setForm: React.Dispatch<React.SetStateAction<MediaContactFormState>>;
-  errors: Record<string, string>;
-  isPending: boolean;
-  onSubmit: (e: React.FormEvent) => void;
-}
+interface Props extends FormComponentProps<MediaContactFormState> {}
 
 export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

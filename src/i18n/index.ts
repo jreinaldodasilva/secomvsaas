@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { useCallback } from 'react';
 import ptBR from './locales/pt-BR.json';
 
 const locales: Record<string, Record<string, any>> = { 'pt-BR': ptBR };
@@ -47,7 +48,24 @@ export function tArray(key: string): string[] {
 export function useTranslation() {
   const locale = useI18nStore((s) => s.locale);
   const setLocale = useI18nStore((s) => s.setLocale);
-  // Re-render when locale changes by reading it from the store
-  void locale;
-  return { t, tArray, locale, setLocale };
+
+  const tLocale = useCallback(
+    (key: string, params?: Record<string, string | number>): string => {
+      const value = resolve(locales[locale], key) ?? resolve(locales[DEFAULT_LOCALE], key) ?? key;
+      if (typeof value !== 'string') return key;
+      if (!params) return value;
+      return value.replace(/\{\{(\w+)\}\}/g, (_, k) => String(params[k] ?? `{{${k}}}`));
+    },
+    [locale],
+  );
+
+  const tArrayLocale = useCallback(
+    (key: string): string[] => {
+      const value = resolve(locales[locale], key) ?? resolve(locales[DEFAULT_LOCALE], key);
+      return Array.isArray(value) ? value : [];
+    },
+    [locale],
+  );
+
+  return { t: tLocale, tArray: tArrayLocale, locale, setLocale };
 }

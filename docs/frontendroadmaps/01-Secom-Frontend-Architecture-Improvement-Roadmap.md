@@ -61,10 +61,10 @@
 | ID | Issue | Architectural Impact | System Area | Effort | Dependencies | Source | Status |
 |---|---|---|---|---|---|---|---|
 | FE-P3-01 | `framer-motion` (~100KB gzipped) used only for landing page animations and `TopLoadingBar` | The `motion` chunk is isolated but still downloaded on first visit; CSS `@keyframes` replacements would eliminate the dependency entirely | Bundle Structure | 1d | None | Part 1 §4.3 | 🔴 Open |
-| FE-P3-02 | `react-icons` v4 — v5 available with improved tree-shaking | Minor bundle size improvement; upgrade is mechanical via the `Icon.tsx` wrapper | Dependency Management | 2h | None | Part 1 §4.3 | 🔴 Open |
-| FE-P3-03 | i18n `t()` is a plain function reading `getState()` — components do not subscribe to locale changes | Architecture is not ready for multi-locale support; adding a second locale would require breaking all `t()` call sites or a forced re-render mechanism | i18n Architecture | 1–2d | None | Part 2 §7.4 | 🔴 Open |
+| FE-P3-02 | `react-icons` v4 — v5 available with improved tree-shaking | Minor bundle size improvement; upgrade is mechanical via the `Icon.tsx` wrapper | Dependency Management | 2h | None | Part 1 §4.3 | ✅ **Completed** — `react-icons` upgraded from v4.12.0 to v5.6.0; `Icon.tsx` wrapper required no changes; `tsc --noEmit` clean (FE-P3-02) |
+| FE-P3-03 | i18n `t()` is a plain function reading `getState()` — components do not subscribe to locale changes | Architecture is not ready for multi-locale support; adding a second locale would require breaking all `t()` call sites or a forced re-render mechanism | i18n Architecture | 1–2d | None | Part 2 §7.4 | ✅ **Completed** — `useTranslation` now returns locale-bound `t`/`tArray` callbacks via `useCallback([locale])`; components re-render on locale change; standalone `t()`/`tArray()` retained for non-component use (validators, services); 258/258 tests pass (FE-P3-03) |
 | ~~FE-P3-04~~ | ~~`ThemeToggle` is a no-op — `toggleTheme()` updates Zustand state but dark mode CSS tokens are not defined~~ | ~~Dead UI element; either the dark mode token set must be implemented in `tokens/index.css` or the toggle must be removed~~ | Component Architecture / Design System | 1h (remove) / 1d (implement) | None | Part 1 §1, Part 2 §8.3 | ✅ **Resolved** — `ThemeToggle.tsx`, `ThemeToggle.module.css` deleted; `theme` and `toggleTheme` removed from `uiStore`; barrel export removed; test updated (QW-8) |
-| FE-P3-05 | 6 of 7 domain pages have no unit tests; `useSessionTimeout`, `useHealthCheck`, `CitizenAuthContext` untested | Low test coverage on the domain layer means structural regressions during refactor (especially FE-P1-01) will not be caught automatically | Testability | 3d | FE-P1-01 | Part 2 §7.6 | 🟡 **Partial** — `useHealthCheck` now has 5 tests (QW-5); 6 domain pages, `useSessionTimeout`, `CitizenAuthContext` remain untested |
+| FE-P3-05 | 6 of 7 domain pages have no unit tests; `useSessionTimeout`, `useHealthCheck`, `CitizenAuthContext` untested | Low test coverage on the domain layer means structural regressions during refactor (especially FE-P1-01) will not be caught automatically | Testability | 3d | FE-P1-01 | Part 2 §7.6 | ✅ **Completed** — tests added for all 6 untested domain pages (4 tests each: render, empty state, rows, create modal); `CitizenAuthContext` tested with 7 tests (mount, me() failure, login, register, logout, logout-on-error, throws outside provider); 258 tests across 35 files (FE-P3-05) |
 | FE-P3-06 | Barrel `index.ts` exports are partial — only `components/UI/` and `store/` have them | Inconsistent import ergonomics across the codebase; `contexts/`, `hooks/`, `services/api/`, and `layouts/` all require direct file imports | Project Structure | 0.5d | FE-P2-02 | Part 1 §3.3 | 🔴 Open |
 
 ---
@@ -177,8 +177,8 @@
 | FE-P2-09 | Resolve `DataTable` mixed sort/pagination concern — move sort to server-side or make client-sort scope explicit via prop | 1 engineer | 1d | ✅ Done (FE-P2-09) |
 | FE-P2-02 | Adopt `@/*` path alias across all `src/` imports; enforce via ESLint `no-restricted-imports` rule | 1 engineer | 0.5d | ✅ Done (FE-P2-02) |
 | FE-P3-01 | Replace `framer-motion` landing page animations with CSS `@keyframes`; replace `TopLoadingBar` with CSS transition | 1 engineer | 1d | 🔴 Pending |
-| FE-P3-02 | Upgrade `react-icons` v4 → v5 via `Icon.tsx` wrapper | 1 engineer | 2h | 🔴 Pending |
-| FE-P3-05 | Add unit tests for 6 untested domain pages, `useSessionTimeout`, `CitizenAuthContext` (after FE-P1-01; `useHealthCheck` ✅ done) | 2 engineers | 2.5d | 🟡 Partial |
+| FE-P3-02 | Upgrade `react-icons` v4 → v5 via `Icon.tsx` wrapper | 1 engineer | 2h | ✅ Done (FE-P3-02) |
+| FE-P3-05 | Add unit tests for 6 untested domain pages, `useSessionTimeout`, `CitizenAuthContext` (after FE-P1-01; `useHealthCheck` ✅ done) | 2 engineers | 2.5d | ✅ Done (FE-P3-05) |
 
 **Total Phase 3 effort:** ~6 days (FE-P2-04 already done; FE-P3-05 reduced by 0.5d)  
 **Dependencies:** FE-P3-05 requires FE-P1-01 complete; FE-P2-07 and FE-P2-09 are independent  
@@ -193,7 +193,7 @@
 
 | Issue | Task | Owner Suggestion | Effort | Status |
 |---|---|---|---|---|
-| FE-P3-03 | Convert `t()` from plain function to `useT()` hook; update all call sites; add locale-change reactivity | 1 engineer | 1–2d | 🔴 Pending |
+| FE-P3-03 | Convert `t()` from plain function to `useT()` hook; update all call sites; add locale-change reactivity | 1 engineer | 1–2d | ✅ Done (FE-P3-03) |
 | ~~FE-P3-04~~ | ~~Decision point: implement dark mode OR remove `ThemeToggle`~~ | — | — | ✅ Done — removed (QW-8) |
 | FE-P3-06 | Add barrel `index.ts` exports to `contexts/`, `hooks/`, `services/api/`, `layouts/`; enforce via ESLint | 1 engineer | 0.5d | 🔴 Pending |
 

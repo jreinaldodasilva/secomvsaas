@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from '@/i18n';
 import styles from './Modal.module.css';
 
@@ -23,7 +24,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
 
   if (!isOpen) return null;
 
-  return (
+  return createPortal(
     <div className={styles.overlay} ref={overlayRef} onClick={(e) => { if (e.target === overlayRef.current) onClose(); }}>
       <div className={`${styles.modal} ${styles[size]}`} role="dialog" aria-modal="true" aria-labelledby={title ? 'modal-title' : undefined}>
         {title && (
@@ -34,6 +35,7 @@ export function Modal({ isOpen, onClose, title, children, size = 'md' }: ModalPr
         )}
         <div className={styles.body}>{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

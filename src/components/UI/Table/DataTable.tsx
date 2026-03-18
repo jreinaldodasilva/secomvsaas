@@ -22,11 +22,16 @@ interface DataTableProps<T> {
   onSearch?: (query: string) => void;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  /** When true, sort operates client-side on the current data slice.
+   *  When false (default), onSortChange is called and the parent handles server-side sort. */
+  clientSort?: boolean;
+  onSortChange?: (key: string, dir: 'asc' | 'desc') => void;
 }
 
 export function DataTable<T extends Record<string, any>>({
   columns, data, total = 0, page = 1, limit = 10,
   isLoading, onPageChange, onSearch, searchPlaceholder, emptyMessage,
+  clientSort = false, onSortChange,
 }: DataTableProps<T>) {
   const { t } = useTranslation();
   const resolvedSearchPlaceholder = searchPlaceholder ?? t('common.search');
@@ -38,22 +43,20 @@ export function DataTable<T extends Record<string, any>>({
   const totalPages = Math.ceil(total / limit);
 
   const sorted = useMemo(() => {
-    if (!sortKey) return data;
+    if (!clientSort || !sortKey) return data;
     return [...data].sort((a, b) => {
       const av = a[sortKey], bv = b[sortKey];
       if (av == null || bv == null) return 0;
       const cmp = String(av).localeCompare(String(bv), undefined, { numeric: true });
       return sortDir === 'asc' ? cmp : -cmp;
     });
-  }, [data, sortKey, sortDir]);
+  }, [data, sortKey, sortDir, clientSort]);
 
   const handleSort = (key: string) => {
-    if (sortKey === key) {
-      setSortDir(d => d === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortKey(key);
-      setSortDir('asc');
-    }
+    const nextDir = sortKey === key && sortDir === 'asc' ? 'desc' : 'asc';
+    setSortKey(key);
+    setSortDir(nextDir);
+    if (!clientSort) onSortChange?.(key, nextDir);
   };
 
   const handleSearch = (value: string) => {

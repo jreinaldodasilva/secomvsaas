@@ -1,5 +1,5 @@
 import { useState, useMemo, InputHTMLAttributes } from 'react';
-import { useTranslation } from '../../../i18n';
+import { useTranslation } from '@/i18n';
 import styles from './PasswordInput.module.css';
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useMediaContactList, useCreateMediaContact, useUpdateMediaContact, useDeleteMediaContact } from '../../../hooks/useMediaContact';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useMediaContactList, useCreateMediaContact, useUpdateMediaContact, useDeleteMediaContact } from '@/hooks/useMediaContact';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { MediaContactForm, validateMediaContact, emptyMediaContactForm } from './MediaContactForm';
 import type { MediaContactFormState } from './MediaContactForm';
 

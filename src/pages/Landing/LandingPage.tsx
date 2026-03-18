@@ -8,7 +8,7 @@ import {
   LgpdSection,
   ContactSection,
   CtaSection,
-} from '../../components/Landing';
+} from '@/components/Landing';
 import styles from './LandingPage.module.css';
 
 export function LandingPage() {

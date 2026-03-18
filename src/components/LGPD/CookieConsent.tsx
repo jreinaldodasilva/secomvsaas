@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../../i18n';
+import { useTranslation } from '@/i18n';
 
 const CONSENT_KEY = 'secom_cookie_consent';
 

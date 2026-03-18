@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { authService } from '../../services/api/authService';
-import { useTranslation } from '../../i18n';
-import { usePageTitle } from '../../hooks/usePageTitle';
-import { ApiError } from '../../services/http';
-import s from '../Auth.module.css';
+import { authService } from '@/services/api/authService';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { ApiError } from '@/services/http';
+import s from '@/pages/Auth.module.css';
 
 export function ForgotPasswordPage() {
   const { t } = useTranslation();

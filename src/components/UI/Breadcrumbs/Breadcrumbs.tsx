@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from '@/i18n';
 import styles from './Breadcrumbs.module.css';
 
 interface BreadcrumbItem {
@@ -11,43 +12,24 @@ interface BreadcrumbsProps {
   items?: BreadcrumbItem[];
 }
 
-const ROUTE_LABELS: Record<string, string> = {
-  admin: 'Dashboard',
-  dashboard: 'Dashboard',
-  users: 'Usuários',
-  settings: 'Configurações',
-  profile: 'Perfil',
-  'press-releases': 'Comunicados',
-  'media-contacts': 'Contatos de Mídia',
-  clippings: 'Clipping',
-  events: 'Eventos',
-  appointments: 'Agendamentos',
-  'citizen-portal': 'Portal do Cidadão',
-  'social-media': 'Redes Sociais',
-  login: 'Login',
-  register: 'Cadastro',
-  'forgot-password': 'Recuperar Senha',
-  'reset-password': 'Redefinir Senha',
-  unauthorized: 'Acesso Negado',
-  privacy: 'Privacidade',
-  terms: 'Termos de Uso',
-};
-
-function generateBreadcrumbs(pathname: string): BreadcrumbItem[] {
+function generateBreadcrumbs(pathname: string, t: (k: string) => string): BreadcrumbItem[] {
   const segments = pathname.split('/').filter(Boolean);
-  const crumbs: BreadcrumbItem[] = [{ label: 'Início', path: '/' }];
+  const crumbs: BreadcrumbItem[] = [{ label: t('breadcrumbs.home'), path: '/' }];
   let current = '';
   for (const seg of segments) {
     current += `/${seg}`;
     if (/^[a-f0-9]{24}$/i.test(seg) || /^[0-9a-f-]{36}$/i.test(seg)) continue;
-    crumbs.push({ label: ROUTE_LABELS[seg] ?? seg.charAt(0).toUpperCase() + seg.slice(1), path: current });
+    const key = `breadcrumbs.${seg}`;
+    const label = t(key);
+    crumbs.push({ label: label !== key ? label : seg.charAt(0).toUpperCase() + seg.slice(1), path: current });
   }
   return crumbs;
 }
 
 export const Breadcrumbs = React.memo<BreadcrumbsProps>(({ items }) => {
+  const { t } = useTranslation();
   const location = useLocation();
-  const crumbs = items ?? generateBreadcrumbs(location.pathname);
+  const crumbs = items ?? generateBreadcrumbs(location.pathname, t);
 
   if (crumbs.length <= 1) return null;
 

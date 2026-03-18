@@ -1,8 +1,8 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { ContactForm } from '../ContactForm/ContactForm';
+import { ContactForm } from '@/components/ContactForm/ContactForm';
 import { SectionHeader } from './LandingShared';
-import pageStyles from '../../pages/Landing/LandingPage.module.css';
+import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function ContactSection() {
   return (

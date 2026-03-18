@@ -1,11 +1,11 @@
 import { useState, FormEvent } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { authService } from '../../services/api/authService';
-import { PasswordInput } from '../../components/UI';
-import { useTranslation } from '../../i18n';
-import { usePageTitle } from '../../hooks/usePageTitle';
-import { ApiError } from '../../services/http';
-import s from '../Auth.module.css';
+import { authService } from '@/services/api/authService';
+import { PasswordInput } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { ApiError } from '@/services/http';
+import s from '@/pages/Auth.module.css';
 
 export function ResetPasswordPage() {
   const { t } = useTranslation();

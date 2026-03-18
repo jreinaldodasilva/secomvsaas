@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { useCitizenAuth } from '../../contexts/CitizenAuthContext';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useCitizenAuth } from '@/contexts/CitizenAuthContext';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import styles from './CitizenPortal.module.css';
 
 export function CitizenDashboardPage() {

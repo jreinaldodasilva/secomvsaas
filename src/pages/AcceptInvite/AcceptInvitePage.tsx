@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { http, ApiError } from '../../services/http';
-import { PasswordInput } from '../../components/UI';
-import { useTranslation } from '../../i18n';
-import { usePageTitle } from '../../hooks/usePageTitle';
-import s from '../Auth.module.css';
+import { http, ApiError } from '@/services/http';
+import { PasswordInput } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import s from '@/pages/Auth.module.css';
 
 export function AcceptInvitePage() {
   const navigate = useNavigate();

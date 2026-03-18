@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { citizenAuthService, CitizenUser } from '../services/api/citizenAuthService';
+import { citizenAuthService, CitizenUser } from '@/services/api/citizenAuthService';
 
 interface CitizenAuthContextValue {
   citizen: CitizenUser | null;

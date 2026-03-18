@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { ENV } from '../config/env';
+import { ENV } from '@/config/env';
 
 const HEALTH_URL = `${ENV.API_URL}/api/v1/health`;
 

@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom';
-import { Icon } from '../UI/Icon/Icon';
+import { Icon } from '@/components/UI/Icon/Icon';
 import { SectionHeader, AnimatedGrid, AnimatedItem } from './LandingShared';
 import { MODULES } from './landing.data';
 import styles from './Landing.module.css';
-import pageStyles from '../../pages/Landing/LandingPage.module.css';
+import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function ModulesSection() {
   const navigate = useNavigate();

@@ -1,12 +1,12 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
-import { CLIPPING_SENTIMENTS, type ClippingFormState } from '../../../validation/domain';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
+import { CLIPPING_SENTIMENTS, type ClippingFormState } from '@/validation/domain';
 
 export type { ClippingFormState };
-export { emptyClippingForm, validateClipping } from '../../../validation/domain';
+export { emptyClippingForm, validateClipping } from '@/validation/domain';
 
-interface Props extends FormComponentProps<ClippingFormState> {}
+type Props = FormComponentProps<ClippingFormState>;
 
 export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

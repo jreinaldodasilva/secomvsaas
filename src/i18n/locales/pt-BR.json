@@ -119,6 +119,28 @@
     "forgotPasswordSuccess": "Se o e-mail estiver registrado, um link de redefinição foi enviado.",
     "resetPasswordSuccess": "Senha redefinida com sucesso. Faça login."
   },
+  "breadcrumbs": {
+    "home": "Início",
+    "admin": "Dashboard",
+    "dashboard": "Dashboard",
+    "users": "Usuários",
+    "settings": "Configurações",
+    "profile": "Perfil",
+    "press-releases": "Comunicados",
+    "media-contacts": "Contatos de Mídia",
+    "clippings": "Clipping",
+    "events": "Eventos",
+    "appointments": "Agendamentos",
+    "citizen-portal": "Portal do Cidadão",
+    "social-media": "Redes Sociais",
+    "login": "Login",
+    "register": "Cadastro",
+    "forgot-password": "Recuperar Senha",
+    "reset-password": "Redefinir Senha",
+    "unauthorized": "Acesso Negado",
+    "privacy": "Privacidade",
+    "terms": "Termos de Uso"
+  },
   "nav": {
     "toggleSidebar": "Alternar menu lateral",
     "dashboard": "Painel",

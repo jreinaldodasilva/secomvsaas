@@ -1,7 +1,7 @@
 import { SectionHeader, AnimatedGrid, AnimatedItem } from './LandingShared';
 import { VISUAL_IMAGES } from './landing.data';
 import styles from './Landing.module.css';
-import pageStyles from '../../pages/Landing/LandingPage.module.css';
+import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function VisualBanner() {
   return (

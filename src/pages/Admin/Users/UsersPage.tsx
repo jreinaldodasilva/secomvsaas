@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '../../../components/UI';
-import { useApiQuery, useApiMutation } from '../../../hooks/useApi';
-import { useToast } from '../../../hooks/useToast';
-import { useAuth } from '../../../contexts/AuthContext';
-import { useTenant } from '../../../contexts/TenantContext';
-import { useTranslation } from '../../../i18n';
-import { usePageTitle } from '../../../hooks/usePageTitle';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '@/components/UI';
+import { useApiQuery, useApiMutation } from '@/hooks/useApi';
+import { useToast } from '@/hooks/useToast';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTenant } from '@/contexts/TenantContext';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import { ROLES } from '@vsaas/types';
 
 interface UserItem {

@@ -1,5 +1,5 @@
-import { useTranslation } from '../../i18n';
-import { usePageTitle } from '../../hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 export function TermsPage() {
   const { t } = useTranslation();

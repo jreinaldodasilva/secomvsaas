@@ -1,4 +1,4 @@
-import type { IconName } from '../UI/Icon/Icon';
+import type { IconName } from '@/components/UI/Icon/Icon';
 
 export interface Feature {
   icon: IconName;

@@ -1,4 +1,4 @@
-import { http } from '../http';
+import { http } from '@/services/http';
 import type { ApiResult, PaginatedData } from '@vsaas/types';
 
 const BASE = '/api/v1/media-contacts';

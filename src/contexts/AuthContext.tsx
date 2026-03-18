@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { User } from '@vsaas/types';
-import { authService } from '../services/api/authService';
+import { authService } from '@/services/api/authService';
 
 interface AuthContextValue {
   user: User | null;

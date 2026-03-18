@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from 'react-router-dom';
-import { useCitizenAuth } from '../../contexts/CitizenAuthContext';
-import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
+import { useCitizenAuth } from '@/contexts/CitizenAuthContext';
+import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import styles from './CitizenPortalLayout.module.css';
 
 export function CitizenPortalLayout() {

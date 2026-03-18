@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from '../../i18n';
+import { useTranslation } from '@/i18n';
 import styles from './Footer.module.css';
 
 export function Footer() {

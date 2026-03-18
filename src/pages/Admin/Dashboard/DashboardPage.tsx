@@ -1,8 +1,8 @@
-import { useAuth } from '../../../contexts/AuthContext';
-import { useTranslation } from '../../../i18n';
-import { useDashboard } from '../../../hooks/useDashboard';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { StatusBadge, Skeleton, Card } from '../../../components/UI';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/i18n';
+import { useDashboard } from '@/hooks/useDashboard';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { StatusBadge, Skeleton, Card } from '@/components/UI';
 import styles from './DashboardPage.module.css';
 
 const STATUS_COLORS: Record<string, string> = {

@@ -1,12 +1,12 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
-import { type EventFormState } from '../../../validation/domain';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
+import { type EventFormState } from '@/validation/domain';
 
 export type { EventFormState };
-export { emptyEventForm, validateEvent } from '../../../validation/domain';
+export { emptyEventForm, validateEvent } from '@/validation/domain';
 
-interface Props extends FormComponentProps<EventFormState> {}
+type Props = FormComponentProps<EventFormState>;
 
 export function EventForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

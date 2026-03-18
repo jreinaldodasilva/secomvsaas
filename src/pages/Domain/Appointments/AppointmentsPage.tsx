@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useAppointmentList, useCreateAppointment, useUpdateAppointment, useDeleteAppointment } from '../../../hooks/useAppointment';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useAppointmentList, useCreateAppointment, useUpdateAppointment, useDeleteAppointment } from '@/hooks/useAppointment';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { AppointmentForm, validateAppointment, emptyAppointmentForm } from './AppointmentForm';
 import type { AppointmentFormState } from './AppointmentForm';
 

@@ -1,4 +1,4 @@
-import { http } from '../http';
+import { http } from '@/services/http';
 import type { Tenant } from '@vsaas/types';
 
 export interface TenantResponse {

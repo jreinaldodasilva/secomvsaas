@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { DashboardMockup } from '../DashboardMockup/DashboardMockup';
+import { DashboardMockup } from '@/components/DashboardMockup/DashboardMockup';
 import { containerVariants, itemVariants } from './LandingShared';
 import { PILLS, STATS } from './landing.data';
 import styles from './Landing.module.css';
-import pageStyles from '../../pages/Landing/LandingPage.module.css';
+import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function HeroSection() {
   const navigate = useNavigate();

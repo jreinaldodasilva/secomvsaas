@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useTranslation } from '../../../i18n';
+import { useTranslation } from '@/i18n';
 import styles from './Modal.module.css';
 
 interface ModalProps {

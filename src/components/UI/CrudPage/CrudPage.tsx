@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { DataTable, Modal, Button, ConfirmDialog } from '../index';
-import type { Column } from '../Table/DataTable';
+import { DataTable, Modal, Button, ConfirmDialog } from '@/components/UI/index';
+import type { Column } from '@/components/UI/Table/DataTable';
 
 export interface CrudPageProps<TItem extends { id: string }, TForm> {
   title: string;

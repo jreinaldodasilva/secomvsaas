@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useCitizenPortalList, useCreateCitizenPortal, useUpdateCitizenPortal, useDeleteCitizenPortal } from '../../../hooks/useCitizenPortal';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useCitizenPortalList, useCreateCitizenPortal, useUpdateCitizenPortal, useDeleteCitizenPortal } from '@/hooks/useCitizenPortal';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { CitizenPortalForm, validateCitizen, emptyCitizenForm } from './CitizenPortalForm';
 import type { CitizenFormState } from './CitizenPortalForm';
 

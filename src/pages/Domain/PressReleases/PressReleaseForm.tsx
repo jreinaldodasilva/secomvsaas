@@ -1,16 +1,16 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
 import {
   PRESS_RELEASE_STATUSES,
   PRESS_RELEASE_CATEGORIES,
   type PressReleaseFormState,
-} from '../../../validation/domain';
+} from '@/validation/domain';
 
 export type { PressReleaseFormState };
-export { emptyPressReleaseForm, validatePressRelease } from '../../../validation/domain';
+export { emptyPressReleaseForm, validatePressRelease } from '@/validation/domain';
 
-interface Props extends FormComponentProps<PressReleaseFormState> {}
+type Props = FormComponentProps<PressReleaseFormState>;
 
 export function PressReleaseForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

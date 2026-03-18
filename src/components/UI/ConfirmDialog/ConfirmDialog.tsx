@@ -1,6 +1,6 @@
-import { Modal } from '../Modal/Modal';
-import { Button } from '../Button/Button';
-import { useTranslation } from '../../../i18n';
+import { Modal } from '@/components/UI/Modal/Modal';
+import { Button } from '@/components/UI/Button/Button';
+import { useTranslation } from '@/i18n';
 import styles from './ConfirmDialog.module.css';
 
 interface ConfirmDialogProps {

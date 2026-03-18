@@ -1,11 +1,11 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { PublicLayout } from '../layouts/PublicLayout/PublicLayout';
-import { DashboardLayout } from '../layouts/DashboardLayout/DashboardLayout';
-import { CitizenPortalLayout } from '../layouts/CitizenPortalLayout/CitizenPortalLayout';
-import { ProtectedRoute } from '../components/Auth/ProtectedRoute/ProtectedRoute';
-import { ProtectedCitizenRoute } from '../components/Auth/ProtectedRoute/ProtectedCitizenRoute';
-import { LoadingScreen } from '../components/UI/Loading/Loading';
+import { PublicLayout } from '@/layouts/PublicLayout/PublicLayout';
+import { DashboardLayout } from '@/layouts/DashboardLayout/DashboardLayout';
+import { CitizenPortalLayout } from '@/layouts/CitizenPortalLayout/CitizenPortalLayout';
+import { ProtectedRoute } from '@/components/Auth/ProtectedRoute/ProtectedRoute';
+import { ProtectedCitizenRoute } from '@/components/Auth/ProtectedRoute/ProtectedCitizenRoute';
+import { LoadingScreen } from '@/components/UI/Loading/Loading';
 import { STAFF_ROLES, rolesWithPermission } from '@vsaas/types';
 
 const LandingPage = lazy(() => import('../pages/Landing/LandingPage').then(m => ({ default: m.LandingPage })));

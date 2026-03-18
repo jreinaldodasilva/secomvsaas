@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { CrudPage } from './CrudPage';
 import type { FormComponentProps } from './CrudPage';
-import type { Column } from '../Table/DataTable';
+import type { Column } from '@/components/UI/Table/DataTable';
 
 interface TestItem { id: string; name: string }
 interface TestForm { name: string }

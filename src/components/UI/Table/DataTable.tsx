@@ -1,7 +1,7 @@
 import { useState, useMemo, ReactNode } from 'react';
-import { Spinner } from '../Loading/Loading';
-import { EmptyState } from '../EmptyState/EmptyState';
-import { useTranslation } from '../../../i18n';
+import { Spinner } from '@/components/UI/Loading/Loading';
+import { EmptyState } from '@/components/UI/EmptyState/EmptyState';
+import { useTranslation } from '@/i18n';
 import styles from './DataTable.module.css';
 
 export interface Column<T> {

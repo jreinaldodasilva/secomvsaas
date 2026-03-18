@@ -1,13 +1,13 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
 import {
   APPOINTMENT_STATUSES,
   type AppointmentFormState,
-} from '../../../validation/domain';
+} from '@/validation/domain';
 
 export type { AppointmentFormState };
-export { emptyAppointmentForm, validateAppointment } from '../../../validation/domain';
+export { emptyAppointmentForm, validateAppointment } from '@/validation/domain';
 
 interface Props extends FormComponentProps<AppointmentFormState> {
   editStatus?: string;

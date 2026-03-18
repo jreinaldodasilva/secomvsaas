@@ -1,14 +1,14 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
 import {
   SOCIAL_MEDIA_PLATFORMS,
   SOCIAL_MEDIA_STATUSES,
   type SocialMediaFormState,
-} from '../../../validation/domain';
+} from '@/validation/domain';
 
 export type { SocialMediaFormState };
-export { emptySocialMediaForm, validateSocialMedia } from '../../../validation/domain';
+export { emptySocialMediaForm, validateSocialMedia } from '@/validation/domain';
 
 interface Props extends FormComponentProps<SocialMediaFormState> {
   editStatus?: string;

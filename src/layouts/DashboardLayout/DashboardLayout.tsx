@@ -1,14 +1,14 @@
 import { useState, useCallback } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { useUIStore } from '../../store/uiStore';
-import { useTranslation } from '../../i18n';
-import { PermissionGate } from '../../components/Auth/PermissionGate/PermissionGate';
-import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
-import { Icon } from '../../components/UI/Icon/Icon';
-import { Breadcrumbs } from '../../components/UI/Breadcrumbs/Breadcrumbs';
-import { SessionTimeoutModal } from '../../components/UI/SessionTimeoutModal/SessionTimeoutModal';
-import { useSessionTimeout } from '../../hooks/useSessionTimeout';
+import { useAuth } from '@/contexts/AuthContext';
+import { useUIStore } from '@/store/uiStore';
+import { useTranslation } from '@/i18n';
+import { PermissionGate } from '@/components/Auth/PermissionGate/PermissionGate';
+import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
+import { Icon } from '@/components/UI/Icon/Icon';
+import { Breadcrumbs } from '@/components/UI/Breadcrumbs/Breadcrumbs';
+import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
+import { useSessionTimeout } from '@/hooks/useSessionTimeout';
 import styles from './DashboardLayout.module.css';
 
 export function DashboardLayout() {

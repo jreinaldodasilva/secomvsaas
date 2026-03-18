@@ -45,6 +45,12 @@ export default [
       '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
+      'no-restricted-imports': ['error', {
+        patterns: [{
+          group: ['../*'],
+          message: 'Use the @/ path alias instead of relative parent imports.',
+        }],
+      }],
     },
   },
   // Test files — add Vitest globals, relax some rules

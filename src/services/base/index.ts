@@ -1,4 +1,4 @@
-import { ENV } from '../../config/env';
+import { ENV } from '@/config/env';
 
 const BASE_URL = ENV.API_URL;
 

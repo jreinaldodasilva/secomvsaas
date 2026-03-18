@@ -1,11 +1,11 @@
 import { useState, useRef } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useSocialMediaList, useCreateSocialMedia, useUpdateSocialMedia, useDeleteSocialMedia } from '../../../hooks/useSocialMedia';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useSocialMediaList, useCreateSocialMedia, useUpdateSocialMedia, useDeleteSocialMedia } from '@/hooks/useSocialMedia';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { SocialMediaForm, validateSocialMedia, emptySocialMediaForm } from './SocialMediaForm';
 import type { SocialMediaFormState } from './SocialMediaForm';
 

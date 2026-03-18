@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../../contexts/AuthContext';
-import { useTranslation } from '../../../i18n';
-import { Button } from '../../UI';
-import { ApiError } from '../../../services/http';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/i18n';
+import { Button } from '@/components/UI';
+import { ApiError } from '@/services/http';
 
 interface LoginFormProps {
   onSuccess?: () => void;

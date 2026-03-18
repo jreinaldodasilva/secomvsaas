@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
-import { ApiError } from '../../services/http';
+import { ApiError } from '@/services/http';
 
 const mockLogin = vi.fn();
 const mockNavigate = vi.fn();

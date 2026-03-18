@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { usePressReleaseList, useCreatePressRelease, useUpdatePressRelease, useDeletePressRelease } from '../../../hooks/usePressRelease';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { usePressReleaseList, useCreatePressRelease, useUpdatePressRelease, useDeletePressRelease } from '@/hooks/usePressRelease';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { PressReleaseForm, validatePressRelease, emptyPressReleaseForm } from './PressReleaseForm';
 import type { PressReleaseFormState } from './PressReleaseForm';
 

@@ -7,7 +7,7 @@ import {
   validateClipping, emptyClippingForm,
   validateCitizen, emptyCitizenForm,
   validateSocialMedia, emptySocialMediaForm,
-} from '../../validation/domain';
+} from '@/validation/domain';
 
 const t = (k: string) => k;
 

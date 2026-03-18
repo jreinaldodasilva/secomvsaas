@@ -1,12 +1,12 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
-import { type MediaContactFormState } from '../../../validation/domain';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
+import { type MediaContactFormState } from '@/validation/domain';
 
 export type { MediaContactFormState };
-export { emptyMediaContactForm, validateMediaContact } from '../../../validation/domain';
+export { emptyMediaContactForm, validateMediaContact } from '@/validation/domain';
 
-interface Props extends FormComponentProps<MediaContactFormState> {}
+type Props = FormComponentProps<MediaContactFormState>;
 
 export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

@@ -1,6 +1,6 @@
-import { useHealthCheck } from '../../../hooks/useHealthCheck';
-import { useTranslation } from '../../../i18n';
-import { Icon } from '../Icon/Icon';
+import { useHealthCheck } from '@/hooks/useHealthCheck';
+import { useTranslation } from '@/i18n';
+import { Icon } from '@/components/UI/Icon/Icon';
 import styles from './ConnectionBanner.module.css';
 
 export function ConnectionBanner() {

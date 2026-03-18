@@ -1,10 +1,10 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-import { useCitizenAuth } from '../../contexts/CitizenAuthContext';
-import { usePageTitle } from '../../hooks/usePageTitle';
-import { ApiError } from '../../services/http';
-import { PasswordInput } from '../../components/UI';
-import s from '../Auth.module.css';
+import { useCitizenAuth } from '@/contexts/CitizenAuthContext';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { ApiError } from '@/services/http';
+import { PasswordInput } from '@/components/UI';
+import s from '@/pages/Auth.module.css';
 
 export function CitizenLoginPage() {
   usePageTitle('Entrar — Portal do Cidadão');

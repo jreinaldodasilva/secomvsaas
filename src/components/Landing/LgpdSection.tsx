@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { SectionHeader, AnimatedGrid, AnimatedItem } from './LandingShared';
 import { LGPD_CARDS } from './landing.data';
 import styles from './Landing.module.css';
-import pageStyles from '../../pages/Landing/LandingPage.module.css';
+import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function LgpdSection() {
   return (

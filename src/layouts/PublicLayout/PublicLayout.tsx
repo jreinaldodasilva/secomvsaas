@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import { MainHeader } from '../../components/Layout/MainHeader';
-import { Footer } from '../../components/Layout/Footer';
-import { ErrorBoundary } from '../../components/ErrorBoundary/ErrorBoundary';
+import { MainHeader } from '@/components/Layout/MainHeader';
+import { Footer } from '@/components/Layout/Footer';
+import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import styles from './PublicLayout.module.css';
 
 export function PublicLayout() {

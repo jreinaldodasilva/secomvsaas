@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClipping } from '../../../hooks/useClipping';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClipping } from '@/hooks/useClipping';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { ClippingForm, validateClipping, emptyClippingForm } from './ClippingForm';
 import type { ClippingFormState } from './ClippingForm';
 

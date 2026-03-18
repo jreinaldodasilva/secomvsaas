@@ -1,6 +1,6 @@
-import { ENV } from '../../config/env';
-import { baseRequest } from '../base';
-import type { RequestOptions } from '../base';
+import { ENV } from '@/config/env';
+import { baseRequest } from '@/services/base';
+import type { RequestOptions } from '@/services/base';
 
 const BASE_URL = ENV.API_URL;
 

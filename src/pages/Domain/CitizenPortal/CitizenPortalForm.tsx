@@ -1,12 +1,12 @@
-import { Button } from '../../../components/UI';
-import { useTranslation } from '../../../i18n';
-import type { FormComponentProps } from '../../../components/UI';
-import { type CitizenFormState } from '../../../validation/domain';
+import { Button } from '@/components/UI';
+import { useTranslation } from '@/i18n';
+import type { FormComponentProps } from '@/components/UI';
+import { type CitizenFormState } from '@/validation/domain';
 
 export type { CitizenFormState };
-export { emptyCitizenForm, validateCitizen } from '../../../validation/domain';
+export { emptyCitizenForm, validateCitizen } from '@/validation/domain';
 
-interface Props extends FormComponentProps<CitizenFormState> {}
+type Props = FormComponentProps<CitizenFormState>;
 
 export function CitizenPortalForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
   const { t } = useTranslation();

@@ -1,4 +1,4 @@
-import { http } from '../http';
+import { http } from '@/services/http';
 import type { User, LoginRequest, Tenant, RegisterRequest } from '@vsaas/types';
 
 export const authService = {

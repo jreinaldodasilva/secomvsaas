@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useTranslation } from '../../i18n';
-import { Icon } from '../UI';
+import { useTranslation } from '@/i18n';
+import { Icon } from '@/components/UI';
 import styles from './MainHeader.module.css';
 
 const NAV_LINKS = [

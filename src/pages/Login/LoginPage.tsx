@@ -1,11 +1,11 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
-import { useTranslation } from '../../i18n';
-import { usePageTitle } from '../../hooks/usePageTitle';
-import { ApiError } from '../../services/http';
-import { PasswordInput } from '../../components/UI';
-import s from '../Auth.module.css';
+import { useAuth } from '@/contexts/AuthContext';
+import { useTranslation } from '@/i18n';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { ApiError } from '@/services/http';
+import { PasswordInput } from '@/components/UI';
+import s from '@/pages/Auth.module.css';
 
 export function LoginPage() {
   const navigate = useNavigate();

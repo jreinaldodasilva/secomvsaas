@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { CrudPage } from '../../../components/UI';
-import { Button, StatusBadge } from '../../../components/UI';
-import type { Column } from '../../../components/UI';
-import { useEventList, useCreateEvent, useUpdateEvent, useDeleteEvent } from '../../../hooks/useEvent';
-import { useToast } from '../../../hooks/useToast';
-import { usePageTitle } from '../../../hooks/usePageTitle';
-import { useTranslation } from '../../../i18n';
+import { CrudPage } from '@/components/UI';
+import { Button, StatusBadge } from '@/components/UI';
+import type { Column } from '@/components/UI';
+import { useEventList, useCreateEvent, useUpdateEvent, useDeleteEvent } from '@/hooks/useEvent';
+import { useToast } from '@/hooks/useToast';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useTranslation } from '@/i18n';
 import { EventForm, validateEvent, emptyEventForm } from './EventForm';
 import type { EventFormState } from './EventForm';
 

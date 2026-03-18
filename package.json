@@ -40,7 +40,6 @@
     "type-check:backend": "cd backend && tsc --noEmit",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,md}\"",
     "seed:test": "cd backend && npm run seed:test",
-    "seed": "cd backend && npm run seed",
     "generate-secrets": "node scripts/generate-secrets.js",
     "generate:module": "npx ts-node packages/cli/src/generate-module.ts",
     "infra:up": "docker compose -f infrastructure/docker/docker-compose.yml up -d",

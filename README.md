@@ -85,6 +85,7 @@ Todas sob `/api/v1/`:
 | `npm run dev:all` | Iniciar frontend + backend |
 | `npm run infra:up` | Subir serviços Docker |
 | `npm run infra:down` | Parar serviços Docker |
+| `npm run seed:test` | Popular banco com dados de teste |
 | `npm run test:all` | Executar todos os testes |
 | `npm run generate:module -- <nome>` | Gerar novo módulo de domínio |
 

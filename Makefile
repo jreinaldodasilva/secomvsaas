@@ -1,4 +1,4 @@
-.PHONY: setup dev test lint type-check infra-up infra-down generate
+.PHONY: setup dev test lint type-check infra-up infra-down seed-test generate
 
 setup:
 	bash scripts/setup.sh
@@ -26,6 +26,9 @@ infra-up:
 
 infra-down:
 	npm run infra:down
+
+seed-test:
+	npm run seed:test
 
 generate:
 	@test -n "$(module)" || (echo "Usage: make generate module=<name> [domain=<domain>]" && exit 1)

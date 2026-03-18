@@ -25,7 +25,6 @@
     "migrate:down": "migrate-mongo down",
     "migrate:status": "migrate-mongo status",
     "seed:test": "NODE_ENV=development ts-node -r tsconfig-paths/register scripts/seedTestData.ts",
-    "seed": "ts-node scripts/seed.ts",
     "migrate:tenancy": "ts-node -r tsconfig-paths/register scripts/migrate-add-tenancy.ts"
   },
   "dependencies": {

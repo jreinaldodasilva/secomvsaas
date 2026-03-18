@@ -1,12 +1,12 @@
-# Contributing to vSaaS
+# Contributing to Secom Piquete
 
 ## Getting Started
 
 ```bash
 npm run setup        # Install deps, generate secrets, copy .env files
 npm run infra:up     # Start MongoDB, Redis, MailHog
-npm run seed         # Create super_admin + demo tenant
-npm run dev:all      # Start frontend + backend
+npm run dev:all      # Start frontend + backend (creates secom tenant on first run)
+npm run seed:test    # Populate database with Piquete domain test data
 ```
 
 ## Generating a Domain Module

@@ -414,7 +414,7 @@ async function seedDatabase(): Promise<SeededData> {
   for (const def of eventDefs) {
     const [ev] = await Event.create([{
       tenantId, ...def,
-      createdBy: randomItem([...assessors, adminId])._id ?? adminId,
+      createdBy: assessors.length > 0 ? randomItem(assessors)._id : adminId,
     }]);
     data.events.push(ev);
   }
@@ -435,7 +435,7 @@ async function seedDatabase(): Promise<SeededData> {
     'Credenciamento de imprensa para evento',
   ];
 
-  const appointmentStatuses = ['pending', 'confirmed', 'completed', 'cancelled', 'no_show'] as const;
+  type AppointmentStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
   const now = new Date();
 
   for (let i = 0; i < 30; i++) {
@@ -452,7 +452,7 @@ async function seedDatabase(): Promise<SeededData> {
     }
     scheduledAt.setHours(randomInt(8, 17), randomInt(0, 3) * 15, 0, 0);
 
-    let status: typeof appointmentStatuses[number];
+    let status: AppointmentStatus;
     if (scheduledAt < now) {
       status = randomInt(1, 100) <= 80 ? 'completed' : (randomInt(1, 100) <= 60 ? 'cancelled' : 'no_show');
     } else {

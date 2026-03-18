@@ -1,14 +1,22 @@
+import React from 'react';
 import styles from './Loading.module.css';
 
-const SIZE = { sm: styles.spinnerSm, md: styles.spinnerMd, lg: styles.spinnerLg } as const;
+interface SpinnerProps { size?: 'sm' | 'md' | 'lg'; text?: string; }
 
-export function Spinner({ size = 'md' }: { size?: 'sm' | 'md' | 'lg' }) {
-  return <div className={`${styles.spinner} ${SIZE[size]}`} role="status" aria-label="Loading" />;
-}
+export const Spinner = React.memo<SpinnerProps>(({ size = 'md', text }) => (
+  <div className={`${styles.container} ${styles[size]}`} role="status" aria-live="polite">
+    <svg className={styles.svg} viewBox="0 0 50 50" aria-hidden="true">
+      <circle className={styles.circle} cx="25" cy="25" r="20" />
+    </svg>
+    {text && <p className={styles.text}>{text}</p>}
+    <span className="sr-only">Carregando...</span>
+  </div>
+));
+Spinner.displayName = 'Spinner';
 
 export function LoadingScreen() {
   return (
-    <div className={styles.loadingScreen}>
+    <div className={styles.screen}>
       <Spinner size="lg" />
     </div>
   );

@@ -8,68 +8,124 @@
   flex-direction: column;
   transition: width var(--transition-base);
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .sidebarClosed .sidebar { width: 64px; }
-.sidebarClosed { }
 
 .sidebarHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
-  border-bottom: 1px solid var(--color-primary-800);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  min-height: 4rem;
 }
 
-.brandLogo { height: 2rem; width: auto; object-fit: contain; }
+.brandLogo { height: 2rem; width: auto; object-fit: contain; flex-shrink: 0; }
 
-.sidebarToggle { background: none; border: none; color: #fff; cursor: pointer; font-size: var(--font-size-lg); }
+.sidebarToggle {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+  transition: background var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+.sidebarToggle:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
 .sidebarNav {
   flex: 1;
-  padding: var(--space-4) 0;
+  padding: var(--space-3) var(--space-2);
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 2px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .navLink {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  color: var(--color-primary-200);
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  color: rgba(255,255,255,0.65);
   text-decoration: none;
   border-radius: var(--radius-md);
-  transition: background var(--transition-fast), color var(--transition-fast);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  white-space: nowrap;
+  overflow: hidden;
+  border-left: 3px solid transparent;
+  position: relative;
 }
-.navLink svg { flex-shrink: 0; font-size: 1.15rem; }
-.navLink:hover, .navLinkActive { background: var(--color-primary-700); color: #fff; }
+.navLink svg { flex-shrink: 0; width: 1.15rem; height: 1.15rem; }
+
+.navLink:hover {
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+.navLinkActive {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+  border-left-color: var(--color-accent-400);
+}
 
 .navSectionLabel {
-  padding: var(--space-3) var(--space-4) var(--space-1);
-  font-size: var(--font-size-sm);
+  padding: var(--space-3) var(--space-3) var(--space-1);
+  font-size: var(--font-size-xs);
   text-transform: uppercase;
-  opacity: 0.6;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.35);
+  white-space: nowrap;
+  overflow: hidden;
 }
 
+/* Collapsed: hide text, center icons */
+.sidebarClosed .navLink {
+  justify-content: center;
+  padding: var(--space-2);
+  border-left-color: transparent;
+}
+.sidebarClosed .navLinkActive { background: rgba(255,255,255,0.15); }
+.sidebarClosed .navSectionLabel { opacity: 0; height: 0; padding: 0; overflow: hidden; }
+.sidebarClosed .brandLogo { display: none; }
+
 .sidebarFooter {
-  padding: var(--space-4);
-  border-top: 1px solid var(--color-primary-800);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: var(--space-2);
+  overflow: hidden;
 }
 
-.sidebarUser { font-size: var(--font-size-sm); color: var(--color-primary-200); }
-
-.localeSelect {
-  background: transparent;
-  border: 1px solid currentColor;
-  border-radius: var(--radius-sm);
-  padding: 2px var(--space-1);
-  color: inherit;
+.sidebarUser {
   font-size: var(--font-size-sm);
+  color: rgba(255,255,255,0.65);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
 }
 
-.mainContent { flex: 1; padding: var(--space-6); overflow-y: auto; }
+.sidebarClosed .sidebarUser { display: none; }
+
+.mainContent {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--color-bg-secondary);
+  display: flex;
+  flex-direction: column;
+}
+
+.pageContent {
+  padding: var(--space-6);
+  flex: 1;
+}

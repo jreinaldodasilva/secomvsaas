@@ -1,6 +1,6 @@
-import { useState, useMemo, ReactNode } from 'react';
-import { Spinner } from '@/components/UI/Loading/Loading';
+import { useState, useMemo, useRef, useEffect, ReactNode } from 'react';
 import { EmptyState } from '@/components/UI/EmptyState/EmptyState';
+import { default as Skeleton } from '@/components/UI/Skeleton/Skeleton';
 import { useTranslation } from '@/i18n';
 import styles from './DataTable.module.css';
 
@@ -22,16 +22,40 @@ interface DataTableProps<T> {
   onSearch?: (query: string) => void;
   searchPlaceholder?: string;
   emptyMessage?: string;
-  /** When true, sort operates client-side on the current data slice.
-   *  When false (default), onSortChange is called and the parent handles server-side sort. */
+  onRowClick?: (item: T) => void;
   clientSort?: boolean;
   onSortChange?: (key: string, dir: 'asc' | 'desc') => void;
+}
+
+function TableSkeleton({ columns, rows = 5 }: { columns: number; rows?: number }) {
+  return (
+    <div className={styles.tableContainer}>
+      <table className={styles.table}>
+        <thead>
+          <tr>
+            {Array.from({ length: columns }).map((_, i) => (
+              <th key={i} className={styles.th}><Skeleton width="80%" height="16px" /></th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {Array.from({ length: rows }).map((_, r) => (
+            <tr key={r} className={`${styles.tr} ${styles.skeletonRow}`}>
+              {Array.from({ length: columns }).map((_, c) => (
+                <td key={c} className={styles.td}><Skeleton width="90%" height="14px" /></td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 }
 
 export function DataTable<T extends Record<string, any>>({
   columns, data, total = 0, page = 1, limit = 10,
   isLoading, onPageChange, onSearch, searchPlaceholder, emptyMessage,
-  clientSort = false, onSortChange,
+  onRowClick, clientSort = false, onSortChange,
 }: DataTableProps<T>) {
   const { t } = useTranslation();
   const resolvedSearchPlaceholder = searchPlaceholder ?? t('common.search');
@@ -39,6 +63,8 @@ export function DataTable<T extends Record<string, any>>({
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   const [search, setSearch] = useState('');
+  const tableRef = useRef<HTMLTableElement>(null);
+  const focusedRowRef = useRef(-1);
 
   const totalPages = Math.ceil(total / limit);
 
@@ -52,6 +78,29 @@ export function DataTable<T extends Record<string, any>>({
     });
   }, [data, sortKey, sortDir, clientSort]);
 
+  useEffect(() => {
+    if (!onRowClick) return;
+    const handleKey = (e: KeyboardEvent) => {
+      const rows = tableRef.current?.querySelectorAll<HTMLElement>('tbody tr');
+      if (!rows?.length) return;
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        focusedRowRef.current = Math.min(focusedRowRef.current + 1, rows.length - 1);
+        rows[focusedRowRef.current].focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        focusedRowRef.current = Math.max(focusedRowRef.current - 1, 0);
+        rows[focusedRowRef.current].focus();
+      } else if ((e.key === 'Enter' || e.key === ' ') && focusedRowRef.current >= 0) {
+        e.preventDefault();
+        onRowClick(sorted[focusedRowRef.current]);
+      }
+    };
+    const table = tableRef.current;
+    table?.addEventListener('keydown', handleKey);
+    return () => table?.removeEventListener('keydown', handleKey);
+  }, [sorted, onRowClick]);
+
   const handleSort = (key: string) => {
     const nextDir = sortKey === key && sortDir === 'asc' ? 'desc' : 'asc';
     setSortKey(key);
@@ -64,10 +113,10 @@ export function DataTable<T extends Record<string, any>>({
     onSearch?.(value);
   };
 
-  if (isLoading) return <Spinner />;
+  if (isLoading) return <TableSkeleton columns={columns.length} />;
 
   return (
-    <div className="data-table">
+    <div>
       {onSearch && (
         <div className={styles.search}>
           <input
@@ -84,33 +133,45 @@ export function DataTable<T extends Record<string, any>>({
         <EmptyState title={resolvedEmptyMessage} />
       ) : (
         <>
-          <table className={styles.table}>
-            <thead>
-              <tr>
-                {columns.map(col => (
-                  <th
-                    key={col.key}
-                    className={col.sortable ? styles.sortable : undefined}
-                    onClick={col.sortable ? () => handleSort(col.key) : undefined}
-                  >
-                    {col.header}
-                    {col.sortable && sortKey === col.key && (sortDir === 'asc' ? ' ↑' : ' ↓')}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {sorted.map((item, i) => (
-                <tr key={(item as any).id || (item as any)._id || i} className={styles.tr}>
+          <div className={styles.tableContainer}>
+            <table className={styles.table} ref={tableRef}>
+              <thead>
+                <tr>
                   {columns.map(col => (
-                    <td key={col.key} className={styles.td}>
-                      {col.render ? col.render(item) : item[col.key]}
-                    </td>
+                    <th
+                      key={col.key}
+                      className={`${styles.th}${col.sortable ? ` ${styles.sortable}` : ''}`}
+                      onClick={col.sortable ? () => handleSort(col.key) : undefined}
+                      aria-sort={col.sortable && sortKey === col.key ? (sortDir === 'asc' ? 'ascending' : 'descending') : undefined}
+                    >
+                      {col.header}
+                      {col.sortable && sortKey === col.key && (
+                        <span aria-hidden="true">{sortDir === 'asc' ? ' ↑' : ' ↓'}</span>
+                      )}
+                    </th>
                   ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {sorted.map((item, i) => (
+                  <tr
+                    key={item.id || item._id || i}
+                    className={`${styles.tr}${onRowClick ? ` ${styles.clickable}` : ''}`}
+                    onClick={() => onRowClick?.(item)}
+                    tabIndex={onRowClick ? 0 : undefined}
+                    role={onRowClick ? 'button' : undefined}
+                    onFocus={() => { focusedRowRef.current = i; }}
+                  >
+                    {columns.map(col => (
+                      <td key={col.key} className={styles.td} data-label={col.header}>
+                        {col.render ? col.render(item) : item[col.key]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
           {totalPages > 1 && onPageChange && (
             <div className={styles.pagination}>

@@ -8,6 +8,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import { Icon } from '@/components/UI/Icon/Icon';
 import { Breadcrumbs } from '@/components/UI/Breadcrumbs/Breadcrumbs';
 import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
+import { TopLoadingBar } from '@/components/UI/TopLoadingBar/TopLoadingBar';
 import { useSessionTimeout } from '@/hooks';
 import styles from './DashboardLayout.module.css';
 
@@ -35,44 +36,50 @@ export function DashboardLayout() {
   const navCls = ({ isActive }: { isActive: boolean }) =>
     isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
 
+  const navProps = ({ isActive }: { isActive: boolean }) => ({
+    className: navCls({ isActive }),
+    'aria-current': isActive ? ('page' as const) : undefined,
+  });
+
   return (
     <div className={`${styles.layout} ${sidebarOpen ? '' : styles.sidebarClosed}`}>
+      <TopLoadingBar />
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
           <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label={t('nav.toggleSidebar')}>☰</button>
         </div>
-        <nav className={styles.sidebarNav}>
-          <NavLink to="/admin/dashboard" className={navCls}><Icon name="dashboard" />{t('nav.dashboard')}</NavLink>
+        <nav className={styles.sidebarNav} aria-label={t('nav.main')}>
+          <NavLink to="/admin/dashboard" {...navProps}><Icon name="dashboard" /><span>{t('nav.dashboard')}</span></NavLink>
 
           <PermissionGate permissions={['users:read']}>
-            <NavLink to="/admin/users" className={navCls}><Icon name="people" />{t('nav.users')}</NavLink>
+            <NavLink to="/admin/users" {...navProps}><Icon name="people" /><span>{t('nav.users')}</span></NavLink>
           </PermissionGate>
 
-          <NavLink to="/settings/profile" className={navCls}><Icon name="person" />{t('nav.profile')}</NavLink>
+          <NavLink to="/settings/profile" {...navProps}><Icon name="person" /><span>{t('nav.profile')}</span></NavLink>
 
           <div className={styles.navSectionLabel}>{t('nav.modules')}</div>
 
           <PermissionGate permissions={['press-releases:read']}>
-            <NavLink to="/press-releases" className={navCls}><Icon name="article" />{t('nav.pressReleases')}</NavLink>
+            <NavLink to="/press-releases" {...navProps}><Icon name="article" /><span>{t('nav.pressReleases')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['media-contacts:read']}>
-            <NavLink to="/media-contacts" className={navCls}><Icon name="contacts" />{t('nav.mediaContacts')}</NavLink>
+            <NavLink to="/media-contacts" {...navProps}><Icon name="contacts" /><span>{t('nav.mediaContacts')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['clippings:read']}>
-            <NavLink to="/clippings" className={navCls}><Icon name="clipping" />{t('nav.clippings')}</NavLink>
+            <NavLink to="/clippings" {...navProps}><Icon name="clipping" /><span>{t('nav.clippings')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['events:read']}>
-            <NavLink to="/events" className={navCls}><Icon name="event" />{t('nav.events')}</NavLink>
+            <NavLink to="/events" {...navProps}><Icon name="event" /><span>{t('nav.events')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['appointments:read']}>
-            <NavLink to="/appointments" className={navCls}><Icon name="schedule" />{t('nav.appointments')}</NavLink>
+            <NavLink to="/appointments" {...navProps}><Icon name="schedule" /><span>{t('nav.appointments')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['citizen-portal:read']}>
-            <NavLink to="/citizen-portal" className={navCls}><Icon name="citizen" />{t('nav.citizenPortal')}</NavLink>
+            <NavLink to="/citizen-portal" {...navProps}><Icon name="citizen" /><span>{t('nav.citizenPortal')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['social-media:read']}>
-            <NavLink to="/social-media" className={navCls}><Icon name="social" />{t('nav.socialMedia')}</NavLink>
+            <NavLink to="/social-media" {...navProps}><Icon name="social" /><span>{t('nav.socialMedia')}</span></NavLink>
           </PermissionGate>
         </nav>
         <div className={styles.sidebarFooter}>
@@ -83,7 +90,9 @@ export function DashboardLayout() {
       <main className={styles.mainContent} id="main-content">
         <ErrorBoundary>
           <Breadcrumbs />
-          <Outlet />
+          <div className={styles.pageContent}>
+            <Outlet />
+          </div>
         </ErrorBoundary>
       </main>
       <SessionTimeoutModal

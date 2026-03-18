@@ -1,14 +1,11 @@
-import toast from 'react-hot-toast';
+import { useToastStore } from '@/components/UI/Toast/toastStore';
 
 export function useToast() {
+  const { add } = useToastStore();
   return {
-    success: (message: string) => toast.success(message),
-    error: (message: string) => toast.error(message),
-    loading: (message: string) => toast.loading(message),
-    dismiss: (id?: string) => toast.dismiss(id),
-    promise: <T,>(
-      promise: Promise<T>,
-      msgs: { loading: string; success: string; error: string },
-    ) => toast.promise(promise, msgs),
+    success: (message: string, title?: string) => add('success', message, title),
+    error:   (message: string, title?: string) => add('error',   message, title),
+    warning: (message: string, title?: string) => add('warning', message, title),
+    info:    (message: string, title?: string) => add('info',    message, title),
   };
 }

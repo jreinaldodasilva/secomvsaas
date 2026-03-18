@@ -51,13 +51,44 @@
   --color-gray-800: var(--color-neutral-700);
   --color-gray-900: var(--color-neutral-900);
 
-  /* Semantic */
-  --color-success: #00A344;
-  --color-warning: #E65100;
+  /* Semantic — full scale */
+  --color-success:     #00A344;
+  --color-success-50:  #f0fdf4;
+  --color-success-100: #dcfce7;
+  --color-success-200: #bbf7d0;
+  --color-success-500: #22c55e;
+  --color-success-600: #16a34a;
+  --color-success-700: #15803d;
+  --color-success-light: #dcfce7;
+  --color-success-dark:  #00A344;
+
+  --color-warning:     #E65100;
+  --color-warning-50:  #fffbeb;
+  --color-warning-200: #fde68a;
   --color-warning-400: #f59e0b;
-  --color-danger:  #D32F2F;
-  --color-error:   #D32F2F;
-  --color-info:    #1976D2;
+  --color-warning-600: #d97706;
+  --color-warning-700: #b45309;
+  --color-warning-light: #fde68a;
+  --color-warning-dark:  #F57C00;
+
+  --color-danger:      #D32F2F;
+  --color-error:       #D32F2F;
+  --color-error-50:    #fef2f2;
+  --color-error-100:   #fee2e2;
+  --color-error-200:   #fecaca;
+  --color-error-300:   #fca5a5;
+  --color-error-500:   #ef4444;
+  --color-error-600:   #dc2626;
+  --color-error-700:   #b91c1c;
+  --color-error-light: #fee2e2;
+  --color-error-dark:  #D32F2F;
+
+  --color-info:        #1976D2;
+  --color-info-50:     #eff6ff;
+  --color-info-600:    #2563eb;
+  --color-info-700:    #1d4ed8;
+  --color-info-light:  #dbeafe;
+  --color-info-dark:   #1976D2;
 
   /* Semantic surface / text / border */
   --color-bg-primary:     #ffffff;
@@ -168,11 +199,14 @@
 
   /* Component heights */
   --button-height-sm: 2rem;
-  --button-height-md: 3rem;
-  --button-height-lg: 3.5rem;
+  --button-height-md: 2.75rem;  /* 44px touch target */
+  --button-height-lg: 3rem;
   --input-height-sm:  2rem;
-  --input-height-md:  3rem;
-  --input-height-lg:  3.5rem;
+  --input-height-md:  2.75rem;
+  --input-height-lg:  3rem;
+  --input-padding-x:  var(--space-4);
+  --input-padding-y:  var(--space-2);
+  --input-font-size:  16px;  /* prevents iOS zoom */
 
   /* Card padding */
   --card-padding-sm: var(--space-3);

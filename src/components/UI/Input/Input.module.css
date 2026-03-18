@@ -1,0 +1,128 @@
+.group { position: relative; width: 100%; }
+
+.label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-2);
+  transition: color var(--transition-fast);
+}
+.required { color: var(--color-error-500); }
+
+.container { position: relative; display: flex; align-items: center; }
+
+.field {
+  width: 100%;
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-input);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  font-size: var(--input-font-size, 16px);
+  font-family: var(--font-family-sans);
+  outline: none;
+  appearance: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.field::placeholder { color: var(--color-neutral-400); }
+.field:focus { border-color: var(--color-border-focus); box-shadow: var(--focus-ring); }
+
+/* Sizes */
+.sm .field { min-height: var(--input-height-sm); padding: 0 var(--space-3); }
+.md .field { min-height: var(--input-height-md); padding: 0 var(--input-padding-x); }
+.lg .field { min-height: var(--input-height-lg); padding: 0 var(--space-5); }
+
+@media (min-width: 768px) {
+  .sm .field { font-size: var(--font-size-sm); }
+  .md .field { font-size: var(--font-size-base); }
+  .lg .field { font-size: var(--font-size-lg); }
+}
+
+/* Variants */
+.filled .field { background: var(--color-bg-secondary); border-color: transparent; }
+.filled.focused .field { background: var(--color-bg-primary); border-color: var(--color-border-focus); }
+
+.floating { margin-top: var(--space-6); }
+.labelFloating {
+  position: absolute;
+  left: var(--input-padding-x);
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--color-bg-primary);
+  padding: 0 var(--space-1);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-base);
+  pointer-events: none;
+  transition: top var(--transition-fast), font-size var(--transition-fast), color var(--transition-fast);
+  z-index: 1;
+  margin: 0;
+}
+.floating.focused .labelFloating,
+.floating.hasValue .labelFloating {
+  top: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-primary-600);
+}
+
+/* Icons */
+.icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  z-index: 2;
+}
+.icon svg { width: 1.25em; height: 1.25em; }
+.iconLeft { left: var(--space-3); }
+.iconLeft ~ .field { padding-left: var(--space-10); }
+
+.iconsRight {
+  position: absolute;
+  right: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  z-index: 2;
+}
+
+/* State icons */
+.successIcon { color: var(--color-success-600); width: 1.25em; height: 1.25em; flex-shrink: 0; }
+.errorIcon   { color: var(--color-error-600);   width: 1.25em; height: 1.25em; flex-shrink: 0; }
+.spinner     { color: var(--color-primary-500);  width: 1.25em; height: 1.25em; flex-shrink: 0;
+               animation: inputSpin 1s linear infinite; }
+
+@keyframes inputSpin { to { transform: rotate(360deg); } }
+
+.clearBtn {
+  display: flex; align-items: center; justify-content: center;
+  width: 1.25em; height: 1.25em;
+  background: none; border: none; border-radius: var(--radius-sm);
+  color: var(--color-text-tertiary); cursor: pointer; padding: 0; flex-shrink: 0;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+.clearBtn:hover { color: var(--color-text-secondary); background: var(--color-neutral-100); }
+.clearBtn:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 1px; }
+.clearBtn svg { width: 1em; height: 1em; }
+
+/* States */
+.focused .field { border-color: var(--color-border-focus); box-shadow: var(--focus-ring); }
+.focused .iconLeft { color: var(--color-primary-600); }
+
+.hasError .field { border-color: var(--color-error); }
+.hasError .field:focus { box-shadow: var(--focus-ring-error); }
+.hasError .label { color: var(--color-error-600); }
+
+.hasSuccess .field { border-color: var(--color-success-600); }
+
+.disabled .field { background: var(--color-neutral-100); color: var(--color-text-tertiary); cursor: not-allowed; }
+.disabled .label { color: var(--color-text-tertiary); }
+
+/* Helper / Error text */
+.helperText { font-size: var(--font-size-sm); color: var(--color-text-tertiary); margin: var(--space-1) 0 0; }
+.errorText  { font-size: var(--font-size-sm); color: var(--color-error-600);   margin: var(--space-1) 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .field, .labelFloating, .clearBtn { transition: none; }
+  .spinner { animation: none; }
+}

@@ -4,7 +4,7 @@ import { ConnectionBanner } from './components/UI/ConnectionBanner/ConnectionBan
 import { TopLoadingBar } from './components/UI/TopLoadingBar/TopLoadingBar';
 import { ScrollToTop } from './components/UI/ScrollToTop';
 import { CookieConsent } from './components/LGPD/CookieConsent';
-import { Toaster } from 'react-hot-toast';
+import { ToastContainer } from './components/UI/Toast/ToastContainer';
 import { AppRoutes } from './routes';
 import './styles/global.css';
 
@@ -18,18 +18,7 @@ export default function App() {
         <ConnectionBanner />
         <AppRoutes />
         <CookieConsent />
-        <Toaster
-          position="top-right"
-          toastOptions={{
-            duration: 4000,
-            style: {
-              fontFamily: 'var(--font-sans)',
-              fontSize: 'var(--font-size-sm)',
-              borderRadius: 'var(--radius-md)',
-              boxShadow: 'var(--shadow-md)',
-            },
-          }}
-        />
+        <ToastContainer />
       </AppProviders>
     </ErrorBoundary>
   );

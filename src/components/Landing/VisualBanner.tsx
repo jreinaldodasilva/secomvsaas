@@ -7,8 +7,8 @@ export function VisualBanner() {
   return (
     <section className={pageStyles.sectionAlt}>
       <SectionHeader
-        title="Feito para a Comunicação Pública"
-        desc="Da produção do release à cobertura do evento, tudo integrado"
+        title="Comunicação Pública em Piquete"
+        desc="Da coletiva de imprensa à cobertura do evento, a Secom registra e divulga cada ação do município"
       />
       <AnimatedGrid className={pageStyles.visualGrid}>
         {VISUAL_IMAGES.map(img => (

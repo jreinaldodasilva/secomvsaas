@@ -30,7 +30,7 @@ export function LgpdSection() {
         <div>
           <SectionHeader
             title="Conformidade com a LGPD"
-            desc="Proteção de dados pessoais de cidadãos e servidores conforme a Lei Geral de Proteção de Dados"
+            desc="Proteção de dados pessoais de cidadãos e servidores do município de Piquete conforme a Lei Geral de Proteção de Dados"
             align="left"
           />
           <AnimatedGrid className={pageStyles.lgpdGrid}>

@@ -8,8 +8,8 @@ export function ContactSection() {
   return (
     <section className={pageStyles.sectionAlt} id="contact">
       <SectionHeader
-        title="Entre em Contato"
-        desc="Fale conosco e descubra como o Secom pode modernizar sua secretaria de comunicação"
+        title="Entre em Contato com a Secom"
+        desc="Fale com a Secretaria Municipal de Comunicação de Piquete — SP"
       />
       <motion.div
         className={pageStyles.contactWrap}
@@ -35,17 +35,17 @@ export function CtaSection() {
       transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <h2 className={pageStyles.ctaTitle}>
-        Pronto para Modernizar sua Secretaria de Comunicação?
+        Secretaria Municipal de Comunicação de Piquete — SP
       </h2>
       <p className={pageStyles.ctaDesc}>
-        Gestão eficiente · Pautas organizadas · Dados centralizados · Suporte especializado
+        Transparência ativa · Informação de qualidade · Comunicação a serviço do cidadão
       </p>
       <div className={pageStyles.ctaActions}>
         <button className={`btn btn-primary btn-lg ${pageStyles.ctaBtnPrimary}`} onClick={() => navigate('/register')}>
-          Solicitar Demonstração
+          Acesso à Plataforma
         </button>
         <button className={`btn btn-lg ${pageStyles.ctaBtnOutline}`} onClick={() => navigate('/login')}>
-          Entrar na Plataforma
+          Entrar
         </button>
       </div>
     </motion.section>

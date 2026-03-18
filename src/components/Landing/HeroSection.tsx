@@ -18,22 +18,22 @@ export function HeroSection() {
       <div className={pageStyles.heroContent}>
         <div className={pageStyles.heroText}>
           <h1 className={pageStyles.heroTitle}>
-            Gerencie sua{' '}
-            <span className={pageStyles.heroHighlight}>Secretaria de Comunicação</span>
+            Secretaria Municipal de{' '}
+            <span className={pageStyles.heroHighlight}>Comunicação de Piquete</span>
           </h1>
           <p className={pageStyles.heroSubtitle}>
-            Plataforma completa para secretarias municipais: pautas, releases,
-            mídias digitais, cerimonial e administração em um único sistema.
+            Sistema de gestão da Secom de Piquete — SP: assessoria de imprensa,
+            mídias digitais, cerimonial, audiovisual e campanhas institucionais integrados.
           </p>
           <div className={pageStyles.heroPills}>
             {PILLS.map(p => <span key={p} className={styles.pill}>{p}</span>)}
           </div>
           <div className={pageStyles.heroActions}>
             <button className="btn btn-primary btn-lg" onClick={() => navigate('/register')}>
-              Solicitar Acesso
+              Acesso à Plataforma
             </button>
             <button className="btn btn-secondary btn-lg" onClick={() => navigate('/login')}>
-              Entrar na Plataforma
+              Entrar
             </button>
           </div>
         </div>

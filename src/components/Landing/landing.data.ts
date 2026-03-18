@@ -43,93 +43,93 @@ export interface VisualImage {
 }
 
 export const PILLS = [
-  '📰 Imprensa', '📅 Pautas', '📱 Mídias Digitais',
-  '🎙️ Cerimonial', '🎬 Audiovisual', '📢 Campanhas', '🏛️ Administração',
+  '📰 Notícias', '📅 Agenda Oficial', '📱 Redes Sociais',
+  '🎙️ Cerimonial', '🎬 Audiovisual', '📢 Campanhas', '🏔️ Piquete — SP',
 ];
 
 export const STATS: Stat[] = [
-  { value: '200+', label: 'Secretarias Ativas',  desc: 'Secretarias municipais confiam no Secom' },
-  { value: '50K+', label: 'Pautas Gerenciadas',  desc: 'Pautas e releases processados' },
-  { value: '97%',  label: 'Taxa de Satisfação',  desc: 'Aprovação dos nossos usuários' },
-  { value: '60%',  label: 'Economia de Tempo',   desc: 'Redução no tempo administrativo' },
+  { value: '55K+', label: 'Habitantes Atendidos',  desc: 'Cidadãos de Piquete e região informados' },
+  { value: '12',   label: 'Secretarias Integradas', desc: 'Órgãos municipais conectados à comunicação' },
+  { value: '100%', label: 'Transparência Ativa',    desc: 'Informações públicas acessíveis ao cidadão' },
+  { value: '24h',  label: 'Cobertura Contínua',     desc: 'Monitoramento e publicação em tempo real' },
 ];
 
 export const FEATURES: Feature[] = [
   {
     icon: 'newspaper',
-    title: 'Gestão de Imprensa',
-    desc: 'Produção e controle de releases, atendimento à imprensa, organização de entrevistas e arquivo fotográfico.',
-    benefits: ['Produção de releases', 'Atendimento à imprensa', 'Agenda de entrevistas', 'Arquivo fotográfico digital'],
+    title: 'Assessoria de Imprensa',
+    desc: 'Produção de releases, atendimento a jornalistas, organização de coletivas e arquivo fotográfico das ações da Prefeitura de Piquete.',
+    benefits: ['Produção de releases oficiais', 'Atendimento à imprensa local', 'Agenda de entrevistas', 'Arquivo fotográfico digital'],
   },
   {
     icon: 'phone',
     title: 'Mídias Digitais',
-    desc: 'Gestão de redes sociais, site oficial, campanhas digitais e monitoramento de engajamento da prefeitura.',
-    benefits: ['Redes sociais da prefeitura', 'Site oficial', 'Campanhas digitais', 'Monitoramento de engajamento'],
+    desc: 'Gestão das redes sociais e do site oficial da Prefeitura de Piquete, campanhas digitais e monitoramento do engajamento da comunidade.',
+    benefits: ['Redes sociais da prefeitura', 'Site oficial piquete.sp.gov.br', 'Campanhas de utilidade pública', 'Monitoramento de engajamento'],
   },
   {
     icon: 'event',
     title: 'Cerimonial e Eventos',
-    desc: 'Organização de eventos oficiais, protocolo do prefeito, agenda institucional e solenidades.',
-    benefits: ['Eventos oficiais', 'Protocolo institucional', 'Agenda do prefeito', 'Solenidades e inaugurações'],
+    desc: 'Organização de eventos oficiais, protocolo do prefeito, agenda institucional, solenidades e inaugurações de obras no município.',
+    benefits: ['Eventos e solenidades oficiais', 'Protocolo do prefeito', 'Agenda institucional', 'Inaugurações e entregas de obras'],
   },
   {
     icon: 'home',
-    title: 'Administração Departamental',
-    desc: 'Multi-secretaria com controle de acesso por papel, configurações operacionais e conformidade LGPD.',
-    benefits: ['Multi-secretaria', 'RBAC com perfis', 'Auditoria completa', 'Conformidade LGPD'],
+    title: 'Comunicação Institucional',
+    desc: 'Campanhas de interesse público, identidade visual do governo municipal, materiais gráficos e produção audiovisual das ações da prefeitura.',
+    benefits: ['Campanhas de saúde e educação', 'Identidade visual do governo', 'Materiais gráficos oficiais', 'Vídeos institucionais'],
   },
 ];
 
 export const MODULES: Module[] = [
-  { name: 'Imprensa',              emoji: '📰', features: ['Produção de releases', 'Atendimento à mídia', 'Agenda de entrevistas', 'Arquivo fotográfico'], highlight: false },
-  { name: 'Pautas e Agendamentos', emoji: '📅', features: ['Gestão de pautas', 'Conflitos automáticos', 'Notificações', 'Histórico completo'],           highlight: true  },
-  { name: 'Mídias Digitais',       emoji: '📱', features: ['Redes sociais', 'Site oficial', 'Campanhas digitais', 'Monitoramento'],                        highlight: false },
-  { name: 'Cerimonial e Eventos',  emoji: '🎙️', features: ['Eventos oficiais', 'Protocolo institucional', 'Agenda do prefeito', 'Solenidades'],            highlight: false },
-  { name: 'Administração',         emoji: '🏛️', features: ['Multi-secretaria', 'Controle de acesso', 'Auditoria completa', 'Conformidade LGPD'],           highlight: false },
+  { name: 'Assessoria de Imprensa', emoji: '📰', features: ['Releases e comunicados', 'Atendimento à mídia', 'Agenda de entrevistas', 'Arquivo fotográfico'],  highlight: false },
+  { name: 'Agenda e Pautas',        emoji: '📅', features: ['Agenda do prefeito', 'Pautas da secretaria', 'Notificações automáticas', 'Histórico de eventos'], highlight: true  },
+  { name: 'Mídias Digitais',        emoji: '📱', features: ['Redes sociais', 'Site oficial', 'Campanhas digitais', 'Monitoramento'],                           highlight: false },
+  { name: 'Cerimonial e Eventos',   emoji: '🎙️', features: ['Eventos oficiais', 'Protocolo institucional', 'Solenidades', 'Inaugurações de obras'],            highlight: false },
+  { name: 'Produção Audiovisual',   emoji: '🎬', features: ['Cobertura de eventos', 'Vídeos institucionais', 'Fotografia oficial', 'Arquivo de mídia'],        highlight: false },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [
   {
     id: '1',
-    name: 'Carlos Mendes',
-    role: 'Secretário de Comunicação',
-    company: 'Prefeitura de São Paulo',
+    name: 'Equipe de Imprensa',
+    role: 'Assessoria de Comunicação',
+    company: 'Prefeitura de Piquete — SP',
     rating: 5,
     avatar: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=64&h=64&fit=crop&crop=face',
-    content: 'O Secom transformou a gestão da nossa secretaria. Conseguimos organizar toda a produção de conteúdo e o relacionamento com a imprensa de forma muito mais eficiente.',
+    content: 'O sistema centralizou toda a produção de conteúdo da secretaria. Releases, agenda do prefeito e cobertura de eventos agora estão organizados em um único lugar, com acesso fácil para toda a equipe.',
   },
   {
     id: '2',
-    name: 'Marina Silva',
-    role: 'Coordenadora de Imprensa',
-    company: 'Secretaria de Comunicação — Campinas',
+    name: 'Diretoria de Mídias Digitais',
+    role: 'Gestão de Redes Sociais',
+    company: 'Secom Piquete — SP',
     rating: 5,
     avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=64&h=64&fit=crop&crop=face',
-    content: 'O controle de pautas e releases resolveu um problema que tínhamos há anos. Agora toda a equipe sabe exatamente o status de cada demanda.',
+    content: 'A gestão das redes sociais e do site oficial ficou muito mais ágil. Conseguimos publicar as ações da prefeitura em tempo real e manter a população de Piquete sempre bem informada.',
   },
   {
     id: '3',
-    name: 'Roberto Costa',
-    role: 'Chefe de Gabinete',
-    company: 'Secretaria Municipal de Comunicação — Curitiba',
+    name: 'Coordenação de Cerimonial',
+    role: 'Cerimonial e Eventos',
+    company: 'Secom Piquete — SP',
     rating: 5,
     avatar: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=64&h=64&fit=crop&crop=face',
-    content: 'O módulo de cerimonial e eventos nos ajudou a organizar toda a agenda institucional do prefeito. Excelente ferramenta para a comunicação pública.',
+    content: 'O controle da agenda institucional e dos eventos oficiais do município melhorou muito. Solenidades, inaugurações e entregas de obras são registradas e divulgadas com muito mais organização.',
   },
 ];
 
 export const LGPD_CARDS: LgpdCard[] = [
-  { emoji: '🛡️', title: 'Base Legal para Tratamento',  desc: 'Dados tratados com base legal definida: consentimento, obrigação legal ou interesse legítimo.' },
-  { emoji: '📋', title: 'Consentimento Documentado',    desc: 'Registro digital com versão, data e assinatura eletrônica.' },
-  { emoji: '🔍', title: 'Direito de Acesso',            desc: 'Cidadãos consultam seus dados a qualquer momento pelo portal.' },
-  { emoji: '🗑️', title: 'Direito ao Esquecimento',     desc: 'Exclusão de dados com rastreabilidade e prazo de atendimento.' },
+  { emoji: '🛡️', title: 'Base Legal para Tratamento',  desc: 'Dados tratados com base legal definida: consentimento, obrigação legal ou interesse legítimo do poder público.' },
+  { emoji: '📋', title: 'Consentimento Documentado',    desc: 'Registro digital com versão, data e assinatura eletrônica do cidadão.' },
+  { emoji: '🔍', title: 'Direito de Acesso',            desc: 'Cidadãos de Piquete consultam seus dados a qualquer momento pelo portal.' },
+  { emoji: '🗑️', title: 'Direito ao Esquecimento',     desc: 'Exclusão de dados com rastreabilidade e prazo de atendimento garantido.' },
   { emoji: '📤', title: 'Portabilidade de Dados',       desc: 'Exportação em formato estruturado para transferência a outro sistema.' },
-  { emoji: '🔒', title: 'Segurança e Criptografia',     desc: 'Dados criptografados em repouso e em trânsito com logs de auditoria.' },
+  { emoji: '🔒', title: 'Segurança e Criptografia',     desc: 'Dados criptografados em repouso e em trânsito com logs de auditoria completos.' },
 ];
 
 export const VISUAL_IMAGES: VisualImage[] = [
-  { src: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=480&h=300&fit=crop', alt: 'Coletiva de imprensa',           label: 'Gestão de Imprensa' },
-  { src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=480&h=300&fit=crop', alt: 'Mídias digitais e redes sociais', label: 'Mídias Digitais' },
-  { src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=480&h=300&fit=crop', alt: 'Evento institucional',            label: 'Cerimonial e Eventos' },
+  { src: 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=480&h=300&fit=crop', alt: 'Coletiva de imprensa municipal',    label: 'Assessoria de Imprensa' },
+  { src: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=480&h=300&fit=crop', alt: 'Gestão de redes sociais oficiais',  label: 'Mídias Digitais' },
+  { src: 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=480&h=300&fit=crop', alt: 'Solenidade e evento institucional', label: 'Cerimonial e Eventos' },
 ];

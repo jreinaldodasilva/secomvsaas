@@ -8,8 +8,8 @@ export function FeaturesSection() {
   return (
     <section className={pageStyles.section} id="features">
       <SectionHeader
-        title="Recursos que Fazem a Diferença"
-        desc="Tudo que sua secretaria de comunicação precisa em uma única plataforma"
+        title="Áreas de Atuação da Secom"
+        desc="A Secretaria Municipal de Comunicação de Piquete atua em quatro frentes para manter a população informada"
       />
       <AnimatedGrid className={pageStyles.grid}>
         {FEATURES.map(f => (

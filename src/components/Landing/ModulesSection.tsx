@@ -10,8 +10,8 @@ export function ModulesSection() {
   return (
     <section className={pageStyles.sectionAlt} id="modules">
       <SectionHeader
-        title="Módulos da Plataforma"
-        desc="Solução completa para secretarias municipais de comunicação"
+        title="Módulos do Sistema"
+        desc="Ferramentas integradas para a gestão completa da comunicação municipal de Piquete"
       />
       <AnimatedGrid className={`${pageStyles.grid} ${pageStyles.gridModules}`}>
         {MODULES.map(mod => (
@@ -34,7 +34,7 @@ export function ModulesSection() {
               className={`btn ${mod.highlight ? 'btn-primary' : 'btn-secondary'}`}
               onClick={() => navigate('/login')}
             >
-              Acessar
+              Acessar Sistema
             </button>
           </AnimatedItem>
         ))}

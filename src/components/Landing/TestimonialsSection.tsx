@@ -8,8 +8,8 @@ export function TestimonialsSection() {
   return (
     <section className={pageStyles.section}>
       <SectionHeader
-        title="O que Nossos Clientes Dizem"
-        desc="Histórias reais de gestores que modernizaram a comunicação pública"
+        title="A Secom em Ação"
+        desc="Como a Secretaria Municipal de Comunicação de Piquete organiza a informação pública"
       />
       <AnimatedGrid className={`${pageStyles.grid} ${pageStyles.gridTestimonials}`}>
         {TESTIMONIALS.map(t => (

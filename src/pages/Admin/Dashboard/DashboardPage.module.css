@@ -69,6 +69,7 @@
   pointer-events: none;
 }
 .statCard:hover::after { opacity: 1; }
+.statCard:hover { transform: translateY(-2px); }
 .statCard:focus-visible { outline: 2px solid var(--color-primary-500); outline-offset: 2px; }
 
 .statIcon {
@@ -234,4 +235,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .statCard, .statCard::after { transition: none; }
+  .statCard:hover { transform: none; }
 }

@@ -1,3 +1,100 @@
-.info { margin-bottom: var(--space-8); }
-.info p { margin-bottom: var(--space-2); }
-.password h2 { margin-bottom: var(--space-4); }
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Banner ── */
+.banner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-6);
+  box-shadow: var(--shadow-level-1);
+  border: 1px solid var(--color-primary-700);
+}
+
+.avatar {
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-primary-600);
+  color: var(--color-neutral-0);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 3px solid rgba(255,255,255,0.15);
+}
+
+.bannerInfo { display: flex; flex-direction: column; gap: var(--space-1); }
+
+.bannerName {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-accent-400);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+.bannerMeta {
+  font-size: var(--font-size-sm);
+  color: var(--color-neutral-300);
+  margin: 0;
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-level-1);
+  padding: var(--space-6);
+}
+
+.cardTitle {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-primary);
+}
+
+/* ── Field list ── */
+.fieldList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.fieldRow {
+  display: flex;
+  gap: var(--space-4);
+  align-items: baseline;
+}
+
+.fieldLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  min-width: 10rem;
+  flex-shrink: 0;
+}
+
+.fieldValue {
+  font-size: var(--font-size-base);
+  color: var(--color-text-primary);
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .banner { flex-direction: column; align-items: flex-start; padding: var(--space-6) var(--space-4); }
+  .bannerName { font-size: var(--font-size-xl); }
+  .fieldRow { flex-direction: column; gap: var(--space-1); }
+  .fieldLabel { min-width: 0; }
+}

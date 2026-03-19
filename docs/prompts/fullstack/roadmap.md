@@ -26,8 +26,8 @@ This is a **strategic remediation and optimization plan**.
 Use the following review document(s) as primary input:
 
 ```
-docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part1.md
-docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part2.md
+docs/architecture/fullstack/request-response-interface-audit-part-1.md
+docs/architecture/fullstack/request-response-interface-audit-part-2.md
 ```
 
 If the review is split into multiple files, treat them as a single body of findings.
@@ -53,14 +53,14 @@ The output must be **implementation-oriented and execution-ready**.
 # 📁 Required Output Location
 
 ```
-docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Based-On-Review.md
+docs/roadmaps/fullstack/improvement-roadmap.md
 ```
 
 If size requires:
 
 ```
-docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Part1.md
-docs/fullstackroadmaps/04-Secom-Improvement-Roadmap-Part2.md
+docs/roadmaps/fullstack/improvement-roadmap-part-1.md
+docs/roadmaps/fullstack/improvement-roadmap-part-2.md
 ...
 ```
 

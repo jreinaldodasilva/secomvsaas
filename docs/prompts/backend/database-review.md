@@ -226,7 +226,7 @@ Assess:
 ## Output Requirements
 
 **Output File**:
-`docs/backend/02-Secom-MongoDB-Architecture.md`
+`docs/architecture/backend/mongodb-architecture.md`
 
 **Document Sections**:
 
@@ -249,4 +249,4 @@ Assess:
 * Flag risks early and clearly
 * Prioritize **read/write performance**
 * Write for **backend engineers, DBAs, and system architects**
-* If you need further information about backend architecture, refer to the 'docs/backend/01-Secom-Backend-Architecture-Overview.md' document.
+* If you need further information about backend architecture, refer to the 'docs/architecture/backend/overview.md' document.

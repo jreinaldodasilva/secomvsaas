@@ -45,8 +45,8 @@ You must analyze:
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md
-docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md
+docs/architecture/frontend/navigation-userflows-part-1.md
+docs/architecture/frontend/navigation-userflows-part-2.md
 ```
 
 ---
@@ -121,10 +121,10 @@ Produce a structured tree representation such as:
 ├── /login
 ├── /forgot-password
 ├── /dashboard
-│   ├── /super-admin
+│   ├── /admin
 │   ├── /admin
 │   ├── /assessor
-│   ├── /staff
+│   ├── /atendente
 │   └── /citizen
 └── ...
 ```
@@ -216,7 +216,7 @@ Identify:
 
 ## Required Matrix Format
 
-| Route / Feature | Super Admin | Admin | Assessor | Staff | CitizenProfile | Notes |
+| Route / Feature | Admin | Admin | assessor | atendente | citizen | Notes |
 | --------------- | ----------- | ----- | -------- | ----- | ------- | ----- |
 
 If role definitions are not explicit, infer only from observable code.

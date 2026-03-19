@@ -6,17 +6,17 @@ Here is the fully structured and enterprise-grade version of your prompt for the
 
 Carefully review the following roadmap documents:
 
-* `docs/backendroadmaps/05-Secom-Business-Logic-Improvement-Roadmap.md`
-* `docs/backendroadmaps/05-Secom-Business-Logic-Quick-Wins.md`
+* `docs/roadmaps/backend/business-logic-improvement.md`
+* `docs/roadmaps/backend/business-logic-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented business logic fixes, structural improvements, and refactors**:
 
-   * `docs/backend/09-Secom-Business-Logic-Index.md`
-   * `docs/backend/09-Secom-Business-Logic-Part1.md`
-   * `docs/backend/09-Secom-Business-Logic-Part2.md`
-   * `docs/backend/09-Secom-Business-Logic-Part3.md`
+   * `docs/architecture/backend/business-logic.md`
+   * `docs/architecture/backend/business-logic-part-1.md`
+   * `docs/architecture/backend/business-logic-part-2.md`
+   * `docs/architecture/backend/business-logic-part-3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented business logic issues**, including a structured and prioritized execution plan.
 
@@ -59,7 +59,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `09-Secom-Business-Logic-Index.md`
+## 1️⃣ `business-logic.md`
 
 * Ensure this document accurately describes the current business logic architecture.
 * Update module relationships and boundaries.
@@ -69,7 +69,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `09-Secom-Business-Logic-Part1.md`
+## 2️⃣ `business-logic-part-1.md`
 
 * Update documentation for the modules or domains covered in this file.
 * Reflect implemented refactors.
@@ -78,7 +78,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `09-Secom-Business-Logic-Part2.md`
+## 3️⃣ `business-logic-part-2.md`
 
 * Align documentation with current orchestration patterns.
 * Reflect changes to service coordination or transactional logic.
@@ -86,7 +86,7 @@ Extract changes affecting:
 
 ---
 
-## 4️⃣ `09-Secom-Business-Logic-Part3.md`
+## 4️⃣ `business-logic-part-3.md`
 
 * Reflect advanced patterns or cross-cutting logic changes.
 * Update integration boundaries (if external services are involved).
@@ -117,9 +117,9 @@ The documentation must describe the **current operational business logic archite
 
 Create a new roadmap file, for example:
 
-`docs/backendroadmaps/05-Secom-Business-Logic-Remaining-Roadmap.md`
+`docs/roadmaps/backend/business-logic-remaining.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backendroadmaps/05-Secom-Business-Logic-Remaining-Roadmap-Part1.md', 'docs/backendroadmaps/05-Secom-Business-Logic-Remaining-Roadmap-Part2.md', and so on
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/roadmaps/backend/business-logic-remaining-part-1.md', 'docs/roadmaps/backend/business-logic-remaining-part-2.md', and so on
 
 ---
 

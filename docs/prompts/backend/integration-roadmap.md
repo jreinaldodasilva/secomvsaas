@@ -4,9 +4,9 @@
 
 **Primary Source Documents:**
 
-* `docs/backend/10-Secom-Integrations-Part1.md`
-* `docs/backend/10-Secom-Integrations-Part2.md`
-* `docs/backend/10-Secom-Integrations-Part3.md`
+* `docs/architecture/backend/integrations-part-1.md`
+* `docs/architecture/backend/integrations-part-2.md`
+* `docs/architecture/backend/integrations-part-3.md`
 
 **Scope Restriction:** Integration documents only
 
@@ -20,9 +20,9 @@ You must:
 
 * Use only findings, risks, gaps, and recommendations explicitly described in:
 
-  * `10-Secom-Integrations-Part1.md`
-  * `10-Secom-Integrations-Part2.md`
-  * `10-Secom-Integrations-Part3.md`
+  * `integrations-part-1.md`
+  * `integrations-part-2.md`
+  * `integrations-part-3.md`
 * Not reference other backend documents unless explicitly mentioned inside these integration documents
 * Not invent integration failures not implied in the documentation
 * Clearly trace every issue back to a specific section and part
@@ -53,7 +53,7 @@ Extract every issue related to:
 ## External Dependency Risk
 
 * Third-party availability dependence
-* Single-assessor lock-in
+* Single-provider lock-in
 * Lack of fallback mechanisms
 * SLA uncertainty
 * Breaking API change risk
@@ -304,7 +304,7 @@ Focus:
 
 Focus:
 
-* Assessor abstraction layers
+* Provider abstraction layers
 * Fallback strategies
 * Version negotiation mechanisms
 * Rate-limit adaptive handling
@@ -408,7 +408,7 @@ Keep concise, strategic, and decision-ready.
 
 ## File 1:
 
-`docs/backendroadmaps/06-Secom-Integrations-Improvement-Roadmap.md`
+`docs/roadmaps/backend/integrations-improvement.md`
 
 Must include:
 
@@ -423,7 +423,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/06-Secom-Integrations-Quick-Wins.md`
+`docs/roadmaps/backend/integrations-quick-wins.md`
 
 Must include:
 

@@ -245,8 +245,8 @@ Mobile UX evaluation with prioritized findings.
 ### Output File
 
 **File Name:**
-`docs/frontend/04-Secom-UX-Accessibility-Overview-Part1.md`
-`docs/frontend/04-Secom-UX-Accessibility-Overview-Part2.md`
+`docs/architecture/frontend/ux-accessibility-part-1.md`
+`docs/architecture/frontend/ux-accessibility-part-2.md`
 
 ---
 

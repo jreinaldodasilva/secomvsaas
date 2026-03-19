@@ -1,6 +1,6 @@
 Carefully review and implement the improvements described in:
 
-`docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
+`docs/roadmaps/backend/architecture-improvement.md`
 
 The document defines a **prioritized architecture improvement roadmap**, organized by **issue severity and implementation phases**.
 

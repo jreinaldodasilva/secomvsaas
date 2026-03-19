@@ -30,7 +30,7 @@ Your task is to **design, generate, and document** a complete **test environment
 * Backend (Node.js / Express / MongoDB)
 * Frontend (React / Vite / role-based routing)
 * Authentication (staff + citizen portals)
-* Officeal workflows (citizens, agendamentos, action, notes)
+* Communication workflows (press releases, appointments, social media, clipping)
 
 You must produce **three deliverables**:
 
@@ -76,7 +76,7 @@ Your seeding script must create the following entities **in the correct dependen
 #### 1. System Administrators
 
 * 2 global administrators
-* role = super_admin / ADMIN
+* role = admin / ADMIN
 * Not scoped to tenants
 * Purpose: platform-wide access, audits, configuration
 
@@ -106,8 +106,8 @@ Create **2 tenants**, each with:
 #### 5. Tenant Staff
 
 * 2 staff users per tenant
-* role = atendente / atendente
-* scheduling and citizen access only
+* role = atendente
+* appointment scheduling and citizen service access only
 
 #### 6. CitizenProfiles
 
@@ -204,7 +204,7 @@ The output must include:
 
 * Account tables (role, email, permissions)
 * Tenant → staff → citizen hierarchy diagrams
-* Agendamento timelines per tenant
+* Appointment timelines per tenant
 * Known edge cases and why they exist
 
 -----|------|----------|------|
@@ -280,7 +280,7 @@ The solution must include a **clear, executable script** that populates the data
 | Tenants | Admin dashboard | Required before staff |
 | Staff & Assessors | Admin → Assessors | Role-based forms |
 | CitizenProfiles | Admin / Reception | Multi-step form |
-| Agendamentos | Calendar module | Drag & form creation |
+| Agendamentos | Appointments module | Form creation |
 | Officeal Notes | Officeal view | Assessor-only |
 
 ---
@@ -311,19 +311,19 @@ This section must guide a tester through **realistic end‑to‑end usage** of t
 
 * Role-based navigation menus
 * Correct data scoping by tenant
-* Form validation feedback (CPF, phone, email)
-* Calendar rendering with mixed agendamento states
+* Form validation feedback (phone, email, date)
+* Calendar rendering with mixed appointment states
 
 ### 5.3 Backend Behaviour Expectations
 
 * Correct filtering by tenant ObjectId
 * Audit logs generated for key actions
-* Status transitions enforced (scheduled → completed)
+* Status transitions enforced (draft → published, scheduled → completed)
 * Validation errors returned consistently
 
 ### 5.4 Core Workflows
 
-**AdministrativeAssistant:**
+**Atendente:**
 
 * Register citizen
 * Book agendamento

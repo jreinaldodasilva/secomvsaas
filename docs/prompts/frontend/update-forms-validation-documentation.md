@@ -6,16 +6,16 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following frontend roadmap documents:
 
-* `docs/frontendroadmaps/05-Secom-Forms-Validation-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/05-Secom-Forms-Validation-Quick-Wins.md`
+* `docs/roadmaps/frontend/forms-validation-improvement.md`
+* `docs/roadmaps/frontend/forms-validation-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented form architecture, validation, and UX improvements**:
 
-   * `docs/frontend/05-Secom-Forms-Validation-Part1.md`
-   * `docs/frontend/05-Secom-Forms-Validation-Part2.md`
-   * `docs/frontend/05-Secom-Forms-Validation-Part3.md`
+   * `docs/architecture/frontend/forms-validation-part-1.md`
+   * `docs/architecture/frontend/forms-validation-part-2.md`
+   * `docs/architecture/frontend/forms-validation-part-3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented form and validation issues**, including a structured and prioritized execution plan.
 
@@ -64,7 +64,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `05-Secom-Forms-Validation-Part1.md`
+## 1️⃣ `forms-validation-part-1.md`
 
 * Update foundational form architecture principles.
 * Reflect implemented validation strategy.
@@ -74,7 +74,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `05-Secom-Forms-Validation-Part2.md`
+## 2️⃣ `forms-validation-part-2.md`
 
 * Update advanced validation patterns (cross-field, async validation).
 * Reflect changes in error handling and API error mapping.
@@ -83,7 +83,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `05-Secom-Forms-Validation-Part3.md`
+## 3️⃣ `forms-validation-part-3.md`
 
 * Update complex or high-impact form flows.
 * Reflect accessibility improvements.
@@ -116,9 +116,9 @@ Each file must describe the **current operational form and validation architectu
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/05-Secom-Forms-Validation-Remaining-Roadmap.md`
+`docs/roadmaps/frontend/forms-validation-remaining.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/05-Secom-Forms-Validation-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/05-Secom-Forms-Validation-Remaining-Roadmap-Part2.md', and so on
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/roadmaps/frontend/forms-validation-remaining-part-1.md', 'docs/roadmaps/frontend/forms-validation-remaining-part-2.md', and so on
 ---
 
 ## The new roadmap must include:

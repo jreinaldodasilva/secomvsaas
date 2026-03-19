@@ -5,7 +5,7 @@
 You are a **Senior Security Architect performing a deep technical security assessment** of the Secom backend system.
 
 **Project Context**: Secom is a communication management system for the Secretaria de Comunicação (government agency) managing sensitive communications data with:
-- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
 - **Architecture**: Modular monolith with multi-tenancy and RBAC
 - **Data**: Government communications, citizen information, media contacts
 - **Compliance**: LGPD (Brazilian Data Protection Law)
@@ -129,7 +129,7 @@ Determine from implementation:
 * Signing algorithm
 * Secret/key storage strategy
 * Stateless vs stateful validation
-* Cookie vs header transport
+* Cookie vs header transport (staff uses `secom_access_token` httpOnly cookie; verify citizen auth cookie name)
 
 ### Required Analysis:
 
@@ -162,7 +162,8 @@ Based on implementation:
 * Inheritance logic
 * Separation of duties
 * Privilege escalation risk
-* super_admin isolation
+* super_admin bypass logic (bypasses all permission checks)
+* admin isolation
 
 Deliver:
 
@@ -195,7 +196,7 @@ Produce a fully expanded matrix for Secom modules:
 
 * Press Releases
 * Media Contacts
-* Clipping
+* Clippings
 * Events
 * Appointments
 * Citizen Portal

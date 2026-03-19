@@ -1,6 +1,6 @@
 Carefully review and implement the improvements described in:
 
-`docs/frontendroadmaps/04-Secom-UX-Accessibility-Improvement-Roadmap.md`
+`docs/roadmaps/frontend/ux-accessibility-improvement.md`
 
 The document defines a **prioritized UX & accessibility improvement roadmap**, organized by **issue severity and implementation sprints**.
 
@@ -160,7 +160,7 @@ If an issue involves dependency removal, upgrades, or build configuration change
 
 After completing an issue:
 
-- Update `docs/frontendroadmaps/04-Secom-UX-Accessibility-Improvement-Roadmap.md`.
+- Update `docs/roadmaps/frontend/ux-accessibility-improvement.md`.
 - Mark the issue as **✅ Completed** (strike through the row in the backlog table and the sprint task row).
 - Update the relevant **Definition of Done** checklist in the sprint section.
 - Update the **baseline metrics** in section 4.1 if the issue resolves a tracked metric.

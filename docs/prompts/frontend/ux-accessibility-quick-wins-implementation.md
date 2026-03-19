@@ -2,7 +2,7 @@
 
 Carefully review and implement the fixes described in:
 
-`docs/frontendroadmaps/04-Secom-UX-Accessibility-Quick-Wins.md`
+`docs/roadmaps/frontend/ux-accessibility-quick-wins.md`
 
 ---
 

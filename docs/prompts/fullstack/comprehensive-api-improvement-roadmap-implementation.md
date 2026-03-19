@@ -2,7 +2,7 @@ Understood — this is **not analysis or refactoring**, but **controlled executi
 
 Below is a properly structured implementation prompt designed specifically for:
 
-`docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md`
+`docs/architecture/fullstack/api-improvement-roadmap.md`
 
 It enforces:
 
@@ -24,7 +24,7 @@ It enforces:
 Execute the implementation of:
 
 ```
-docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md
+docs/architecture/fullstack/api-improvement-roadmap.md
 ```
 
 strictly following:
@@ -141,8 +141,8 @@ After completing a task:
   * Adjust status tracking if needed
 * Update any affected documentation in:
 
-  * `docs/backend/`
-  * `docs/frontend/`
+  * `docs/architecture/backend/`
+  * `docs/architecture/frontend/`
   * Shared types documentation
 
 The roadmap must always reflect actual system state.

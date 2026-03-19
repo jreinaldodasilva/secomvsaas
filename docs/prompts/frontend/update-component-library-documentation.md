@@ -6,16 +6,16 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following frontend roadmap documents:
 
-* `docs/frontendroadmaps/02-Secom-Component-Library-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/02-Secom-Component-Library-Quick-Wins.md`
+* `docs/roadmaps/frontend/component-library-improvement.md`
+* `docs/roadmaps/frontend/component-library-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented component library fixes, standardization improvements, and refactors**:
 
-   * `docs/frontend/02-Secom-Component-Library-Part1.md`
-   * `docs/frontend/02-Secom-Component-Library-Part2.md`
-   * `docs/frontend/02-Secom-Component-Library-Part3.md`
+   * `docs/architecture/frontend/component-library-part-1.md`
+   * `docs/architecture/frontend/component-library-part-2.md`
+   * `docs/architecture/frontend/component-library-part-3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented component library issues**, including a structured and prioritized execution plan.
 
@@ -60,7 +60,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `02-Secom-Component-Library-Part1.md`
+## 1️⃣ `component-library-part-1.md`
 
 * Update foundational components documentation.
 * Reflect refactored APIs and prop changes.
@@ -70,7 +70,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `02-Secom-Component-Library-Part2.md`
+## 2️⃣ `component-library-part-2.md`
 
 * Update compound or feature-level components.
 * Reflect improvements in composition and reuse.
@@ -79,7 +79,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `02-Secom-Component-Library-Part3.md`
+## 3️⃣ `component-library-part-3.md`
 
 * Update advanced or cross-cutting components.
 * Reflect accessibility improvements.
@@ -110,9 +110,9 @@ Each document must reflect the **current operational component library**, not pl
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/02-Secom-Component-Library-Remaining-Roadmap.md`
+`docs/roadmaps/frontend/component-library-remaining.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/02-Secom-Component-Library-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/02-Secom-Component-Library-Remaining-Roadmap-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/roadmaps/frontend/component-library-remaining-part-1.md', 'docs/roadmaps/frontend/component-library-remaining-part-2.md', and so on.
 
 ---
 

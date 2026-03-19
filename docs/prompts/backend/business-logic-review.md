@@ -1,18 +1,18 @@
-# Secom – Comprehensive Business Logic & Domain Architecture Audit
+# Secom Business Logic & Domain Architecture Audit
 
 You are a **Senior Backend Architect performing a production-grade Business Logic and Domain Architecture audit** of the Secom system.
 
 Use the following documents as primary sources of truth:
 
-* `01-Secom-Backend-Architecture-Overview.md`
-* `02-Secom-MongoDB-Architecture.md`
-* `03-Secom-API-Design.md`
-* `04-Secom-Auth-Security.md`
+* `docs/architecture/backend/overview.md`
+* `docs/architecture/backend/mongodb-architecture.md`
+* `docs/architecture/backend/api-design.md`
+* `docs/architecture/backend/auth-security.md`
 
 Assume:
 
-* This is a **government communications platform (Assessoria de Comunicação)**
-* The system supports **single-tenant architecture with seeded default tenant**
+* This is a **government communications platform (Secretaria de Comunicação)**
+* The system supports **multi-tenancy with RBAC**
 * It runs on **Node.js + TypeScript + MongoDB (Mongoose)**
 * The system is **production or near-production**
 * Data integrity and communication record correctness are critical
@@ -27,12 +27,12 @@ If information is missing:
 
 ---
 
-# 🎯 Audit Objective
+## Audit Objective
 
 Produce a **deep architectural assessment of business logic implementation**, focusing on:
 
 1. Service layer structure & separation of concerns
-2. Domain model maturity (DDD alignment)
+2. Domain model maturity
 3. Business rule enforcement integrity
 4. Validation layering & data invariants
 5. Transaction & consistency management
@@ -40,23 +40,25 @@ Produce a **deep architectural assessment of business logic implementation**, fo
 7. Rule centralization & bypass risks
 8. Long-term maintainability & scalability
 
-This is not a code walkthrough.
-This is an **architecture quality and risk audit**.
+This is not a code walkthrough. This is an **architecture quality and risk audit**.
 
 ---
 
-# 📦 Required Output File
+## Required Output File
 
 ```
-docs/backend/09-Secom-Business-Logic.md
+docs/architecture/backend/business-logic.md
 ```
 
-**Obs:**
-If necessary due to the size constraints of the document, split the document into more files.
+If necessary due to size, split into:
+```
+docs/architecture/backend/business-logic-part-1.md
+docs/architecture/backend/business-logic-part-2.md
+```
 
 ---
 
-# 📑 Required Sections
+## Required Sections
 
 ---
 
@@ -66,7 +68,6 @@ Provide:
 
 * High-level description of business logic layering
 * Responsibility boundaries:
-
   * Controllers
   * Services
   * Domain models
@@ -81,18 +82,17 @@ Provide:
 * Is business logic centralized in services?
 * Are controllers thin?
 * Are repositories persistence-only?
-* Are there “God services”?
+* Are there "God services"?
 * Are there circular dependencies?
-* Is there clear domain separation?
+* Is there clear domain separation between the 7 Secom modules?
 
 ### Deliver:
 
 * Architecture Maturity Classification:
-
   * 🟥 Transaction Script
   * 🟧 Layered but Anemic
   * 🟨 Hybrid
-  * 🟩 Strong DDD Alignment
+  * 🟩 Strong Domain Alignment
 * Maintainability Score (0–100)
 * Structural Risk Summary
 
@@ -100,16 +100,18 @@ Provide:
 
 ## 2️⃣ Service Layer Deep Analysis
 
-Analyze all major services:
+Analyze all major Secom services:
 
-* CitizenProfileService
-* AgendamentoService
-* OfficeService
-* UserService
-* CommunicationRecordService
-* NotificationService
-* ReportingService
+* PressReleaseService
+* MediaContactService
+* ClippingService
+* EventService
+* AppointmentService
+* CitizenPortalService
+* SocialMediaService
 * AuthService (business aspects only)
+* TenantService
+* NotificationService
 
 For each:
 
@@ -139,15 +141,19 @@ Provide:
 
 ---
 
-## 3️⃣ Domain Model Maturity (DDD Evaluation)
+## 3️⃣ Domain Model Maturity
 
-Analyze core domain entities:
+Analyze core Secom domain entities:
 
+* PressRelease
+* MediaContact
+* Clipping
+* Event
+* Appointment
 * CitizenProfile
-* Agendamento
+* SocialMediaPost
 * Tenant
 * User
-* CommunicationRecord
 
 For each:
 
@@ -156,9 +162,6 @@ For each:
 * Anemic vs Rich domain model
 * Encapsulation of invariants
 * State transition protection
-* Use of value objects (CPF, TimeRange, Email, etc.)
-* Aggregate boundaries
-* Data scoping invariant enforcement
 * Status modeling discipline
 * Behavioral methods vs procedural orchestration
 
@@ -166,33 +169,30 @@ For each:
 
 #### Domain Modeling Scorecard
 
-| Dimension            | Score (0–5) |
-| -------------------- | ----------- |
-| Encapsulation        |             |
-| Invariant Protection |             |
-| State Modeling       |             |
-| Cohesion             |             |
-| Aggregate Integrity  |             |
-| DDD Alignment        |             |
-
-Provide overall DDD maturity classification.
+| Dimension | Score (0–5) |
+| --------- | ----------- |
+| Encapsulation | |
+| Invariant Protection | |
+| State Modeling | |
+| Cohesion | |
+| Aggregate Integrity | |
 
 ---
 
 ## 4️⃣ Business Rule Inventory & Enforcement Map
 
-Document all critical business rules.
+Document all critical Secom business rules.
 
 Examples (must verify implementation location):
 
-* Agendamento overlap prevention
-* 24h cancellation rule
-* CPF uniqueness
-* Minor citizen representative requirement
-* Soft delete enforcement
-* Communication record audit logging
-* Cross-boundary data isolation
-* Assessor-citizen assignment restrictions
+* Press release requires approval before publishing
+* Press release status workflow: draft → pending-approval → approved → published
+* Appointment conflict prevention
+* Appointment cancellation rules
+* Citizen can only access own portal data
+* Social media post scheduling validation
+* Tenant data isolation enforcement
+* Role-based module access enforcement
 * Admin override policies
 
 ### For each rule:
@@ -223,8 +223,8 @@ Evaluate validation layers:
 ### Layer 1 – DTO / Request Validation
 
 * Library used?
-* Brazilian-specific validators?
 * Field-level coverage completeness?
+* Module-specific validation schemas?
 
 ### Layer 2 – Business Validation
 
@@ -236,8 +236,7 @@ Evaluate validation layers:
 
 * Composite unique indexes?
 * Partial indexes for soft deletes?
-* Foreign key simulation correctness?
-* Index alignment with invariants?
+* Tenant-scoped unique constraints?
 
 ### Deliver:
 
@@ -255,21 +254,20 @@ Considering MongoDB architecture:
 
 * Multi-document transaction usage
 * Transaction scope discipline
-* Long-running transactions
 * Side effects inside transactions
 * Retry strategies
 * Idempotency in critical operations
 * Eventual consistency risks
-* Background job atomicity
+* Background job atomicity (BullMQ)
 
 ### Critical Flows to Inspect:
 
-* CitizenProfile creation
-* Agendamento booking
-* Agendamento cancellation
-* Communication record updates
-* Tenant deletion
-* Role modification
+* Press release approval and publishing
+* Appointment booking
+* Appointment cancellation
+* Citizen profile creation
+* Social media post scheduling
+* Tenant initialization
 
 ### Deliver:
 
@@ -314,7 +312,7 @@ Evaluate:
 * Tenant scoping enforcement inside services
 * Tenant filtering in repository queries
 * Cross-boundary data leakage risks
-* super_admin override discipline
+* Admin override discipline
 * Invariant protection during updates
 * Aggregation queries without tenant filters
 
@@ -328,20 +326,18 @@ Deliver:
 
 ## 9️⃣ Business Logic Quality Scorecard
 
-Provide final scores:
-
-| Category                        | Score (0–100) |
-| ------------------------------- | ------------- |
-| Service Architecture            |               |
-| Domain Modeling                 |               |
-| Rule Enforcement                |               |
-| Data Integrity                  |               |
-| Transaction Safety              |               |
-| Error Discipline                |               |
-| Multi-Tenant Isolation          |               |
-| Maintainability                 |               |
-| Scalability                     |               |
-| Overall Business Logic Maturity |               |
+| Category | Score (0–100) |
+| -------- | ------------- |
+| Service Architecture | |
+| Domain Modeling | |
+| Rule Enforcement | |
+| Data Integrity | |
+| Transaction Safety | |
+| Error Discipline | |
+| Multi-Tenant Isolation | |
+| Maintainability | |
+| Scalability | |
+| Overall Business Logic Maturity | |
 
 ---
 
@@ -359,7 +355,7 @@ Include:
 
 ---
 
-# ✍ Writing Standards
+## Writing Standards
 
 * No generic explanations
 * No repetition
@@ -371,7 +367,7 @@ Include:
 
 ---
 
-# 🔒 Important Constraints
+## Important Constraints
 
 * Do NOT fabricate undocumented behavior
 * Clearly mark assumptions
@@ -382,7 +378,7 @@ Include:
 
 ---
 
-# Expected Depth Level
+## Expected Depth Level
 
 This document must read like:
 
@@ -391,4 +387,3 @@ This document must read like:
 > to evaluate production-readiness and systemic risk
 
 Not a general AI overview.
-

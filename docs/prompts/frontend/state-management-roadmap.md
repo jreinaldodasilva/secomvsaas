@@ -1,8 +1,8 @@
 Excellent — below is the **state-management–scoped equivalent** of your architecture and component prompts, adapted specifically for:
 
-* `docs/frontend/03-Secom-State-Management-Part1.md`
-* `docs/frontend/03-Secom-State-Management-Part2.md`
-* `docs/frontend/03-Secom-State-Management-Part3.md`
+* `docs/architecture/frontend/state-management-part-1.md`
+* `docs/architecture/frontend/state-management-part-2.md`
+* `docs/architecture/frontend/state-management-part-3.md`
 
 This version:
 
@@ -20,9 +20,9 @@ This version:
 
 **Source Documents:**
 
-* `docs/frontend/03-Secom-State-Management-Part1.md`
-* `docs/frontend/03-Secom-State-Management-Part2.md`
-* `docs/frontend/03-Secom-State-Management-Part3.md`
+* `docs/architecture/frontend/state-management-part-1.md`
+* `docs/architecture/frontend/state-management-part-2.md`
+* `docs/architecture/frontend/state-management-part-3.md`
 
 **Scope Restriction:** State Management documentation only
 
@@ -373,7 +373,7 @@ Keep concise, strategic, and traceable to documented findings (1–2 pages equiv
 
 ## File 1:
 
-`docs/frontendroadmaps/03-Secom-State-Management-Improvement-Roadmap.md`
+`docs/roadmaps/frontend/state-management-improvement.md`
 
 Must include:
 
@@ -388,7 +388,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/03-Secom-State-Management-Quick-Wins.md`
+`docs/roadmaps/frontend/state-management-quick-wins.md`
 
 Must include:
 

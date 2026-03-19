@@ -39,10 +39,10 @@ You must analyze:
 * AND the previously generated documents:
 
 ```
-docs/frontend/01-Secom-Frontend-Architecture-Overview.md
-docs/frontend/02-Secom-Component-Library-Part1.md
-docs/frontend/02-Secom-Component-Library-Part2.md
-docs/frontend/02-Secom-Component-Library-Part3.md
+docs/architecture/frontend/overview.md
+docs/architecture/frontend/component-library-part-1.md
+docs/architecture/frontend/component-library-part-2.md
+docs/architecture/frontend/component-library-part-3.md
 
 ```
 
@@ -63,9 +63,9 @@ If inconsistencies are detected between implementation and documented architectu
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/03-Secom-State-Management-Part1.md
-docs/frontend/03-Secom-State-Management-Part2.md
-docs/frontend/03-Secom-State-Management-Part3.md
+docs/architecture/frontend/state-management-part-1.md
+docs/architecture/frontend/state-management-part-2.md
+docs/architecture/frontend/state-management-part-3.md
 
 ```
 

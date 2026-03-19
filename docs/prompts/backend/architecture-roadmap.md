@@ -3,9 +3,9 @@
 # Secom – Architecture Improvement Roadmap
 
 **Source Document:** 
-`docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`
-`docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
-`docs/backend/01-Secom-Backend-Architecture-Overview-Part3.md`
+`docs/architecture/backend/overview-part-1.md`
+`docs/architecture/backend/overview-part-2.md`
+`docs/architecture/backend/overview-part-3.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -16,7 +16,7 @@ You are generating a **strategic improvement roadmap strictly from the Backend A
 
 You must:
 
-* Use only findings, gaps, risks, and recommendations explicitly described in `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`, `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md` and `docs/backend/01-Secom-Backend-Architecture-Overview-Part3.md`
+* Use only findings, gaps, risks, and recommendations explicitly described in `docs/architecture/backend/overview-part-1.md`, `docs/architecture/backend/overview-part-2.md` and `docs/architecture/backend/overview-part-3.md`
 * Not reference any other backend documents
 * Not assume issues from API, testing, or security audits
 * Not invent technical debt outside what is implied in the architecture review
@@ -306,7 +306,7 @@ Keep concise and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
+`docs/roadmaps/backend/architecture-improvement.md`
 
 Must include:
 
@@ -321,7 +321,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/01-Secom-Backend-Architecture-Quick-Wins.md`
+`docs/roadmaps/backend/quick-wins.md`
 
 Must include:
 

@@ -9,13 +9,13 @@ Here is the enhanced version of your prompt, now including the requirement to ge
 
 Carefully review the following backend roadmap documents:
 
-* `docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
-* `docs/backendroadmaps/01-Secom-Backend-Architecture-Quick-Wins.md`
+* `docs/roadmaps/backend/architecture-improvement.md`
+* `docs/roadmaps/backend/quick-wins.md`
 
 Your objectives are to:
 
 1. Update
-   `docs/backend/01-Secom-Backend-Architecture-Overview.md`
+   `docs/architecture/backend/overview.md`
    so it accurately reflects all **implemented** fixes and architectural improvements.
 
 2. Create a new roadmap document that clearly defines the **remaining unimplemented issues and improvements**, including a structured plan for addressing them.
@@ -56,7 +56,7 @@ Your objectives are to:
 ## Phase 2 – Create Remaining Issues Roadmap
 
 Create a new roadmap document (e.g.,
-`docs/backendroadmaps/01-Secom-Backend-Architecture-Remaining-Roadmap.md`).
+`docs/roadmaps/backend/architecture-remaining.md`).
 
 This document must:
 

@@ -35,7 +35,7 @@ Assume the documentation set is **authoritative and complete**, and your output 
 ### Product Overview
 
 * **Name:** Secom – Office of Public Relations Management System
-* **Domain:** Single-tenant government communications management (Assessoria de Comunicação)
+* **Domain:** Single-tenant government communications management (Secretaria de Comunicação)
 * **Locale:** Brazilian Portuguese (pt-BR)
 * **Compliance:** LGPD (partially implemented)
 * **Access Modes:** Staff Portal and Citizen Portal
@@ -168,9 +168,9 @@ Include a **test tracking table**:
 | ---------------------- | -------- | ------ | ------- | ----- |
 | Authentication         | High     | QA     | Pending |       |
 | Multi-Tenant Isolation | High     | QA     | Pending |       |
-| CitizenProfiles               | High     | QA     | Pending |       |
-| Agendamentos           | High     | QA     | Pending |       |
-| Payments               | High     | QA     | Pending |       |
+| Press Releases         | High     | QA     | Pending |       |
+| Appointments           | High     | QA     | Pending |       |
+| Social Media           | High     | QA     | Pending |       |
 | Notifications          | Medium   | QA     | Pending |       |
 
 ---
@@ -269,8 +269,8 @@ Include explicit Chrome-focused validations:
 | --------- | -------------------------- | --------------- | ----- |
 | Cookies   | Session persistence        | JWT retained    |       |
 | Storage   | Local/session storage      | Correct values  |       |
-| Popups    | Modals & payment gateway            | Not blocked     |       |
-| Redirects | Auth & payment flows       | Work correctly  |       |
+| Popups    | Modals & dialogs               | Not blocked     |       |
+| Redirects | Auth flows                  | Work correctly  |       |
 | DevTools  | No critical console errors |                 |       |
 
 ---

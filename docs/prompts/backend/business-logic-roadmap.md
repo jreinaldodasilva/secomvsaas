@@ -1,9 +1,7 @@
-# PROMPT (Business-Logic-Scoped Version)
-
-# Secom – Business Logic Improvement Roadmap
+# Secom Business Logic Improvement Roadmap
 
 **Primary Source Document:**
-`docs/backend/09-Secom-Business-Logic-Index.md`
+`docs/architecture/backend/business-logic.md` (or parts 1-N)
 
 **Scope Restriction:** Business Logic document only
 
@@ -11,12 +9,11 @@
 
 ## Context
 
-You are generating a **strategic business-logic improvement roadmap strictly from the Business Logic Index document**.
+You are generating a **strategic business-logic improvement roadmap strictly from the Business Logic document**.
 
 You must:
 
-* Use only findings, risks, inconsistencies, and recommendations explicitly described in
-  `docs/backend/09-Secom-Business-Logic-Index.md`
+* Use only findings, risks, inconsistencies, and recommendations explicitly described in the Business Logic document
 * Not reference other backend documents unless explicitly referenced inside this document
 * Not assume architectural, API, or database issues unless directly tied to business rules
 * Not invent domain rules not implied in the document
@@ -26,7 +23,7 @@ This is a **domain logic and rule-consistency roadmap**, not a system architectu
 
 ---
 
-# Objective
+## Objective
 
 Transform the business logic findings into:
 
@@ -39,7 +36,7 @@ Transform the business logic findings into:
 
 ---
 
-# 1. Business Logic Issue Extraction
+## Business Logic Issue Extraction
 
 Extract every issue related to:
 
@@ -70,14 +67,22 @@ Extract every issue related to:
 
 ### Workflow & Process Logic
 
-* Agendamento lifecycle
-* Payment lifecycle
-* Action workflow
-* Status transitions
-* Approval flows
+**Press Release Lifecycle**:
+* Status transitions: draft → pending-approval → approved → published
+* Approval process enforcement
+* Publication scheduling
+* Rollback/compensation logic
+
+**Appointment Lifecycle**:
+* Booking conflict prevention
+* Status transitions: scheduled → confirmed → completed / cancelled
 * Cancellation rules
 * Edge-case handling
-* Rollback/compensation logic
+
+**Social Media Lifecycle**:
+* Content scheduling across platforms
+* Status transitions: draft → scheduled → published
+* Multi-platform publishing rules
 
 ---
 
@@ -87,17 +92,6 @@ Extract every issue related to:
 * Cross-boundary rule consistency
 * Ownership validation
 * Business isolation guarantees
-
----
-
-### Financial Logic
-
-* Pricing rules
-* Discounts
-* Commission calculation
-* Installments handling
-* Refund rules
-* Ledger consistency
 
 ---
 
@@ -120,9 +114,9 @@ Extract every issue related to:
 
 ---
 
-## 1.1 Prioritized Business Logic Issues
+## Prioritized Business Logic Issues
 
-### 🟥 P0 – Critical Rule Integrity / Financial / Legal Risk
+### 🟥 P0 – Critical Rule Integrity / Legal Risk
 
 | # | Issue | Business Impact | Domain Area | Effort | Dependencies | Source Section |
 | - | ----- | --------------- | ----------- | ------ | ------------ | -------------- |
@@ -149,20 +143,14 @@ Extract every issue related to:
 
 ### Severity Criteria
 
-* 🟥 Financial loss, data corruption, legal exposure, invariant violation
+* 🟥 Data corruption, legal exposure, invariant violation, tenant isolation breach
 * 🟧 Workflow inconsistency, operational instability
 * 🟨 Structural clarity improvements
 * 🟩 Refactoring for maintainability
 
 ---
 
-## Deliverable:
-
-Business-logic-prioritized issue inventory with traceability.
-
----
-
-# 2. Business Logic Quick Wins
+## Business Logic Quick Wins
 
 Identify low-effort domain improvements mentioned or implied in the Business Logic document.
 
@@ -173,9 +161,8 @@ Examples may include:
 * Clarifying status transitions
 * Defining explicit invariants
 * Replacing magic numbers with domain constants
-* Introducing value objects
-* Normalizing financial calculations
-* Standardizing cancellation rules
+* Normalizing press release approval rules
+* Standardizing appointment cancellation rules
 * Adding precondition checks
 
 ⚠️ Only include improvements supported by the Business Logic document.
@@ -187,7 +174,7 @@ Examples may include:
 **Quick Win #1: [Title]**
 
 * **Business Rule Problem**
-* **Operational/Financial Risk**
+* **Operational Risk**
 * **Effort**
 * **Implementation Steps**
 * **Risk Reduction Impact**
@@ -196,24 +183,15 @@ Target: 5–12 quick wins maximum.
 
 ---
 
-## Deliverable:
-
-Business-logic-scoped quick wins with implementation guidance.
-
----
-
-# 3. Business Logic Technical Debt Assessment
+## Business Logic Technical Debt Assessment
 
 Break down only domain-logic-related debt.
-
----
 
 ### Categories
 
 * Domain modeling debt
 * Invariant enforcement debt
 * Workflow consistency debt
-* Financial rule debt
 * Validation logic duplication debt
 * Rule centralization debt
 * Cross-domain coupling debt
@@ -237,7 +215,7 @@ Provide:
 
 ---
 
-# 4. Phased Business Logic Stabilization Roadmap
+## Phased Business Logic Stabilization Roadmap
 
 Design a roadmap focused purely on domain and rule stabilization.
 
@@ -247,11 +225,11 @@ Design a roadmap focused purely on domain and rule stabilization.
 
 Focus:
 
-* Financial inconsistencies
 * Invariant violations
 * Illegal state transitions
 * Data corruption risks
 * Critical workflow gaps
+* Tenant isolation enforcement
 
 Must include all P0 issues.
 
@@ -264,7 +242,7 @@ Focus:
 * Centralizing validation logic
 * Removing duplicated rules
 * Clarifying lifecycle definitions
-* Defining explicit state machines
+* Defining explicit state machines for press releases, appointments, social media
 * Enforcing business invariants
 
 ---
@@ -275,7 +253,6 @@ Focus:
 
 * Extracting domain services
 * Reducing service-layer complexity
-* Introducing value objects
 * Improving aggregate boundaries
 * Reducing cross-domain entanglement
 
@@ -287,7 +264,7 @@ Focus:
 
 * Simplifying complex conditionals
 * Improving idempotency logic
-* Standardizing financial calculations
+* Standardizing workflow rules
 * Enhancing rule documentation
 * Establishing domain governance guidelines
 
@@ -304,26 +281,20 @@ Each phase must include:
 
 ---
 
-# 5. Business Logic KPIs & Success Metrics
+## Business Logic KPIs & Success Metrics
 
-Define business-rule-specific metrics only.
-
-Examples:
-
-| Metric                                | Current State | Target         | Measurement        |
-| ------------------------------------- | ------------- | -------------- | ------------------ |
-| Rule duplication instances            | ?             | Reduced by 60% | Code audit         |
-| Illegal state transitions             | ?             | 0              | Domain tests       |
-| Financial calculation inconsistencies | ?             | 0              | Audit              |
-| Workflow rollback failures            | ?             | 0              | Integration test   |
-| Domain service complexity (avg)       | ?             | Reduced by 30% | Static analysis    |
-| Cross-module coupling                 | ?             | Reduced        | Dependency mapping |
-
-Do not include infrastructure, database, or API metrics unless directly tied to domain logic integrity.
+| Metric | Current State | Target | Measurement |
+| ------ | ------------- | ------ | ----------- |
+| Rule duplication instances | ? | Reduced by 60% | Code audit |
+| Illegal state transitions | ? | 0 | Domain tests |
+| Workflow rollback failures | ? | 0 | Integration test |
+| Domain service complexity (avg) | ? | Reduced by 30% | Static analysis |
+| Cross-module coupling | ? | Reduced | Dependency mapping |
+| Tenant isolation violations | ? | 0 | Security audit |
 
 ---
 
-# 6. Business Logic Maturity Score
+## Business Logic Maturity Score
 
 Score from 0–100 based solely on domain findings.
 
@@ -332,7 +303,6 @@ Breakdown:
 * Domain modeling clarity
 * Invariant enforcement
 * Workflow stability
-* Financial logic reliability
 * Rule centralization
 * Coupling control
 * Lifecycle clarity
@@ -342,13 +312,11 @@ Provide:
 
 * Current maturity level (Ad-hoc, Structured, Domain-Stable, Enterprise-Grade Domain)
 * Key blockers to next level
-* Financial/operational risk exposure level
+* Operational risk exposure level
 
 ---
 
-# 7. Executive Summary (CTO / Product / Operations-Level)
-
-Provide:
+## Executive Summary (CTO / Product / Operations-Level)
 
 ### Overall Business Logic Health Score
 
@@ -371,7 +339,7 @@ X / 100
 * Total developer-days:
 * Timeline:
 * Risk if delayed:
-* Financial/operational impact:
+* Operational impact:
 
 ### Recommendation
 
@@ -384,11 +352,11 @@ Keep strategic, concise, and decision-oriented.
 
 ---
 
-# Output Files
+## Output Files
 
-## File 1:
+### File 1:
 
-`docs/backendroadmaps/05-Secom-Business-Logic-Improvement-Roadmap.md`
+`docs/roadmaps/backend/business-logic-improvement.md`
 
 Must include:
 
@@ -401,9 +369,9 @@ Must include:
 
 ---
 
-## File 2:
+### File 2:
 
-`docs/backendroadmaps/05-Secom-Business-Logic-Quick-Wins.md`
+`docs/roadmaps/backend/business-logic-quick-wins.md`
 
 Must include:
 
@@ -414,13 +382,12 @@ Must include:
 
 ---
 
-# Writing Guidelines
+## Writing Guidelines
 
 * Domain-first perspective
 * No cross-document inference unless explicitly referenced
 * Clear traceability to Business Logic sections
 * Executive-level clarity
-* Focus on invariants, workflows, and financial integrity
+* Focus on invariants, workflows, and data integrity
 * Prioritize operational stability and rule consistency
 * Avoid infrastructure or API-layer analysis unless directly tied to domain logic
-

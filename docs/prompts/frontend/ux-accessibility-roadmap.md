@@ -1,7 +1,7 @@
 Below is the **improved, document-scoped prompt**, tailored specifically for:
 
-* `docs/frontend/04-Secom-UX-Accessibility-Overview-Part1.md`
-* `docs/frontend/04-Secom-UX-Accessibility-Overview-Part2.md`
+* `docs/architecture/frontend/ux-accessibility-part-1.md`
+* `docs/architecture/frontend/ux-accessibility-part-2.md`
 
 This version ensures the roadmap is created **exclusively from these UX & Accessibility documents**, not the entire frontend folder.
 
@@ -13,8 +13,8 @@ This version ensures the roadmap is created **exclusively from these UX & Access
 
 Using **only** the content from:
 
-* `docs/frontend/04-Secom-UX-Accessibility-Overview-Part1.md`
-* `docs/frontend/04-Secom-UX-Accessibility-Overview-Part2.md`
+* `docs/architecture/frontend/ux-accessibility-part-1.md`
+* `docs/architecture/frontend/ux-accessibility-part-2.md`
 
 Create a **prioritized, actionable UX & Accessibility improvement roadmap**.
 
@@ -254,7 +254,7 @@ This summary should be written for:
 
 ## File 1:
 
-`04-Secom-UX-Accessibility-Improvement-Roadmap.md`
+`ux-accessibility-improvement.md`
 
 Must contain:
 
@@ -269,7 +269,7 @@ Must contain:
 
 ## File 2:
 
-`04-Secom-UX-Accessibility-Quick-Wins.md`
+`ux-accessibility-quick-wins.md`
 
 Must contain:
 

@@ -150,7 +150,7 @@ You must verify not only that the API works — but that the **visual representa
 
 ## 1. Data Accuracy Verification
 
-For each major domain entity (User, Agendamento, Payment, CitizenProfile, etc.):
+For each major domain entity (PressRelease, MediaContact, Appointment, CitizenProfile, SocialMediaPost, etc.):
 
 * Compare backend response JSON
 * Compare shared DTO
@@ -282,12 +282,12 @@ Organize by:
 
 Generate:
 
-1. `docs/fullstack/Secom-comprehensive-API-Audit-Report.md`
-2. `docs/fullstack/Secom-comprehensive-Integration-Drift-Report.md`
-3. `docs/fullstack/Secom-comprehensive-UI-Data-Rendering-Report.md`
-4. `docs/fullstack/Secom-comprehensive-Security-Risk-Assessment.md`
-5. `docs/fullstack/Secom-comprehensive-Performance-Assessment.md`
-6. `docs/fullstack/Secom-comprehensive-API-Improvement-Roadmap.md`
+1. `docs/architecture/fullstack/api-audit-report.md`
+2. `docs/architecture/fullstack/integration-drift-report.md`
+3. `docs/architecture/fullstack/ui-data-rendering-report.md`
+4. `docs/architecture/fullstack/security-risk-assessment.md`
+5. `docs/architecture/fullstack/performance-assessment.md`
+6. `docs/architecture/fullstack/api-improvement-roadmap.md`
 
 Each finding must include:
 

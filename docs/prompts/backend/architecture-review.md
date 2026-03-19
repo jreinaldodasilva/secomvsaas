@@ -7,8 +7,8 @@
 Perform a **comprehensive architectural and technical analysis of the Secom backend codebase**. The goal is to document the current backend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
 
 **Project Context**: Secom is a communication management system for the Secretaria de Comunicação (Communication Secretary), built on the vSaaS boilerplate. It manages:
-- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
-- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Modules**: Press releases, media contacts, clippings, events, appointments, citizen portal, social media
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
 - **Architecture**: Modular monolith with domain-driven organization
 - **Key Features**: Multi-tenancy, RBAC, background job processing, real-time updates
 
@@ -60,7 +60,8 @@ Include (but are not limited to):
 * **Authentication & Authorization**
   * JWT with httpOnly cookies
   * Role-Based Access Control (RBAC)
-  * Secom roles: admin, assessor, social_media, atendente, citizen
+  * Secom roles: super_admin, admin, assessor, social_media, atendente, citizen
+  * `super_admin` bypasses all permission checks
   * Permission enforcement patterns
 
 * **Caching**
@@ -70,7 +71,7 @@ Include (but are not limited to):
 * **Async & Background Processing**
   * BullMQ for job queues
   * Background workers
-  * Job types (email, notifications, data processing)
+  * Known queues: `emailQueue`, `webhookQueue`, `domainEventsQueue`, `auditCleanupQueue`
 
 * **File & Asset Storage**
   * Upload handling
@@ -118,31 +119,28 @@ Analyze the repository structure, including but not limited to:
 ```
 backend/
 ├── src/
-│   ├── modules/                    # Secom domain modules
-│   │   ├── press-releases/
-│   │   ├── media-contacts/
-│   │   ├── clipping/
-│   │   ├── events/
-│   │   ├── appointments/
-│   │   ├── citizen-portal/
-│   │   └── social-media/
+│   ├── modules/
+│   │   └── domain/                 # Secom domain modules
+│   │       ├── press-releases/
+│   │       ├── media-contacts/
+│   │       ├── clippings/
+│   │       ├── events/
+│   │       ├── appointments/
+│   │       ├── citizen-portal/
+│   │       └── social-media/
+│   ├── platform/                   # Shared platform code (tenants, events, database)
 │   ├── controllers/
 │   ├── services/
 │   ├── models/
-│   ├── repositories/
 │   ├── middleware/
 │   ├── routes/
 │   ├── validation/
 │   ├── config/
 │   ├── utils/
 │   ├── types/
-│   ├── platform/                   # Shared platform code
+│   ├── seeds/
 │   └── queues/                     # BullMQ job definitions
-├── tests/
-├── migrations/
-├── seeds/
-├── scripts/
-└── docs/
+└── tests/
 ```
 
 For each major directory, document:
@@ -268,7 +266,8 @@ Analyze:
 
 * Architecture style:
   * Modular monolith with domain-driven organization
-  * Secom modules: press-releases, media-contacts, clipping, events, appointments, citizen-portal, social-media
+  * Secom modules: press-releases, media-contacts, clippings, events, appointments, citizen-portal, social-media
+  * Module path: `src/modules/domain/<module>`
   * Layered architecture (controllers, services, models, repositories)
 
 * Design patterns in use:
@@ -342,11 +341,11 @@ Note: Consider splitting the document into multiple files due to its size. For e
 When analyzing the backend, pay special attention to:
 
 * **Multi-tenancy**: How tenant isolation is implemented across modules
-* **RBAC Implementation**: How roles (admin, assessor, social_media, atendente, citizen) are enforced
+* **RBAC Implementation**: How roles (super_admin, admin, assessor, social_media, atendente, citizen) are enforced; note `super_admin` bypasses all permission checks
 * **Module Organization**: How the 7 Secom modules are structured and isolated
 * **API Versioning**: How `/api/v1/` routes are organized
 * **Domain Models**: Press releases, media contacts, clippings, events, appointments, citizen profiles, social media posts
-* **Background Jobs**: BullMQ integration for async processing
+* **Background Jobs**: BullMQ queues — `emailQueue`, `webhookQueue`, `domainEventsQueue`, `auditCleanupQueue`
 * **Validation**: How input validation is standardized across modules
 * **Error Handling**: How errors are standardized and reported
 

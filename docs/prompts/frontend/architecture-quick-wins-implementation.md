@@ -2,7 +2,7 @@
 
 Carefully review and implement the fixes described in:
 
-`docs/frontendroadmaps/01-Secom-Frontend-Architecture-Quick-Wins.md`
+`docs/roadmaps/frontend/quick-wins.md`
 
 ---
 

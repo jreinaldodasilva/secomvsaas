@@ -22,7 +22,7 @@ You must analyze:
 
 In addition to the source code and build artifacts, you must also read and use the architectural context provided in:
 
-* `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
+* `docs/architecture/frontend/overview.md`
 
 Use this document to validate whether the implementation aligns with the intended architecture and frontend standards.
 
@@ -38,7 +38,7 @@ You have access to:
 * Chrome DevTools (Performance, Lighthouse, Network, Coverage)
 * React DevTools Profiler
 * Testing framework files (if present)
-* `docs/frontend/01-Secom-Frontend-Architecture-Overview.md`
+* `docs/architecture/frontend/overview.md`
 
 ---
 
@@ -199,7 +199,7 @@ Evaluate:
 * File size distribution
 * Duplication patterns
 * Naming conventions
-* Architecture alignment with `01-Secom-Frontend-Architecture-Overview.md`
+* Architecture alignment with `overview.md`
 
 ---
 
@@ -334,7 +334,7 @@ A **Testing Assessment Report** with risk analysis.
 # 📄 Final Output Document
 
 **File name:**
-`07-Secom-Performance-Quality-Security.md`
+`performance-quality-security.md`
 
 ---
 
@@ -360,6 +360,6 @@ A **Testing Assessment Report** with risk analysis.
 * Include metrics wherever possible.
 * Provide concrete file references.
 * Classify issues by severity.
-* Align findings with the intended architecture described in `01-Secom-Frontend-Architecture-Overview.md`.
+* Align findings with the intended architecture described in `overview.md`.
 * Conclude with a prioritized action plan (Quick Wins / Medium-Term / Strategic Improvements).
 

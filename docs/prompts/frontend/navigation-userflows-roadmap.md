@@ -1,7 +1,7 @@
 Excellent — below is the **navigation & user-flow–scoped equivalent** of your previous prompts, tailored specifically for:
 
-* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md`
-* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md`
+* `docs/architecture/frontend/navigation-userflows-part-1.md`
+* `docs/architecture/frontend/navigation-userflows-part-2.md`
 
 This version:
 
@@ -19,8 +19,8 @@ This version:
 
 **Source Documents:**
 
-* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part1.md`
-* `docs/frontend/03-Secom-Navigation-UserFlows-Overview-Part2.md`
+* `docs/architecture/frontend/navigation-userflows-part-1.md`
+* `docs/architecture/frontend/navigation-userflows-part-2.md`
 
 **Scope Restriction:** Navigation and User Flow documentation only
 
@@ -373,7 +373,7 @@ Keep concise, strategic, and traceable to documented findings (1–2 pages equiv
 
 ## File 1:
 
-`docs/frontendroadmaps/02-Secom-Navigation-UserFlows-Improvement-Roadmap.md`
+`docs/roadmaps/frontend/navigation-userflows-improvement.md`
 
 Must include:
 
@@ -388,7 +388,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/02-Secom-Navigation-UserFlows-Quick-Wins.md`
+`docs/roadmaps/frontend/navigation-userflows-quick-wins.md`
 
 Must include:
 

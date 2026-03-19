@@ -3,7 +3,7 @@
 # Secom – Testing Strategy & Quality Assurance Improvement Roadmap
 
 **Source Document:**
-`docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
+`docs/architecture/backend/testing-strategy.md`
 
 **Scope Restriction:** Testing strategy document only
 
@@ -16,7 +16,7 @@ You are generating a **strategic improvement roadmap strictly from the Testing S
 You must:
 
 * Use only findings, weaknesses, risks, coverage gaps, and recommendations explicitly described in
-  `docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
+  `docs/architecture/backend/testing-strategy.md`
 * Not reference Architecture, API, MongoDB, Auth, Performance, Code Quality, or Integrations documents unless explicitly cited inside the testing document
 * Not invent test gaps that are not documented or clearly implied
 * Not assume coverage issues without documentation support
@@ -413,7 +413,7 @@ Keep concise, executive-level, and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/09-Secom-Testing-Strategy-Improvement-Roadmap.md`
+`docs/roadmaps/backend/testing-strategy-improvement.md`
 
 Must include:
 
@@ -428,7 +428,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/09-Secom-Testing-Strategy-Quick-Wins.md`
+`docs/roadmaps/backend/testing-strategy-quick-wins.md`
 
 Must include:
 

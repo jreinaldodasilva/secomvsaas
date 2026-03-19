@@ -4,7 +4,7 @@
 # Secom – Code Quality & Enterprise Engineering Improvement Roadmap
 
 **Source Document:**
-`docs/backend/12-Secom-Code-Quality-Enterprise-Audit.md`
+`docs/architecture/backend/code-quality.md`
 
 **Scope Restriction:** Code quality & enterprise engineering audit document only
 
@@ -17,7 +17,7 @@ You are generating a **strategic improvement roadmap strictly from the Code Qual
 You must:
 
 * Use only findings, risks, technical debt, inconsistencies, and recommendations explicitly described in
-  `docs/backend/12-Secom-Code-Quality-Enterprise-Audit.md`
+  `docs/architecture/backend/code-quality.md`
 * Not reference Architecture, MongoDB, API, Auth, Integrations, Performance, or Business Logic documents
 * Not invent technical debt outside what is identified or clearly implied in the audit
 * Not assume production issues unless described in the audit
@@ -410,7 +410,7 @@ Keep concise, executive-level, and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/08-Secom-Code-Quality-Improvement-Roadmap.md`
+`docs/roadmaps/backend/code-quality-improvement.md`
 
 Must include:
 
@@ -425,7 +425,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/08-Secom-Code-Quality-Quick-Wins.md`
+`docs/roadmaps/backend/code-quality-quick-wins.md`
 
 Must include:
 

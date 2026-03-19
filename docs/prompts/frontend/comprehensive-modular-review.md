@@ -84,7 +84,7 @@ Document:
 **Deliverable**: Build configuration analysis
 
 ### Output Document
-**File**: `01-Secom-Frontend-Architecture-Overview.md`
+**File**: `overview.md`
 
 **Sections**:
 1. Executive Summary
@@ -192,7 +192,7 @@ Identify:
 **Deliverable**: Reusability recommendations
 
 ### Output Document
-**File**: `02-Secom-Component-Library.md`
+**File**: `component-library.md`
 
 **Sections**:
 1. Component Inventory
@@ -298,7 +298,7 @@ Identify:
 **Deliverable**: State synchronization report
 
 ### Output Document
-**File**: `03-Secom-State-Management.md`
+**File**: `state-management.md`
 
 **Sections**:
 1. State Management Overview
@@ -325,7 +325,7 @@ Create complete route tree:
 ├── /login
 ├── /forgot-password
 ├── /dashboard
-│   ├── /super-admin
+│   ├── /admin
 │   │   ├── /users
 │   │   ├── /tenants
 │   │   └── /settings
@@ -363,7 +363,7 @@ Document:
 **Deliverable**: Route protection documentation
 
 #### 3. Permission Matrix
-| Route/Feature | Super Admin | Admin | Assessor | Staff | CitizenProfile |
+| Route/Feature | Admin | Admin | assessor | atendente | citizen |
 |---------------|-------------|-------|----------|-------|---------|
 | Dashboard | ✓ | ✓ | ✓ | ✓ | ✓ |
 | User Management | ✓ | ✓ | ✗ | ✗ | ✗ |
@@ -412,7 +412,7 @@ sequenceDiagram
 **Deliverable**: 5-7 critical user journeys documented
 
 ### Output Document
-**File**: `04-Secom-Navigation-UserFlows.md`
+**File**: `navigation-userflows.md`
 
 **Sections**:
 1. Routing Architecture
@@ -533,7 +533,7 @@ For each form, propose:
 **Deliverable**: Form improvement recommendations with mockups
 
 ### Output Document
-**File**: `05-Secom-Forms-Validation.md`
+**File**: `forms-validation.md`
 
 **Sections**:
 1. Form Inventory
@@ -647,7 +647,7 @@ Test:
 **Deliverable**: Mobile UX evaluation
 
 ### Output Document
-**File**: `06-Secom-UX-Accessibility.md`
+**File**: `ux-accessibility.md`
 
 **Sections**:
 1. Design Consistency Audit
@@ -791,7 +791,7 @@ Document:
 **Deliverable**: Testing assessment
 
 ### Output Document
-**File**: `07-Secom-Performance-Quality-Security.md`
+**File**: `performance-quality-security.md`
 
 **Sections**:
 1. Performance Analysis
@@ -810,7 +810,7 @@ Document:
 ## **PROMPT 8: Improvement Roadmap & Action Plan**
 
 ### Objective
-Using the entire frontend documentation ('docs/frontend/') prioritize improvements and create actionable roadmap with effort estimates.
+Using the entire frontend documentation ('docs/architecture/frontend/') prioritize improvements and create actionable roadmap with effort estimates.
 
 ### Tasks
 
@@ -903,14 +903,14 @@ Create 2-3 page summary:
 
 ### Output Documents
 
-**File 1**: `08-Secom-Improvement-Roadmap.md`
+**File 1**: `improvement-roadmap.md`
 - Complete prioritized issue list
 - Sprint-by-sprint implementation plan
 - Effort estimates
 - Dependencies
 - Success metrics
 
-**File 2**: `09-Secom-Quick-Wins.md`
+**File 2**: `quick-wins.md`
 - All quick win opportunities
 - Implementation guides
 - Expected impact
@@ -920,13 +920,13 @@ Create 2-3 page summary:
 - Debt repayment plan
 - Long-term architecture vision
 
-**File 4**: `00-Secom-Executive-Summary.md`
+**File 4**: `executive-summary.md`
 - Executive summary (2-3 pages)
 - Key findings
 - Recommendations
 - Budget and timeline
 
-**File 5**: `00-Secom-Master-Index.md`
+**File 5**: `master-index.md`
 - Links to all documents
 - Navigation guide
 - Version history
@@ -959,17 +959,17 @@ Use individual prompts for specific areas of concern:
 ## Document Naming Convention
 
 ```
-00-Secom-Master-Index.md
-00-Secom-Executive-Summary.md
-01-Secom-Architecture-Overview.md
-02-Secom-Component-Library.md
-03-Secom-State-Management.md
-04-Secom-Navigation-UserFlows.md
-05-Secom-Forms-Validation.md
-06-Secom-UX-Accessibility.md
-07-Secom-Performance-Quality-Security.md
-08-Secom-Improvement-Roadmap.md
-09-Secom-Quick-Wins.md
+master-index.md
+executive-summary.md
+overview.md
+component-library.md
+state-management.md
+navigation-userflows.md
+forms-validation.md
+ux-accessibility.md
+performance-quality-security.md
+improvement-roadmap.md
+quick-wins.md
 10-Secom-Technical-Debt.md
 ```
 

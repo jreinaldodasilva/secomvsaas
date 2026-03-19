@@ -4,15 +4,15 @@ You are a **Senior Backend Architect performing a production-grade integration a
 
 Use the following documents as primary sources of truth:
 
-* `01-Secom-Backend-Architecture-Overview.md`
-* `02-Secom-MongoDB-Architecture.md`
-* `03-Secom-API-Design.md`
-* `04-Secom-Auth-Security-Overview.md`
-* `09-Secom-Business-Logic-Index.md` 
+* `overview.md`
+* `mongodb-architecture.md`
+* `api-design.md`
+* `auth-security.md`
+* `business-logic.md` 
 
 Assume:
 
-* This is a **government communications system (Assessoria de Comunicação)**
+* This is a **government communications system (Secretaria de Comunicação)**
 * The system is **production or near-production**
 * It uses **Node.js + TypeScript + MongoDB**
 * It integrates with Brazilian services (CEP, PIX, etc.)
@@ -50,7 +50,7 @@ This is a **resilience, security, and operational risk audit**.
 # 📦 Required Output File
 
 ```
-docs/backend/06-Secom-Integrations.md
+docs/architecture/backend/integrations.md
 ```
 
 ## Important
@@ -69,7 +69,7 @@ Produce a structured inventory of all third-party integrations.
 
 ### Required Table:
 
-| Service | Purpose | Assessor | Integration Type | Criticality | Data Sensitivity | Fallback | Observability |
+| Service | Purpose | assessor | Integration Type | Criticality | Data Sensitivity | Fallback | Observability |
 | ------- | ------- | -------- | ---------------- | ----------- | ---------------- | -------- | ------------- |
 
 Include:
@@ -117,8 +117,8 @@ Analyze integration implementation patterns:
 
 * Consistency of patterns
 * Coupling between services and vendors
-* Abstraction layers (are assessors wrapped?)
-* Replaceability (can assessor be swapped easily?)
+* Abstraction layers (are providers wrapped?)
+* Replaceability (can provider be swapped easily?)
 * Centralized integration gateway vs scattered logic
 * Retry strategies
 * Timeout configuration discipline
@@ -147,7 +147,7 @@ Deliver:
 
 Analyze:
 
-* Assessor abstraction
+* Provider abstraction
 * Template version control
 * Language consistency (PT-BR primary?)
 * Retry mechanism
@@ -185,7 +185,7 @@ Deliver:
 
 Evaluate:
 
-* SMS assessor abstraction
+* SMS provider abstraction
 * Cost control mechanisms
 * Rate limiting
 * Delivery tracking
@@ -240,7 +240,7 @@ Evaluate:
 ### Multi-Tenant Implications
 
 * Tenant-level payment separation?
-* Assessor account mapping?
+* Provider account mapping?
 * Revenue leakage risk?
 
 ### Critical Risk Flags:

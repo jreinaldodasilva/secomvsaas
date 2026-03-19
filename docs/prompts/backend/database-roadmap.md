@@ -2,7 +2,7 @@
 
 # Secom – MongoDB Architecture Improvement Roadmap
 
-**Source Document:** `docs/backend/02-Secom-MongoDB-Architecture.md`
+**Source Document:** `docs/architecture/backend/mongodb-architecture.md`
 **Scope Restriction:** MongoDB Architecture document only
 
 ---
@@ -14,7 +14,7 @@ You are generating a **strategic database improvement roadmap strictly from the 
 You must:
 
 * Use only findings, risks, gaps, and recommendations explicitly described in
-  `docs/backend/02-Secom-MongoDB-Architecture.md`
+  `docs/architecture/backend/mongodb-architecture.md`
 * Not reference any other backend documents
 * Not assume issues from API, testing, security, or backend architecture audits
 * Not invent database technical debt outside what is implied in the MongoDB architecture review
@@ -333,7 +333,7 @@ Keep concise and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/backendroadmaps/02-Secom-MongoDB-Architecture-Improvement-Roadmap.md`
+`docs/roadmaps/backend/mongodb-improvement.md`
 
 Must include:
 
@@ -348,7 +348,7 @@ Must include:
 
 ## File 2:
 
-`docs/backendroadmaps/02-Secom-MongoDB-Architecture-Quick-Wins.md`
+`docs/roadmaps/backend/mongodb-quick-wins.md`
 
 Must include:
 

@@ -296,11 +296,11 @@ Categories:
 
 Generate:
 
-1. `docs/fullstack/Secom-Frontend-Backend-Integration-Audit.md`
-2. `docs/fullstack/Secom-DTO-Drift-Report.md`
-3. `docs/fullstack/Secom-GET-POST-Validation-Report.md`
-4. `docs/fullstack/Secom-UI-Data-Consistency-Report.md`
-5. `docs/fullstack/Secom-Integration-Remediation-Roadmap.md`
+1. `docs/architecture/fullstack/Secom-Frontend-Backend-Integration-Audit.md`
+2. `docs/architecture/fullstack/Secom-DTO-Drift-Report.md`
+3. `docs/architecture/fullstack/Secom-GET-POST-Validation-Report.md`
+4. `docs/architecture/fullstack/Secom-UI-Data-Consistency-Report.md`
+5. `docs/architecture/fullstack/Secom-Integration-Remediation-Roadmap.md`
 
 Each issue must include:
 

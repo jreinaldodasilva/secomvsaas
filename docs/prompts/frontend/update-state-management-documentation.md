@@ -6,16 +6,16 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following frontend roadmap documents:
 
-* `docs/frontendroadmaps/03-Secom-State-Management-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/03-Secom-State-Management-Quick-Wins.md`
+* `docs/roadmaps/frontend/state-management-improvement.md`
+* `docs/roadmaps/frontend/state-management-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented state management fixes, refactors, and architectural improvements**:
 
-   * `docs/frontend/03-Secom-State-Management-Part1.md`
-   * `docs/frontend/03-Secom-State-Management-Part2.md`
-   * `docs/frontend/03-Secom-State-Management-Part3.md`
+   * `docs/architecture/frontend/state-management-part-1.md`
+   * `docs/architecture/frontend/state-management-part-2.md`
+   * `docs/architecture/frontend/state-management-part-3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented state management issues**, including a structured and prioritized execution plan.
 
@@ -63,7 +63,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `03-Secom-State-Management-Part1.md`
+## 1️⃣ `state-management-part-1.md`
 
 * Update foundational state architecture principles.
 * Reflect implemented structural changes.
@@ -72,7 +72,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `03-Secom-State-Management-Part2.md`
+## 2️⃣ `state-management-part-2.md`
 
 * Update documentation of advanced patterns (server state, caching, derived state).
 * Reflect changes to async handling and mutation flows.
@@ -81,7 +81,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `03-Secom-State-Management-Part3.md`
+## 3️⃣ `state-management-part-3.md`
 
 * Reflect cross-cutting state logic changes.
 * Update performance optimizations.
@@ -114,9 +114,9 @@ Each document must describe the **current operational state management architect
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/03-Secom-State-Management-Remaining-Roadmap.md`
+`docs/roadmaps/frontend/state-management-remaining.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/03-Secom-State-Management-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/03-Secom-State-Management-Remaining-Roadmap-Part2.md', and so on.
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/roadmaps/frontend/state-management-remaining-part-1.md', 'docs/roadmaps/frontend/state-management-remaining-part-2.md', and so on.
 
 ---
 

@@ -6,16 +6,16 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following UX & Accessibility roadmap documents:
 
-* `docs/frontendroadmaps/06-Secom-UX-Accessibility-Improvement-Roadmap.md`
-* `docs/frontendroadmaps/06-Secom-UX-Accessibility-Quick-Wins.md`
+* `docs/roadmaps/frontend/ux-accessibility-improvement.md`
+* `docs/roadmaps/frontend/ux-accessibility-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation files so they accurately reflect all **implemented UX, accessibility, and interaction improvements**:
 
-   * `docs/frontend/06-Secom-UX-Accessibility-Part1.md`
-   * `docs/frontend/06-Secom-UX-Accessibility-Part2.md`
-   * `docs/frontend/06-Secom-UX-Accessibility-Part3.md`
+   * `docs/architecture/frontend/ux-accessibility-part-1.md`
+   * `docs/architecture/frontend/ux-accessibility-part-2.md`
+   * `docs/architecture/frontend/ux-accessibility-part-3.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented UX and accessibility issues**, including a structured and prioritized execution plan.
 
@@ -98,7 +98,7 @@ Extract changes affecting:
 
 ---
 
-## 1️⃣ `06-Secom-UX-Accessibility-Part1.md`
+## 1️⃣ `ux-accessibility-part-1.md`
 
 * Update core UX architecture principles.
 * Reflect implemented layout and design consistency improvements.
@@ -109,7 +109,7 @@ Extract changes affecting:
 
 ---
 
-## 2️⃣ `06-Secom-UX-Accessibility-Part2.md`
+## 2️⃣ `ux-accessibility-part-2.md`
 
 * Update interaction and feedback patterns.
 * Document implemented loading, empty, and error states.
@@ -119,7 +119,7 @@ Extract changes affecting:
 
 ---
 
-## 3️⃣ `06-Secom-UX-Accessibility-Part3.md`
+## 3️⃣ `ux-accessibility-part-3.md`
 
 * Update complex UX flows (multi-step interactions, modals, dashboards, etc.).
 * Reflect accessibility improvements in data-heavy interfaces.
@@ -152,9 +152,9 @@ Each file must describe the **current operational UX and accessibility architect
 
 Create a new roadmap file, for example:
 
-`docs/frontendroadmaps/06-Secom-UX-Accessibility-Remaining-Roadmap.md`
+`docs/roadmaps/frontend/ux-accessibility-remaining.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/frontendroadmaps/06-Secom-UX-Accessibility-Remaining-Roadmap-Part1.md', 'docs/frontendroadmaps/06-Secom-UX-Accessibility-Remaining-Roadmap-Part2.md', and so on
+Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/roadmaps/frontend/ux-accessibility-remaining-part-1.md', 'docs/roadmaps/frontend/ux-accessibility-remaining-part-2.md', and so on
 
 ---
 

@@ -1,6 +1,6 @@
 Carefully review and implement the improvements described in:
 
-`docs/frontendroadmaps/01-Secom-Frontend-Architecture-Improvement-Roadmap.md`
+`docs/roadmaps/frontend/architecture-improvement.md`
 
 The document defines a **prioritized architecture improvement roadmap**, organized by **issue severity and implementation phases**.
 

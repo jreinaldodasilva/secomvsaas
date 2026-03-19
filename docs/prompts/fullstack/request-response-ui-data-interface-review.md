@@ -65,14 +65,14 @@ This must read like a **formal internal architecture validation report**, not a 
 # 📁 Required Output Location
 
 ```
-docs/fullstack/04-Secom-Request-Response-Interface-Audit.md
+docs/architecture/fullstack/request-response-interface-audit.md
 ```
 
 If necessary, split into:
 
 ```
-docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part1.md
-docs/fullstack/04-Secom-Request-Response-Interface-Audit-Part2.md
+docs/architecture/fullstack/request-response-interface-audit-part-1.md
+docs/architecture/fullstack/request-response-interface-audit-part-2.md
 ...
 ```
 
@@ -267,9 +267,9 @@ Deliver:
 Verify:
 
 * Required profile fields validation
-* CPF uniqueness (if applicable)
+* Phone number uniqueness
 * Tenant scoping enforcement
-* Assigned assessor enforcement
+* Assigned atendente enforcement
 * Sensitive field handling
 * Data normalization
 

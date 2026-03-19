@@ -1,7 +1,7 @@
 Here is the **priority-driven execution prompt** for:
 
 ```
-docs/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md
+docs/architecture/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md
 ```
 
 This mirrors the structure and strictness of the previous prompts and enforces **P1 → P4 priority order**, single-issue execution, and contract-first discipline.
@@ -12,7 +12,7 @@ This mirrors the structure and strictness of the previous prompts and enforces *
 
 Carefully review and implement the fixes described in:
 
-`docs/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md`
+`docs/architecture/fullstack/Secom-Integration-Remediation-Roadmap-Phase2.md`
 
 ---
 

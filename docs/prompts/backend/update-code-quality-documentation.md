@@ -6,14 +6,14 @@ Here is the fully structured, enterprise-grade version of your prompt for the **
 
 Carefully review the following roadmap documents:
 
-* `docs/backendroadmaps/08-Secom-Code-Quality-Improvement-Roadmap.md`
-* `docs/backendroadmaps/08-Secom-Code-Quality-Quick-Wins.md`
+* `docs/roadmaps/backend/code-quality-improvement.md`
+* `docs/roadmaps/backend/code-quality-quick-wins.md`
 
 Your objectives are to:
 
 1. Update the following documentation file so it accurately reflects all **implemented code quality improvements and refactors**:
 
-   * `docs/backend/12-Secom-Code-Quality-Enterprise-Audit.md`
+   * `docs/architecture/backend/code-quality.md`
 
 2. Create a new roadmap document defining the **remaining unimplemented code quality issues**, including a structured and prioritized execution plan.
 
@@ -57,7 +57,7 @@ Extract changes affecting:
 
 ---
 
-# Step 2 – Update `12-Secom-Code-Quality-Enterprise-Audit.md`
+# Step 2 – Update `code-quality.md`
 
 The document must:
 
@@ -101,7 +101,7 @@ The document must:
 
 Create a new roadmap file, for example:
 
-`docs/backendroadmaps/08-Secom-Code-Quality-Remaining-Roadmap.md`
+`docs/roadmaps/backend/code-quality-remaining.md`
 
 ---
 
@@ -187,7 +187,7 @@ Organize into:
 
 After completing both phases, provide:
 
-1. Summary of updates made to `12-Secom-Code-Quality-Enterprise-Audit.md`
+1. Summary of updates made to `code-quality.md`
 2. Sections added, modified, or removed
 3. List of roadmap items reflected as completed
 4. Structured summary of the new Remaining Roadmap

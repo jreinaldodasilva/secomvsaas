@@ -1,8 +1,8 @@
 Excellent — below is the **component-library scoped equivalent** of your architecture prompt, adapted specifically for:
 
-* `docs/frontend/02-Secom-Component-Library-Part1.md`
-* `docs/frontend/02-Secom-Component-Library-Part2.md`
-* `docs/frontend/02-Secom-Component-Library-Part3.md`
+* `docs/architecture/frontend/component-library-part-1.md`
+* `docs/architecture/frontend/component-library-part-2.md`
+* `docs/architecture/frontend/component-library-part-3.md`
 
 This version:
 
@@ -20,9 +20,9 @@ This version:
 
 **Source Documents:**
 
-* `docs/frontend/02-Secom-Component-Library-Part1.md`
-* `docs/frontend/02-Secom-Component-Library-Part2.md`
-* `docs/frontend/02-Secom-Component-Library-Part3.md`
+* `docs/architecture/frontend/component-library-part-1.md`
+* `docs/architecture/frontend/component-library-part-2.md`
+* `docs/architecture/frontend/component-library-part-3.md`
 
 **Scope Restriction:** Component Library documentation only
 
@@ -362,7 +362,7 @@ Keep concise and strategic (1–2 pages equivalent).
 
 ## File 1:
 
-`docs/frontendroadmaps/02-Secom-Component-Library-Improvement-Roadmap.md`
+`docs/roadmaps/frontend/component-library-improvement.md`
 
 Must include:
 
@@ -377,7 +377,7 @@ Must include:
 
 ## File 2:
 
-`docs/frontendroadmaps/02-Secom-Component-Library-Quick-Wins.md`
+`docs/roadmaps/frontend/component-library-quick-wins.md`
 
 Must include:
 

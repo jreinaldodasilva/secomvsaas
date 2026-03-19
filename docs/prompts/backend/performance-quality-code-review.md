@@ -4,12 +4,12 @@ You are a **Senior Backend Architect / SRE performing a production-grade perform
 
 Use the following documents as primary sources of truth:
 
-* `01-Secom-Backend-Architecture-Overview.md`
-* `02-Secom-MongoDB-Architecture.md`
-* `03-Secom-API-Design.md`
-* `04-Secom-Auth-Security-Overview.md`
-* `09-Secom-Business-Logic-Index.md`
-* `10-Secom-Integrations.md` 
+* `overview.md`
+* `mongodb-architecture.md`
+* `api-design.md`
+* `auth-security.md`
+* `business-logic.md`
+* `integrations.md` 
 
 Assume:
 
@@ -51,7 +51,7 @@ This is a **production-readiness and scalability risk audit**.
 # 📦 Required Output File
 
 ```
-docs/backend/11-Secom-Performance-Infrastructure.md
+docs/architecture/backend/performance-infrastructure.md
 ```
 
 **Obs:**

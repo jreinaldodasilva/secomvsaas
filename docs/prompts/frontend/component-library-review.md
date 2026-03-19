@@ -36,7 +36,7 @@ You may analyze:
 * AND the previously generated architecture overview:
 
 ```
-docs/frontend/01-Secom-Frontend-Architecture-Overview.md
+docs/architecture/frontend/overview.md
 ```
 
 Use the architecture overview document to:
@@ -57,7 +57,7 @@ Do not contradict documented architectural findings unless evidence shows incons
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/02-Secom-Component-Library.md
+docs/architecture/frontend/component-library.md
 ```
 
 ---
@@ -148,7 +148,7 @@ Identify and document the **design system implementation**.
 Cross-reference styling architecture described in:
 
 ```
-docs/frontend/01-Secom-Frontend-Architecture-Overview.md
+docs/architecture/frontend/overview.md
 ```
 
 If discrepancies exist, document them.

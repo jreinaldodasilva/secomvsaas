@@ -1,8 +1,8 @@
 Here is a **clear, structured, execution-ready alignment prompt** designed to synchronize:
 
-* `docs/fullstack/document.md`
-* All `docs/backend/` reviews
-* All `docs/frontend/` reviews
+* `docs/architecture/fullstack/document.md`
+* All `docs/architecture/backend/` reviews
+* All `docs/architecture/frontend/` reviews
 
 The goal is **cross-document consistency, removal of contradictions, and creation of a unified architectural truth source**.
 
@@ -14,9 +14,9 @@ The goal is **cross-document consistency, removal of contradictions, and creatio
 
 Perform a **cross-document alignment audit** to ensure that:
 
-* `docs/fullstack/document.md`
-* All files inside `docs/backend/`
-* All files inside `docs/frontend/`
+* `docs/architecture/fullstack/document.md`
+* All files inside `docs/architecture/backend/`
+* All files inside `docs/architecture/frontend/`
 
 are:
 
@@ -38,9 +38,9 @@ You must:
 
 1. Read all documents in:
 
-   * `docs/fullstack/`
-   * `docs/backend/`
-   * `docs/frontend/`
+   * `docs/architecture/fullstack/`
+   * `docs/architecture/backend/`
+   * `docs/architecture/frontend/`
 2. Extract:
 
    * Architecture descriptions
@@ -218,11 +218,11 @@ Deliver:
 
 Generate:
 
-1. `docs/fullstack/Secom-Documentation-Alignment-Report.md`
-2. `docs/fullstack/Secom-Architecture-Consistency-Matrix.md`
-3. `docs/fullstack/Secom-DTO-Documentation-Drift-Report.md`
-4. `docs/fullstack/Secom-Term-Standardization-Guide.md`
-5. `docs/fullstack/Secom-Documentation-Unification-Roadmap.md`
+1. `docs/architecture/fullstack/Secom-Documentation-Alignment-Report.md`
+2. `docs/architecture/fullstack/Secom-Architecture-Consistency-Matrix.md`
+3. `docs/architecture/fullstack/Secom-DTO-Documentation-Drift-Report.md`
+4. `docs/architecture/fullstack/Secom-Term-Standardization-Guide.md`
+5. `docs/architecture/fullstack/Secom-Documentation-Unification-Roadmap.md`
 
 ---
 

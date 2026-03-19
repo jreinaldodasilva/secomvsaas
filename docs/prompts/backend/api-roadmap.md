@@ -1,6 +1,6 @@
 # Secom API Design Improvement Roadmap
 
-**Source Document**: 
+**Source Document**:
 - `docs/architecture/backend/api-design.md` (or parts 1-N)
 
 **Scope**: API Design document only
@@ -10,6 +10,12 @@
 ## Context
 
 You are generating a **strategic API improvement roadmap strictly from the API Design document**.
+
+**Verified API Surface** (from `backend/src/routes/v1/index.ts`):
+
+Platform routes: `/auth`, `/citizen-auth`, `/health`, `/tenants`, `/users`, `/uploads`, `/webhooks/subscriptions`, `/dashboard`
+
+Domain routes: `/press-releases`, `/media-contacts`, `/clippings`, `/events`, `/appointments`, `/citizen-portal`, `/social-media`
 
 You must:
 
@@ -40,9 +46,9 @@ Transform the API design findings into:
 
 Extract every issue related to:
 
-* REST consistency
-* Resource naming conventions (Secom modules: press-releases, media-contacts, clipping, events, appointments, citizen-portal, social-media)
-* Route structure
+* REST consistency across all 7 domain modules
+* Resource naming conventions (`/press-releases`, `/media-contacts`, `/clippings`, `/events`, `/appointments`, `/citizen-portal`, `/social-media`)
+* Route structure and nesting
 * HTTP verb usage correctness
 * Idempotency handling
 * Status code consistency
@@ -50,19 +56,21 @@ Extract every issue related to:
 * Response envelope structure
 * Pagination strategy
 * Filtering & sorting consistency
-* Versioning strategy
+* Versioning strategy (`/api/v1/` prefix)
 * Backward compatibility
 * Request validation consistency
 * DTO separation
 * Response shape standardization
 * Rate limiting design (API-level only)
 * Caching strategy (API contract perspective)
-* File upload design
+* File upload design (`/uploads` route)
+* Webhook design (`/webhooks/subscriptions` route)
 * Bulk operation patterns
 * Partial update semantics (PATCH vs PUT)
 * OpenAPI/Swagger documentation quality
 * API surface redundancy
 * Breaking-change risk exposure
+* Dual auth system consistency (`/auth` vs `/citizen-auth`)
 
 ---
 
@@ -99,16 +107,16 @@ Identify low-effort API design improvements mentioned or implied in the API desi
 
 Examples may include:
 
-* Standardizing error response format
+* Standardizing error response format across all 7 modules
 * Aligning status codes
-* Introducing response envelope
+* Introducing consistent response envelope
 * Cleaning inconsistent route naming
 * Adding pagination metadata
 * Normalizing filtering format
-* Adding API version prefix
 * Removing redundant endpoints
 * Clarifying PATCH semantics
 * Adding consistent validation responses
+* Standardizing webhook response format
 
 ⚠️ Only include improvements supported by the API Design document.
 
@@ -144,6 +152,7 @@ Break down only API design–related debt.
 * Backward compatibility debt
 * API redundancy debt
 * Response standardization debt
+* Dual auth system alignment debt
 
 ---
 
@@ -162,8 +171,6 @@ Provide:
 
 ## Phased API Design Roadmap
 
-Design a roadmap focused purely on API structure and contract improvements.
-
 ### Phase 1 – Contract Stabilization (Weeks 1–2)
 
 Focus:
@@ -174,15 +181,13 @@ Focus:
 * Critical route inconsistencies
 * Versioning exposure risks
 
-Include only issues labeled high-risk in the API document.
-
 ---
 
 ### Phase 2 – Structural Consistency (Weeks 3–6)
 
 Focus:
 
-* Route naming standardization
+* Route naming standardization across all 7 domain modules
 * REST consistency
 * Pagination & filtering normalization
 * Response envelope alignment
@@ -198,7 +203,7 @@ Focus:
 * Backward compatibility strategy
 * Deprecation framework
 * Validation standardization
-* Bulk operation clarity
+* Webhook and upload route hardening
 
 ---
 
@@ -226,18 +231,15 @@ Each phase must include:
 
 ## API KPIs & Success Metrics
 
-Define API-design-specific metrics only.
-
 | Metric | Current State | Target | Measurement |
 | ------ | ------------- | ------ | ----------- |
 | Status code consistency | ? | 100% aligned with REST standards | Endpoint audit |
 | Error format standardization | ? | Single unified structure | Contract review |
-| Versioning clarity | ? | Explicit versioning in all routes | API spec audit |
-| Pagination consistency | ? | Uniform format across endpoints | Code audit |
+| Versioning clarity | ? | Explicit `/api/v1/` in all routes | API spec audit |
+| Pagination consistency | ? | Uniform format across all 7 modules | Code audit |
 | DTO reuse ratio | ? | ≥ 80% standardized DTO patterns | Static analysis |
 | Breaking-change frequency | ? | 0 unannounced breaking changes | Release logs |
-
-Do not include metrics unrelated to API design.
+| OpenAPI coverage | ? | 100% of endpoints documented | Swagger audit |
 
 ---
 
@@ -294,8 +296,6 @@ X / 100
 * Versioning strategy needed
 * Enterprise-ready with targeted improvements
 
-Keep concise, strategic, and decision-oriented (1–2 pages equivalent).
-
 ---
 
 ## Output Files
@@ -337,4 +337,3 @@ Must include:
 * Focus on contract stability and consistency
 * Prioritize backward compatibility and production safety
 * Avoid infrastructure or database discussions unless directly mentioned in API design document
-

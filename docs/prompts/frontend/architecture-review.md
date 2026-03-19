@@ -8,8 +8,9 @@ Perform a **comprehensive architectural and technical analysis of the Secom fron
 
 **Project Context**: Secom is a communication management system for the Secretaria de Comunicação (Communication Secretary), built on the vSaaS boilerplate. The frontend provides interfaces for:
 - **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
-- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
 - **Key Features**: Multi-tenant dashboard, role-based UI, real-time updates, form-heavy workflows
+- **Route Guards**: `ProtectedRoute` (staff) and `ProtectedCitizenRoute` (citizen portal), using `rolesWithPermission()` from `@vsaas/types`
 - **Build Tool**: Vite with React 18
 
 Assume you have **full read access to the frontend repository**, including source code, configuration files, tests, and documentation.
@@ -100,7 +101,7 @@ src/
 │   ├── Domain/                     # Domain module pages
 │   │   ├── PressReleases/
 │   │   ├── MediaContacts/
-│   │   ├── Clipping/
+│   ├── Clippings/
 │   │   ├── Events/
 │   │   ├── Appointments/
 │   │   └── SocialMedia/
@@ -343,8 +344,9 @@ Note: Consider splitting the document into multiple files due to its size. For e
 
 When analyzing the frontend, pay special attention to:
 
-* **Role-Based UI**: How different roles (admin, assessor, social_media, atendente, citizen) see different interfaces
+* **Role-Based UI**: How different roles (super_admin, admin, assessor, social_media, atendente, citizen) see different interfaces
 * **Module Organization**: How the 7 Secom modules are represented in the UI
+* **Route Guards**: How `ProtectedRoute` vs `ProtectedCitizenRoute` enforce role separation; how `rolesWithPermission()` from `@vsaas/types` maps permissions to allowed roles; how `STAFF_ROLES` is used
 * **Form Workflows**: How forms are structured for press releases, media contacts, events, appointments
 * **Citizen Portal**: How the public-facing citizen portal is separated from admin interfaces
 * **API Integration**: How React Query is used for server state management

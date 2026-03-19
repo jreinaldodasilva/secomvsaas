@@ -40,8 +40,8 @@ You must analyze:
 Generate a single Markdown document with the exact file path:
 
 ```
-docs/frontend/02-Secom-Forms-Validation-Overview-Part1.md
-docs/frontend/02-Secom-Forms-Validation-Overview-Part2.md
+docs/architecture/frontend/forms-validation-part-1.md
+docs/architecture/frontend/forms-validation-part-2.md
 ```
 
 ---
@@ -173,8 +173,8 @@ Classify accessibility:
 
 Select 3–5 high-impact forms such as:
 
-* CitizenProfile registration
-* Agendamento creation
+* Citizen profile registration
+* Appointment creation
 * User management
 * Profile editing
 * Authentication
@@ -209,7 +209,7 @@ Group fields logically and document:
 
 Include:
 
-* Mask usage (CPF, phone, CEP)
+* Mask usage (phone, date, time)
 * Input optimization for mobile (inputMode, type)
 * Derived fields
 

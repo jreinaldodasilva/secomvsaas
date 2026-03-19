@@ -1,6 +1,6 @@
 Here is a **structured, production-ready prompt** you can use to generate a fully updated `README.md` for the project.
 
-It is designed for enterprise-grade clarity, onboarding efficiency, and alignment with your existing documentation structure (`docs/backend`, `docs/frontend`, `docs/setup`).
+It is designed for enterprise-grade clarity, onboarding efficiency, and alignment with your existing documentation structure (`docs/architecture/backend`, `docs/architecture/frontend`, `docs/setup`).
 
 ---
 
@@ -20,8 +20,8 @@ You must analyze:
 * Environment configuration
 * Documentation inside:
 
-  * `docs/backend`
-  * `docs/frontend`
+  * `docs/architecture/backend`
+  * `docs/architecture/frontend`
   * `docs/setup` (if present)
 
 The README must reflect the **actual state of the project**, not assumptions.
@@ -84,8 +84,8 @@ The README must include the following sections:
 * External dependencies (if applicable)
 * Link to detailed docs:
 
-  * `docs/backend`
-  * `docs/frontend`
+  * `docs/architecture/backend`
+  * `docs/architecture/frontend`
   * `docs/setup`
 
 ---
@@ -223,8 +223,8 @@ Before generating the README:
 
 1. Cross-check documentation in:
 
-   * `docs/backend`
-   * `docs/frontend`
+   * `docs/architecture/backend`
+   * `docs/architecture/frontend`
    * `docs/setup`
 
 2. Ensure:

@@ -8,11 +8,11 @@ You are conducting a **senior-level production architecture audit** of the Secom
 
 The system:
 
-* Is a **single-tenant government communications platform (Assessoria de Comunicação)**
+* Is a **single-tenant government communications platform (Secretaria de Comunicação)**
 * Uses **Node.js + Express + TypeScript**
-* Implements **RBAC with 8 roles and 21 permissions**
-* Uses **JWT-based dual authentication (staff + citizen)**
-* Supports **165+ endpoints across 13 domains**
+* Implements **RBAC with 5 roles (admin, assessor, social_media, atendente, citizen)**
+* Uses **JWT with httpOnly cookies**
+* Supports **endpoints across 7 Secom modules (press-releases, media-contacts, clipping, events, appointments, citizen-portal, social-media)**
 * Handles **sensitive government and communications data**
 * Enforces **tenant-scoped isolation**
 * Requires **high security, reliability, and auditability**
@@ -414,7 +414,7 @@ Flag:
 
 ## File 1:
 
-`docs/backend/12-Secom-Code-Quality-Enterprise-Audit.md`
+`docs/architecture/backend/code-quality.md`
 
 Include:
 
@@ -431,7 +431,7 @@ Include:
 
 ## File 2:
 
-`docs/backend/13-Secom-Testing-Strategy-Enterprise.md`
+`docs/architecture/backend/testing-strategy.md`
 
 Include:
 

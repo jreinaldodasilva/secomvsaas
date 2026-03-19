@@ -331,7 +331,7 @@ Starts as a direct clone of `vsaas`. Retains everything, then imports shared mod
 - Tenant model, tenant middleware, tenant provisioning
 - Organization/workspace management
 - Subscription handling (payment integration)
-- Platform administration (super_admin flows)
+- Platform administration (admin flows)
 - Multi-tenant query scoping (`tenant` field filters)
 
 ### `vsaas-app-boilerplate`
@@ -374,7 +374,7 @@ For each module being extracted:
 
 #### Auth simplification:
 - Keep roles: `admin`, `manager`, `staff`
-- Remove: `super_admin` role, `PORTAL_JWT_SECRET`, portal refresh token fields
+- Remove: `admin` role, `PORTAL_JWT_SECRET`, portal refresh token fields
 - Simplify `authorize()` — no tenant check, no portal bypass
 
 #### Database schema changes:

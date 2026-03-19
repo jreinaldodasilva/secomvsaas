@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import styles from './TopLoadingBar.module.css';
 
 export function TopLoadingBar() {
   const location = useLocation();
   const [visible, setVisible] = useState(false);
+  const reduced = useReducedMotion();
 
   useEffect(() => {
+    if (reduced) return;
     setVisible(true);
     const t = setTimeout(() => setVisible(false), 350);
     return () => clearTimeout(t);
-  }, [location.pathname]);
+  }, [location.pathname, reduced]);
 
   return (
     <AnimatePresence>

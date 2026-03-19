@@ -4,6 +4,7 @@ import { authService } from '@/services/api';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
+import { Button } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function ForgotPasswordPage() {
@@ -44,13 +45,9 @@ export function ForgotPasswordPage() {
               <div className={s.successIcon}>✉️</div>
               <p className={s.successTitle}>{t('auth.forgotPasswordSuccess')}</p>
               <p className={s.successText}>{t('auth.forgotPasswordSuccessDetail')}</p>
-              <button
-                type="button"
-                className={s.btnPrimary}
-                onClick={() => { setSubmitted(false); setEmail(''); }}
-              >
+              <Button type="button" fullWidth onClick={() => { setSubmitted(false); setEmail(''); }}>
                 {t('auth.resendLink')}
-              </button>
+              </Button>
             </>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
@@ -74,9 +71,7 @@ export function ForgotPasswordPage() {
                 />
               </div>
 
-              <button type="submit" className={s.btnPrimary} disabled={loading}>
-                {loading ? t('common.loading') : t('auth.sendLink')}
-              </button>
+              <Button type="submit" fullWidth isLoading={loading}>{t('auth.sendLink')}</Button>
             </form>
           )}
         </div>

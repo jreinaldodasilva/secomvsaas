@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function LoginPage() {
@@ -78,9 +78,7 @@ export function LoginPage() {
               </Link>
             </div>
 
-            <button type="submit" className={s.btnPrimary} disabled={loading}>
-              {loading ? t('common.loading') : t('auth.login')}
-            </button>
+            <Button type="submit" fullWidth isLoading={loading}>{t('auth.login')}</Button>
           </form>
         </div>
 

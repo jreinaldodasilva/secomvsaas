@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { DashboardMockup } from '@/components/DashboardMockup/DashboardMockup';
 import { containerVariants, itemVariants } from './LandingShared';
@@ -8,12 +8,13 @@ import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function HeroSection() {
   const navigate = useNavigate();
+  const reduced = useReducedMotion();
   return (
     <motion.section
       className={pageStyles.hero}
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+      initial={{ opacity: 0, ...(reduced ? {} : { y: -20 }) }}
+      animate={{ opacity: 1, ...(reduced ? {} : { y: 0 }) }}
+      transition={{ duration: reduced ? 0.15 : 0.6, ease: [0.25, 0.1, 0.25, 1] }}
     >
       <div className={pageStyles.heroContent}>
         <div className={pageStyles.heroText}>
@@ -39,9 +40,9 @@ export function HeroSection() {
         </div>
         <motion.div
           className={pageStyles.heroImageWrap}
-          initial={{ opacity: 0, x: 40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.1, 0.25, 1] }}
+          initial={{ opacity: 0, ...(reduced ? {} : { x: 40 }) }}
+          animate={{ opacity: 1, ...(reduced ? {} : { x: 0 }) }}
+          transition={{ duration: reduced ? 0.15 : 0.7, delay: reduced ? 0 : 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <DashboardMockup />
         </motion.div>
@@ -51,15 +52,18 @@ export function HeroSection() {
 }
 
 export function StatsSection() {
+  const reduced = useReducedMotion();
+  const cv = reduced ? { hidden: { opacity: 0 }, visible: { opacity: 1 } } : containerVariants;
+  const iv = reduced ? { hidden: { opacity: 0 }, visible: { opacity: 1, transition: { duration: 0.15 } } } : itemVariants;
   return (
     <motion.section
       className={pageStyles.statsGrid}
-      variants={containerVariants}
+      variants={cv}
       initial="hidden"
       animate="visible"
     >
       {STATS.map(s => (
-        <motion.div key={s.label} className={styles.statCard} variants={itemVariants}>
+        <motion.div key={s.label} className={styles.statCard} variants={iv}>
           <div className={styles.statValue}>{s.value}</div>
           <div className={styles.statLabel}>{s.label}</div>
           <div className={styles.statDesc}>{s.desc}</div>

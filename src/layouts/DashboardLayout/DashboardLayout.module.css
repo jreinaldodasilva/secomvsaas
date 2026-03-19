@@ -13,6 +13,11 @@
 
 .sidebarClosed .sidebar { width: 64px; }
 
+/* Overlay — hidden on desktop, shown on mobile when drawer is open */
+.overlay {
+  display: none;
+}
+
 .sidebarHeader {
   display: flex;
   align-items: center;
@@ -128,4 +133,80 @@
 .pageContent {
   padding: var(--space-6);
   flex: 1;
+}
+
+/* ── Mobile drawer ── */
+@media (max-width: 767px) {
+  .layout {
+    flex-direction: column;
+  }
+
+  /* Sidebar becomes a fixed off-canvas drawer */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100dvh;
+    width: 240px;
+    z-index: var(--z-modal);
+    transform: translateX(-100%);
+    transition: transform var(--transition-slow);
+    /* Width never collapses on mobile */
+  }
+
+  /* Open state: slide in */
+  .sidebarOpen .sidebar {
+    transform: translateX(0);
+  }
+
+  /* Closed state on mobile: keep off-screen (override desktop collapse) */
+  .sidebarClosed .sidebar {
+    width: 240px;
+    transform: translateX(-100%);
+  }
+
+  /* Overlay: covers main content behind open drawer */
+  .sidebarOpen .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: calc(var(--z-modal) - 1);
+  }
+
+  /* Main content: full width, add top bar height */
+  .mainContent {
+    padding-top: var(--header-height, 4rem);
+  }
+
+  /* Mobile top bar: always-visible strip with hamburger */
+  .sidebarHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height, 4rem);
+    background: var(--color-primary-900);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    z-index: calc(var(--z-modal) + 1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-4);
+  }
+
+  /* Hide collapsed-state overrides that don't apply on mobile */
+  .sidebarClosed .navLink {
+    justify-content: flex-start;
+    padding: var(--space-2) var(--space-3);
+    border-left-color: transparent;
+  }
+  .sidebarClosed .navSectionLabel {
+    opacity: 1;
+    height: auto;
+    padding: var(--space-3) var(--space-3) var(--space-1);
+    overflow: visible;
+  }
+  .sidebarClosed .brandLogo { display: block; }
+  .sidebarClosed .sidebarUser { display: block; }
 }

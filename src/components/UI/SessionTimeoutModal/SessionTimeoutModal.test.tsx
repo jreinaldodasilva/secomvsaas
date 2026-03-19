@@ -20,8 +20,8 @@ describe('SessionTimeoutModal', () => {
 
   it('has aria-labelledby pointing to title', () => {
     render(<SessionTimeoutModal show onContinue={vi.fn()} onLogout={vi.fn()} />);
-    expect(screen.getByRole('dialog')).toHaveAttribute('aria-labelledby', 'session-timeout-title');
-    expect(screen.getByText('Sessão Expirando')).toHaveAttribute('id', 'session-timeout-title');
+    expect(screen.getByRole('dialog')).toHaveAttribute('aria-labelledby', 'modal-title');
+    expect(screen.getByText('Sessão Expirando')).toHaveAttribute('id', 'modal-title');
   });
 
   it('calls onContinue when "Continuar Conectado" is clicked', async () => {
@@ -41,5 +41,19 @@ describe('SessionTimeoutModal', () => {
   it('renders warning message', () => {
     render(<SessionTimeoutModal show onContinue={vi.fn()} onLogout={vi.fn()} />);
     expect(screen.getByText(/expirará em 2 minutos/i)).toBeInTheDocument();
+  });
+
+  it('traps focus within the dialog', () => {
+    render(<SessionTimeoutModal show onContinue={vi.fn()} onLogout={vi.fn()} />);
+    const buttons = screen.getAllByRole('button');
+    expect(buttons.length).toBeGreaterThanOrEqual(2);
+    buttons.forEach(btn => expect(btn.closest('[role="dialog"]')).toBeInTheDocument());
+  });
+
+  it('calls onContinue when Escape is pressed', async () => {
+    const onContinue = vi.fn();
+    render(<SessionTimeoutModal show onContinue={onContinue} onLogout={vi.fn()} />);
+    await userEvent.keyboard('{Escape}');
+    expect(onContinue).toHaveBeenCalledOnce();
   });
 });

@@ -4,7 +4,7 @@ import { useCitizenAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function CitizenLoginPage() {
@@ -70,9 +70,7 @@ export function CitizenLoginPage() {
               autoComplete="current-password"
               wrapperClassName={s.field}
             />
-            <button type="submit" className={s.btnPrimary} disabled={loading}>
-              {loading ? t('auth.loggingIn') : t('auth.login')}
-            </button>
+            <Button type="submit" fullWidth isLoading={loading}>{t('auth.login')}</Button>
           </form>
         </div>
         <div className={s.footer}>

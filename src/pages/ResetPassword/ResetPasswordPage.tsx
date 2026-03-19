@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authService } from '@/services/api';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
@@ -48,7 +48,7 @@ export function ResetPasswordPage() {
                 <span>⚠</span> {t('auth.resetInvalidToken')}
               </div>
               <Link to="/forgot-password">
-                <button type="button" className={s.btnPrimary}>{t('auth.requestNewLink')}</button>
+                <Button type="button">{t('auth.requestNewLink')}</Button>
               </Link>
             </>
           ) : success ? (
@@ -57,7 +57,7 @@ export function ResetPasswordPage() {
               <p className={s.successTitle}>{t('auth.resetPasswordSuccess')}</p>
               <p className={s.successText}>{t('auth.resetPasswordSuccessDetail')}</p>
               <Link to="/login">
-                <button type="button" className={s.btnPrimary}>{t('auth.login')}</button>
+                <Button type="button">{t('auth.login')}</Button>
               </Link>
             </>
           ) : (
@@ -82,9 +82,7 @@ export function ResetPasswordPage() {
                 />
               </div>
 
-              <button type="submit" className={s.btnPrimary} disabled={loading}>
-                {loading ? t('common.loading') : t('auth.resetPassword')}
-              </button>
+              <Button type="submit" fullWidth isLoading={loading}>{t('auth.resetPassword')}</Button>
             </form>
           )}
         </div>

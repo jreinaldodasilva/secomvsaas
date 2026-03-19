@@ -1,15 +1,29 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import styles from './Landing.module.css';
 
-export const containerVariants: Variants = {
+const fullContainerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
 };
 
-export const itemVariants: Variants = {
+const reducedContainerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+};
+
+const fullItemVariants: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
 };
+
+const reducedItemVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.15 } },
+};
+
+// Exported for HeroSection — callers that don't use useReducedMotion directly
+export const containerVariants = fullContainerVariants;
+export const itemVariants = fullItemVariants;
 
 interface SectionHeaderProps {
   title: string;
@@ -32,10 +46,12 @@ interface AnimatedGridProps {
 }
 
 export function AnimatedGrid({ children, className }: AnimatedGridProps) {
+  const reduced = useReducedMotion();
+  const cv = reduced ? reducedContainerVariants : fullContainerVariants;
   return (
     <motion.div
       className={className}
-      variants={containerVariants}
+      variants={cv}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: '-80px' }}
@@ -46,12 +62,13 @@ export function AnimatedGrid({ children, className }: AnimatedGridProps) {
 }
 
 export function AnimatedItem({ children, className }: AnimatedGridProps) {
+  const reduced = useReducedMotion();
+  const iv = reduced ? reducedItemVariants : fullItemVariants;
   return (
     <motion.div
       className={className}
-      variants={itemVariants}
-      whileHover={{ scale: 1.02 }}
-      transition={{ type: 'spring', stiffness: 220 }}
+      variants={iv}
+      {...(!reduced && { whileHover: { scale: 1.02 }, transition: { type: 'spring', stiffness: 220 } })}
     >
       {children}
     </motion.div>

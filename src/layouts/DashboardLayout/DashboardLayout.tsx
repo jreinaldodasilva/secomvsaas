@@ -1,5 +1,5 @@
-import { useState, useCallback } from 'react';
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useState, useCallback, useEffect } from 'react';
+import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts';
 import { useUIStore } from '@/store/uiStore';
 import { useTranslation } from '@/i18n';
@@ -14,8 +14,9 @@ import styles from './DashboardLayout.module.css';
 
 export function DashboardLayout() {
   const { user, logout } = useAuth();
-  const { sidebarOpen, toggleSidebar } = useUIStore();
+  const { sidebarOpen, toggleSidebar, setSidebarOpen } = useUIStore();
   const navigate = useNavigate();
+  const location = useLocation();
   const { t } = useTranslation();
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
 
@@ -26,6 +27,11 @@ export function DashboardLayout() {
   }, [logout, navigate]);
 
   const handleContinue = useCallback(() => setShowTimeoutWarning(false), []);
+
+  // Close the mobile drawer on route change (no-op on desktop)
+  useEffect(() => {
+    if (window.innerWidth < 768) setSidebarOpen(false);
+  }, [location.pathname, setSidebarOpen]);
 
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
@@ -42,8 +48,14 @@ export function DashboardLayout() {
   });
 
   return (
-    <div className={`${styles.layout} ${sidebarOpen ? '' : styles.sidebarClosed}`}>
+    <div className={`${styles.layout} ${sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>
       <TopLoadingBar />
+      {/* Mobile overlay — closes drawer on tap */}
+      <div
+        className={styles.overlay}
+        aria-hidden="true"
+        onClick={() => setSidebarOpen(false)}
+      />
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />

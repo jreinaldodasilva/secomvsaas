@@ -320,6 +320,9 @@ textarea:focus-visible,
   input[type='url'],
   textarea,
   select { font-size: 16px; }
+
+  /* 44px minimum touch target for small buttons (WCAG 2.5.5) */
+  .btn-sm { min-height: 2.75rem; min-width: 2.75rem; }
 }
 
 /* --- Reduced motion --- */

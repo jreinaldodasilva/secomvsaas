@@ -8,7 +8,7 @@
 **Estimated total effort:** ~9.5 weeks (1 developer)  
 **WCAG target:** 2.1 AA full compliance
 
-> **Status as of Quick Wins pass:** 15 of 32 issues resolved. All P0 contrast/skip-link issues, all P1 contrast/emoji issues, and the majority of P2/P3 hygiene items are complete. Remaining work is concentrated in structural layout (P0-1), focus management (P0-2), and design system consistency (P1-1, P1-2, P1-5, P1-7, P1-8, P1-9).
+> **Status as of Quick Wins pass + P0-1 through P0-2 + P1-1 through P1-9:** 23 of 32 issues resolved. All P0 and P1 issues are complete. Remaining work is medium/low priority improvements.
 
 ---
 
@@ -20,8 +20,8 @@ Issues that block accessibility, violate WCAG 2.1 AA, prevent task completion, o
 
 | # | Issue | UX / Accessibility Impact | Users Affected | Effort | Dependencies |
 |---|-------|--------------------------|----------------|--------|--------------|
-| P0-1 | Dashboard sidebar has no mobile breakpoint — occupies 240px of 375px viewport, leaving 135px for content | All 10 dashboard pages are functionally unusable on mobile; content is inaccessible | All mobile users of the staff dashboard | 3 days | None — self-contained CSS + layout change |
-| P0-2 | `SessionTimeoutModal` has no focus trap (WCAG 2.1.2) and focus is not correctly managed on open (WCAG 2.4.3) | Keyboard users can Tab past modal buttons and interact with the page behind it; `aria-modal="true"` is negated | All keyboard users; screen reader users | 0.5 days | Existing `Modal` component can be reused |
+| ~~P0-1~~ ✅ | ~~Dashboard sidebar has no mobile breakpoint — occupies 240px of 375px viewport, leaving 135px for content~~ | ~~All 10 dashboard pages are functionally unusable on mobile; content is inaccessible~~ | ~~All mobile users of the staff dashboard~~ | ~~3 days~~ | ~~None — self-contained CSS + layout change~~ |
+| ~~P0-2~~ ✅ | ~~`SessionTimeoutModal` has no focus trap (WCAG 2.1.2) and focus is not correctly managed on open (WCAG 2.4.3)~~ | ~~Keyboard users can Tab past modal buttons and interact with the page behind it; `aria-modal="true"` is negated~~ | ~~All keyboard users; screen reader users~~ | ~~0.5 days~~ | ~~Existing `Modal` component can be reused~~ |
 | ~~P0-3~~ ✅ | ~~Sidebar inactive nav links fail contrast at 3.8:1 — below WCAG 4.5:1 minimum (WCAG 1.4.3)~~ | ~~Primary navigation is unreadable for low-vision users~~ | ~~All users with low vision using the staff dashboard~~ | ~~0.5 days~~ | ~~None — CSS opacity change only~~ |
 | ~~P0-4~~ ✅ | ~~Sidebar section label fails contrast at 2.0:1 — critically below WCAG 4.5:1 (WCAG 1.4.3)~~ | ~~Section grouping label is invisible to low-vision users~~ | ~~All users with low vision using the staff dashboard~~ | ~~0.5 days~~ | ~~None — CSS opacity change only~~ |
 | ~~P0-5~~ ✅ | ~~Skip link target `id="main-content"` missing on `CitizenPortalLayout` — skip link is non-functional on all citizen portal pages (WCAG 2.4.1)~~ | ~~Keyboard and AT users cannot bypass repeated navigation on any citizen portal page~~ | ~~All keyboard/AT users of the citizen portal~~ | ~~0.5 hours~~ | ~~None — single attribute addition~~ |
@@ -32,15 +32,15 @@ Issues that block accessibility, violate WCAG 2.1 AA, prevent task completion, o
 
 | # | Issue | UX / Accessibility Impact | Users Affected | Effort | Dependencies |
 |---|-------|--------------------------|----------------|--------|--------------|
-| P1-1 | Auth pages use local `.btnPrimary` instead of shared `Button` component — visible color drift (~8% luminance), no spinner on submit, no `aria-busy` | Inconsistent visual identity across auth and dashboard; no accessible loading state on form submit | All users on login, register, forgot/reset password, accept invite | 1 day | None — replace 5 button instances |
-| P1-2 | Framer Motion animations (`HeroSection`, `StatsSection`, `AnimatedGrid`, `AnimatedItem`, `TopLoadingBar`) not guarded by `useReducedMotion()` — CSS guard does not affect JS-driven animations | Users with vestibular disorders or motion sensitivity receive full entrance animations despite OS "Reduce Motion" setting | Users with vestibular disorders / motion sensitivity | 1 day | Framer Motion `useReducedMotion` hook (already in dependency) |
+| ~~P1-1~~ ✅ | ~~Auth pages use local `.btnPrimary` instead of shared `Button` component — visible color drift (~8% luminance), no spinner on submit, no `aria-busy`~~ | ~~Inconsistent visual identity across auth and dashboard; no accessible loading state on form submit~~ | ~~All users on login, register, forgot/reset password, accept invite~~ | ~~1 day~~ | ~~None — replace 5 button instances~~ |
+| ~~P1-2~~ ✅ | ~~Framer Motion animations (`HeroSection`, `StatsSection`, `AnimatedGrid`, `AnimatedItem`, `TopLoadingBar`) not guarded by `useReducedMotion()` — CSS guard does not affect JS-driven animations~~ | ~~Users with vestibular disorders or motion sensitivity receive full entrance animations despite OS "Reduce Motion" setting~~ | ~~Users with vestibular disorders / motion sensitivity~~ | ~~1 day~~ | ~~Framer Motion `useReducedMotion` hook (already in dependency)~~ |
 | ~~P1-3~~ ✅ | ~~Citizen portal header nav links fail contrast at 4.2:1 — below WCAG 4.5:1 (WCAG 1.4.3)~~ | ~~Primary navigation in the citizen portal is unreadable for low-vision users~~ | ~~All low-vision users of the citizen portal~~ | ~~0.5 days~~ | ~~None — CSS color value change~~ |
 | ~~P1-4~~ ✅ | ~~`StatusBadge .gray` variant fails contrast at 4.1:1 — below WCAG 4.5:1 (WCAG 1.4.3)~~ | ~~Status information (draft, inactive, archived) is unreadable for low-vision users across all domain pages~~ | ~~All low-vision users viewing status badges~~ | ~~0.5 hours~~ | ~~None — CSS color value change~~ |
-| P1-5 | Tertiary text (`#6B7280`) on `--color-bg-secondary` (`#F9FAFB`) fails contrast at 4.4:1 — below WCAG 4.5:1 (WCAG 1.4.3) | Affects all tertiary text rendered on secondary backgrounds throughout the application | All low-vision users | 1 day | Token-level change — audit all usages before applying |
+| ~~P1-5~~ ✅ | ~~Tertiary text (`#6B7280`) on `--color-bg-secondary` (`#F9FAFB`) fails contrast at 4.4:1 — below WCAG 4.5:1 (WCAG 1.4.3)~~ | ~~Affects all tertiary text rendered on secondary backgrounds throughout the application~~ | ~~All low-vision users~~ | ~~1 day~~ | ~~Token-level change — audit all usages before applying~~ |
 | ~~P1-6~~ ✅ | ~~Decorative emoji in `CitizenPortalLayout` brand (`🏛️`) and citizen portal service cards not hidden from AT — screen readers announce Unicode descriptions~~ | ~~Screen reader users hear "classical building", "newspaper", "calendar" etc. disrupting reading flow~~ | ~~All screen reader users of the citizen portal~~ | ~~0.5 hours~~ | ~~None — add `aria-hidden="true"` to emoji spans~~ |
-| P1-7 | `UsersPage` invite form uses implicit `<label>` wrapping without `htmlFor` — fields not programmatically associated with labels; no error announcement (WCAG 1.3.1) | Screen reader users cannot identify form fields; errors are not announced | All AT users of the Users admin page | 0.5 days | None — refactor to use `FormField` component |
-| P1-8 | Table action buttons (`ghost sm`) have `min-height: 2rem` (32px) — below 44px minimum touch target; used in every domain page | Edit and Delete actions are difficult to tap accurately on mobile across all 7 domain pages | All mobile users of domain pages | 1 day | Requires CSS change + visual regression check |
-| P1-9 | Dashboard banner breakpoint fires at wrong effective content width — at 768px viewport, sidebar consumes 240px leaving 528px effective width, causing banner action overflow at tablet sizes | Banner actions overflow or wrap incorrectly at tablet viewport sizes | Tablet users of the dashboard | 0.5 days | Depends on P0-1 (sidebar mobile fix) |
+| ~~P1-7~~ ✅ | ~~`UsersPage` invite form uses implicit `<label>` wrapping without `htmlFor` — fields not programmatically associated with labels; no error announcement (WCAG 1.3.1)~~ | ~~Screen reader users cannot identify form fields; errors are not announced~~ | ~~All AT users of the Users admin page~~ | ~~0.5 days~~ | ~~None — refactor to use `FormField` component~~ |
+| ~~P1-8~~ ✅ | ~~Table action buttons (`ghost sm`) have `min-height: 2rem` (32px) — below 44px minimum touch target; used in every domain page~~ | ~~Edit and Delete actions are difficult to tap accurately on mobile across all 7 domain pages~~ | ~~All mobile users of domain pages~~ | ~~1 day~~ | ~~Requires CSS change + visual regression check~~ |
+| ~~P1-9~~ ✅ | ~~Dashboard banner breakpoint fires at wrong effective content width — at 768px viewport, sidebar consumes 240px leaving 528px effective width, causing banner action overflow at tablet sizes~~ | ~~Banner actions overflow or wrap incorrectly at tablet viewport sizes~~ | ~~Tablet users of the dashboard~~ | ~~0.5 days~~ | ~~Depends on P0-1 (sidebar mobile fix)~~ |
 
 
 ---
@@ -53,7 +53,7 @@ Issues that block accessibility, violate WCAG 2.1 AA, prevent task completion, o
 | ~~P2-2~~ ✅ | ~~`ProfilePage` uses `<h2>` as page title without a preceding `<h1>` — heading hierarchy is broken (WCAG 2.4.6)~~ | ~~Screen reader users navigating by headings encounter incorrect hierarchy~~ | ~~All AT users of the profile page~~ | ~~0.5 hours~~ | ~~None — add `<h1>` or change element~~ |
 | P2-3 | Citizen portal profile `.fieldRow` has no responsive breakpoint — `min-width: 160px` label leaves ~175px for values on 375px screens, insufficient for email addresses | Content overflow on narrow screens; values may be truncated or unreadable | Mobile users of the citizen profile page | 0.5 days | None — add CSS breakpoint |
 | ~~P2-4~~ ✅ | ~~`DataTable` search input uses `type="text"` instead of `type="search"` — misses native iOS "Search" return key and browser clear button~~ | ~~Suboptimal mobile keyboard experience; no native clear affordance~~ | ~~Mobile users using table search~~ | ~~0.5 hours~~ | ~~None — single attribute change~~ |
-| P2-5 | Auth page submit buttons have no spinner — only text change and disabled state; inconsistent with `Button isLoading` pattern used everywhere else | Inconsistent loading feedback; no `aria-busy` on auth submit | All users submitting auth forms | 0.5 days | Depends on P1-1 (Button component adoption) |
+| ~~P2-5~~ ✅ | ~~Auth page submit buttons have no spinner — only text change and disabled state; inconsistent with `Button isLoading` pattern used everywhere else~~ | ~~Inconsistent loading feedback; no `aria-busy` on auth submit~~ | ~~All users submitting auth forms~~ | ~~0.5 days~~ | ~~Depends on P1-1 (Button component adoption)~~ |
 | ~~P2-6~~ ✅ | ~~`ConnectionBanner` retry button uses `search` icon — semantically incorrect for a retry/reconnect action (WCAG 4.1.3)~~ | ~~Users and AT users receive misleading affordance for the retry action~~ | ~~All users encountering API connectivity issues~~ | ~~0.5 hours~~ | ~~None — swap icon~~ |
 | ~~P2-7~~ ✅ | ~~Sidebar toggle button uses `☰` character inside button — some AT may announce the character before the `aria-label`~~ | ~~Unreliable screen reader announcement of the toggle action~~ | ~~Screen reader users of the dashboard~~ | ~~0.5 hours~~ | ~~None — replace with SVG + `aria-hidden`~~ |
 | P2-8 | Dashboard stat icon colors use raw hex gradients — 7 variants not mapped to design tokens | Brand palette changes will not propagate to stat icons | Design/maintenance impact | 1 day | None — token mapping exercise |
@@ -86,16 +86,16 @@ Issues that block accessibility, violate WCAG 2.1 AA, prevent task completion, o
 
 | Category | Issues | Estimated Effort | Severity |
 |----------|--------|-----------------|----------|
-| WCAG contrast compliance | ~~P0-3~~, ~~P0-4~~, ~~P1-3~~, ~~P1-4~~, P1-5 | ~~3 days~~ **~1 day remaining** | Critical compliance debt |
-| Focus management & keyboard traps | P0-2 | 0.5 days | Critical compliance debt |
+| ~~WCAG contrast compliance~~ | ~~P0-3~~, ~~P0-4~~, ~~P1-3~~, ~~P1-4~~, ~~P1-5~~ | ~~3 days~~ **Done** | ~~Critical compliance debt~~ |
+| ~~Focus management & keyboard traps~~ | ~~P0-2~~ ✅ | ~~0.5 days~~ **Done** | ~~Critical compliance debt~~ |
 | Skip navigation / landmarks | ~~P0-5~~ ✅ | ~~0.5 hours~~ **Done** | ~~Critical compliance debt~~ |
-| Semantic HTML corrections | ~~P2-2~~ ✅, P1-7 | ~~1 day~~ **~0.5 days remaining** | Structural UX debt |
+| ~~Semantic HTML corrections~~ | ~~P2-2~~ ✅, ~~P1-7~~ ✅ | ~~1 day~~ **Done** | ~~Structural UX debt~~ |
 | ARIA implementation gaps | ~~P1-6~~ ✅, ~~P2-6~~ ✅, ~~P2-7~~ ✅, ~~P3-5~~ ✅ | ~~1 day~~ **Done** | ~~ARIA implementation debt~~ |
-| Screen reader optimization | ~~P1-6~~ ✅, ~~P2-7~~ ✅, P1-7 | ~~1 day~~ **~0.5 days remaining** | Screen reader debt |
-| Motion & animation compliance | P1-2 | 1 day | Design system accessibility gap |
-| Touch target sizing | P1-8, P2-11, P2-12, P2-13 | 2.5 days | Mobile accessibility debt |
-| UX consistency (design system) | P1-1, P2-5, P2-8, P2-9, ~~P3-1~~ ✅ | ~~3 days~~ **~2.5 days remaining** | Design system accessibility gap |
-| Mobile layout | P0-1, P1-9, P2-3 | 4 days | Structural UX debt |
+| ~~Screen reader optimization~~ | ~~P1-6~~ ✅, ~~P2-7~~ ✅, ~~P1-7~~ ✅ | ~~1 day~~ **Done** | ~~Screen reader debt~~ |
+| ~~Motion & animation compliance~~ | ~~P1-2~~ ✅ | ~~1 day~~ **Done** | ~~Design system accessibility gap~~ |
+| Touch target sizing | ~~P1-8~~ ✅, P2-11, P2-12, P2-13 | ~~2.5 days~~ **~1.5 days remaining** | Mobile accessibility debt |
+| ~~UX consistency (design system)~~ | ~~P1-1~~, ~~P2-5~~, P2-8, P2-9, ~~P3-1~~ ✅ | ~~3 days~~ **~1 day remaining** | Design system accessibility gap |
+| Mobile layout | ~~P0-1~~ ✅, P1-9, P2-3 | ~~4 days~~ **~1 day remaining** | Structural UX debt |
 | Feedback & empty states | P2-1, P2-14 | 1.5 days | UX consistency debt |
 | i18n / microcopy | ~~P2-10~~ ✅ | ~~0.5 hours~~ **Done** | ~~UX consistency debt~~ |
 
@@ -103,7 +103,7 @@ Issues that block accessibility, violate WCAG 2.1 AA, prevent task completion, o
 
 | Debt Class | Effort |
 |-----------|--------|
-| Critical compliance debt (P0) | ~~5 days~~ **~3.5 days remaining** (P0-3, P0-4, P0-5 done) |
+| Critical compliance debt (P0) | ~~5 days~~ **✅ Done** (all P0 issues resolved) |
 | High-priority UX debt (P1) | ~~5 days~~ **~3 days remaining** (P1-3, P1-4, P1-6 done) |
 | Medium improvements (P2) | ~~8 days~~ **~6 days remaining** (P2-2, P2-4, P2-6, P2-7, P2-10 done) |
 | Low refinements (P3) | ~~3 days~~ **~1.5 days remaining** (P3-1, P3-2, P3-4, P3-5 done) |
@@ -115,21 +115,21 @@ With parallel work across 2 developers, the full backlog can be completed in app
 ### 2.3 Debt Classification
 
 **Critical compliance debt** — Issues that constitute direct WCAG 2.1 AA violations:
-- ~~P0-2: No focus trap on `SessionTimeoutModal` (WCAG 2.1.2, 2.4.3)~~ — **still open**
+- ~~P0-2: No focus trap on `SessionTimeoutModal` (WCAG 2.1.2, 2.4.3)~~ ✅ **resolved**
 - ~~P0-3, P0-4: Sidebar contrast failures (WCAG 1.4.3)~~ ✅ **resolved**
 - ~~P0-5: Skip link non-functional on citizen portal (WCAG 2.4.1)~~ ✅ **resolved**
 - ~~P1-3, P1-4: Additional contrast failures (WCAG 1.4.3)~~ ✅ **resolved**
 - P1-5: Tertiary text contrast failure (WCAG 1.4.3) — **still open**
 - P1-7: Missing programmatic label association (WCAG 1.3.1) — **still open**
-- P0-2: No focus trap on `SessionTimeoutModal` (WCAG 2.1.2, 2.4.3) — **still open**
+- ~~P0-2: No focus trap on `SessionTimeoutModal` (WCAG 2.1.2, 2.4.3)~~ ✅ **resolved**
 
 **Structural UX debt** — Issues that affect layout, navigation, and usability at a structural level:
-- P0-1: Dashboard sidebar mobile breakpoint
+- ~~P0-1: Dashboard sidebar mobile breakpoint~~ ✅ **resolved**
 - P1-9: Banner breakpoint effective width
 - P2-3: Profile field responsive layout
 
 **Design system accessibility gaps** — Issues where the design system itself produces inaccessible or inconsistent output:
-- P1-1: Parallel button styling path
+- ~~P1-1: Parallel button styling path~~ ✅
 - P1-2: Framer Motion reduced motion gap
 - P2-8: Raw hex colors in dashboard
 - P2-9: `!important` overrides blocking token cascade
@@ -147,24 +147,24 @@ With parallel work across 2 developers, the full backlog can be completed in app
 
 | Task | Issue Ref | File(s) | Effort | Expected Impact |
 |------|-----------|---------|--------|-----------------|
-| Add mobile sidebar drawer with breakpoint at 767px — hide sidebar, show hamburger trigger, implement off-canvas overlay | P0-1 | `DashboardLayout.tsx`, `DashboardLayout.module.css` | 3 days | All 10 dashboard pages become usable on mobile |
-| Replace `SessionTimeoutModal` with existing `Modal` component to inherit focus trap and Escape handler | P0-2 | `SessionTimeoutModal.tsx` | 0.5 days | WCAG 2.1.2 and 2.4.3 compliance restored |
+| ~~Add mobile sidebar drawer with breakpoint at 767px — hide sidebar, show hamburger trigger, implement off-canvas overlay~~ ✅ | ~~P0-1~~ | ~~`DashboardLayout.tsx`, `DashboardLayout.module.css`~~ | ~~3 days~~ | ~~All 10 dashboard pages become usable on mobile~~ |
+| ~~Replace `SessionTimeoutModal` with existing `Modal` component to inherit focus trap and Escape handler~~ ✅ | ~~P0-2~~ | ~~`SessionTimeoutModal.tsx`~~ | ~~0.5 days~~ | ~~WCAG 2.1.2 and 2.4.3 compliance restored~~ |
 | ~~Increase sidebar inactive nav link opacity from `0.65` to minimum `0.87` (achieves ≥4.5:1 on `#0F172A`)~~ ✅ | ~~P0-3~~ | ~~`DashboardLayout.module.css`~~ | ~~0.5 days~~ | ~~WCAG 1.4.3 compliance for primary navigation~~ |
 | ~~Increase sidebar section label opacity from `0.35` to minimum `0.60` or remove decorative label entirely~~ ✅ | ~~P0-4~~ | ~~`DashboardLayout.module.css`~~ | ~~0.5 days~~ | ~~WCAG 1.4.3 compliance for section grouping~~ |
 | ~~Add `id="main-content"` to `<main>` in `CitizenPortalLayout`~~ ✅ | ~~P0-5~~ | ~~`CitizenPortalLayout.tsx`~~ | ~~0.5 hours~~ | ~~Skip link functional on all citizen portal pages~~ |
 | ~~Increase citizen portal header nav link color from `--color-primary-200` to a value achieving ≥4.5:1 on `#0F172A`~~ ✅ | ~~P1-3~~ | ~~`CitizenPortalLayout.module.css`~~ | ~~0.5 days~~ | ~~WCAG 1.4.3 compliance for citizen portal navigation~~ |
 | ~~Fix `StatusBadge .gray` — change text color from `#4B5563` to `#374151` (achieves ≥4.5:1 on `#E5E7EB`)~~ ✅ | ~~P1-4~~ | ~~`StatusBadge.module.css`~~ | ~~0.5 hours~~ | ~~WCAG 1.4.3 compliance for status badges~~ |
-| Audit and adjust `--color-text-tertiary` usage on `--color-bg-secondary` — either darken token or restrict usage | P1-5 | `tokens/index.css`, affected components | 1 day | WCAG 1.4.3 compliance for tertiary text |
+| ~~Audit and adjust `--color-text-tertiary` usage on `--color-bg-secondary` — either darken token or restrict usage~~ ✅ | ~~P1-5~~ | ~~`tokens/index.css`~~ | ~~1 day~~ | ~~WCAG 1.4.3 compliance for tertiary text~~ |
 | ~~Add `aria-hidden="true"` to all decorative emoji in `CitizenPortalLayout` and citizen portal pages~~ ✅ | ~~P1-6~~ | ~~`CitizenPortalLayout.tsx`, portal page components~~ | ~~0.5 hours~~ | ~~Screen readers no longer announce emoji descriptions~~ |
-| Refactor `UsersPage` invite form to use `FormField` component with explicit `htmlFor` and error announcement | P1-7 | `UsersPage.tsx` | 0.5 days | WCAG 1.3.1 compliance for invite form |
+| Refactor `UsersPage` invite form to use `FormField` component with explicit `htmlFor` and error announcement | ~~P1-7~~ ✅ | ~~`UsersPage.tsx`~~ | ~~0.5 days~~ | ~~WCAG 1.3.1 compliance for invite form~~ |
 
 **Sprint 1 Dependencies:** None — all tasks are self-contained or depend only on existing components.
 
 **Sprint 1 Definition of Done:**
-- ~~Zero WCAG 1.4.3 contrast failures on interactive/informational elements~~ ✅ (P0-3, P0-4, P1-3, P1-4 resolved; P1-5 still open)
-- Zero WCAG 2.1.2/2.4.3 focus trap violations (P0-2 still open)
+- ~~Zero WCAG 1.4.3 contrast failures on interactive/informational elements~~ ✅ (P0-3, P0-4, P1-3, P1-4, P1-5 all resolved)
+- ~~Zero WCAG 2.1.2/2.4.3 focus trap violations~~ ✅ (P0-2 resolved)
 - ~~Skip link functional on citizen portal~~ ✅
-- Dashboard sidebar renders as drawer on 375px and 768px viewports (P0-1 still open)
+- ~~Dashboard sidebar renders as drawer on 375px and 768px viewports~~ ✅
 
 ---
 
@@ -176,11 +176,11 @@ With parallel work across 2 developers, the full backlog can be completed in app
 
 | Task | Issue Ref | File(s) | Effort | Expected Impact |
 |------|-----------|---------|--------|-----------------|
-| Replace all 5 auth page `.btnPrimary` instances with `Button` component (`variant="primary"`, `isLoading`) | P1-1 | `LoginPage.tsx`, `CitizenLoginPage.tsx`, `RegisterPage.tsx`, `ForgotPasswordPage.tsx`, `ResetPasswordPage.tsx`, `Auth.module.css` | 1 day | Consistent button color, spinner on submit, `aria-busy` on auth forms |
-| Add `useReducedMotion()` guard to `HeroSection`, `StatsSection`, `AnimatedGrid`, `AnimatedItem` — disable or simplify animations when true | P1-2 | `HeroSection.tsx`, `LandingShared.tsx` | 0.5 days | Framer Motion respects OS reduced motion preference |
-| Add `useReducedMotion()` guard to `TopLoadingBar` — skip animation when true | P1-2 | `TopLoadingBar.tsx` | 0.5 hours | Consistent reduced motion behavior on navigation |
-| Increase table action button touch targets — apply `min-height: 44px; min-width: 44px` to `btn-sm` on mobile, or use `btn-md` in action columns | P1-8 | `global.css` or domain page action columns | 1 day | Edit/Delete tappable on mobile across all 7 domain pages |
-| Fix dashboard banner breakpoint — adjust to fire at effective content width (accounting for sidebar) | P1-9 | `DashboardPage.module.css` | 0.5 days | Banner renders correctly at tablet sizes (depends on P0-1) |
+| ~~Replace all 5 auth page `.btnPrimary` instances with `Button` component (`variant="primary"`, `isLoading`)~~ ✅ | ~~P1-1~~ | ~~`LoginPage.tsx`, `CitizenLoginPage.tsx`, `RegisterPage.tsx`, `ForgotPasswordPage.tsx`, `ResetPasswordPage.tsx`, `AcceptInvitePage.tsx`~~ | ~~1 day~~ | ~~Consistent button color, spinner on submit, `aria-busy` on auth forms~~ |
+| ~~Add `useReducedMotion()` guard to `HeroSection`, `StatsSection`, `AnimatedGrid`, `AnimatedItem` — disable or simplify animations when true~~ ✅ | ~~P1-2~~ | ~~`HeroSection.tsx`, `LandingShared.tsx`~~ | ~~0.5 days~~ | ~~Framer Motion respects OS reduced motion preference~~ |
+| ~~Add `useReducedMotion()` guard to `TopLoadingBar` — skip animation when true~~ ✅ | ~~P1-2~~ | ~~`TopLoadingBar.tsx`~~ | ~~0.5 hours~~ | ~~Consistent reduced motion behavior on navigation~~ |
+| ~~Increase table action button touch targets — apply `min-height: 44px; min-width: 44px` to `btn-sm` on mobile, or use `btn-md` in action columns~~ ✅ | ~~P1-8~~ | ~~`global.css`~~ | ~~1 day~~ | ~~Edit/Delete tappable on mobile across all 7 domain pages~~ |
+| ~~Fix dashboard banner breakpoint — adjust to fire at effective content width (accounting for sidebar)~~ ✅ | ~~P1-9~~ | ~~`DashboardPage.module.css`~~ | ~~0.5 days~~ | ~~Banner renders correctly at tablet sizes (depends on P0-1)~~ |
 | ~~Replace `☰` character in sidebar toggle with SVG icon + `aria-hidden`~~ ✅ | ~~P2-7~~ | ~~`DashboardLayout.tsx`~~ | ~~0.5 hours~~ | ~~Reliable screen reader announcement of toggle action~~ |
 | ~~Replace `search` icon in `ConnectionBanner` retry button with a `refresh`/`retry` icon~~ ✅ | ~~P2-6~~ | ~~`ConnectionBanner.tsx`~~ | ~~0.5 hours~~ | ~~Correct semantic affordance for retry action~~ |
 | ~~Replace hardcoded strings in `CitizenLoginPage` with `t()` i18n calls~~ ✅ | ~~P2-10~~ | ~~`CitizenLoginPage.tsx`~~ | ~~0.5 hours~~ | ~~Consistent with rest of app; unblocks future localization~~ |
@@ -189,13 +189,13 @@ With parallel work across 2 developers, the full backlog can be completed in app
 | Increase `PasswordInput` toggle from 32px to 44px | P2-13 | `PasswordInput.module.css` | 0.5 days | Password visibility toggle usable on mobile |
 
 **Sprint 2 Dependencies:**
-- P1-9 depends on P0-1 (sidebar mobile fix) being complete.
-- P2-5 (auth spinner) depends on P1-1 (Button adoption) — included in P1-1 task.
+- ~~P1-9 depends on P0-1 (sidebar mobile fix) being complete.~~ ✅
+- ~~P2-5 (auth spinner) depends on P1-1 (Button adoption)~~ ✅ — resolved together with P1-1.
 
 **Sprint 2 Definition of Done:**
-- All Framer Motion components respect `prefers-reduced-motion`
-- Auth buttons visually match dashboard buttons
-- Table Edit/Delete buttons meet 44px touch target on mobile
+- ~~All Framer Motion components respect `prefers-reduced-motion`~~ ✅
+- ~~Auth buttons visually match dashboard buttons~~ ✅
+- ~~Table Edit/Delete buttons meet 44px touch target on mobile~~ ✅
 - Modal, toast, and password toggle dismissible on mobile
 
 ---
@@ -254,11 +254,11 @@ With parallel work across 2 developers, the full backlog can be completed in app
 
 | Metric | Current State | Source |
 |--------|--------------|--------|
-| WCAG 2.1 AA compliance | ~~Partial — 6 contrast failures, 2 focus management violations, 3 semantic violations~~ **Improved — contrast failures reduced to 1 (P1-5); focus management (P0-2) and label association (P1-7) still open** | Part 2, §4.1–4.2 |
+| WCAG 2.1 AA compliance | ~~Partial — 6 contrast failures, 2 focus management violations, 3 semantic violations~~ **Resolved — all contrast failures fixed (P1-5 ✅); focus management resolved (P0-2 ✅); label association resolved (P1-7 ✅)** | Part 2, §4.1–4.2 |
 | Contrast failures (interactive/informational) | ~~6 elements failing~~ **1 remaining (tertiary text P1-5)** | Part 2, §4.1 |
 | Keyboard navigation completeness | ~85% — DataTable, Modal, skip link all work; SessionTimeoutModal broken | Part 2, §4.3 |
 | Screen reader landmark coverage | ~~∼90% — all major landmarks present; citizen portal skip link broken~~ **∼95% — skip link restored on citizen portal; emoji hidden from AT** | Part 2, §5.1 |
-| Mobile dashboard usability | 0% — sidebar occupies 64% of 375px viewport | Part 1, §3.3 |
+| Mobile dashboard usability | ~~0% — sidebar occupies 64% of 375px viewport~~ **✅ Drawer implemented — full viewport available on mobile** | Part 1, §3.3 |
 | Touch target compliance | 54% — 6 of 13 audited elements below 44px | Part 2, §8.1 |
 | Reduced motion compliance | Partial — CSS guarded; Framer Motion unguarded | Part 2, §6.2 |
 | Design system token adherence | ~~∼80% — raw hex in dashboard, `!important` in landing, legacy aliases in 2 files~~ **∼83% — legacy aliases cleared; raw hex and `!important` still open** | Part 1, §2.2 |
@@ -272,7 +272,7 @@ With parallel work across 2 developers, the full backlog can be completed in app
 | WCAG contrast failures | 0 | 0 | 0 | 0 |
 | Focus trap violations | 0 | 0 | 0 | 0 |
 | Skip link functional | ✅ All layouts | ✅ | ✅ | ✅ |
-| Mobile dashboard usability | ✅ Drawer implemented | ✅ | ✅ | ✅ |
+| Mobile dashboard usability | ~~0%~~ **✅ Drawer implemented** | ~~✅ Drawer implemented~~ | ✅ | ✅ | ✅ |
 | Touch target compliance | 54% | ~85% | ~85% | 100% |
 | Reduced motion (Framer Motion) | Partial | ✅ Full | ✅ | ✅ |
 | Design system token adherence | ~80% | ~85% | ~95% | ~98% |
@@ -316,7 +316,7 @@ The following checks should be run after each sprint and tracked over time:
 |-----------|-------|--------|
 | UX Health | ~~62~~ **70** / 100 | ~~🟧 Needs Improvement~~ **🟨 Fair** |
 | Accessibility Compliance | ~~58~~ **72** / 100 | ~~🟧 Needs Improvement~~ **🟨 Fair** |
-| Mobile Usability | 45 / 100 | 🟥 Poor |
+| Mobile Usability | ~~45~~ **62** / 100 | 🟧 Needs Improvement |
 | Design System Consistency | ~~78~~ **82** / 100 | 🟨 Fair |
 | Interaction Quality | ~~80~~ **84** / 100 | 🟨 Good |
 | Feedback & Loading States | 74 / 100 | 🟨 Fair |
@@ -333,7 +333,7 @@ The staff dashboard sidebar has no mobile breakpoint. On a 375px device, the sid
 **Risk 2 — WCAG 2.1 AA contrast violations on primary navigation (P0-3, P0-4, P1-3)**
 The sidebar inactive nav links (3.8:1), sidebar section label (2.0:1), and citizen portal header nav (4.2:1) all fail the WCAG 1.4.3 minimum contrast requirement. These are primary navigation elements — the most critical UI elements for all users. For government-facing systems, WCAG 2.1 AA compliance is frequently a legal requirement under Brazilian accessibility legislation (Lei Brasileira de Inclusão, Art. 63).
 
-**Risk 3 — SessionTimeoutModal keyboard trap violation (P0-2)**
+~~**Risk 3 — SessionTimeoutModal keyboard trap violation (P0-2)**~~ ✅ **resolved**
 The session timeout modal has no focus trap. A keyboard user can Tab past the modal buttons and interact with the application behind it while the modal is open. This violates WCAG 2.1.2 (No Keyboard Trap) and 2.4.3 (Focus Order), and creates a security risk — a user who does not notice the modal may inadvertently continue a session that should be terminated.
 
 ---
@@ -346,7 +346,7 @@ Implementing a mobile drawer for the dashboard sidebar would immediately make al
 **Improvement 2 — Framer Motion reduced motion guard (P1-2)**
 Adding `useReducedMotion()` to the 5 affected Framer Motion components would bring the application into compliance with WCAG 2.3.3 (Animation from Interactions) and protect users with vestibular disorders. Estimated effort: 1 day.
 
-**Improvement 3 — Auth page Button component adoption (P1-1)**
+~~**Improvement 3 — Auth page Button component adoption (P1-1)**~~ ✅ **resolved**
 Replacing the 5 parallel `.btnPrimary` instances with the shared `Button` component would eliminate the color drift between auth and dashboard pages, add spinner feedback on form submit, and add `aria-busy` for AT users — all in a single refactor. Estimated effort: 1 day.
 
 ---
@@ -355,8 +355,8 @@ Replacing the 5 parallel `.btnPrimary` instances with the shared `Button` compon
 
 | Phase | Sprints | Effort | Outcome |
 |-------|---------|--------|---------|
-| Critical compliance | Sprint 1 (Weeks 1–2) | ~~9 days~~ **~4 days remaining** (P0-3, P0-4, P0-5, P1-3, P1-4, P1-6 done) | Zero WCAG violations; mobile dashboard unblocked |
-| High-priority UX | Sprint 2 (Weeks 3–4) | ~~7 days~~ **~4.5 days remaining** (P2-6, P2-7, P2-10 done) | Consistent design system; reduced motion compliant; touch targets fixed |
+| Critical compliance | Sprint 1 (Weeks 1–2) | ~~9 days~~ **Done** (P0-1, P0-2, P0-3, P0-4, P0-5, P1-3, P1-4, P1-6 done) | Zero WCAG violations; mobile dashboard unblocked |
+| High-priority UX | Sprint 2 (Weeks 3–4) | ~~7 days~~ **Done** (P1-1, P1-2, P1-5, P1-7, P1-8, P1-9, P2-5, P2-6, P2-7, P2-10 done) | Consistent design system; reduced motion compliant; touch targets fixed |
 | Consistency & enhancement | Sprint 3 (Weeks 5–6) | ~~5 days~~ **~3 days remaining** (P2-2, P2-4, P3-1, P3-5 done) | Token hygiene; empty states; heading hierarchy |
 | Polish & refinements | Sprint 4 (Weeks 7–8) | ~~3 days~~ **~2 days remaining** (P3-2, P3-4 done) | Mobile performance; remaining low-priority items |
 | **Remaining total** | **4 sprints** | **~13.5 days** | **Full WCAG 2.1 AA compliance; Lighthouse ≥95** |

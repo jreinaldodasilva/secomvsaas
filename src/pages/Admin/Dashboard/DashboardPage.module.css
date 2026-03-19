@@ -211,7 +211,7 @@
   .widgets { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .banner { flex-direction: column; align-items: flex-start; padding: var(--space-6) var(--space-4); }
   .bannerTitle { font-size: var(--font-size-2xl); }
   .bannerActions { width: 100%; }

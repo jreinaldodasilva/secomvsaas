@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { http, ApiError } from '@/services/http';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import s from '@/pages/Auth.module.css';
@@ -84,9 +84,7 @@ export function AcceptInvitePage() {
                 />
               </div>
 
-              <button type="submit" className={s.btnPrimary} disabled={loading}>
-                {loading ? t('common.loading') : t('auth.acceptInvite')}
-              </button>
+              <Button type="submit" fullWidth isLoading={loading}>{t('auth.acceptInvite')}</Button>
             </form>
           )}
         </div>

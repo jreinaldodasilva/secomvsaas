@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function RegisterPage() {
@@ -103,9 +103,7 @@ export function RegisterPage() {
               wrapperClassName={s.field}
             />
 
-            <button type="submit" className={s.btnPrimary} disabled={loading}>
-              {loading ? t('common.loading') : t('auth.register')}
-            </button>
+            <Button type="submit" fullWidth isLoading={loading}>{t('auth.register')}</Button>
           </form>
         </div>
 

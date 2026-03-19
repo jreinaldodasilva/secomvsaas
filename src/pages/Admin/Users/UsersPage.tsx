@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog } from '@/components/UI';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog, FormField } from '@/components/UI';
 import { useApiQuery, useApiMutation } from '@/hooks';
 import { useToast } from '@/hooks';
 import { useAuth } from '@/contexts';
@@ -137,18 +137,27 @@ export function UsersPage() {
       <Modal isOpen={inviteOpen} onClose={() => setInviteOpen(false)} title={t('users.inviteTitle')} size="sm">
         <form onSubmit={(e) => { e.preventDefault(); invite.mutate({ email: inviteEmail, role: inviteRole }); }}>
           <div className="form-stack">
-            <label>
-              {t('users.inviteEmail')}
-              <input type="email" value={inviteEmail} onChange={(e) => setInviteEmail(e.target.value)} required autoFocus />
-            </label>
-            <label>
-              {t('users.inviteRole')}
-              <select value={inviteRole} onChange={(e) => setInviteRole(e.target.value)}>
+            <FormField name="invite-email" label={t('users.inviteEmail')} required>
+              <input
+                id="invite-email"
+                type="email"
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                required
+                autoFocus
+              />
+            </FormField>
+            <FormField name="invite-role" label={t('users.inviteRole')} required>
+              <select
+                id="invite-role"
+                value={inviteRole}
+                onChange={(e) => setInviteRole(e.target.value)}
+              >
                 {INVITE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
               </select>
-            </label>
-            <Button type="submit" disabled={invite.isPending}>
-              {invite.isPending ? t('users.inviteSending') : t('users.inviteSend')}
+            </FormField>
+            <Button type="submit" isLoading={invite.isPending}>
+              {t('users.inviteSend')}
             </Button>
           </div>
         </form>

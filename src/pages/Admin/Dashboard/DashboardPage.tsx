@@ -34,7 +34,7 @@ const STATUS_COLORS: Record<string, string> = {
 export function DashboardPage() {
   const { user } = useAuth();
   const { t } = useTranslation();
-  const { data, isLoading } = useDashboard();
+  const { data, isLoading, refetch } = useDashboard();
   const navigate = useNavigate();
   usePageTitle(t('nav.dashboard'));
 
@@ -50,7 +50,7 @@ export function DashboardPage() {
           <p className={styles.bannerSub}>Secretaria de Comunicação — visão geral do sistema</p>
         </div>
         <div className={styles.bannerActions}>
-          <button className="btn btn-outline btn-sm" onClick={() => window.location.reload()}>
+          <button className="btn btn-outline btn-sm" onClick={() => refetch()}>
             <IconRefresh /> Atualizar
           </button>
           <button className="btn btn-primary btn-sm" onClick={() => navigate('/press-releases')}>
@@ -93,7 +93,7 @@ export function DashboardPage() {
 
       {/* ── Pending alert ─────────────────────────────── */}
       {!isLoading && (summary?.pendingAppointments ?? 0) > 0 && (
-        <div className={styles.alert} role="status">
+        <div className={styles.alert} role="alert">
           <svg viewBox="0 0 20 20" fill="currentColor" width={16} height={16}><path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
           {t('dashboard.pendingAppointments', { count: summary!.pendingAppointments })}
         </div>

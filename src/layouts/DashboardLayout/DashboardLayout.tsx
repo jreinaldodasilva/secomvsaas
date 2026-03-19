@@ -39,12 +39,11 @@ export function DashboardLayout() {
     enabled: !!user,
   });
 
-  const navCls = ({ isActive }: { isActive: boolean }) =>
-    isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
-
-  const navProps = ({ isActive }: { isActive: boolean }) => ({
-    className: navCls({ isActive }),
+  // When collapsed, add title for tooltip; when expanded, title is redundant
+  const navProps = (label: string) => ({ isActive }: { isActive: boolean }) => ({
+    className: isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink,
     'aria-current': isActive ? ('page' as const) : undefined,
+    title: !sidebarOpen ? label : undefined,
   });
 
   return (
@@ -68,36 +67,36 @@ export function DashboardLayout() {
           </button>
         </div>
         <nav className={styles.sidebarNav} aria-label={t('nav.main')}>
-          <NavLink to="/admin/dashboard" {...navProps}><Icon name="dashboard" /><span>{t('nav.dashboard')}</span></NavLink>
+          <NavLink to="/admin/dashboard" {...navProps(t('nav.dashboard'))}><Icon name="dashboard" /><span>{t('nav.dashboard')}</span></NavLink>
 
           <PermissionGate permissions={['users:read']}>
-            <NavLink to="/admin/users" {...navProps}><Icon name="people" /><span>{t('nav.users')}</span></NavLink>
+            <NavLink to="/admin/users" {...navProps(t('nav.users'))}><Icon name="people" /><span>{t('nav.users')}</span></NavLink>
           </PermissionGate>
 
-          <NavLink to="/settings/profile" {...navProps}><Icon name="person" /><span>{t('nav.profile')}</span></NavLink>
+          <NavLink to="/settings/profile" {...navProps(t('nav.profile'))}><Icon name="person" /><span>{t('nav.profile')}</span></NavLink>
 
           <div className={styles.navSectionLabel}>{t('nav.modules')}</div>
 
           <PermissionGate permissions={['press-releases:read']}>
-            <NavLink to="/press-releases" {...navProps}><Icon name="article" /><span>{t('nav.pressReleases')}</span></NavLink>
+            <NavLink to="/press-releases" {...navProps(t('nav.pressReleases'))}><Icon name="article" /><span>{t('nav.pressReleases')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['media-contacts:read']}>
-            <NavLink to="/media-contacts" {...navProps}><Icon name="contacts" /><span>{t('nav.mediaContacts')}</span></NavLink>
+            <NavLink to="/media-contacts" {...navProps(t('nav.mediaContacts'))}><Icon name="contacts" /><span>{t('nav.mediaContacts')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['clippings:read']}>
-            <NavLink to="/clippings" {...navProps}><Icon name="clipping" /><span>{t('nav.clippings')}</span></NavLink>
+            <NavLink to="/clippings" {...navProps(t('nav.clippings'))}><Icon name="clipping" /><span>{t('nav.clippings')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['events:read']}>
-            <NavLink to="/events" {...navProps}><Icon name="event" /><span>{t('nav.events')}</span></NavLink>
+            <NavLink to="/events" {...navProps(t('nav.events'))}><Icon name="event" /><span>{t('nav.events')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['appointments:read']}>
-            <NavLink to="/appointments" {...navProps}><Icon name="schedule" /><span>{t('nav.appointments')}</span></NavLink>
+            <NavLink to="/appointments" {...navProps(t('nav.appointments'))}><Icon name="schedule" /><span>{t('nav.appointments')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['citizen-portal:read']}>
-            <NavLink to="/citizen-portal" {...navProps}><Icon name="citizen" /><span>{t('nav.citizenPortal')}</span></NavLink>
+            <NavLink to="/citizen-portal" {...navProps(t('nav.citizenPortal'))}><Icon name="citizen" /><span>{t('nav.citizenPortal')}</span></NavLink>
           </PermissionGate>
           <PermissionGate permissions={['social-media:read']}>
-            <NavLink to="/social-media" {...navProps}><Icon name="social" /><span>{t('nav.socialMedia')}</span></NavLink>
+            <NavLink to="/social-media" {...navProps(t('nav.socialMedia'))}><Icon name="social" /><span>{t('nav.socialMedia')}</span></NavLink>
           </PermissionGate>
         </nav>
         <div className={styles.sidebarFooter}>

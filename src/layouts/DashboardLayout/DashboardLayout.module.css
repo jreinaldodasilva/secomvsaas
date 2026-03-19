@@ -50,7 +50,12 @@
   gap: 2px;
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.2) transparent;
 }
+.sidebarNav::-webkit-scrollbar { width: 4px; }
+.sidebarNav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+.sidebarNav::-webkit-scrollbar-track { background: transparent; }
 
 .navLink {
   display: flex;
@@ -177,6 +182,15 @@
   /* Main content: full width, add top bar height */
   .mainContent {
     padding-top: var(--header-height, 4rem);
+  }
+
+  /* Ensure the layout root itself also reserves the header height so
+     even if aside is ever conditionally rendered the space is preserved */
+  .layout {
+    padding-top: var(--header-height, 4rem);
+  }
+  .mainContent {
+    padding-top: 0;
   }
 
   /* Mobile top bar: always-visible strip with hamburger */

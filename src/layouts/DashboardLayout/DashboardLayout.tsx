@@ -47,7 +47,13 @@ export function DashboardLayout() {
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
           <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label={t('nav.toggleSidebar')}>☰</button>
+          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label={t('nav.toggleSidebar')}>
+            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
+              <rect x="1" y="3" width="16" height="2" rx="1" />
+              <rect x="1" y="8" width="16" height="2" rx="1" />
+              <rect x="1" y="13" width="16" height="2" rx="1" />
+            </svg>
+          </button>
         </div>
         <nav className={styles.sidebarNav} aria-label={t('nav.main')}>
           <NavLink to="/admin/dashboard" {...navProps}><Icon name="dashboard" /><span>{t('nav.dashboard')}</span></NavLink>

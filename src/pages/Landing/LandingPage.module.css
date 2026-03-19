@@ -219,6 +219,10 @@
   .ctaTitle             { font-size: var(--font-size-2xl); }
 }
 
+@media (min-width: 480px) and (max-width: 767px) {
+  .visualGrid           { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 480px) {
   .statsGrid            { grid-template-columns: 1fr; }
   .gridModules          { grid-template-columns: 1fr; }

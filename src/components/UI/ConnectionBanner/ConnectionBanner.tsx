@@ -13,7 +13,7 @@ export function ConnectionBanner() {
     <div className={styles.banner} role="alert" aria-live="polite">
       <span>{t('errors.apiUnreachable')}</span>
       <button className={styles.retry} onClick={() => recheckNow()} aria-label="Tentar novamente">
-        <Icon name="search" size="1rem" aria-hidden />
+        <Icon name="refresh" size="1rem" aria-hidden />
       </button>
     </div>
   );

@@ -50,7 +50,7 @@ export function AnimatedItem({ children, className }: AnimatedGridProps) {
     <motion.div
       className={className}
       variants={itemVariants}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ scale: 1.02 }}
       transition={{ type: 'spring', stiffness: 220 }}
     >
       {children}

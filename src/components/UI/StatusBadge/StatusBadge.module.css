@@ -12,4 +12,4 @@
 .red    { background: var(--color-error-100,   #fee2e2); color: var(--color-error-dark,   #991b1b); }
 .yellow { background: var(--color-warning-light, #fef3c7); color: #92400e; }
 .blue   { background: var(--color-info-light,  #dbeafe); color: #1e40af; }
-.gray   { background: var(--color-neutral-100); color: var(--color-neutral-600); }
+.gray   { background: var(--color-neutral-100); color: var(--color-neutral-700); }

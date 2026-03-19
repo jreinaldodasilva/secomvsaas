@@ -16,7 +16,7 @@ export function CitizenDashboardPage() {
   return (
     <div className={styles.dashboard}>
       <div className={styles.welcomeBanner}>
-        <div className={styles.welcomeIcon}>👋</div>
+        <div className={styles.welcomeIcon} aria-hidden="true">👋</div>
         <div>
           <h1 className={styles.welcomeTitle}>Bem-vindo, {citizen?.name}!</h1>
           <p className={styles.welcomeSubtitle}>
@@ -30,7 +30,7 @@ export function CitizenDashboardPage() {
         <div className={styles.quickGrid}>
           {quickLinks.map((link) => (
             <Link key={link.to} to={link.to} className={styles.quickCard}>
-              <span className={styles.quickIcon}>{link.icon}</span>
+              <span className={styles.quickIcon} aria-hidden="true">{link.icon}</span>
               <div>
                 <div className={styles.quickLabel}>{link.label}</div>
                 <div className={styles.quickDesc}>{link.desc}</div>
@@ -41,7 +41,7 @@ export function CitizenDashboardPage() {
       </div>
 
       <div className={styles.infoBox}>
-        <h3 className={styles.infoTitle}>ℹ️ Sobre o portal</h3>
+        <h3 className={styles.infoTitle}><span aria-hidden="true">ℹ️</span> Sobre o portal</h3>
         <p className={styles.infoText}>
           O Portal do Cidadão permite que você acesse serviços da Secretaria de Comunicação,
           agende atendimentos e mantenha seus dados atualizados. Para dúvidas, entre em contato

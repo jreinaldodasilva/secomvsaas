@@ -52,7 +52,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
-  color: rgba(255,255,255,0.65);
+  color: rgba(255,255,255,0.87);
   text-decoration: none;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -81,7 +81,7 @@
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.35);
+  color: rgba(255,255,255,0.75);
   white-space: nowrap;
   overflow: hidden;
 }

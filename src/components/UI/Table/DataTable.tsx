@@ -120,7 +120,7 @@ export function DataTable<T extends Record<string, any>>({
       {onSearch && (
         <div className={styles.search}>
           <input
-            type="text"
+            type="search"
             value={search}
             onChange={e => handleSearch(e.target.value)}
             placeholder={resolvedSearchPlaceholder}
@@ -175,9 +175,9 @@ export function DataTable<T extends Record<string, any>>({
 
           {totalPages > 1 && onPageChange && (
             <div className={styles.pagination}>
-              <button disabled={page <= 1} onClick={() => onPageChange(page - 1)}>{t('common.previous')}</button>
+              <button disabled={page <= 1} onClick={() => onPageChange(page - 1)} aria-label={t('common.goToPage', { page: page - 1 })}>{t('common.previous')}</button>
               <span>{page} / {totalPages}</span>
-              <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>{t('common.next')}</button>
+              <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)} aria-label={t('common.goToPage', { page: page + 1 })}>{t('common.next')}</button>
             </div>
           )}
         </>

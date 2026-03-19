@@ -17,7 +17,7 @@ export function CitizenPortalLayout() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link to="/portal" className={styles.brand}>
-            <span className={styles.brandIcon}>🏛️</span>
+            <span className={styles.brandIcon} aria-hidden="true">🏛️</span>
             <span>Portal do Cidadão</span>
           </Link>
           <nav className={styles.nav}>
@@ -42,7 +42,7 @@ export function CitizenPortalLayout() {
         )}
       </header>
 
-      <main className={styles.main}>
+      <main id="main-content" className={styles.main}>
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>

@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
+import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput } from '@/components/UI';
@@ -11,6 +12,7 @@ export function CitizenLoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { login } = useCitizenAuth();
+  const { t } = useTranslation();
   const from = (location.state as any)?.from?.pathname || '/portal/dashboard';
 
   const [email, setEmail] = useState('');
@@ -26,7 +28,7 @@ export function CitizenLoginPage() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erro ao fazer login');
+      setError(err instanceof ApiError ? err.message : t('auth.loginError'));
     } finally {
       setLoading(false);
     }
@@ -36,8 +38,8 @@ export function CitizenLoginPage() {
     <div className={s.page}>
       <div className={s.card}>
         <div className={s.header}>
-          <h1 className={s.title}>Entrar</h1>
-          <p className={s.subtitle}>Acesse o Portal do Cidadão</p>
+          <h1 className={s.title}>{t('auth.login')}</h1>
+          <p className={s.subtitle}>{t('auth.citizenLoginSubtitle')}</p>
         </div>
         <div className={s.body}>
           {error && (
@@ -69,7 +71,7 @@ export function CitizenLoginPage() {
               wrapperClassName={s.field}
             />
             <button type="submit" className={s.btnPrimary} disabled={loading}>
-              {loading ? 'Entrando...' : 'Entrar'}
+              {loading ? t('auth.loggingIn') : t('auth.login')}
             </button>
           </form>
         </div>

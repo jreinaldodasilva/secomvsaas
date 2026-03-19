@@ -8,7 +8,7 @@ export function CitizenPortalHomePage() {
   return (
     <div className={styles.home}>
       <div className={styles.hero}>
-        <div className={styles.heroIcon}>🏛️</div>
+        <div className={styles.heroIcon} aria-hidden="true">🏛️</div>
         <h1 className={styles.heroTitle}>Portal do Cidadão</h1>
         <p className={styles.heroSubtitle}>
           Acesse serviços da Secretaria de Comunicação, acompanhe seus agendamentos
@@ -30,7 +30,7 @@ export function CitizenPortalHomePage() {
             { icon: '📅', title: 'Eventos', desc: 'Confira os próximos eventos públicos.' },
           ].map((s) => (
             <div key={s.title} className={styles.serviceCard}>
-              <span className={styles.serviceIcon}>{s.icon}</span>
+              <span className={styles.serviceIcon} aria-hidden="true">{s.icon}</span>
               <h3 className={styles.serviceCardTitle}>{s.title}</h3>
               <p className={styles.serviceCardDesc}>{s.desc}</p>
             </div>

@@ -133,7 +133,7 @@
 .btnPrimary {
   width: 100%;
   height: var(--button-height-md);
-  background: var(--color-primary-500);
+  background: var(--color-primary-600);
   color: var(--color-neutral-0);
   border: none;
   border-radius: var(--radius-button);
@@ -146,7 +146,7 @@
 }
 
 .btnPrimary:hover:not(:disabled) {
-  background: var(--color-primary-600);
+  background: var(--color-primary-700);
   box-shadow: var(--shadow-level-2);
 }
 

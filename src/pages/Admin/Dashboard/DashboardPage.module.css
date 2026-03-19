@@ -145,7 +145,6 @@
   padding: var(--space-2) var(--space-4);
   max-height: 18rem;
   overflow-y: auto;
-  overflow-y: overlay;
 }
 .widgetBody::-webkit-scrollbar { width: 4px; }
 .widgetBody::-webkit-scrollbar-thumb { background: var(--color-neutral-200); border-radius: 2px; }

@@ -74,7 +74,7 @@ export function DashboardPage() {
           : STAT_CARDS.map(({ key, nav, label, Icon, color }) => (
               <button
                 key={key}
-                className={`${styles.statCard} ${styles[`color_${color}`]}`}
+                className={styles.statCard}
                 onClick={() => navigate(nav)}
               >
                 <div className={`${styles.statIcon} ${styles[`icon_${color}`]}`}>

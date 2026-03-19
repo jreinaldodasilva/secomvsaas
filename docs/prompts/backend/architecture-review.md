@@ -1,10 +1,16 @@
-# Secom Backend Review
+# Secom Backend Architecture Review
 
 ## Initial Setup & Architecture Analysis
 
 ### Objective
 
-Perform a **comprehensive architectural and technical analysis of the Secom (secomvsaas) backend codebase**. The goal is to document the current backend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
+Perform a **comprehensive architectural and technical analysis of the Secom backend codebase**. The goal is to document the current backend architecture, identify architectural patterns, dependencies, risks, and improvement opportunities, and produce a **clear reference document** for onboarding, maintenance, and future evolution.
+
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação (Communication Secretary), built on the vSaaS boilerplate. It manages:
+- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
+- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Architecture**: Modular monolith with domain-driven organization
+- **Key Features**: Multi-tenancy, RBAC, background job processing, real-time updates
 
 Assume you have **full read access to the backend repository**, including source code, configuration files, migrations, tests, and documentation.
 
@@ -34,40 +40,63 @@ Assume you have **full read access to the backend repository**, including source
 
 ### 1. Technology Stack Inventory
 
-Identify and document **all technologies and services** used by the backend.
+Identify and document **all technologies and services** used by the Secom backend.
 
 Include (but are not limited to):
 
 * **Language & Runtime**
+  * Node.js (verify version)
+  * TypeScript configuration
 
-  * Primary language(s)
-  * Runtime versions (e.g., Node.js, JVM, Python)
 * **Frameworks**
+  * Express.js for HTTP API
+  * Any middleware frameworks
 
-  * Web/API frameworks
 * **Database & Persistence**
+  * MongoDB 8 and Mongoose ODM
+  * Query builders and aggregation pipelines
+  * Tenancy implementation (how multi-tenancy is handled)
 
-  * Databases and versions
-  * ORMs / query builders
 * **Authentication & Authorization**
+  * JWT with httpOnly cookies
+  * Role-Based Access Control (RBAC)
+  * Secom roles: admin, assessor, social_media, atendente, citizen
+  * Permission enforcement patterns
 
-  * Auth strategies (JWT, OAuth2, sessions, etc.)
 * **Caching**
+  * Redis for distributed caching
+  * Cache invalidation strategies
 
-  * In-memory or external cache layers
 * **Async & Background Processing**
+  * BullMQ for job queues
+  * Background workers
+  * Job types (email, notifications, data processing)
 
-  * Queues, workers, schedulers
 * **File & Asset Storage**
+  * Upload handling
+  * Storage strategy (local, S3, etc.)
+
 * **Email & Notification Services**
+  * Email service integration
+  * Notification patterns
+
 * **Logging & Observability**
+  * Logging framework
+  * Monitoring and error tracking
+  * Health check endpoints
 
-  * Logging, monitoring, tracing, error tracking
 * **Testing Tooling**
-* **API Documentation**
-* **DevOps & Runtime Concerns**
+  * Jest for unit/integration tests
+  * Test database setup
 
-  * Containerization, scripts, CI-related tools (if present)
+* **API Documentation**
+  * Swagger/OpenAPI setup
+  * Documentation generation
+
+* **DevOps & Runtime Concerns**
+  * Docker containerization
+  * CI/CD configuration
+  * Build scripts
 
 ---
 
@@ -89,21 +118,31 @@ Analyze the repository structure, including but not limited to:
 ```
 backend/
 ├── src/
+│   ├── modules/                    # Secom domain modules
+│   │   ├── press-releases/
+│   │   ├── media-contacts/
+│   │   ├── clipping/
+│   │   ├── events/
+│   │   ├── appointments/
+│   │   ├── citizen-portal/
+│   │   └── social-media/
 │   ├── controllers/
 │   ├── services/
 │   ├── models/
 │   ├── repositories/
-│   ├── middlewares/
+│   ├── middleware/
 │   ├── routes/
-│   ├── validators/
+│   ├── validation/
 │   ├── config/
 │   ├── utils/
-│   └── types/
+│   ├── types/
+│   ├── platform/                   # Shared platform code
+│   └── queues/                     # BullMQ job definitions
 ├── tests/
 ├── migrations/
 ├── seeds/
-├── docs/
-└── scripts/
+├── scripts/
+└── docs/
 ```
 
 For each major directory, document:
@@ -111,14 +150,16 @@ For each major directory, document:
 * Number of files
 * File naming conventions
 * Responsibility and scope
-* Organization strategy:
-
-  * Layer-based
-  * Feature-based
-  * Domain-driven
+* Organization strategy (layer-based, feature-based, domain-driven)
 * Average file size (LOC)
 * Largest files (>500 LOC)
-* Signs of mixed responsibilities or “god files”
+* Signs of mixed responsibilities or "god files"
+
+**Secom-Specific Focus**:
+- How are the 7 Secom modules organized?
+- Is there clear separation between modules?
+- How is shared code (platform) organized?
+- How are background jobs organized?
 
 ---
 
@@ -129,6 +170,7 @@ Project structure documentation including:
 * Directory-by-directory analysis
 * Summary statistics table
 * Architectural observations on maintainability and scalability
+* Module isolation assessment
 
 ---
 
@@ -148,6 +190,11 @@ Identify and classify:
 * 🟨 Unused or redundant dependencies
 * 🟩 Opportunities for consolidation or simplification
 
+**Secom-Specific Focus**:
+- Are all required dependencies for Secom modules present?
+- Are BullMQ, Redis, and Mongoose properly configured?
+- Are there any missing dependencies for the 7 modules?
+
 ---
 
 #### Deliverable
@@ -158,7 +205,7 @@ Dependency audit report with risks and observations.
 
 ### 4. Application Bootstrap & Runtime Lifecycle
 
-Analyze the main application entry point (e.g., `server.ts`, `app.ts`, `main.py`).
+Analyze the main application entry point (e.g., `server.ts`, `app.ts`).
 
 Document:
 
@@ -167,10 +214,17 @@ Document:
 * Middleware stack and ordering
 * Route or controller registration
 * Database connection lifecycle
+* Tenancy initialization
 * External service initialization
 * Global error handling strategy
 * Graceful shutdown handling
 * Health checks (if present)
+
+**Secom-Specific Focus**:
+- How is multi-tenancy initialized?
+- How are Secom modules loaded?
+- How is RBAC middleware configured?
+- How are background job workers initialized?
 
 ---
 
@@ -193,6 +247,11 @@ Document:
 * Configuration validation or schema enforcement
 * Risk areas (e.g., missing validation, secrets in code)
 
+**Secom-Specific Focus**:
+- How are tenant-specific configurations handled?
+- How are module-specific configurations managed?
+- How are API keys and secrets for external services stored?
+
 ---
 
 #### Deliverable
@@ -208,23 +267,26 @@ Identify and document the **overall backend architecture**.
 Analyze:
 
 * Architecture style:
+  * Modular monolith with domain-driven organization
+  * Secom modules: press-releases, media-contacts, clipping, events, appointments, citizen-portal, social-media
+  * Layered architecture (controllers, services, models, repositories)
 
-  * MVC
-  * Layered
-  * Hexagonal
-  * Clean Architecture
-  * Modular monolith
-  * Microservices (if applicable)
 * Design patterns in use:
+  * Repository pattern for data access
+  * Service layer for business logic
+  * Middleware for cross-cutting concerns
+  * Factory patterns for object creation
+  * Adapter patterns for external services
 
-  * Repository
-  * Service Layer
-  * Factory
-  * Adapter
-  * Middleware
 * Dependency direction and coupling
 * Dependency injection strategy (if any)
-* Cross-cutting concerns (logging, validation, auth)
+* Cross-cutting concerns (logging, validation, auth, tenancy)
+
+**Secom-Specific Focus**:
+- How is multi-tenancy implemented across modules?
+- How is RBAC enforced at different layers?
+- How do modules communicate with each other?
+- How are background jobs integrated with business logic?
 
 ---
 
@@ -235,6 +297,7 @@ Architecture documentation including:
 * Written explanation
 * High-level architecture diagram (ASCII or Mermaid)
 * Observations on testability and scalability
+* Module interaction diagram
 
 ---
 
@@ -243,9 +306,9 @@ Architecture documentation including:
 ### Output File
 
 **File Name:**
-`docs/backend/01-Secom-Backend-Architecture-Overview.md`
+`docs/architecture/backend/overview.md`
 
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md', 'docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md', and so on.
+Note: Consider splitting the document into multiple files due to its size. For example, create files such as `docs/architecture/backend/overview-part-1.md`, `docs/architecture/backend/overview-part-2.md`, and so on.
 
 ---
 
@@ -258,7 +321,8 @@ Obs: Consider splitting the document into multiple files due to its size. For ex
 5. Application Bootstrap & Lifecycle
 6. Configuration Management
 7. Architecture & Design Patterns
-8. Initial High-Level Recommendations
+8. Secom-Specific Patterns (Multi-tenancy, RBAC, Modules)
+9. Initial High-Level Recommendations
 
 ---
 
@@ -273,12 +337,29 @@ Obs: Consider splitting the document into multiple files due to its size. For ex
 
 ---
 
+## Secom-Specific Analysis Points
+
+When analyzing the backend, pay special attention to:
+
+* **Multi-tenancy**: How tenant isolation is implemented across modules
+* **RBAC Implementation**: How roles (admin, assessor, social_media, atendente, citizen) are enforced
+* **Module Organization**: How the 7 Secom modules are structured and isolated
+* **API Versioning**: How `/api/v1/` routes are organized
+* **Domain Models**: Press releases, media contacts, clippings, events, appointments, citizen profiles, social media posts
+* **Background Jobs**: BullMQ integration for async processing
+* **Validation**: How input validation is standardized across modules
+* **Error Handling**: How errors are standardized and reported
+
+---
+
 ## Quality Expectations
 
 The analysis should:
 
-* Provide architectural clarity
+* Provide architectural clarity specific to Secom's domain
 * Reveal technical and organizational risks
 * Support onboarding and long-term maintenance
 * Serve as a baseline for refactoring or scaling discussions
+* Document how Secom's specific requirements (multi-tenancy, RBAC, modular structure) are implemented
+* Identify gaps between current implementation and Secom's business requirements
 

@@ -1,16 +1,10 @@
-Here is the **improved and expanded version** of your prompt, now explicitly requiring that all findings and documentation be generated as multiple structured files inside `docs/setup`.
+# Secom Application Configuration, Setup & Workflow Audit
 
-This version is optimized for clarity, execution discipline, and documentation completeness.
-
----
-
-# 🧠 AI Prompt: Full Application Configuration, Setup & Workflow Audit
-
-### (With Structured Documentation Output in `docs/setup`)
+## With Structured Documentation Output
 
 You are acting as a **Senior DevOps + Full-Stack Architecture Auditor**.
 
-Your task is to conduct a **comprehensive analysis of the entire application configuration and developer workflow**, covering:
+Your task is to conduct a **comprehensive analysis of the entire Secom application configuration and developer workflow**, covering:
 
 * Environment setup
 * Configuration management
@@ -30,27 +24,25 @@ You must analyze:
 * Docker-related files
 * CI/CD configuration
 * And all documentation inside:
+  * `docs/architecture/backend`
+  * `docs/architecture/frontend`
 
-  * `docs/backend`
-  * `docs/frontend`
-
-Your mission is to produce a **fully verified, production-grade setup and configuration documentation suite**.
+Your mission is to produce a **fully verified, production-grade setup and configuration documentation suite** for Secom.
 
 ---
 
-# 🚨 Critical Requirement — Output Format
+## Critical Requirement — Output Format
 
 All documentation MUST be:
 
 * Written in **multiple structured Markdown files**
 * Placed inside the folder:
-
   ```
   docs/setup/
   ```
 * Organized logically by topic
 * Cross-referenced when necessary
-* Clear enough for a new developer to set up the entire system from scratch without external help
+* Clear enough for a new developer to set up the entire Secom system from scratch without external help
 
 Do NOT produce a single monolithic file.
 
@@ -82,7 +74,7 @@ You may adapt filenames if necessary, but:
 
 ---
 
-# 🎯 Objectives
+## Objectives
 
 1. Validate technical stack completeness
 2. Identify undocumented or implicit dependencies
@@ -92,10 +84,11 @@ You may adapt filenames if necessary, but:
 6. Evaluate developer tooling and DX maturity
 7. Detect inconsistencies between code and documentation
 8. Produce enterprise-grade setup documentation
+9. Document Secom-specific setup requirements
 
 ---
 
-# 🔎 Scope of Analysis
+## Scope of Analysis
 
 ---
 
@@ -113,11 +106,17 @@ Cross-check:
 Identify:
 
 * Undocumented libraries or frameworks
-* Build tools (Webpack, Vite, tsc, Babel, SWC, etc.)
-* Testing frameworks
+* Build tools (Vite, tsc, Babel, SWC, etc.)
+* Testing frameworks (Vitest, Jest, Cypress)
 * Custom CLI tools
-* Background workers
+* Background workers (BullMQ)
 * External services (MongoDB, Redis, S3, queues, analytics, monitoring)
+
+**Secom-Specific Focus**:
+- Verify all technologies for Secom modules are present
+- Verify multi-tenancy support libraries
+- Verify RBAC implementation libraries
+- Verify background job processing (BullMQ)
 
 Document in:
 
@@ -131,6 +130,7 @@ Include:
 * Missing documentation
 * Unused dependencies
 * Architectural risks
+* Secom-specific technology requirements
 
 ---
 
@@ -151,6 +151,14 @@ Validate:
 * Defaults are explicit
 * Secrets handling approach
 * Differences between dev/staging/production
+* Tenant configuration
+* Module-specific configurations
+
+**Secom-Specific Focus**:
+- How are tenant configurations managed?
+- How are module-specific settings configured?
+- How are API keys for external services stored?
+- How is the default tenant (Secretaria de Comunicação) configured?
 
 Document in:
 
@@ -164,6 +172,7 @@ Include:
 * Required vs optional flags
 * Security risks
 * Missing entries
+* Secom-specific configuration requirements
 
 ---
 
@@ -182,6 +191,14 @@ Verify:
 * Submodules
 * Frontend/backend communication
 * Proxy/CORS configuration
+* Tenant initialization
+* Default user creation
+
+**Secom-Specific Focus**:
+- How is the default tenant created?
+- How is the default admin user created?
+- How are Secom modules initialized?
+- How is the database seeded with Secom-specific data?
 
 Document in:
 
@@ -198,6 +215,7 @@ Include:
 * Missing steps
 * Fragile setup points
 * Improvements
+* Secom-specific initialization steps
 
 ---
 
@@ -212,6 +230,13 @@ Evaluate:
 * Asset bundling
 * Environment injection
 * Docker vs local workflows
+* Vite configuration for frontend
+* Express configuration for backend
+
+**Secom-Specific Focus**:
+- How are Secom modules built?
+- How is multi-tenancy handled in development?
+- How are role-based features tested locally?
 
 Document in:
 
@@ -226,6 +251,7 @@ Include:
 * Performance risks
 * Build inconsistencies
 * Recommended improvements
+* Secom-specific build considerations
 
 ---
 
@@ -237,11 +263,17 @@ Validate:
 * Prettier
 * Husky
 * Commitlint
-* Testing frameworks
+* Testing frameworks (Vitest, Jest, Cypress)
 * tsconfig files
 * CI/CD pipelines
 * Docker Compose
 * Local scripts
+* IDE configuration
+
+**Secom-Specific Focus**:
+- Are there Secom-specific linting rules?
+- Are there Secom-specific testing patterns?
+- Are there Secom-specific commit conventions?
 
 Document in:
 
@@ -255,6 +287,7 @@ Include:
 * DX maturity assessment
 * Tooling gaps
 * Automation opportunities
+* Secom-specific tooling requirements
 
 ---
 
@@ -269,6 +302,12 @@ Identify:
 * Required ports
 * Background services
 * Local scripts
+* Secom-specific dependencies
+
+**Secom-Specific Focus**:
+- Are there Secom-specific CLI tools?
+- Are there Secom-specific initialization scripts?
+- Are there Secom-specific database setup requirements?
 
 Document in:
 
@@ -282,8 +321,9 @@ docs/setup/11-Implicit-Dependencies.md
 
 Cross-check:
 
-* `docs/backend`
-* `docs/frontend`
+* `docs/architecture/backend`
+* `docs/architecture/frontend`
+* Actual code and configuration
 
 Identify:
 
@@ -291,6 +331,7 @@ Identify:
 * Missing steps
 * Conflicting configuration info
 * Undocumented assumptions
+* Secom-specific documentation gaps
 
 Document findings in:
 
@@ -300,7 +341,7 @@ docs/setup/13-Setup-Risk-Assessment.md
 
 ---
 
-# 📊 Required Documentation Standards
+## 📊 Required Documentation Standards
 
 Each file must:
 
@@ -309,8 +350,9 @@ Each file must:
 * Be structured with headings
 * Use code blocks for commands
 * Include warnings where needed
-* Include “Common Errors” sections where applicable
+* Include "Common Errors" sections where applicable
 * Reference related setup files when necessary
+* Include Secom-specific notes where applicable
 
 Documentation must be:
 
@@ -318,17 +360,35 @@ Documentation must be:
 * Onboarding-friendly
 * Production-conscious
 * Explicit (no hidden assumptions)
+* Secom-domain-aware
 
 ---
 
-# 🧾 Final Output Rules
+## 🧾 Final Output Rules
 
 * Generate all required Markdown files
 * Do not merge them into one file
 * Clearly indicate file path at the top of each output
 * Assume this will be committed directly into the repository
+* Include Secom-specific setup requirements in each relevant section
 
 Be critical, precise, and structured.
-Assume this system must support long-term enterprise scalability.
+Assume this system must support long-term enterprise scalability for Secom.
 
+---
+
+## Secom-Specific Setup Considerations
+
+When analyzing setup and configuration, pay special attention to:
+
+* **Multi-tenancy**: How tenants are initialized and configured
+* **RBAC**: How roles and permissions are set up
+* **Modules**: How the 7 Secom modules are initialized
+* **Default Data**: How default tenant and admin user are created
+* **Database**: How MongoDB is configured for Secom
+* **Cache**: How Redis is configured for Secom
+* **Background Jobs**: How BullMQ is configured for Secom
+* **API Routes**: How `/api/v1/` routes are organized
+* **Frontend Routes**: How Secom module pages are organized
+* **Environment Separation**: How dev/staging/prod differ for Secom
 

@@ -19,34 +19,45 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
 
   return (
     <form onSubmit={onSubmit} className="form-stack" noValidate>
-      <FormField name="title" label={t('domain.pressReleases.fields.title')} error={errors.title} required>
-        <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} />
-      </FormField>
-      <FormField name="subtitle" label={t('domain.pressReleases.fields.subtitle')}>
-        <input id="subtitle" type="text" value={form.subtitle} onChange={e => set('subtitle', e.target.value)} />
-      </FormField>
+      <div className="form-grid">
+        <FormField name="title" label={t('domain.pressReleases.fields.title')} error={errors.title} required>
+          <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} />
+        </FormField>
+        <FormField name="subtitle" label={t('domain.pressReleases.fields.subtitle')}>
+          <input id="subtitle" type="text" value={form.subtitle} onChange={e => set('subtitle', e.target.value)} />
+        </FormField>
+      </div>
+
       <FormField name="content" label={t('domain.pressReleases.fields.content')} error={errors.content} required>
         <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} rows={6} />
       </FormField>
+
       <FormField name="summary" label={t('domain.pressReleases.fields.summary')}>
         <textarea id="summary" value={form.summary} onChange={e => set('summary', e.target.value)} rows={2} />
       </FormField>
-      <FormField name="category" label={t('domain.pressReleases.fields.category')}>
-        <select id="category" value={form.category} onChange={e => set('category', e.target.value)}>
-          {PRESS_RELEASE_CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
-        </select>
-      </FormField>
+
+      <div className="form-grid">
+        <FormField name="category" label={t('domain.pressReleases.fields.category')}>
+          <select id="category" value={form.category} onChange={e => set('category', e.target.value)}>
+            {PRESS_RELEASE_CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
+          </select>
+        </FormField>
+        {editing && (
+          <FormField name="status" label={t('domain.pressReleases.fields.status')}>
+            <select id="status" value={form.status} onChange={e => set('status', e.target.value)}>
+              {PRESS_RELEASE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+          </FormField>
+        )}
+      </div>
+
       <FormField name="tags" label={t('domain.pressReleases.fields.tags')} helpText={t('domain.pressReleases.tagsHint')}>
         <input id="tags" type="text" value={form.tags} onChange={e => set('tags', e.target.value)} />
       </FormField>
-      {editing && (
-        <FormField name="status" label={t('domain.pressReleases.fields.status')}>
-          <select id="status" value={form.status} onChange={e => set('status', e.target.value)}>
-            {PRESS_RELEASE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </FormField>
-      )}
-      <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+
+      <div className="form-actions">
+        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+      </div>
     </form>
   );
 }

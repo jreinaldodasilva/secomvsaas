@@ -3,27 +3,42 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-12);
+  padding: var(--space-16) var(--space-8);
   text-align: center;
 }
 
+.iconWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: var(--radius-xl);
+  background: var(--color-neutral-100);
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--space-5);
+  font-size: 1.75rem;
+}
+
+/* Legacy .icon class kept for backward compat */
 .icon {
   color: var(--color-text-tertiary);
   margin-bottom: var(--space-4);
 }
 
 .title {
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
   margin: 0 0 var(--space-2) 0;
 }
 
 .description {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
   margin: 0 0 var(--space-6) 0;
-  max-width: 400px;
+  max-width: 28rem;
+  line-height: var(--line-height-relaxed);
 }
 
 .action { margin-top: var(--space-2); }

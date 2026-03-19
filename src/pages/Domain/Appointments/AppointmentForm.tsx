@@ -18,32 +18,46 @@ export function AppointmentForm({ form, setForm, errors, editing, editStatus = '
 
   return (
     <form onSubmit={onSubmit} className="form-stack" noValidate>
-      <FormField name="citizenName" label={t('domain.appointments.fields.citizenName')} error={errors.citizenName} required>
-        <input id="citizenName" type="text" value={form.citizenName} onChange={e => set('citizenName', e.target.value)} />
-      </FormField>
-      <FormField name="citizenCpf" label={t('domain.appointments.fields.citizenCpf')}>
-        <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} maxLength={11} placeholder="00000000000" inputMode="numeric" />
-      </FormField>
-      <FormField name="citizenPhone" label={t('domain.appointments.fields.citizenPhone')}>
-        <input id="citizenPhone" type="text" value={form.citizenPhone} onChange={e => set('citizenPhone', e.target.value)} inputMode="tel" />
-      </FormField>
-      <FormField name="service" label={t('domain.appointments.fields.service')} error={errors.service} required>
-        <input id="service" type="text" value={form.service} onChange={e => set('service', e.target.value)} />
-      </FormField>
-      <FormField name="scheduledAt" label={t('domain.appointments.fields.scheduledAt')} error={errors.scheduledAt} required>
-        <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} />
-      </FormField>
-      <FormField name="notes" label={t('domain.appointments.fields.notes')}>
-        <textarea id="notes" value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} />
-      </FormField>
-      {editing && (
-        <FormField name="editStatus" label={t('domain.appointments.fields.status')}>
-          <select id="editStatus" value={editStatus} onChange={e => setEditStatus(e.target.value)}>
-            {APPOINTMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
+      <div className="form-section">
+        <p className="form-section-title">Dados do Cidadão</p>
+        <FormField name="citizenName" label={t('domain.appointments.fields.citizenName')} error={errors.citizenName} required>
+          <input id="citizenName" type="text" value={form.citizenName} onChange={e => set('citizenName', e.target.value)} />
         </FormField>
-      )}
-      <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <div className="form-grid">
+          <FormField name="citizenCpf" label={t('domain.appointments.fields.citizenCpf')}>
+            <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} maxLength={11} placeholder="00000000000" inputMode="numeric" />
+          </FormField>
+          <FormField name="citizenPhone" label={t('domain.appointments.fields.citizenPhone')}>
+            <input id="citizenPhone" type="text" value={form.citizenPhone} onChange={e => set('citizenPhone', e.target.value)} inputMode="tel" />
+          </FormField>
+        </div>
+      </div>
+
+      <div className="form-section">
+        <p className="form-section-title">Agendamento</p>
+        <FormField name="service" label={t('domain.appointments.fields.service')} error={errors.service} required>
+          <input id="service" type="text" value={form.service} onChange={e => set('service', e.target.value)} />
+        </FormField>
+        <div className="form-grid">
+          <FormField name="scheduledAt" label={t('domain.appointments.fields.scheduledAt')} error={errors.scheduledAt} required>
+            <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} />
+          </FormField>
+          {editing && (
+            <FormField name="editStatus" label={t('domain.appointments.fields.status')}>
+              <select id="editStatus" value={editStatus} onChange={e => setEditStatus(e.target.value)}>
+                {APPOINTMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </FormField>
+          )}
+        </div>
+        <FormField name="notes" label={t('domain.appointments.fields.notes')}>
+          <textarea id="notes" value={form.notes} onChange={e => set('notes', e.target.value)} rows={3} />
+        </FormField>
+      </div>
+
+      <div className="form-actions">
+        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+      </div>
     </form>
   );
 }

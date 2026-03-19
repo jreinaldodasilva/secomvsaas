@@ -178,7 +178,7 @@ select:focus-visible {
 
 /* --- Forms --- */
 .form-field { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-4); }
-.form-field label { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); }
+.form-field label { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
 .form-field input,
 .form-field select,
 .form-field textarea {
@@ -187,7 +187,10 @@ select:focus-visible {
   border-radius: var(--radius-input);
   font-size: var(--font-size-base);
   min-height: var(--input-height-md);
-  transition: border-color var(--transition-fast);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  width: 100%;
 }
 .form-field input:focus,
 .form-field select:focus,
@@ -198,19 +201,20 @@ select:focus-visible {
 }
 .form-error { color: var(--color-error); font-size: var(--font-size-sm); margin-bottom: var(--space-3); }
 
-.form-stack { display: flex; flex-direction: column; gap: var(--space-3); }
-.form-stack label { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-secondary); }
+/* form-stack: vertical stack of FormField components */
+.form-stack { display: flex; flex-direction: column; gap: var(--space-4); }
 .form-stack input,
 .form-stack select,
 .form-stack textarea {
   width: 100%;
-  margin-top: var(--space-1);
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-input);
   font-size: var(--font-size-base);
   min-height: var(--input-height-md);
-  transition: border-color var(--transition-fast);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 .form-stack input:focus,
 .form-stack select:focus,
@@ -219,13 +223,76 @@ select:focus-visible {
   border-color: var(--color-primary-500);
   box-shadow: var(--focus-ring);
 }
-.form-row { display: flex; gap: var(--space-2); }
+.form-stack textarea { resize: vertical; min-height: 5rem; padding: var(--space-3) var(--space-4); line-height: var(--line-height-relaxed); }
+
+/* form-grid: 2-column layout for related fields */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-4);
+}
+.form-span-2 { grid-column: span 2; }
+
+/* form-section: visual grouping within a form */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-lg);
+}
+.form-section-title {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--space-1);
+}
+
+.form-row { display: flex; gap: var(--space-3); }
 .form-row > * { flex: 1; }
 .form-row > .form-col-narrow { flex: 0 0 5rem; }
 .form-field-error input,
 .form-field-error select,
 .form-field-error textarea { border-color: var(--color-error); }
-.form-check { display: flex; align-items: center; gap: var(--space-2); }
+.form-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  cursor: pointer;
+}
+.form-check input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  min-height: unset;
+  accent-color: var(--color-primary-600);
+  cursor: pointer;
+}
+
+/* form-actions: submit row */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-primary);
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 600px) {
+  .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
+  .form-span-2 { grid-column: span 1; }
+}
 
 /* --- Spinner --- */
 .spinner {
@@ -240,8 +307,26 @@ select:focus-visible {
 @keyframes spin { to { transform: rotate(360deg); } }
 
 /* --- Page layout --- */
-.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); }
-.actions-row { display: flex; gap: var(--space-1); }
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+.page-header h1 {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-1);
+  line-height: var(--line-height-tight);
+}
+.page-header-meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+.actions-row { display: flex; gap: var(--space-2); align-items: center; flex-shrink: 0; }
 
 /* --- Cookie consent banner --- */
 .cookie-banner {

@@ -151,17 +151,19 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         <div>
           <h1>{title}</h1>
           {!listQuery.isLoading && total > 0 && (
-            <p style={{ fontSize: 'var(--font-size-sm)', color: 'var(--color-text-tertiary)', margin: 0 }}>
+            <p className="page-header-meta">
               {total} {total === 1 ? 'registro' : 'registros'}
             </p>
           )}
         </div>
-        <Button onClick={openCreate}>
-          <svg viewBox="0 0 20 20" fill="currentColor" width={16} height={16} aria-hidden="true">
-            <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-          </svg>
-          {createLabel}
-        </Button>
+        <div className="actions-row">
+          <Button onClick={openCreate}>
+            <svg viewBox="0 0 20 20" fill="currentColor" width={16} height={16} aria-hidden="true">
+              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+            </svg>
+            {createLabel}
+          </Button>
+        </div>
       </div>
       <DataTable
         columns={columns(openEdit, setDeleteTarget)}

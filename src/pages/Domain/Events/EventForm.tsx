@@ -18,23 +18,32 @@ export function EventForm({ form, setForm, errors, isPending, onSubmit }: Props)
       <FormField name="title" label={t('domain.events.fields.title')} error={errors.title} required>
         <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} />
       </FormField>
+
       <FormField name="description" label={t('domain.events.fields.description')}>
         <textarea id="description" value={form.description} onChange={e => set('description', e.target.value)} rows={3} />
       </FormField>
+
       <FormField name="location" label={t('domain.events.fields.location')}>
         <input id="location" type="text" value={form.location} onChange={e => set('location', e.target.value)} />
       </FormField>
-      <FormField name="startsAt" label={t('domain.events.fields.startsAt')} error={errors.startsAt} required>
-        <input id="startsAt" type="datetime-local" value={form.startsAt} onChange={e => set('startsAt', e.target.value)} />
-      </FormField>
-      <FormField name="endsAt" label={t('domain.events.fields.endsAt')}>
-        <input id="endsAt" type="datetime-local" value={form.endsAt} onChange={e => set('endsAt', e.target.value)} />
-      </FormField>
+
+      <div className="form-grid">
+        <FormField name="startsAt" label={t('domain.events.fields.startsAt')} error={errors.startsAt} required>
+          <input id="startsAt" type="datetime-local" value={form.startsAt} onChange={e => set('startsAt', e.target.value)} />
+        </FormField>
+        <FormField name="endsAt" label={t('domain.events.fields.endsAt')}>
+          <input id="endsAt" type="datetime-local" value={form.endsAt} onChange={e => set('endsAt', e.target.value)} />
+        </FormField>
+      </div>
+
       <label className="form-check">
         <input type="checkbox" checked={form.isPublic} onChange={e => set('isPublic', e.target.checked)} />
         {t('domain.events.fields.isPublic')}
       </label>
-      <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+
+      <div className="form-actions">
+        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+      </div>
     </form>
   );
 }

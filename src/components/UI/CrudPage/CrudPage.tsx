@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { ReactNode } from 'react';
 import { DataTable, Modal, Button, ConfirmDialog } from '@/components/UI/index';
 import type { Column } from '@/components/UI/Table/DataTable';
 
@@ -6,6 +7,8 @@ export interface CrudPageProps<TItem extends { id: string }, TForm> {
   title: string;
   createLabel: string;
   emptyMessage: string;
+  emptyIcon?: ReactNode | string;
+  emptyAction?: { label: string; onClick: () => void } | ReactNode;
   searchPlaceholder: string;
   editModalTitle: string;
   createModalTitle: string;
@@ -63,6 +66,8 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   title,
   createLabel,
   emptyMessage,
+  emptyIcon,
+  emptyAction,
   searchPlaceholder,
   editModalTitle,
   createModalTitle,
@@ -169,6 +174,8 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         onSearch={onSearch}
         searchPlaceholder={searchPlaceholder}
         emptyMessage={emptyMessage}
+        emptyIcon={emptyIcon}
+        emptyAction={emptyAction}
       />
       <Modal
         isOpen={modalOpen}

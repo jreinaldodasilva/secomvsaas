@@ -184,20 +184,20 @@
 
 .ctaActions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
 
-.ctaBtnPrimary {
-  background: var(--color-accent-400) !important;
-  color: var(--color-primary-900) !important;
+.ctaBtnPrimary.ctaBtnPrimary {
+  background: var(--color-accent-400);
+  color: var(--color-primary-900);
 }
-.ctaBtnPrimary:hover { background: var(--color-accent-300) !important; }
+.ctaBtnPrimary.ctaBtnPrimary:hover { background: var(--color-accent-300); }
 
-.ctaBtnOutline {
-  color: #fff !important;
-  border: 2px solid rgba(255,255,255,0.7) !important;
-  background: transparent !important;
+.ctaBtnOutline.ctaBtnOutline {
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
 }
-.ctaBtnOutline:hover {
-  background: rgba(255,255,255,0.15) !important;
-  border-color: #fff !important;
+.ctaBtnOutline.ctaBtnOutline:hover {
+  background: rgba(255,255,255,0.15);
+  border-color: #fff;
 }
 
 /* ── Responsive ── */
@@ -211,7 +211,7 @@
   .heroSubtitle         { font-size: var(--font-size-lg); margin-left: auto; margin-right: auto; }
   .visualGrid           { grid-template-columns: 1fr; }
   .lgpdLayout           { grid-template-columns: 1fr; }
-  .lgpdImage            { display: none; }
+  .lgpdImage            { max-width: 20rem; margin: 0 auto; }
   .grid                 { grid-template-columns: 1fr; gap: var(--space-6); }
   .gridModules          { grid-template-columns: repeat(2, 1fr); }
   .gridTestimonials     { grid-template-columns: 1fr; }

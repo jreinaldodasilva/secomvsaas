@@ -60,6 +60,7 @@ export function PressReleasesPage() {
       title={t('domain.pressReleases.title')}
       createLabel={t('domain.pressReleases.create')}
       emptyMessage={t('domain.pressReleases.empty')}
+      emptyIcon="article"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.pressReleases.create')}

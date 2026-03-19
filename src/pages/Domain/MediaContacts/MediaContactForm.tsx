@@ -25,7 +25,7 @@ export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }:
         <input id="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} />
       </FormField>
       <FormField name="phone" label={t('domain.mediaContacts.fields.phone')}>
-        <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} />
+        <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} inputMode="tel" />
       </FormField>
       <FormField name="beat" label={t('domain.mediaContacts.fields.beat')}>
         <input id="beat" type="text" value={form.beat} onChange={e => set('beat', e.target.value)} />

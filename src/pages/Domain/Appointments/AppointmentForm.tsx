@@ -22,10 +22,10 @@ export function AppointmentForm({ form, setForm, errors, editing, editStatus = '
         <input id="citizenName" type="text" value={form.citizenName} onChange={e => set('citizenName', e.target.value)} />
       </FormField>
       <FormField name="citizenCpf" label={t('domain.appointments.fields.citizenCpf')}>
-        <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} maxLength={11} placeholder="00000000000" />
+        <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} maxLength={11} placeholder="00000000000" inputMode="numeric" />
       </FormField>
       <FormField name="citizenPhone" label={t('domain.appointments.fields.citizenPhone')}>
-        <input id="citizenPhone" type="text" value={form.citizenPhone} onChange={e => set('citizenPhone', e.target.value)} />
+        <input id="citizenPhone" type="text" value={form.citizenPhone} onChange={e => set('citizenPhone', e.target.value)} inputMode="tel" />
       </FormField>
       <FormField name="service" label={t('domain.appointments.fields.service')} error={errors.service} required>
         <input id="service" type="text" value={form.service} onChange={e => set('service', e.target.value)} />

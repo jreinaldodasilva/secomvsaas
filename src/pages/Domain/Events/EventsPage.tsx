@@ -59,6 +59,7 @@ export function EventsPage() {
       title={t('domain.events.title')}
       createLabel={t('domain.events.create')}
       emptyMessage={t('domain.events.empty')}
+      emptyIcon="calendar"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.events.create')}

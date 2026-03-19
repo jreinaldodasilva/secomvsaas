@@ -90,7 +90,21 @@
   --color-info-light:  #dbeafe;
   --color-info-dark:   #1976D2;
 
-  /* Semantic surface / text / border */
+  /* Stat icon palette — dashboard icon gradients */
+  --color-icon-blue-from:   #3b82f6;
+  --color-icon-blue-to:     #1d4ed8;
+  --color-icon-teal-from:   #14b8a6;
+  --color-icon-teal-to:     #0f766e;
+  --color-icon-purple-from: #a855f7;
+  --color-icon-purple-to:   #7c3aed;
+  --color-icon-orange-from: #f97316;
+  --color-icon-orange-to:   #c2410c;
+  --color-icon-green-from:  #22c55e;
+  --color-icon-green-to:    #15803d;
+  --color-icon-indigo-from: #6366f1;
+  --color-icon-indigo-to:   #4338ca;
+  --color-icon-pink-from:   #ec4899;
+  --color-icon-pink-to:     #be185d;
   --color-bg-primary:     #ffffff;
   --color-bg-secondary:   #F9FAFB;
   --color-text-primary:   #0F172A;

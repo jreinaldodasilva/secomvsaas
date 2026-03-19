@@ -61,6 +61,7 @@ export function CitizenPortalPage() {
       title={t('domain.citizenPortal.title')}
       createLabel={t('domain.citizenPortal.create')}
       emptyMessage={t('domain.citizenPortal.empty')}
+      emptyIcon="users"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.citizenPortal.create')}

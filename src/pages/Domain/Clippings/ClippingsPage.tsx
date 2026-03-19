@@ -60,6 +60,7 @@ export function ClippingsPage() {
       title={t('domain.clippings.title')}
       createLabel={t('domain.clippings.create')}
       emptyMessage={t('domain.clippings.empty')}
+      emptyIcon="document"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.clippings.create')}

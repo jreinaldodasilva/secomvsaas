@@ -58,6 +58,7 @@ export function MediaContactsPage() {
       title={t('domain.mediaContacts.title')}
       createLabel={t('domain.mediaContacts.create')}
       emptyMessage={t('domain.mediaContacts.empty')}
+      emptyIcon="contacts"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.mediaContacts.create')}

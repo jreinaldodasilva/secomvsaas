@@ -84,13 +84,13 @@
 .statIcon svg { width: 1.4rem; height: 1.4rem; }
 
 /* Icon color variants */
-.icon_blue   { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.icon_teal   { background: linear-gradient(135deg, #14b8a6, #0f766e); }
-.icon_purple { background: linear-gradient(135deg, #a855f7, #7c3aed); }
-.icon_orange { background: linear-gradient(135deg, #f97316, #c2410c); }
-.icon_green  { background: linear-gradient(135deg, #22c55e, #15803d); }
-.icon_indigo { background: linear-gradient(135deg, #6366f1, #4338ca); }
-.icon_pink   { background: linear-gradient(135deg, #ec4899, #be185d); }
+.icon_blue   { background: linear-gradient(135deg, var(--color-icon-blue-from),   var(--color-icon-blue-to)); }
+.icon_teal   { background: linear-gradient(135deg, var(--color-icon-teal-from),   var(--color-icon-teal-to)); }
+.icon_purple { background: linear-gradient(135deg, var(--color-icon-purple-from), var(--color-icon-purple-to)); }
+.icon_orange { background: linear-gradient(135deg, var(--color-icon-orange-from), var(--color-icon-orange-to)); }
+.icon_green  { background: linear-gradient(135deg, var(--color-icon-green-from),  var(--color-icon-green-to)); }
+.icon_indigo { background: linear-gradient(135deg, var(--color-icon-indigo-from), var(--color-icon-indigo-to)); }
+.icon_pink   { background: linear-gradient(135deg, var(--color-icon-pink-from),   var(--color-icon-pink-to)); }
 
 .statContent { flex: 1; min-width: 0; }
 .statValue   { display: block; font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text-primary); line-height: 1.2; }

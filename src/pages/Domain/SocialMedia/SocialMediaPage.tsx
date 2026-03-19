@@ -60,6 +60,7 @@ export function SocialMediaPage() {
       title={t('domain.socialMedia.title')}
       createLabel={t('domain.socialMedia.create')}
       emptyMessage={t('domain.socialMedia.empty')}
+      emptyIcon="social"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.socialMedia.create')}

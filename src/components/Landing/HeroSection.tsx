@@ -1,10 +1,14 @@
+import { lazy, Suspense } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { DashboardMockup } from '@/components/DashboardMockup/DashboardMockup';
 import { containerVariants, itemVariants } from './LandingShared';
 import { PILLS, STATS } from './landing.data';
 import styles from './Landing.module.css';
 import pageStyles from '@/pages/Landing/LandingPage.module.css';
+
+const DashboardMockup = lazy(() =>
+  import('@/components/DashboardMockup/DashboardMockup').then(m => ({ default: m.DashboardMockup }))
+);
 
 export function HeroSection() {
   const navigate = useNavigate();
@@ -44,7 +48,9 @@ export function HeroSection() {
           animate={{ opacity: 1, ...(reduced ? {} : { x: 0 }) }}
           transition={{ duration: reduced ? 0.15 : 0.7, delay: reduced ? 0 : 0.2, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <DashboardMockup />
+          <Suspense fallback={null}>
+            <DashboardMockup />
+          </Suspense>
         </motion.div>
       </div>
     </motion.section>

@@ -22,6 +22,8 @@ interface DataTableProps<T> {
   onSearch?: (query: string) => void;
   searchPlaceholder?: string;
   emptyMessage?: string;
+  emptyIcon?: React.ReactNode | string;
+  emptyAction?: { label: string; onClick: () => void } | React.ReactNode;
   onRowClick?: (item: T) => void;
   clientSort?: boolean;
   onSortChange?: (key: string, dir: 'asc' | 'desc') => void;
@@ -54,7 +56,7 @@ function TableSkeleton({ columns, rows = 5 }: { columns: number; rows?: number }
 
 export function DataTable<T extends Record<string, any>>({
   columns, data, total = 0, page = 1, limit = 10,
-  isLoading, onPageChange, onSearch, searchPlaceholder, emptyMessage,
+  isLoading, onPageChange, onSearch, searchPlaceholder, emptyMessage, emptyIcon, emptyAction,
   onRowClick, clientSort = false, onSortChange,
 }: DataTableProps<T>) {
   const { t } = useTranslation();
@@ -130,7 +132,7 @@ export function DataTable<T extends Record<string, any>>({
       )}
 
       {sorted.length === 0 ? (
-        <EmptyState title={resolvedEmptyMessage} />
+        <EmptyState title={resolvedEmptyMessage} icon={emptyIcon} action={emptyAction} />
       ) : (
         <>
           <div className={styles.tableContainer}>

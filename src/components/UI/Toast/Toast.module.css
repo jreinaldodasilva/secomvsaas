@@ -75,6 +75,10 @@
 .close:hover { background: var(--color-neutral-200); color: var(--color-text-primary); }
 .close svg { width: 0.875rem; height: 0.875rem; }
 
+@media (max-width: 767px) {
+  .close { width: 2.75rem; height: 2.75rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .toast { transition: none; }
 }

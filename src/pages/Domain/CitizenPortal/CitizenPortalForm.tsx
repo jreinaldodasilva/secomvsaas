@@ -24,10 +24,10 @@ export function CitizenPortalForm({ form, setForm, errors, editing, isPending, o
         <input id="fullName" type="text" value={form.fullName} onChange={e => set('fullName', e.target.value)} />
       </FormField>
       <FormField name="cpf" label={t('domain.citizenPortal.fields.cpf')}>
-        <input id="cpf" type="text" value={form.cpf} onChange={e => set('cpf', e.target.value)} maxLength={11} placeholder="00000000000" />
+        <input id="cpf" type="text" value={form.cpf} onChange={e => set('cpf', e.target.value)} maxLength={11} placeholder="00000000000" inputMode="numeric" />
       </FormField>
       <FormField name="phone" label={t('domain.citizenPortal.fields.phone')}>
-        <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} />
+        <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} inputMode="tel" />
       </FormField>
       <FormField name="email" label={t('domain.citizenPortal.fields.email')}>
         <input id="email" type="email" value={form.email} onChange={e => set('email', e.target.value)} />

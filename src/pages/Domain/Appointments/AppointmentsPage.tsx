@@ -61,6 +61,7 @@ export function AppointmentsPage() {
       title={t('domain.appointments.title')}
       createLabel={t('domain.appointments.create')}
       emptyMessage={t('domain.appointments.empty')}
+      emptyIcon="calendar"
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.appointments.create')}

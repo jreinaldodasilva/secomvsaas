@@ -46,8 +46,8 @@ export async function baseRequest<T>(path: string, options: RequestOptions = {})
 
   const res = await fetch(url, {
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json', ...init.headers },
     ...init,
+    headers: { 'Content-Type': 'application/json', ...init.headers },
   });
 
   if (!res.ok) {

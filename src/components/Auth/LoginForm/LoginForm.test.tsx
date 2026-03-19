@@ -64,6 +64,6 @@ describe('LoginForm', () => {
     await userEvent.type(screen.getByLabelText('Senha'), 'x');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
-    expect(screen.getByRole('button', { name: 'Entrar' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Carregando...' })).toBeDisabled();
   });
 });

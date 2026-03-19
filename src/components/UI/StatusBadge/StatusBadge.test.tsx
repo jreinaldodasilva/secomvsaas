@@ -5,12 +5,12 @@ import styles from './StatusBadge.module.css';
 describe('StatusBadge', () => {
   it('renders the status text', () => {
     render(<StatusBadge status="active" />);
-    expect(screen.getByText('active')).toBeInTheDocument();
+    expect(screen.getByText('Ativo')).toBeInTheDocument();
   });
 
   it('applies badge and color class for known status', () => {
     render(<StatusBadge status="active" />);
-    const el = screen.getByText('active');
+    const el = screen.getByText('Ativo');
     expect(el).toHaveClass(styles.badge);
     expect(el).toHaveClass(styles.green);
   });
@@ -22,18 +22,20 @@ describe('StatusBadge', () => {
 
   it('uses custom colorMap when provided', () => {
     render(<StatusBadge status="vip" colorMap={{ vip: 'gold' }} />);
-    // color key not in module — element still renders with badge class
     expect(screen.getByText('vip')).toHaveClass(styles.badge);
   });
 
   it('maps all default statuses correctly', () => {
-    const expected: Record<string, keyof typeof styles> = {
-      active: 'green', inactive: 'gray', pending: 'yellow',
-      cancelled: 'red', completed: 'blue',
-    };
-    for (const [status, colorKey] of Object.entries(expected)) {
+    const expected: Array<[string, string, keyof typeof styles]> = [
+      ['active',    'Ativo',      'green'],
+      ['inactive',  'Inativo',    'gray'],
+      ['pending',   'Pendente',   'yellow'],
+      ['cancelled', 'Cancelado',  'red'],
+      ['completed', 'Concluído',  'blue'],
+    ];
+    for (const [status, label, colorKey] of expected) {
       const { unmount } = render(<StatusBadge status={status} />);
-      expect(screen.getByText(status)).toHaveClass(styles[colorKey]);
+      expect(screen.getByText(label)).toHaveClass(styles[colorKey]);
       unmount();
     }
   });

@@ -1,12 +1,9 @@
-# PROMPT (Auth & Security-Scoped Version)
+# Secom Authentication & Security Improvement Roadmap
 
-# Secom – Authentication & Security Improvement Roadmap
+**Primary Source Document**:
+- `docs/architecture/backend/auth-security.md` (or parts 1-N)
 
-**Primary Source Document:**
-`docs/backend/03-Secom-Auth-Security-Overview-Part1.md`
-`docs/backend/03-Secom-Auth-Security-Overview-Part2.md`
-
-**Scope Rule:**
+**Scope Rule**:
 Use the Auth & Security Overview as the primary source of truth.
 Other backend documents may only be used when explicitly referenced inside this document.
 
@@ -14,11 +11,11 @@ Other backend documents may only be used when explicitly referenced inside this 
 
 ## Context
 
-You are generating a **strategic security and authentication improvement roadmap** based on the Auth & Security Overview document.
+You are generating a **strategic security and authentication improvement roadmap** based on the Auth & Security document.
 
 You must:
 
-* Use all findings, risks, and recommendations explicitly described in `docs/backend/03-Secom-Auth-Security-Overview-Part1.md` and `docs/backend/03-Secom-Auth-Security-Overview-Part2.md`
+* Use all findings, risks, and recommendations explicitly described in the Auth & Security document
 * Follow cross-document references mentioned inside it
 * Not assume security issues outside what is stated or referenced
 * Not invent vulnerabilities not implied in the documentation
@@ -28,7 +25,7 @@ This is a **security-architecture and authentication roadmap**, not a general ba
 
 ---
 
-# Objective
+## Objective
 
 Transform the security findings into:
 
@@ -41,7 +38,7 @@ Transform the security findings into:
 
 ---
 
-# 1. Security & Authentication Issue Extraction
+## Security & Authentication Issue Extraction
 
 Extract every issue related to:
 
@@ -119,7 +116,7 @@ Extract every issue related to:
 
 ---
 
-## 1.1 Prioritized Security Issues
+## Prioritized Security Issues
 
 ### 🟥 P0 – Critical Vulnerabilities / Breach Risk
 
@@ -161,7 +158,7 @@ Security-prioritized issue inventory with cross-document traceability.
 
 ---
 
-# 2. Security Quick Wins
+## Security Quick Wins
 
 Identify low-effort security improvements mentioned or implied in the documentation.
 
@@ -201,11 +198,9 @@ Security-scoped quick wins with implementation guidance.
 
 ---
 
-# 3. Security Technical Debt Assessment
+## Security Technical Debt Assessment
 
 Break down only authentication and security-related debt.
-
----
 
 ### Categories
 
@@ -236,7 +231,7 @@ Provide:
 
 ---
 
-# 4. Phased Security Hardening Roadmap
+## Phased Security Hardening Roadmap
 
 Design a roadmap focused purely on authentication and security hardening.
 
@@ -305,27 +300,25 @@ Each phase must include:
 
 ---
 
-# 5. Security KPIs & Success Metrics
+## Security KPIs & Success Metrics
 
 Define security-specific metrics only.
 
-Examples:
-
-| Metric                       | Current State | Target                 | Measurement      |
-| ---------------------------- | ------------- | ---------------------- | ---------------- |
-| Tenant scoping breaches    | ?             | 0                      | Audit            |
-| Auth bypass vectors          | ?             | 0                      | Security testing |
-| Privilege escalation vectors | ?             | 0                      | Role review      |
-| JWT expiration policy        | ?             | Hardened standard      | Code audit       |
-| Password hashing strength    | ?             | ≥ recommended strength | Config review    |
-| Sensitive data in logs       | ?             | 0                      | Log scan         |
-| Rate limiting coverage       | ?             | 100% auth endpoints    | Middleware audit |
+| Metric | Current State | Target | Measurement |
+| ------ | ------------- | ------ | ----------- |
+| Tenant scoping breaches | ? | 0 | Audit |
+| Auth bypass vectors | ? | 0 | Security testing |
+| Privilege escalation vectors | ? | 0 | Role review |
+| JWT expiration policy | ? | Hardened standard | Code audit |
+| Password hashing strength | ? | ≥ recommended strength | Config review |
+| Sensitive data in logs | ? | 0 | Log scan |
+| Rate limiting coverage | ? | 100% auth endpoints | Middleware audit |
 
 Do not include performance or database metrics unless explicitly security-related.
 
 ---
 
-# 6. Security Maturity Score
+## Security Maturity Score
 
 Score from 0–100 based solely on security findings.
 
@@ -348,9 +341,7 @@ Provide:
 
 ---
 
-# 7. Executive Security Summary (CTO-Level)
-
-Provide:
+## Executive Security Summary (CTO-Level)
 
 ### Overall Security Health Score
 
@@ -386,11 +377,11 @@ Keep concise, strategic, and board-ready.
 
 ---
 
-# Output Files
+## Output Files
 
-## File 1:
+### File 1:
 
-`docs/backendroadmaps/03-Secom-Auth-Security-Improvement-Roadmap.md`
+`docs/roadmaps/backend/auth-security-improvement.md`
 
 Must include:
 
@@ -403,9 +394,9 @@ Must include:
 
 ---
 
-## File 2:
+### File 2:
 
-`docs/backendroadmaps/03-Secom-Auth-Security-Quick-Wins.md`
+`docs/roadmaps/backend/auth-security-quick-wins.md`
 
 Must include:
 
@@ -416,7 +407,7 @@ Must include:
 
 ---
 
-# Writing Guidelines
+## Writing Guidelines
 
 * Security-first perspective
 * Cross-document use allowed only when referenced in the Auth & Security document

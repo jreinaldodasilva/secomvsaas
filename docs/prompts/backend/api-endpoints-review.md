@@ -1,24 +1,30 @@
+# Secom API Endpoints & Design Review
 
-# Secom – Comprehensive API Architecture & Design Audit
+## Comprehensive API Architecture & Design Audit
 
 You are a **Senior Backend Architect performing a production-grade API audit** of the Secom system.
 
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação managing:
+- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
+- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Architecture**: Modular monolith with domain-driven organization
+- **API**: RESTful with `/api/v1/` prefix
+
 Use the following documents as your primary sources of truth:
 
-* `docs/backend/01-Secom-Backend-Architecture-Overview-Part1.md`
-* `docs/backend/01-Secom-Backend-Architecture-Overview-Part2.md`
-* `docs/backendroadmaps/01-Secom-Backend-Architecture-Improvement-Roadmap.md`
-* `docs/backendroadmaps/01-Secom-Backend-Architecture-Quick-Wins.md`
-* `docs/backendroadmaps/01-Secom-Backend-Architecture-Open-Issues.md`
-
+* `docs/architecture/backend/overview-part-1.md`
+* `docs/architecture/backend/overview-part-2.md`
+* `docs/architecture/backend/overview-part-3.md`
+* `docs/roadmaps/backend/architecture-improvement.md`
+* `docs/roadmaps/backend/quick-wins.md`
 
 Assume:
 
-* This is a **government communications system (Assessoria de Comunicação)**
-* The API is already in production or near-production
+* This is a **government communications system** handling sensitive data
+* The API is in production or near-production
 * The system must meet **high standards of security, scalability, data integrity, and maintainability**
 * It uses **MongoDB + Mongoose**
-* It implements **single-tenant architecture with seeded default tenant**
+* It implements **multi-tenancy with RBAC**
 
 If information is missing:
 
@@ -29,325 +35,81 @@ If information is missing:
 
 ---
 
-# 🎯 Audit Objectives
+## Audit Objectives
 
 Produce a **deep architectural analysis** of the API layer focusing on:
 
-1. API surface completeness
-2. REST design quality
-3. Consistency & predictability
-4. Scalability patterns
-5. Security & data scoping
+1. API surface completeness for all Secom modules
+2. REST design quality and consistency
+3. Consistency & predictability across modules
+4. Scalability patterns for multi-tenancy
+5. Security & data scoping for tenant isolation
 6. Long-term maintainability risks
-7. Developer experience
+7. Developer experience and API usability
 
 This is not a superficial checklist review — it is an engineering audit.
 
 ---
 
-# 📦 Required Output File
+## Required Output File
 
 ```
-docs/backend/02-Secom-API-Design-Overview.md
-```
-Obs: Consider splitting the document into multiple files due to its size. For example, create files such as 'docs/backend/02-Secom-API-Design-Overview-Part1.md', 'docs/backend/02-Secom-API-Design-Overview-Part2.md', and so on.
-
----
-
-# 📑 Required Sections
-
----
-
-## 1️⃣ API Overview
-
-Provide:
-
-* High-level API architecture summary
-* Domain breakdown (auth, citizens, agendamentos, press-releases, etc.)
-* Estimated endpoint count
-* API maturity level (Prototype / MVP / Production-Ready / Enterprise-Grade)
-* Architectural strengths
-* High-level risks
-
----
-
-## 2️⃣ Complete API Endpoint Inventory
-
-Create a structured inventory of **all discoverable endpoints**.
-
-### Requirements:
-
-* Group by resource domain
-* Include protected vs public
-* Include inferred endpoints only if clearly justified
-
-### Required Table Format:
-
-| Method | Endpoint | Controller | Handler | Auth | Roles | Request Schema | Response Schema | Status Codes | Notes |
-| ------ | -------- | ---------- | ------- | ---- | ----- | -------------- | --------------- | ------------ | ----- |
-
-Additionally:
-
-* Count endpoints per domain
-* Identify overly large controllers
-* Flag missing CRUD symmetry
-* Highlight inconsistent naming
-
-Deliverable must include:
-
-* Endpoint totals
-* Observed patterns
-* Design smells
-
----
-
-## 3️⃣ RESTful Design Evaluation
-
-Evaluate against REST principles:
-
-### Checklist:
-
-* Resource-based URLs
-* Proper HTTP verbs
-* No RPC-style naming
-* Stateless design
-* Proper status code usage
-* Predictable nesting
-* Idempotency where applicable
-* Soft delete behavior consistency
-
-### Output Format:
-
-#### REST Compliance Score (0–100)
-
-#### Severity Classification:
-
-* 🟥 Critical (Breaks REST principles)
-* 🟧 Major Design Smell
-* 🟨 Minor Inconsistency
-* 🟩 Well Designed
-
-For each violation:
-
-* Show concrete example
-* Explain why it's problematic
-* Provide corrected version
-* Estimate refactor complexity (Low / Medium / High)
-
----
-
-## 4️⃣ Request & Response Pattern Analysis
-
-Analyze all request and response contracts.
-
-### Evaluate:
-
-#### Naming Consistency
-
-* camelCase vs snake_case
-* Enum casing
-* Boolean naming
-
-#### Success Envelope Pattern
-
-Is there:
-
-```json
-{ "success": true, "data": {...}, "meta": {...} }
+docs/architecture/backend/api-design.md
 ```
 
-Or inconsistent raw objects?
-
-#### Error Standardization
-
-* Single error format?
-* Machine-readable error codes?
-* Field-level validation?
-* Localization consistency (PT-BR vs EN)?
-
-#### Date & Time Handling
-
-* ISO 8601?
-* Timezone awareness?
-* UTC normalization?
-
-#### Partial vs Full Updates
-
-* PUT vs PATCH usage?
-* Risk of accicommunications overwrites?
-
-Deliver:
-
-* Pattern Consistency Score (0–100)
-* Identified contract fragmentation
-* Refactor recommendations
+Note: Consider splitting the document into multiple files due to its size. For example, create files such as `docs/architecture/backend/api-design-part-1.md`, `docs/architecture/backend/api-design-part-2.md`, and so on.
 
 ---
 
-## 5️⃣ Pagination, Filtering & Sorting Architecture
+## Required Sections
 
-Evaluate all list endpoints.
-
-### Required Analysis:
-
-* Pagination strategy (page/limit vs cursor)
-* Metadata consistency
-* Default limits
-* Protection against unbounded queries
-* Index-aligned filtering
-* Multi-field sorting support
-
-### Risk Classification:
-
-* 🟥 No pagination
-* 🟧 Inconsistent format
-* 🟨 Limited filtering
-* 🟩 Production-ready scalable design
-
-Provide:
-
-* Performance implications
-* Index alignment assessment (based on MongoDB architecture doc)
-* Scalability ceiling estimation
+1. Executive Summary
+2. API Overview (Secom modules and endpoints)
+3. Complete API Endpoint Inventory (organized by module)
+4. RESTful Design Evaluation
+5. Request & Response Pattern Analysis
+6. Pagination, Filtering & Sorting Architecture
+7. API Versioning Strategy
+8. Multi-Tenancy & Security Boundary Review
+9. Rate Limiting & Abuse Protection
+10. API Documentation Quality
+11. Architectural Risk Matrix
+12. Scoring Summary
 
 ---
 
-## 6️⃣ API Versioning Strategy
+## Secom-Specific Analysis Points
 
-Document:
+When analyzing the API, pay special attention to:
 
-* Versioning mechanism (URL/header/none)
-* Version coverage consistency
-* Breaking change strategy
-* Deprecation policy
-* Migration risk
-
-Provide:
-
-* Versioning maturity rating
-* Enterprise-readiness assessment
+* **Module Organization**: How the 7 Secom modules are represented in API routes
+* **Role-Based Access**: How different roles (admin, assessor, social_media, atendente, citizen) access different endpoints
+* **Tenant Isolation**: How multi-tenancy is enforced at the API level
+* **Data Scoping**: How tenant data is properly scoped in responses
+* **Module Communication**: How modules interact through the API
+* **Status Workflows**: How different modules handle status transitions (e.g., press release approval workflow)
 
 ---
 
-## 7️⃣ Multi-Tenancy & Security Boundary Review
+## Formatting & Style Requirements
 
-This is critical.
-
-Evaluate:
-
-* Tenant scoping enforcement
-* Middleware dependency risks
-* Potential cross-boundary leakage scenarios
-* Super admin bypass rules
-* Token scoping
-* Audit logging exposure
-* Mass assignment risks
-* Field-level security
-
-Provide:
-
-* Tenant Isolation Risk Assessment
-* Attack Surface Observations
-* Required Hardening Steps
-
----
-
-## 8️⃣ Rate Limiting & Abuse Protection
-
-Analyze:
-
-* Rate limiting existence
-* Scope (IP / user / tenant / token)
-* Headers exposed
-* Protection of heavy endpoints
-* DDoS mitigation
-* Background job abuse
-
-Provide:
-
-* Abuse Risk Level
-* Production-readiness rating
-
----
-
-## 9️⃣ API Documentation Quality
-
-Evaluate:
-
-* Swagger/OpenAPI presence
-* Schema accuracy vs code
-* Example completeness
-* Error documentation
-* Auth documentation
-* Onboarding clarity
-
-Provide:
-
-* Documentation Coverage %
-* Developer Experience Rating
-
----
-
-## 🔟 Architectural Risk Matrix
-
-Create a final prioritized matrix:
-
-| Risk | Category | Severity | Impact | Effort | Priority |
-| ---- | -------- | -------- | ------ | ------ | -------- |
-
-Include:
-
-* Top 5 immediate risks
-* Top 5 structural risks
-* Quick wins
-* Long-term refactors
-
----
-
-# 📊 Scoring Summary
-
-Provide final scores:
-
-| Category             | Score (0–100) |
-| -------------------- | ------------- |
-| REST Design          |               |
-| Contract Consistency |               |
-| Scalability          |               |
-| Security & Isolation |               |
-| Documentation        |               |
-| Overall API Maturity |               |
-
----
-
-# ✍ Writing Standards
-
-* No fluff
-* No repetition
-* Be specific
-* Reference architecture evidence
-* Separate Findings from Recommendations
-* Use structured formatting
+* Use structured Markdown
+* Prefer tables for inventories and comparisons
+* Use diagrams where they add clarity
+* Maintain a neutral, technical tone
+* Avoid speculative assumptions
+* Avoid step-by-step refactoring instructions
 * Write for senior backend engineers
 
 ---
 
-# 🔒 Important Constraints
+## Quality Expectations
 
-* Do NOT fabricate endpoints
-* If controller layer is undocumented, state limitation
-* If inference is required, clearly label as assumption
-* Tie performance analysis to MongoDB index strategy
-* Tie security analysis to multi-tenant implementation details
+The analysis should:
 
----
-
-# Expected Depth Level
-
-This should read like:
-
-> An internal enterprise architecture audit report
-> prepared by a senior backend architect
-> for technical leadership decision-making
-
-Not a generic AI summary.
+* Provide architectural clarity specific to Secom's domain
+* Reveal technical and organizational risks
+* Support onboarding and long-term maintenance
+* Serve as a baseline for refactoring or scaling discussions
+* Document how Secom's specific requirements (multi-tenancy, RBAC, modular structure) are implemented in the API
 

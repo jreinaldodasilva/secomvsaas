@@ -1,11 +1,9 @@
-# PROMPT (API-Design-Scoped Version)
+# Secom API Design Improvement Roadmap
 
-# Secom – API Design Improvement Roadmap
+**Source Document**: 
+- `docs/architecture/backend/api-design.md` (or parts 1-N)
 
-**Source Document:** 
-`docs/backend/02-Secom-API-Design-Overview-Part1.md`
-`docs/backend/02-Secom-API-Design-Overview-Part2.md`
-**Scope Restriction:** API Design document only
+**Scope**: API Design document only
 
 ---
 
@@ -15,8 +13,7 @@ You are generating a **strategic API improvement roadmap strictly from the API D
 
 You must:
 
-* Use only findings, risks, gaps, and recommendations explicitly described in
-  `docs/backend/02-Secom-API-Design-Overview-Part1.md` and `docs/backend/02-Secom-API-Design-Overview-Part2.md`
+* Use only findings, risks, gaps, and recommendations explicitly described in the API Design document
 * Not reference any other backend documents
 * Not assume issues from MongoDB, infrastructure, security, or architecture audits
 * Not invent technical debt outside what is implied in the API design review
@@ -26,7 +23,7 @@ This is an **API contract and interface design roadmap**, not a full backend or 
 
 ---
 
-# Objective
+## Objective
 
 Transform the API design findings into:
 
@@ -39,12 +36,12 @@ Transform the API design findings into:
 
 ---
 
-# 1. API Design Issue Extraction
+## API Design Issue Extraction
 
 Extract every issue related to:
 
 * REST consistency
-* Resource naming conventions
+* Resource naming conventions (Secom modules: press-releases, media-contacts, clipping, events, appointments, citizen-portal, social-media)
 * Route structure
 * HTTP verb usage correctness
 * Idempotency handling
@@ -58,7 +55,6 @@ Extract every issue related to:
 * Request validation consistency
 * DTO separation
 * Response shape standardization
-* HATEOAS (if mentioned)
 * Rate limiting design (API-level only)
 * Caching strategy (API contract perspective)
 * File upload design
@@ -70,7 +66,7 @@ Extract every issue related to:
 
 ---
 
-## 1.1 Prioritized API Design Issues
+## Prioritized API Design Issues
 
 ### 🟥 P0 – Contract Instability / Breaking Risk
 
@@ -97,22 +93,7 @@ Extract every issue related to:
 
 ---
 
-### Severity Criteria
-
-* 🟥 Breaking-change risk, inconsistent contract behavior, critical status-code misuse
-* 🟧 Long-term maintainability or client-integration friction
-* 🟨 Structural design refinements
-* 🟩 Strategic improvements or DX enhancements
-
----
-
-## Deliverable:
-
-API-prioritized issue inventory with clear traceability to source sections.
-
----
-
-# 2. API Quick Wins
+## API Quick Wins
 
 Identify low-effort API design improvements mentioned or implied in the API design document.
 
@@ -147,17 +128,9 @@ Target: 5–12 quick wins maximum.
 
 ---
 
-## Deliverable:
-
-API-scoped quick wins with implementation guidance.
-
----
-
-# 3. API Technical Debt Assessment
+## API Technical Debt Assessment
 
 Break down only API design–related debt.
-
----
 
 ### Categories
 
@@ -187,13 +160,11 @@ Provide:
 
 ---
 
-# 4. Phased API Design Roadmap
+## Phased API Design Roadmap
 
 Design a roadmap focused purely on API structure and contract improvements.
 
----
-
-## Phase 1 – Contract Stabilization (Weeks 1–2)
+### Phase 1 – Contract Stabilization (Weeks 1–2)
 
 Focus:
 
@@ -207,7 +178,7 @@ Include only issues labeled high-risk in the API document.
 
 ---
 
-## Phase 2 – Structural Consistency (Weeks 3–6)
+### Phase 2 – Structural Consistency (Weeks 3–6)
 
 Focus:
 
@@ -219,7 +190,7 @@ Focus:
 
 ---
 
-## Phase 3 – Maintainability & Developer Experience (Weeks 7–10)
+### Phase 3 – Maintainability & Developer Experience (Weeks 7–10)
 
 Focus:
 
@@ -231,7 +202,7 @@ Focus:
 
 ---
 
-## Phase 4 – API Maturity & Evolution (Weeks 11–14)
+### Phase 4 – API Maturity & Evolution (Weeks 11–14)
 
 Focus:
 
@@ -253,26 +224,24 @@ Each phase must include:
 
 ---
 
-# 5. API KPIs & Success Metrics
+## API KPIs & Success Metrics
 
 Define API-design-specific metrics only.
 
-Examples:
+| Metric | Current State | Target | Measurement |
+| ------ | ------------- | ------ | ----------- |
+| Status code consistency | ? | 100% aligned with REST standards | Endpoint audit |
+| Error format standardization | ? | Single unified structure | Contract review |
+| Versioning clarity | ? | Explicit versioning in all routes | API spec audit |
+| Pagination consistency | ? | Uniform format across endpoints | Code audit |
+| DTO reuse ratio | ? | ≥ 80% standardized DTO patterns | Static analysis |
+| Breaking-change frequency | ? | 0 unannounced breaking changes | Release logs |
 
-| Metric                       | Current State | Target                            | Measurement     |
-| ---------------------------- | ------------- | --------------------------------- | --------------- |
-| Status code consistency      | ?             | 100% aligned with REST standards  | Endpoint audit  |
-| Error format standardization | ?             | Single unified structure          | Contract review |
-| Versioning clarity           | ?             | Explicit versioning in all routes | API spec audit  |
-| Pagination consistency       | ?             | Uniform format across endpoints   | Code audit      |
-| DTO reuse ratio              | ?             | ≥ 80% standardized DTO patterns   | Static analysis |
-| Breaking-change frequency    | ?             | 0 unannounced breaking changes    | Release logs    |
-
-Do not include metrics unrelated to API design (e.g., database indexing or infra scaling).
+Do not include metrics unrelated to API design.
 
 ---
 
-# 6. API Design Maturity Score
+## API Design Maturity Score
 
 Score from 0–100 based solely on API design findings.
 
@@ -294,9 +263,7 @@ Provide:
 
 ---
 
-# 7. Executive Summary (CTO-Level)
-
-Provide:
+## Executive Summary (CTO-Level)
 
 ### Overall API Design Health Score
 
@@ -331,11 +298,11 @@ Keep concise, strategic, and decision-oriented (1–2 pages equivalent).
 
 ---
 
-# Output Files
+## Output Files
 
-## File 1:
+### File 1:
 
-`docs/backendroadmaps/02-Secom-API-Design-Improvement-Roadmap.md`
+`docs/roadmaps/backend/api-design-improvement.md`
 
 Must include:
 
@@ -348,9 +315,9 @@ Must include:
 
 ---
 
-## File 2:
+### File 2:
 
-`docs/backendroadmaps/02-Secom-API-Design-Quick-Wins.md`
+`docs/roadmaps/backend/api-design-quick-wins.md`
 
 Must include:
 
@@ -361,7 +328,7 @@ Must include:
 
 ---
 
-# Writing Guidelines
+## Writing Guidelines
 
 * API-design-only scope
 * No cross-document inference

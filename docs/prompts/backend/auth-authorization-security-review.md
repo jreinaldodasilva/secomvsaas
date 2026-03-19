@@ -1,25 +1,24 @@
-Here is a **significantly improved and stricter version** of your prompt — redesigned so that the audit is based on **actual code and runtime behavior**, not documentation as a primary source.
+# Secom Authentication, Authorization & Security Architecture Review
 
-This version enforces an **evidence-first, implementation-driven security audit** suitable for production government communications systems.
-
----
-
-# 🔐 Secom – Authentication, Authorization & Security Architecture Review
-
-**Implementation-Driven Security Audit (Production-Grade)**
+## Implementation-Driven Security Audit (Production-Grade)
 
 You are a **Senior Security Architect performing a deep technical security assessment** of the Secom backend system.
+
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação (government agency) managing sensitive communications data with:
+- **Roles**: admin, assessor, social_media, atendente, citizen
+- **Architecture**: Modular monolith with multi-tenancy and RBAC
+- **Data**: Government communications, citizen information, media contacts
+- **Compliance**: LGPD (Brazilian Data Protection Law)
 
 This is a **code-first audit**, not a documentation review.
 
 ---
 
-# ⚠️ Evidence Hierarchy (Mandatory)
+## Evidence Hierarchy (Mandatory)
 
 You must follow this strict evidence order:
 
 1. **Primary Source (Authoritative)**
-
    * Backend source code
    * Middleware implementations
    * Route definitions
@@ -29,29 +28,27 @@ You must follow this strict evidence order:
    * Security configuration
 
 2. **Secondary Source (Context Only)**
-
    * Documentation files (if helpful)
 
 If documentation contradicts code, **trust the code**.
 
 If implementation evidence is missing:
 
-* Explicitly state “No implementation evidence found”
+* Explicitly state "No implementation evidence found"
 * Classify as risk
 * Do NOT assume intended behavior
 * Do NOT fabricate mechanisms
 
 ---
 
-# 🏥 System Context Assumptions
+## System Context Assumptions
 
 Treat the system as:
 
-* A **government communications platform (Assessoria de Comunicação)**
-* Handling **PII and government communications data**
+* A **government communications platform** handling PII and government communications data
 * Subject to **LGPD (Brazilian Data Protection Law)**
 * Using **MongoDB + Mongoose**
-* Implementing **single-tenant architecture**
+* Implementing **multi-tenancy with RBAC**
 * Running in production or pre-production
 * Operating under government-grade data protection requirements
 
@@ -59,7 +56,7 @@ Security expectations must reflect government data compliance standards.
 
 ---
 
-# 🎯 Audit Objectives
+## Audit Objectives
 
 Produce a **deep, architecture-level security analysis**, covering:
 
@@ -80,19 +77,19 @@ Not a checklist. Not generic advice.
 
 ---
 
-# 📁 Required Output Location
+## Required Output Location
 
 Primary output:
 
 ```
-docs/backend/03-Secom-Auth-Security-Overview.md
+docs/architecture/backend/auth-security.md
 ```
 
 If length requires:
 
 ```
-docs/backend/03-Secom-Auth-Security-Overview-Part1.md
-docs/backend/03-Secom-Auth-Security-Overview-Part2.md
+docs/architecture/backend/auth-security-part-1.md
+docs/architecture/backend/auth-security-part-2.md
 ...
 ```
 
@@ -100,7 +97,7 @@ Split logically by domain (Authentication, Authorization, Data Protection, etc.)
 
 ---
 
-# 📑 Required Structure & Depth
+## Required Structure & Depth
 
 Every section must include:
 
@@ -119,9 +116,9 @@ Clearly separate:
 
 ---
 
-# 1️⃣ Authentication Architecture
+## Authentication Architecture
 
-## 1.1 Strategy Analysis (Code-Based)
+### Strategy Analysis (Code-Based)
 
 Determine from implementation:
 
@@ -146,7 +143,6 @@ Deliver:
 
 * Authentication Maturity Score (0–100)
 * Architecture Classification:
-
   * Prototype
   * Basic Production
   * Hardened Production
@@ -156,60 +152,9 @@ Deliver:
 
 ---
 
-## 1.2 Login Flow Deep Review
+## Authorization & RBAC Architecture
 
-Trace the login flow from:
-
-Route → Validation → Service → DB → Token issuance → Logging
-
-Evaluate:
-
-* Timing attack resistance
-* Account enumeration protection
-* Login rate limiting
-* Brute-force protection
-* Suspended/blocked user enforcement
-* Logging completeness
-* Error message leakage
-
-Deliver:
-
-* Step-by-step annotated risk analysis
-* Missing controls
-* Security gap severity ranking
-
----
-
-## 1.3 Password & Reset Security
-
-Inspect:
-
-* Hashing algorithm (bcrypt/argon2/etc.)
-* Work factor adequacy (2026 standards)
-* Salt strategy
-* Password policy enforcement
-* Reset token entropy
-* Reset expiration
-* Token reuse risk
-* Storage method for reset tokens
-
-Classify:
-
-* 🟥 Critical
-* 🟧 High
-* 🟨 Medium
-* 🟩 Low
-
-Deliver:
-
-* Password Security Rating
-* Modern secure configuration recommendation (if weak)
-
----
-
-# 2️⃣ Authorization & RBAC Architecture
-
-## 2.1 Role Model
+### Role Model
 
 Based on implementation:
 
@@ -227,7 +172,7 @@ Deliver:
 
 ---
 
-## 2.2 Permission Model
+### Permission Model
 
 Analyze:
 
@@ -244,16 +189,17 @@ Deliver:
 
 ---
 
-## 2.3 Complete Role–Permission Matrix
+### Complete Role–Permission Matrix
 
-Produce a fully expanded matrix for:
+Produce a fully expanded matrix for Secom modules:
 
-* Users
-* CitizenProfiles
-* Agendamentos
-* PressReleases
-* Reports
-* Audit logs
+* Press Releases
+* Media Contacts
+* Clipping
+* Events
+* Appointments
+* Citizen Portal
+* Social Media
 * System configuration
 * Multi-tenant controls
 
@@ -270,9 +216,9 @@ Flag:
 
 ---
 
-# 3️⃣ Middleware & Enforcement Integrity
+## Middleware & Enforcement Integrity
 
-## 3.1 Enforcement Architecture
+### Enforcement Architecture
 
 Trace:
 
@@ -291,7 +237,7 @@ Evaluate:
 
 ---
 
-## 3.2 Tenant Isolation Validation
+### Tenant Isolation Validation
 
 Evaluate enforcement of:
 
@@ -313,9 +259,9 @@ Deliver:
 
 ---
 
-# 4️⃣ Secure Coding & Injection Prevention
+## Secure Coding & Injection Prevention
 
-## 4.1 Validation & Injection
+### Validation & Injection
 
 Evaluate:
 
@@ -332,7 +278,7 @@ Deliver:
 
 ---
 
-## 4.2 Transport & Cookie Security
+### Transport & Cookie Security
 
 Inspect:
 
@@ -349,38 +295,9 @@ Deliver:
 
 ---
 
-## 4.3 CORS Configuration
+## Sensitive Data & Cryptography
 
-Evaluate:
-
-* Origin validation strategy
-* Credential handling
-* Wildcard usage
-* Sensitive header exposure
-
-Classify severity.
-
----
-
-## 4.4 Security Headers
-
-Evaluate presence and configuration of:
-
-* CSP
-* HSTS
-* X-Frame-Options
-* X-Content-Type-Options
-* Referrer-Policy
-
-Deliver:
-
-* Header Hardening Score
-
----
-
-# 5️⃣ Sensitive Data & Cryptography
-
-## 5.1 PII & Communication Record Protection
+### PII & Communication Record Protection
 
 Inspect:
 
@@ -398,7 +315,7 @@ Deliver:
 
 ---
 
-## 5.2 Logging Hygiene
+### Logging Hygiene
 
 Evaluate:
 
@@ -413,7 +330,7 @@ Deliver:
 
 ---
 
-# 6️⃣ LGPD Compliance Posture
+## LGPD Compliance Posture
 
 Assess:
 
@@ -431,7 +348,7 @@ Deliver:
 
 ---
 
-# 7️⃣ Session & Token Lifecycle
+## Session & Token Lifecycle
 
 Evaluate:
 
@@ -449,7 +366,7 @@ Deliver:
 
 ---
 
-# 8️⃣ Audit Logging & Observability
+## Audit Logging & Observability
 
 Evaluate logging of:
 
@@ -474,7 +391,7 @@ Deliver:
 
 ---
 
-# 9️⃣ Threat Modeling Summary
+## Threat Modeling Summary
 
 Provide:
 
@@ -490,7 +407,7 @@ For each:
 
 ---
 
-# 🔟 Security Risk Matrix
+## Security Risk Matrix
 
 | Risk | Category | Severity | Likelihood | Impact | Effort | Priority |
 
@@ -503,18 +420,18 @@ Include:
 
 ---
 
-# 📊 Final Security Scorecard
+## Final Security Scorecard
 
-| Category                  | Score (0–100) |
-| ------------------------- | ------------- |
-| Authentication            |               |
-| Authorization             |               |
-| Tenant Isolation          |               |
-| Data Protection           |               |
-| LGPD Compliance           |               |
-| Session Management        |               |
-| Audit Logging             |               |
-| Overall Security Maturity |               |
+| Category | Score (0–100) |
+| -------- | ------------- |
+| Authentication | |
+| Authorization | |
+| Tenant Isolation | |
+| Data Protection | |
+| LGPD Compliance | |
+| Session Management | |
+| Audit Logging | |
+| Overall Security Maturity | |
 
 Also classify overall maturity:
 
@@ -526,7 +443,7 @@ Also classify overall maturity:
 
 ---
 
-# ✍ Writing Standards
+## Writing Standards
 
 * No fluff
 * No vague advice
@@ -539,7 +456,7 @@ Also classify overall maturity:
 
 ---
 
-# 🔒 Critical Constraints
+## Critical Constraints
 
 * Do NOT invent undocumented security mechanisms
 * If evidence is missing → classify as risk

@@ -4,7 +4,7 @@ import {
   MdShield, MdAssignment, MdSearch, MdDelete, MdUpload, MdLock,
   MdDashboard, MdPeople, MdPerson, MdArticle, MdContacts, MdContentCut,
   MdSchedule, MdAccountBox, MdShare, MdMenu, MdClose, MdExpandMore,
-  MdLogout, MdNotifications, MdRefresh,
+  MdLogout, MdNotifications, MdRefresh, MdAdd, MdWarning,
 } from 'react-icons/md';
 
 export const ICONS = {
@@ -40,6 +40,8 @@ export const ICONS = {
   logout:      MdLogout,
   bell:        MdNotifications,
   refresh:     MdRefresh,
+  plus:        MdAdd,
+  warning:     MdWarning,
 } as const;
 
 export type IconName = keyof typeof ICONS;

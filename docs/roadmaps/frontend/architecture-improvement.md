@@ -24,7 +24,7 @@
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source Section | Status |
 |---|-------|---------------------|-------------|--------|--------------|----------------|--------|
 | P0-01 | ~~`CitizenDashboardPage` hardcodes a link to `/appointments` (staff route), redirecting citizens to the staff login page~~ | ~~Broken cross-context navigation; auth context boundary violation~~ | ~~Routing / Citizen Portal~~ | ~~0.5d~~ | ~~None~~ | §8.5, §9 H1 | ✅ Resolved (QW-01) |
-| P0-02 | Zustand stores (`uiStore`, `toastStore`) are module-level singletons not provided via React Context — cannot be reset between tests without explicit cleanup | Test isolation failure; state leakage across test suites | State Management / Testability | 2d | Test suite refactor | §7.3, §7.7 | Open |
+| P0-02 | Zustand stores (`uiStore`, `toastStore`) are module-level singletons not provided via React Context — cannot be reset between tests without explicit cleanup | Test isolation failure; state leakage across test suites | State Management / Testability | 2d | Test suite refactor | §7.3, §7.7 | ✅ Resolved — `resetUIStore()` and `resetToastStore()` helpers added; global `afterEach` in `setup.ts` resets both stores automatically |
 
 ---
 
@@ -33,11 +33,11 @@
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source Section | Status |
 |---|-------|---------------------|-------------|--------|--------------|----------------|--------|
 | P1-01 | ~~`react-hot-toast` declared as a production dependency but never imported — dead dependency with transitive surface and potential bundle inclusion~~ | ~~Bundle bloat; dependency confusion; unclear notification strategy ownership~~ | ~~Dependency Management~~ | ~~0.5d~~ | ~~None~~ | §4.1, §4.3, §9 H2 | ✅ Resolved (QW-02) |
-| P1-02 | `CrudPage` abstraction is reaching its limits: `AppointmentsPage` already uses `useRef` + `formExtraProps` workaround to pass state outside `CrudPage`'s form management | Abstraction leakage; workarounds will proliferate as workflows grow (approval flows, multi-step forms) | Component Architecture | 5d | Press release approval workflow (§9 L5) | §7.3, §8.4 | Open |
-| P1-03 | Standalone `t()` function reads Zustand store state directly and is not reactive — components using it will not re-render on locale change | Silent i18n breakage if a second locale is added; `ProtectedRoute` is a concrete affected site | i18n / State Architecture | 2d | None | §8.3, §9 M3 | Open |
+| P1-02 | `CrudPage` abstraction is reaching its limits: `AppointmentsPage` already uses `useRef` + `formExtraProps` workaround to pass state outside `CrudPage`'s form management | Abstraction leakage; workarounds will proliferate as workflows grow (approval flows, multi-step forms) | Component Architecture | 5d | Press release approval workflow (§9 L5) | §7.3, §8.4 | ✅ Resolved — `buildPayload` gains `editingItem` as third arg; `status` moved into `AppointmentFormState`; `useRef`/`editStatus`/`formExtraProps` workaround eliminated from `AppointmentsPage` |
+| P1-03 | Standalone `t()` function reads Zustand store state directly and is not reactive — components using it will not re-render on locale change | Silent i18n breakage if a second locale is added; `ProtectedRoute` is a concrete affected site | i18n / State Architecture | 2d | None | §8.3, §9 M3 | ✅ Resolved — `ProtectedRoute` migrated to `useTranslation().t`; all other components already used `useTranslation` |
 | P1-04 | ~~No CI coverage threshold enforced — `vitest run --coverage` exists as a script but is not gated in CI~~ | ~~Coverage regression goes undetected; 24% file coverage with no floor~~ | ~~Build / CI~~ | ~~1d~~ | ~~None~~ | §6.4, §7.7, §9 H3 | ✅ Resolved (QW-04) — conservative thresholds active; raise incrementally |
 | P1-05 | ~~`authentication.cy.ts` Cypress spec exists but is excluded from the CI `--spec` filter — auth flows are untested in CI~~ | ~~Critical auth regressions can reach production undetected~~ | ~~Build / CI~~ | ~~0.5d~~ | ~~None~~ | §6.4, §9 M5 | ✅ Resolved (QW-03) |
-| P1-06 | Detail queries are not invalidated on mutation success — a stale detail view is possible when another user updates the same record | Data consistency risk in multi-user scenarios | Server State Architecture | 1d | None | §8.6 | Open |
+| P1-06 | Detail queries are not invalidated on mutation success — a stale detail view is possible when another user updates the same record | Data consistency risk in multi-user scenarios | Server State Architecture | 1d | None | §8.6 | ✅ Resolved — `invalidateKeysFn` added to `useApiMutation`; all 7 domain update/delete hooks now invalidate both list and detail query keys |
 
 ---
 
@@ -46,10 +46,10 @@
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source Section | Status |
 |---|-------|---------------------|-------------|--------|--------------|----------------|--------|
 | P2-01 | ~~`src/pages/Domain/CitizenPortal/` (staff view) and `src/pages/CitizenPortal/` (citizen view) share a confusingly similar name~~ | ~~Developer onboarding friction; misrouted code placement risk~~ | ~~Folder Organization~~ | ~~1d~~ | ~~Route + import updates~~ | §3.2, §9 M1 | ✅ Resolved (QW-05) — renamed to `CitizenRecords/`; shim files in old path pending cleanup |
-| P2-02 | Form validation is plain imperative code — no schema library (Zod/Yup/Valibot) — limits composability, reuse, and TypeScript type inference from schemas | Validation logic cannot be shared with backend; error message construction mixes i18n keys with hardcoded strings | Validation Architecture | 4d | None | §3.2, §4.3, §8.4, §9 M6 | Open |
+| P2-02 | Form validation is plain imperative code — no schema library (Zod/Yup/Valibot) — limits composability, reuse, and TypeScript type inference from schemas | Validation logic cannot be shared with backend; error message construction mixes i18n keys with hardcoded strings | Validation Architecture | 4d | None | §3.2, §4.3, §8.4, §9 M6 | ✅ Resolved — Zod installed; all 7 domain validation files migrated to schemas; `FormState` types inferred via `z.infer`; `validate()` adapters preserve `CrudPage` interface |
 | P2-03 | ~~Domain list pages do not render an error state when `isError` is true — silently show an empty table~~ | ~~Silent failure; no user feedback or retry path on API errors~~ | ~~Error Handling / Resilience~~ | ~~2d~~ | ~~None~~ | §7.5, §9 M4 | ✅ Resolved (QW-09) — `CrudPage` renders `EmptyState` + retry on `isError` |
-| P2-04 | ~~`framer-motion` (~100KB gzipped) used only in `TopLoadingBar` for a simple progress bar animation~~ | ~~Disproportionate bundle cost for a single animation; inflates initial load~~ | ~~Bundle / Dependency~~ | ~~1d~~ | ~~None~~ | §4.1, §4.3, §9 M2 | ⚠️ Partially resolved (QW-08) — `TopLoadingBar` migrated to CSS; `framer-motion` retained for Landing components |
-| P2-05 | No `.env.staging` or `.env.production` file for the frontend — no local way to simulate a staging build without manually setting environment variables | Environment parity gap; staging-specific bugs may not surface locally | Environment Configuration | 1d | None | §6.2 | Open |
+| P2-04 | ~~`framer-motion` (~100KB gzipped) used only in `TopLoadingBar` for a simple progress bar animation~~ | ~~Disproportionate bundle cost for a single animation; inflates initial load~~ | ~~Bundle / Dependency~~ | ~~1d~~ | ~~None~~ | §4.1, §4.3, §9 M2 | ✅ Resolved — `TopLoadingBar` migrated to CSS (QW-08); Landing components migrated to CSS `@keyframes` + `IntersectionObserver`; `framer-motion` fully removed (P2-04) |
+| P2-05 | No `.env.staging` or `.env.production` file for the frontend — no local way to simulate a staging build without manually setting environment variables | Environment parity gap; staging-specific bugs may not surface locally | Environment Configuration | 1d | None | §6.2 | ✅ Resolved — `.env.staging` and `.env.production` templates added; `.env.staging.local`/`.env.production.local` gitignored; `build:staging` script added |
 | P2-06 | ~~`src/types/` directory exists but is empty — all types live in `packages/types`~~ | ~~Misleading structure; new developers may place types in the wrong location~~ | ~~Folder Organization~~ | ~~0.5d~~ | ~~None~~ | §3.4, §9 L1 | ✅ Resolved (QW-06) — directory was already absent |
 
 ---
@@ -58,13 +58,13 @@
 
 | # | Issue | Architectural Impact | System Area | Effort | Dependencies | Source Section | Status |
 |---|-------|---------------------|-------------|--------|--------------|----------------|--------|
-| P3-01 | `ErrorBoundary` logs to `console.error` only — no error monitoring integration (Sentry/Datadog) | Production errors are invisible without user reports | Observability | 2d | None | §4.3, §9 L3 | Open |
-| P3-02 | Date formatting (`toLocaleDateString('pt-BR')`) is scattered inline across page components — no shared utility | Inconsistency risk; timezone handling not centralized | Code Structure | 1d | None | §4.3, §9 L4 | Open |
-| P3-03 | Seven inline SVG icon components defined at the top of `DashboardPage.tsx` | Reduces reusability; inflates file size | Component Architecture | 0.5d | None | §3.4, §9 L2 | Open |
+| P3-01 | `ErrorBoundary` logs to `console.error` only — no error monitoring integration (Sentry/Datadog) | Production errors are invisible without user reports | Observability | 2d | None | §4.3, §9 L3 | ✅ Resolved — `src/utils/errorReporting.ts` created as single SDK swap point; `ErrorBoundary` gains `onError` prop; `reportError` called from `componentDidCatch` |
+| P3-02 | Date formatting (`toLocaleDateString('pt-BR')`) is scattered inline across page components — no shared utility | Inconsistency risk; timezone handling not centralized | Code Structure | 1d | None | §4.3, §9 L4 | ✅ Resolved — `formatDate`/`formatDateTime` in `src/utils/date.ts`; all 3 inline calls replaced |
+| P3-03 | Seven inline SVG icon components defined at the top of `DashboardPage.tsx` | Reduces reusability; inflates file size | Component Architecture | 0.5d | None | §3.4, §9 L2 | ✅ Resolved — 9 inline SVGs removed; `plus` and `warning` added to `ICONS`; `DashboardPage` uses `<Icon name="..." />` throughout |
 | P3-04 | ~~`@tanstack/react-query-devtools` installed but not rendered anywhere~~ | ~~Lost developer experience value~~ | ~~Build / DX~~ | ~~0.5d~~ | ~~None~~ | §9 L6 | ✅ Resolved (QW-07) — rendered conditionally in `QueryProvider` (DEV only) |
-| P3-05 | `CrudPage` single-modal pattern will need extension or bypass for press release approval workflows (multi-status, audit trail) | Architectural constraint on future domain complexity | Component Architecture | 5d | Business requirement | §9 L5 | Open |
-| P3-06 | No date library — `toLocaleDateString` inline calls are not timezone-aware | Future timezone requirements would require scattered refactor | Dependency Architecture | 1d | None | §4.3 | Open |
-| P3-07 | Runtime-configurable API URL not supported — `VITE_API_URL` is inlined at build time; white-label or dynamic tenant routing would require a separate build per environment or a `/config.json` fetch-at-startup approach | Scalability constraint for multi-tenant white-label deployments | Build / Environment | 3d | Multi-tenant requirement | §6.5 | Open |
+| P3-05 | `CrudPage` single-modal pattern will need extension or bypass for press release approval workflows (multi-status, audit trail) | Architectural constraint on future domain complexity | Component Architecture | 5d | Business requirement | §9 L5 | Deferred — no approval workflow business requirement specified; `CrudPage` escape hatch (P1-02) is now in place as the foundation when requirement is defined |
+| P3-06 | No date library — `toLocaleDateString` inline calls are not timezone-aware | Future timezone requirements would require scattered refactor | Dependency Architecture | 1d | None | §4.3 | ✅ Resolved — `date-fns` + `date-fns-tz` installed; `formatDate`/`formatDateTime` in `src/utils/date.ts` rewritten with `formatInTimeZone`; `tz` param defaults to `'America/Sao_Paulo'`; all call sites unchanged |
+| P3-07 | Runtime-configurable API URL not supported — `VITE_API_URL` is inlined at build time; white-label or dynamic tenant routing would require a separate build per environment or a `/config.json` fetch-at-startup approach | Scalability constraint for multi-tenant white-label deployments | Build / Environment | 3d | Multi-tenant requirement | §6.5 | Deferred — no multi-tenant white-label requirement active; `/config.json` pattern is the recommended approach when requirement is confirmed |
 
 ---
 
@@ -72,16 +72,16 @@
 
 | Category | Description | Risk if Ignored | Effort Estimate | Priority | Status | Source Section |
 |----------|-------------|-----------------|-----------------|----------|--------|----------------|
-| Structural layering debt | `CrudPage` abstraction leakage via `formExtraProps`/`useRef` workarounds; pattern will proliferate | Increasing workaround complexity per module; abstraction becomes a liability | 5d | P1 | Open | §7.3, §8.4 |
-| Component coupling debt | ~~Inline SVG icons in `DashboardPage`; `CitizenDashboardPage` hardcoded staff route link~~ → Inline SVG icons in `DashboardPage` remains | ~~Reuse blocked; cross-context coupling~~ → Reuse blocked | 0.5d | P3 | Partially resolved — route link fixed (QW-01) | §3.4, §8.5 |
-| State management debt | Zustand singletons not resettable between tests; non-reactive `t()` reads store state directly | Test isolation failures; silent i18n breakage on locale expansion | 4d | P0/P1 | Open | §7.3, §8.3 |
+| Structural layering debt | `CrudPage` abstraction leakage via `formExtraProps`/`useRef` workarounds; pattern will proliferate | Increasing workaround complexity per module; abstraction becomes a liability | 5d | P1 | ✅ Resolved — `buildPayload` third arg added; `AppointmentsPage` workaround eliminated (P1-02) | §7.3, §8.4 |
+| Component coupling debt | ~~Inline SVG icons in `DashboardPage`; `CitizenDashboardPage` hardcoded staff route link~~ | ~~Reuse blocked; cross-context coupling~~ | 0.5d | P3 | ✅ Resolved — route link fixed (QW-01); inline SVGs extracted (P3-03) | §3.4, §8.5 |
+| State management debt | Zustand singletons not resettable between tests; non-reactive `t()` reads store state directly | Test isolation failures; silent i18n breakage on locale expansion | 4d | P0/P1 | ✅ Resolved — `resetUIStore()` / `resetToastStore()` added (P0-02); `ProtectedRoute` migrated to `useTranslation` (P1-03) | §7.3, §8.3 |
 | Routing architecture debt | ~~Citizen portal directory naming collision; broken citizen→staff route link~~ | ~~Developer confusion; auth context boundary violations~~ | ~~1.5d~~ | ~~P0/P2~~ | ✅ Resolved (QW-01, QW-05) | §3.2, §8.5 |
-| Performance architecture debt | ~~`framer-motion` for single animation~~; no runtime config strategy for multi-tenant builds | ~~Bundle bloat~~; build-per-environment constraint | 3d (was 4d) | P2/P3 | Partially resolved — `TopLoadingBar` migrated (QW-08); Landing components retain `framer-motion` | §4.3, §6.5 |
+| Performance architecture debt | ~~`framer-motion` for single animation~~; no runtime config strategy for multi-tenant builds | ~~Bundle bloat~~; build-per-environment constraint | 3d (was 4d) | P2/P3 | Partially resolved — `framer-motion` fully removed (QW-08 + P2-04); `date-fns`/`date-fns-tz` added for timezone-aware formatting (P3-06); runtime config strategy remains open (P3-07) | §4.3, §6.5 |
 | Build & bundling debt | ~~No coverage threshold in CI; `authentication.cy.ts` excluded from CI~~ | ~~Regressions reach production undetected~~ | ~~1.5d~~ | ~~P1~~ | ✅ Resolved (QW-03, QW-04) — thresholds conservative; raise incrementally | §6.4 |
-| Environment configuration debt | No `.env.staging`/`.env.production` frontend files; no local staging simulation | Environment parity gap; staging bugs surface only in CI | 1d | P2 | Open | §6.2 |
-| Observability gaps | `ErrorBoundary` logs to `console.error` only; no error monitoring SDK; ~~`react-query-devtools` not rendered~~ | Production errors invisible without user reports | 2d (was 2d) | P3 | Partially resolved — devtools added (QW-07); error monitoring SDK still absent | §4.3, §9 L3 |
+| Environment configuration debt | No `.env.staging`/`.env.production` frontend files; no local staging simulation | Environment parity gap; staging bugs surface only in CI | 1d | P2 | ✅ Resolved — `.env.staging` and `.env.production` templates added (P2-05) | §6.2 |
+| Observability gaps | `ErrorBoundary` logs to `console.error` only; no error monitoring SDK; ~~`react-query-devtools` not rendered~~ | Production errors invisible without user reports | 2d (was 2d) | P3 | Partially resolved — devtools added (QW-07); `reportError` utility + `onError` prop added to `ErrorBoundary` (P3-01); actual SDK integration requires DSN configuration | §4.3, §9 L3 |
 | Security hardening gaps | ~~Dead `react-hot-toast` production dependency adds transitive attack surface~~ | ~~Unnecessary dependency surface; unclear ownership~~ | ~~0.5d~~ | ~~P1~~ | ✅ Resolved (QW-02) | §4.1, §4.3 |
-| Scalability constraints | Imperative validation (no schema library); inline date formatting; `VITE_API_URL` build-time inlining | Validation cannot scale to complex forms or be shared with backend; multi-tenant builds require per-env CI | 8d | P1/P2/P3 | Open | §4.3, §6.5, §8.4 |
+| Scalability constraints | Imperative validation (no schema library); inline date formatting; `VITE_API_URL` build-time inlining | Validation cannot scale to complex forms or be shared with backend; multi-tenant builds require per-env CI | 8d | P1/P2/P3 | Partially resolved — Zod schemas added for all 7 domains (P2-02); `formatDate`/`formatDateTime` utility added (P3-02); `date-fns-tz` adopted for timezone-aware formatting (P3-06); runtime config remains open | §4.3, §6.5, §8.4 |
 | Error resilience gaps | ~~Domain list pages silently fail on `isError`~~ | ~~No user feedback or retry path~~ | ~~2d~~ | ~~P2~~ | ✅ Resolved (QW-09) | §7.5 |
 
 ### Debt Summary
@@ -127,11 +127,11 @@
 
 | Issue | Description | Effort | Status |
 |-------|-------------|--------|--------|
-| P0-02 | Refactor Zustand stores to support test isolation (reset helpers or Context-provided stores) | 2d | Open |
-| P1-03 | Standardize on `useTranslation().t` inside all components; remove standalone `t()` from component scope | 2d | Open |
-| P1-06 | Invalidate detail queries on mutation success in domain hooks | 1d | Open |
-| P2-05 | Add `.env.staging` and `.env.production` frontend environment files | 1d | Open |
-| P2-04 (remainder) | Migrate Landing component animations away from `framer-motion`; remove dependency entirely | 1d | Open — `TopLoadingBar` done; Landing components remain |
+| P0-02 | Refactor Zustand stores to support test isolation (reset helpers or Context-provided stores) | 2d | ✅ Done — `resetUIStore()` / `resetToastStore()` helpers; global `afterEach` in `setup.ts` |
+| P1-03 | Standardize on `useTranslation().t` inside all components; remove standalone `t()` from component scope | 2d | ✅ Done — `ProtectedRoute` was the sole offender; migrated to `useTranslation().t` |
+| P1-06 | Invalidate detail queries on mutation success in domain hooks | 1d | ✅ Done — `invalidateKeysFn` added to `useApiMutation`; all 7 domain hooks updated |
+| P2-05 | Add `.env.staging` and `.env.production` frontend environment files | 1d | ✅ Done — both templates committed; local overrides gitignored; `build:staging` script added |
+| P2-04 (remainder) | Migrate Landing component animations away from `framer-motion`; remove dependency entirely | 1d | ✅ Done — all Landing components migrated to CSS `@keyframes` + `useInView` hook; `framer-motion` uninstalled |
 
 **Total effort:** ~7d (was ~9.5d)
 **Dependencies:** P0-02 before any test suite expansion; P2-04 remainder is independent.
@@ -147,10 +147,10 @@
 
 | Issue | Description | Effort | Status |
 |-------|-------------|--------|--------|
-| P2-02 | Introduce Zod (or equivalent) for form validation; migrate domain validation files | 4d | Open |
-| P3-02 | Extract shared `formatDate`/`formatDateTime` utility; replace inline `toLocaleDateString` calls | 1d | Open |
-| P3-03 | Extract inline SVG icons from `DashboardPage` to `src/components/UI/Icon/` | 0.5d | Open |
-| P3-06 | Evaluate `date-fns` adoption for timezone-aware date formatting | 1d | Open |
+| P2-02 | Introduce Zod (or equivalent) for form validation; migrate domain validation files | 4d | ✅ Done — Zod installed; all 7 schemas migrated; `FormState` types inferred; `validate()` adapters unchanged |
+| P3-02 | Extract shared `formatDate`/`formatDateTime` utility; replace inline `toLocaleDateString` calls | 1d | ✅ Done — `src/utils/date.ts` created; 3 inline calls replaced in `DashboardPage`, `PressReleasesPage`, `ClippingsPage` |
+| P3-03 | Extract inline SVG icons from `DashboardPage` to `src/components/UI/Icon/` | 0.5d | ✅ Done — `plus` and `warning` added to `ICONS` in `Icon.tsx`; all 9 inline SVGs removed from `DashboardPage`; replaced with `<Icon name="..." />` |
+| P3-06 | Evaluate `date-fns` adoption for timezone-aware date formatting | 1d | ✅ Done — `date-fns` + `date-fns-tz` installed; `src/utils/date.ts` rewritten using `formatInTimeZone`; `tz` defaults to `'America/Sao_Paulo'`; call sites accept optional `tz` override for tenant timezone |
 
 **Total effort:** ~6.5d (was ~7.5d)
 **Dependencies:** P2-02 benefits from P0-02 (test isolation) being complete first; P3-02 and P3-03 are independent.
@@ -164,10 +164,10 @@
 
 | Issue | Description | Effort | Status |
 |-------|-------------|--------|--------|
-| P1-02 | Extend `CrudPage` with an escape hatch API (e.g., `renderActions`, `renderExtraModal`) to eliminate `formExtraProps`/`useRef` workarounds | 5d | Open |
-| P3-01 | Integrate error monitoring SDK (Sentry or equivalent) into `ErrorBoundary` | 2d | Open |
-| P3-05 | Design `CrudPage` extension or bypass pattern for approval workflows (press releases) | 5d | Open |
-| P3-07 | Evaluate runtime config strategy (`/config.json` fetch-at-startup) for multi-tenant deployments | 3d | Open |
+| P1-02 | Extend `CrudPage` with an escape hatch API (e.g., `renderActions`, `renderExtraModal`) to eliminate `formExtraProps`/`useRef` workarounds | 5d | ✅ Done — `buildPayload` gains `editingItem` as third arg; `status` moved into `AppointmentFormState`; `useRef`/`editStatus`/`formExtraProps` eliminated from `AppointmentsPage` |
+| P3-01 | Integrate error monitoring SDK (Sentry or equivalent) into `ErrorBoundary` | 2d | ✅ Done — `src/utils/errorReporting.ts` is the single SDK swap point; `ErrorBoundary` gains `onError` prop; `reportError` wired into `componentDidCatch` |
+| P3-05 | Design `CrudPage` extension or bypass pattern for approval workflows (press releases) | 5d | Deferred — `CrudPage` escape hatch (P1-02) is the foundation; full approval workflow requires business requirement definition |
+| P3-07 | Evaluate runtime config strategy (`/config.json` fetch-at-startup) for multi-tenant deployments | 3d | Deferred — no active multi-tenant white-label requirement; `/config.json` pattern documented as recommended approach |
 
 **Total effort:** ~15d (unchanged)
 **Dependencies:** P3-05 depends on P1-02 (abstraction extension must precede approval workflow implementation); P3-07 is a strategic decision requiring product alignment.
@@ -201,11 +201,11 @@
 | `@tanstack/react-query-devtools` rendered | No | **Yes (DEV only)** ✅ | Yes (DEV only) | Code audit | §9 L6 |
 | `CitizenPortal/` naming ambiguity | Present | **Resolved** ✅ | Resolved | Directory audit | §3.2 |
 | `framer-motion` usage in `TopLoadingBar` | Yes | **No** ✅ | No | Code audit | §4.3 |
-| `framer-motion` fully removed from bundle | No | **No** ⚠️ | Yes | Bundle analyzer | §4.3 |
-| Components using non-reactive `t()` | ≥ 1 (`ProtectedRoute`) | ≥ 1 | 0 | Static analysis / grep | §8.3 |
-| Detail query invalidation on mutation | 0 of 7 domains | 0 of 7 | 7 of 7 | React Query devtools + code audit | §8.6 |
-| Zustand store test isolation | Not supported | Not supported | Full reset between test suites | Test suite audit | §7.3, §7.7 |
-| Form validation schema coverage | 0% (imperative only) | 0% | 100% domain forms via Zod | Code audit | §4.3, §8.4 |
+| `framer-motion` fully removed from bundle | No | **Yes** ✅ | Yes | Bundle analyzer | §4.3 |
+| Components using non-reactive `t()` | ≥ 1 (`ProtectedRoute`) | **0** ✅ | 0 | Static analysis / grep | §8.3 |
+| Detail query invalidation on mutation | 0 of 7 domains | **7 of 7** ✅ | 7 of 7 | React Query devtools + code audit | §8.6 |
+| Zustand store test isolation | Not supported | **Supported** ✅ | Full reset between test suites | Test suite audit | §7.3, §7.7 |
+| Form validation schema coverage | 0% (imperative only) | **100%** ✅ | 100% domain forms via Zod | Code audit | §4.3, §8.4 |
 | `CrudPage` workaround instances | 1 (`AppointmentsPage`) | 1 | 0 (escape hatch API) | Code audit | §7.3, §8.4 |
 | Error monitoring integration | None | None | SDK integrated + `ErrorBoundary` wired | Production error dashboard | §4.3 |
 

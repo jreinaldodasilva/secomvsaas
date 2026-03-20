@@ -1,23 +1,31 @@
-export interface PressReleaseFormState {
-  title: string;
-  content: string;
-  subtitle: string;
-  summary: string;
-  category: string;
-  tags: string;
-  status: string;
-}
+import { z } from 'zod';
+
+export const PRESS_RELEASE_STATUSES = ['draft', 'review', 'approved', 'published', 'archived'] as const;
+export const PRESS_RELEASE_CATEGORIES = ['nota_oficial', 'comunicado', 'convite', 'esclarecimento', 'outro'] as const;
+
+export const pressReleaseSchema = z.object({
+  title:    z.string().min(5),
+  content:  z.string().min(10),
+  subtitle: z.string(),
+  summary:  z.string(),
+  category: z.enum(PRESS_RELEASE_CATEGORIES),
+  tags:     z.string(),
+  status:   z.enum(PRESS_RELEASE_STATUSES),
+});
+
+export type PressReleaseFormState = z.infer<typeof pressReleaseSchema>;
 
 export const emptyPressReleaseForm: PressReleaseFormState = {
   title: '', content: '', subtitle: '', summary: '', category: 'comunicado', tags: '', status: 'draft',
 };
 
-export const PRESS_RELEASE_STATUSES = ['draft', 'review', 'approved', 'published', 'archived'] as const;
-export const PRESS_RELEASE_CATEGORIES = ['nota_oficial', 'comunicado', 'convite', 'esclarecimento', 'outro'] as const;
-
 export function validatePressRelease(form: PressReleaseFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (form.title.length < 5) e.title = t('domain.pressReleases.fields.title') + ' — mín. 5 caracteres';
-  if (form.content.length < 10) e.content = t('domain.pressReleases.fields.content') + ' — mín. 10 caracteres';
-  return e;
+  const result = pressReleaseSchema.safeParse(form);
+  if (result.success) return {};
+  const errors: Record<string, string> = {};
+  for (const issue of result.error.issues) {
+    const field = issue.path[0] as string;
+    if (!errors[field]) errors[field] = `${t(`domain.pressReleases.fields.${field}`)} — ${issue.message}`;
+  }
+  return errors;
 }

@@ -69,7 +69,7 @@ export function SocialMediaPage() {
       toFormState={(item) => {
         setEditStatus(item.status);
         return {
-          platform: item.platform,
+          platform: item.platform as SocialMediaFormState['platform'],
           content: item.content,
           mediaUrl: item.mediaUrl ?? '',
           scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '',

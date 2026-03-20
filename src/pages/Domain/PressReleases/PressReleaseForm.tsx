@@ -38,13 +38,13 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
 
       <div className="form-grid">
         <FormField name="category" label={t('domain.pressReleases.fields.category')}>
-          <select id="category" value={form.category} onChange={e => set('category', e.target.value)}>
+          <select id="category" value={form.category} onChange={e => set('category', e.target.value as PressReleaseFormState['category'])}>
             {PRESS_RELEASE_CATEGORIES.map(c => <option key={c} value={c}>{t(`domain.pressReleases.categories.${c}`)}</option>)}
           </select>
         </FormField>
         {editing && (
           <FormField name="status" label={t('domain.pressReleases.fields.status')}>
-            <select id="status" value={form.status} onChange={e => set('status', e.target.value)}>
+            <select id="status" value={form.status} onChange={e => set('status', e.target.value as PressReleaseFormState['status'])}>
               {PRESS_RELEASE_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
             </select>
           </FormField>

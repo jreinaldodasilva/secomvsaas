@@ -1,7 +1,12 @@
 import React, { Component, ErrorInfo } from 'react';
+import { reportError } from '@/utils/errorReporting';
 import styles from './ErrorBoundary.module.css';
 
-interface Props { children: React.ReactNode; fallback?: React.ReactNode; }
+interface Props {
+  children: React.ReactNode;
+  fallback?: React.ReactNode;
+  onError?: (error: Error, info: ErrorInfo) => void;
+}
 interface State { hasError: boolean; error?: Error; }
 
 export class ErrorBoundary extends Component<Props, State> {
@@ -12,7 +17,8 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error('ErrorBoundary caught:', error, info);
+    reportError(error, info);
+    this.props.onError?.(error, info);
   }
 
   render() {

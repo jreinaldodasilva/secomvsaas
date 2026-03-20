@@ -7,8 +7,10 @@ interface ToastStore {
   remove: (id: string) => void;
 }
 
+const initialToastState = { toasts: [] as ToastItem[] };
+
 export const useToastStore = create<ToastStore>((set) => ({
-  toasts: [],
+  ...initialToastState,
   add: (type, message, title, duration) =>
     set(s => ({
       toasts: [
@@ -18,3 +20,8 @@ export const useToastStore = create<ToastStore>((set) => ({
     })),
   remove: (id) => set(s => ({ toasts: s.toasts.filter(t => t.id !== id) })),
 }));
+
+/** Resets store to its initial state. Call in `afterEach` to prevent test state leakage. */
+export function resetToastStore() {
+  useToastStore.setState(initialToastState);
+}

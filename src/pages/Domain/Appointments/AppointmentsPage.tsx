@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { CrudPage } from '@/components/UI';
 import { Button, StatusBadge } from '@/components/UI';
 import type { Column } from '@/components/UI';
@@ -8,6 +8,7 @@ import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { AppointmentForm, validateAppointment, emptyAppointmentForm } from './AppointmentForm';
 import type { AppointmentFormState } from './AppointmentForm';
+import { formatDateTime } from '@/utils/date';
 
 interface AppointmentItem {
   id: string;
@@ -28,9 +29,6 @@ export function AppointmentsPage() {
   usePageTitle(t('domain.appointments.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [editStatus, setEditStatus] = useState('pending');
-  const editStatusRef = useRef(editStatus);
-  editStatusRef.current = editStatus;
 
   const listQuery = useAppointmentList({ page, limit: 10, ...(search && { search }) });
   const create = useCreateAppointment();
@@ -43,7 +41,7 @@ export function AppointmentsPage() {
   ): Column<AppointmentItem>[] => [
     { key: 'citizenName', header: t('domain.appointments.fields.citizenName'), sortable: true },
     { key: 'service', header: t('domain.appointments.fields.service'), sortable: true },
-    { key: 'scheduledAt', header: t('domain.appointments.fields.scheduledAt'), render: (r) => new Date(r.scheduledAt).toLocaleString('pt-BR') },
+    { key: 'scheduledAt', header: t('domain.appointments.fields.scheduledAt'), render: (r) => formatDateTime(r.scheduledAt) },
     { key: 'status', header: t('domain.appointments.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
     {
       key: 'actions', header: '',
@@ -67,17 +65,15 @@ export function AppointmentsPage() {
       createModalTitle={t('domain.appointments.create')}
       columns={columns}
       emptyForm={emptyAppointmentForm}
-      toFormState={(item) => {
-        setEditStatus(item.status);
-        return {
-          citizenName: item.citizenName,
-          citizenCpf: item.citizenCpf ?? '',
-          citizenPhone: item.citizenPhone ?? '',
-          service: item.service,
-          scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '',
-          notes: item.notes ?? '',
-        };
-      }}
+      toFormState={(item) => ({
+        citizenName: item.citizenName,
+        citizenCpf: item.citizenCpf ?? '',
+        citizenPhone: item.citizenPhone ?? '',
+        service: item.service,
+        scheduledAt: item.scheduledAt ? item.scheduledAt.slice(0, 16) : '',
+        notes: item.notes ?? '',
+        status: item.status,
+      })}
       validate={(form) => validateAppointment(form, t)}
       buildPayload={(form, editing) => {
         const p: Record<string, unknown> = { ...form };
@@ -85,7 +81,7 @@ export function AppointmentsPage() {
         if (!p.citizenCpf) delete p.citizenCpf;
         if (!p.citizenPhone) delete p.citizenPhone;
         if (!p.notes) delete p.notes;
-        if (editing) p.status = editStatusRef.current;
+        if (!editing) delete p.status;
         return p;
       }}
       listQuery={listQuery}
@@ -105,7 +101,6 @@ export function AppointmentsPage() {
       onSuccess={(msg) => toast.success(msg)}
       onError={(msg) => toast.error(msg)}
       FormComponent={AppointmentForm}
-      formExtraProps={{ editStatus, setEditStatus }}
     />
   );
 }

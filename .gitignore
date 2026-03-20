@@ -10,10 +10,14 @@ packages/types/src/*.d.ts
 packages/types/src/*.map
 
 # Environment files
+# .env and .env.local are gitignored (contain real secrets for local dev)
 .env
 backend/.env
 backend/.env.test
 .env.local
+# Local overrides for environment-specific files (never commit)
+.env.staging.local
+.env.production.local
 
 # Logs
 logs/

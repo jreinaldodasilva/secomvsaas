@@ -56,10 +56,22 @@ beforeEach(() => {
   mockUseApiMutation.mockReturnValue({});
 });
 
-// ── Helper: assert mutation invalidates the domain key ────────────────────────
+// ── Helpers: assert mutation invalidation ────────────────────────────────────
 function assertMutationInvalidates(domainKey: string) {
   const [, , opts] = mockUseApiMutation.mock.lastCall as [string, unknown, { invalidateKeys: string[][] }];
   expect(opts.invalidateKeys).toEqual([[domainKey]]);
+}
+
+function assertUpdateDetailInvalidatesFn(domainKey: string, sampleId: string) {
+  const [, , opts] = mockUseApiMutation.mock.lastCall as [string, unknown, { invalidateKeysFn: (v: { id: string }) => string[][] }];
+  expect(typeof opts.invalidateKeysFn).toBe('function');
+  expect(opts.invalidateKeysFn({ id: sampleId })).toEqual([[domainKey, sampleId]]);
+}
+
+function assertDeleteDetailInvalidatesFn(domainKey: string, sampleId: string) {
+  const [, , opts] = mockUseApiMutation.mock.lastCall as [string, unknown, { invalidateKeysFn: (id: string) => string[][] }];
+  expect(typeof opts.invalidateKeysFn).toBe('function');
+  expect(opts.invalidateKeysFn(sampleId)).toEqual([[domainKey, sampleId]]);
 }
 
 // ── PressRelease ──────────────────────────────────────────────────────────────
@@ -112,6 +124,7 @@ describe('usePressRelease hooks', () => {
     expect(method).toBe('patch');
     expect(pathFn({ id: '42' })).toBe('/api/v1/press-releases/42');
     assertMutationInvalidates('press-releases');
+    assertUpdateDetailInvalidatesFn('press-releases', '42');
   });
 
   it('useDeletePressRelease deletes with dynamic path and invalidates key', () => {
@@ -120,6 +133,7 @@ describe('usePressRelease hooks', () => {
     expect(method).toBe('delete');
     expect(pathFn('99')).toBe('/api/v1/press-releases/99');
     assertMutationInvalidates('press-releases');
+    assertDeleteDetailInvalidatesFn('press-releases', '99');
   });
 });
 
@@ -144,16 +158,18 @@ describe('useAppointment hooks', () => {
     assertMutationInvalidates('appointments');
   });
 
-  it('useUpdateAppointment patches with dynamic path', () => {
+  it('useUpdateAppointment patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateAppointment(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '5' })).toBe('/api/v1/appointments/5');
+    assertUpdateDetailInvalidatesFn('appointments', '5');
   });
 
-  it('useDeleteAppointment deletes with dynamic path', () => {
+  it('useDeleteAppointment deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteAppointment(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('7')).toBe('/api/v1/appointments/7');
+    assertDeleteDetailInvalidatesFn('appointments', '7');
   });
 });
 
@@ -178,16 +194,18 @@ describe('useClipping hooks', () => {
     assertMutationInvalidates('clippings');
   });
 
-  it('useUpdateClipping patches with dynamic path', () => {
+  it('useUpdateClipping patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateClipping(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '3' })).toBe('/api/v1/clippings/3');
+    assertUpdateDetailInvalidatesFn('clippings', '3');
   });
 
-  it('useDeleteClipping deletes with dynamic path', () => {
+  it('useDeleteClipping deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteClipping(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('8')).toBe('/api/v1/clippings/8');
+    assertDeleteDetailInvalidatesFn('clippings', '8');
   });
 });
 
@@ -212,16 +230,18 @@ describe('useEvent hooks', () => {
     assertMutationInvalidates('events');
   });
 
-  it('useUpdateEvent patches with dynamic path', () => {
+  it('useUpdateEvent patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateEvent(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '11' })).toBe('/api/v1/events/11');
+    assertUpdateDetailInvalidatesFn('events', '11');
   });
 
-  it('useDeleteEvent deletes with dynamic path', () => {
+  it('useDeleteEvent deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteEvent(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('12')).toBe('/api/v1/events/12');
+    assertDeleteDetailInvalidatesFn('events', '12');
   });
 });
 
@@ -246,16 +266,18 @@ describe('useMediaContact hooks', () => {
     assertMutationInvalidates('media-contacts');
   });
 
-  it('useUpdateMediaContact patches with dynamic path', () => {
+  it('useUpdateMediaContact patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateMediaContact(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '20' })).toBe('/api/v1/media-contacts/20');
+    assertUpdateDetailInvalidatesFn('media-contacts', '20');
   });
 
-  it('useDeleteMediaContact deletes with dynamic path', () => {
+  it('useDeleteMediaContact deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteMediaContact(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('21')).toBe('/api/v1/media-contacts/21');
+    assertDeleteDetailInvalidatesFn('media-contacts', '21');
   });
 });
 
@@ -280,16 +302,18 @@ describe('useCitizenPortal hooks', () => {
     assertMutationInvalidates('citizen-portal');
   });
 
-  it('useUpdateCitizenPortal patches with dynamic path', () => {
+  it('useUpdateCitizenPortal patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateCitizenPortal(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '30' })).toBe('/api/v1/citizen-portal/30');
+    assertUpdateDetailInvalidatesFn('citizen-portal', '30');
   });
 
-  it('useDeleteCitizenPortal deletes with dynamic path', () => {
+  it('useDeleteCitizenPortal deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteCitizenPortal(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('31')).toBe('/api/v1/citizen-portal/31');
+    assertDeleteDetailInvalidatesFn('citizen-portal', '31');
   });
 });
 
@@ -314,15 +338,17 @@ describe('useSocialMedia hooks', () => {
     assertMutationInvalidates('social-media');
   });
 
-  it('useUpdateSocialMedia patches with dynamic path', () => {
+  it('useUpdateSocialMedia patches with dynamic path and invalidates detail', () => {
     renderHook(() => useUpdateSocialMedia(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (v: { id: string }) => string];
     expect(pathFn({ id: '40' })).toBe('/api/v1/social-media/40');
+    assertUpdateDetailInvalidatesFn('social-media', '40');
   });
 
-  it('useDeleteSocialMedia deletes with dynamic path', () => {
+  it('useDeleteSocialMedia deletes with dynamic path and invalidates detail', () => {
     renderHook(() => useDeleteSocialMedia(), { wrapper });
     const [, pathFn] = mockUseApiMutation.mock.lastCall as [string, (id: string) => string];
     expect(pathFn('41')).toBe('/api/v1/social-media/41');
+    assertDeleteDetailInvalidatesFn('social-media', '41');
   });
 });

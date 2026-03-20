@@ -3,6 +3,7 @@ import { CrudPage } from '@/components/UI';
 import { Button, StatusBadge } from '@/components/UI';
 import type { Column } from '@/components/UI';
 import { usePressReleaseList, useCreatePressRelease, useUpdatePressRelease, useDeletePressRelease } from '@/hooks';
+import { formatDate } from '@/utils/date';
 import { useToast } from '@/hooks';
 import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
@@ -43,7 +44,7 @@ export function PressReleasesPage() {
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
     { key: 'status', header: t('domain.pressReleases.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
-    { key: 'createdAt', header: t('domain.pressReleases.fields.createdAt'), render: (r) => r.createdAt ? new Date(r.createdAt).toLocaleDateString('pt-BR') : '—' },
+    { key: 'createdAt', header: t('domain.pressReleases.fields.createdAt'), render: (r) => formatDate(r.createdAt) },
     {
       key: 'actions', header: '',
       render: (r) => (
@@ -71,9 +72,9 @@ export function PressReleasesPage() {
         content: item.content,
         subtitle: item.subtitle ?? '',
         summary: item.summary ?? '',
-        category: item.category,
+        category: item.category as PressReleaseFormState['category'],
         tags: (item.tags ?? []).join(', '),
-        status: item.status,
+        status: item.status as PressReleaseFormState['status'],
       })}
       validate={(form) => validatePressRelease(form, t)}
       buildPayload={(form) => ({

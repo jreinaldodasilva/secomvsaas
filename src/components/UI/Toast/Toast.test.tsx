@@ -1,12 +1,12 @@
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useToastStore } from './toastStore';
+import { useToastStore, resetToastStore } from './toastStore';
 import Toast from './Toast';
 
 // ── toastStore ────────────────────────────────────────────────────────────────
 
 describe('toastStore', () => {
-  beforeEach(() => useToastStore.setState({ toasts: [] }));
+  beforeEach(() => resetToastStore());
 
   it('add() inserts a toast with the correct type and message', () => {
     useToastStore.getState().add('success', 'Salvo!');
@@ -42,6 +42,13 @@ describe('toastStore', () => {
     useToastStore.getState().add('info', 'b');
     const ids = useToastStore.getState().toasts.map(t => t.id);
     expect(new Set(ids).size).toBe(2);
+  });
+
+  it('resetToastStore clears all toasts', () => {
+    useToastStore.getState().add('info', 'msg');
+    expect(useToastStore.getState().toasts).toHaveLength(1);
+    resetToastStore();
+    expect(useToastStore.getState().toasts).toHaveLength(0);
   });
 });
 

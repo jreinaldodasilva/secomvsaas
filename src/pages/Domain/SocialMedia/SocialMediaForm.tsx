@@ -24,7 +24,7 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
     <form onSubmit={onSubmit} className="form-stack" noValidate>
       <div className="form-grid">
         <FormField name="platform" label={t('domain.socialMedia.fields.platform')}>
-          <select id="platform" value={form.platform} onChange={e => set('platform', e.target.value)}>
+          <select id="platform" value={form.platform} onChange={e => set('platform', e.target.value as SocialMediaFormState['platform'])}>
             {SOCIAL_MEDIA_PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
           </select>
         </FormField>

@@ -21,7 +21,7 @@ export function useUpdateAppointment() {
   return useApiMutation<ApiResult<Appointment>, { id: string } & Record<string, unknown>>(
     'patch',
     (vars) => `/api/v1/appointments/${vars.id}`,
-    { invalidateKeys: [KEYS.all as unknown as string[]] },
+    { invalidateKeys: [KEYS.all as unknown as string[]], invalidateKeysFn: (vars) => [KEYS.detail(vars.id) as unknown as string[]] },
   );
 }
 
@@ -29,6 +29,6 @@ export function useDeleteAppointment() {
   return useApiMutation<void, string>(
     'delete',
     (id) => `/api/v1/appointments/${id}`,
-    { invalidateKeys: [KEYS.all as unknown as string[]] },
+    { invalidateKeys: [KEYS.all as unknown as string[]], invalidateKeysFn: (id) => [KEYS.detail(id) as unknown as string[]] },
   );
 }

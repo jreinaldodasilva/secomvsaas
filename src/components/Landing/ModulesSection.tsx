@@ -14,10 +14,11 @@ export function ModulesSection() {
         desc="Ferramentas integradas para a gestão completa da comunicação municipal de Piquete"
       />
       <AnimatedGrid className={`${pageStyles.grid} ${pageStyles.gridModules}`}>
-        {MODULES.map(mod => (
+        {MODULES.map((mod, i) => (
           <AnimatedItem
             key={mod.name}
             className={`${styles.moduleCard} ${mod.highlight ? styles.moduleCardHighlight : ''}`}
+            index={i}
           >
             {mod.highlight && <div className={styles.moduleBadge}>Principal</div>}
             <div className={styles.moduleEmoji}>{mod.emoji}</div>

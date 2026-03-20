@@ -26,5 +26,5 @@ export { SessionTimeoutModal } from './SessionTimeoutModal/SessionTimeoutModal';
 export { CrudPage } from './CrudPage/CrudPage';
 export type { CrudPageProps, FormComponentProps } from './CrudPage/CrudPage';
 export { ToastContainer } from './Toast/ToastContainer';
-export { useToastStore } from './Toast/toastStore';
+export { useToastStore, resetToastStore } from './Toast/toastStore';
 export type { ToastItem, ToastType } from './Toast/Toast';

@@ -6,12 +6,7 @@ import { APPOINTMENT_STATUSES, type AppointmentFormState } from '@/validation/do
 export type { AppointmentFormState };
 export { emptyAppointmentForm, validateAppointment } from '@/validation/domain';
 
-interface Props extends FormComponentProps<AppointmentFormState> {
-  editStatus?: string;
-  setEditStatus?: (s: string) => void;
-}
-
-export function AppointmentForm({ form, setForm, errors, editing, editStatus = 'pending', setEditStatus = () => {}, isPending, onSubmit }: Props) {
+export function AppointmentForm({ form, setForm, errors, editing, isPending, onSubmit }: FormComponentProps<AppointmentFormState>) {
   const { t } = useTranslation();
   const set = <K extends keyof AppointmentFormState>(k: K, v: AppointmentFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -43,8 +38,8 @@ export function AppointmentForm({ form, setForm, errors, editing, editStatus = '
             <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} />
           </FormField>
           {editing && (
-            <FormField name="editStatus" label={t('domain.appointments.fields.status')}>
-              <select id="editStatus" value={editStatus} onChange={e => setEditStatus(e.target.value)}>
+            <FormField name="status" label={t('domain.appointments.fields.status')}>
+              <select id="status" value={form.status ?? 'pending'} onChange={e => set('status', e.target.value)}>
                 {APPOINTMENT_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </FormField>

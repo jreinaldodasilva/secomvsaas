@@ -3,6 +3,7 @@ import { CrudPage } from '@/components/UI';
 import { Button, StatusBadge } from '@/components/UI';
 import type { Column } from '@/components/UI';
 import { useClippingList, useCreateClipping, useUpdateClipping, useDeleteClipping } from '@/hooks';
+import { formatDate } from '@/utils/date';
 import { useToast } from '@/hooks';
 import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
@@ -42,7 +43,7 @@ export function ClippingsPage() {
       key: 'sentiment', header: t('domain.clippings.fields.sentiment'),
       render: (r) => <StatusBadge status={t(`domain.clippings.sentiments.${r.sentiment}`)} colorMap={{ [t('domain.clippings.sentiments.positive')]: 'green', [t('domain.clippings.sentiments.neutral')]: 'gray', [t('domain.clippings.sentiments.negative')]: 'red' }} />,
     },
-    { key: 'publishedAt', header: t('domain.clippings.fields.publishedAt'), render: (r) => r.publishedAt ? new Date(r.publishedAt).toLocaleDateString('pt-BR') : '—' },
+    { key: 'publishedAt', header: t('domain.clippings.fields.publishedAt'), render: (r) => formatDate(r.publishedAt) },
     {
       key: 'actions', header: '',
       render: (r) => (
@@ -71,7 +72,7 @@ export function ClippingsPage() {
         source: item.source,
         sourceUrl: item.sourceUrl ?? '',
         publishedAt: item.publishedAt ? item.publishedAt.slice(0, 10) : '',
-        sentiment: item.sentiment,
+        sentiment: item.sentiment as ClippingFormState['sentiment'],
         summary: item.summary ?? '',
         tags: (item.tags ?? []).join(', '),
       })}

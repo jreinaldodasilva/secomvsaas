@@ -1,38 +1,34 @@
-import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { ContactForm } from '@/components/ContactForm/ContactForm';
-import { SectionHeader } from './LandingShared';
+import { SectionHeader, useInView } from './LandingShared';
+import styles from './Landing.module.css';
 import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
 export function ContactSection() {
+  const { ref, visible } = useInView('-80px');
   return (
     <section className={pageStyles.sectionAlt} id="contact">
       <SectionHeader
         title="Entre em Contato com a Secom"
         desc="Fale com a Secretaria Municipal de Comunicação de Piquete — SP"
       />
-      <motion.div
-        className={pageStyles.contactWrap}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+      <div
+        ref={ref}
+        className={`${pageStyles.contactWrap} ${visible ? styles.animSlideUp : ''}`}
       >
         <ContactForm />
-      </motion.div>
+      </div>
     </section>
   );
 }
 
 export function CtaSection() {
   const navigate = useNavigate();
+  const { ref, visible } = useInView();
   return (
-    <motion.section
-      className={pageStyles.cta}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+    <section
+      ref={ref}
+      className={`${pageStyles.cta} ${visible ? styles.animSlideUp : ''}`}
     >
       <h2 className={pageStyles.ctaTitle}>
         Secretaria Municipal de Comunicação de Piquete — SP
@@ -48,6 +44,6 @@ export function CtaSection() {
           Entrar
         </button>
       </div>
-    </motion.section>
+    </section>
   );
 }

@@ -11,8 +11,8 @@ export function VisualBanner() {
         desc="Da coletiva de imprensa à cobertura do evento, a Secom registra e divulga cada ação do município"
       />
       <AnimatedGrid className={pageStyles.visualGrid}>
-        {VISUAL_IMAGES.map(img => (
-          <AnimatedItem key={img.label} className={styles.visualCard}>
+        {VISUAL_IMAGES.map((img, i) => (
+          <AnimatedItem key={img.label} className={styles.visualCard} index={i}>
             <img src={img.src} alt={img.alt} className={styles.visualImg} loading="lazy" />
             <span className={styles.visualLabel}>{img.label}</span>
           </AnimatedItem>

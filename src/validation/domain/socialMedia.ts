@@ -1,19 +1,28 @@
-export interface SocialMediaFormState {
-  platform: string;
-  content: string;
-  mediaUrl: string;
-  scheduledAt: string;
-}
+import { z } from 'zod';
+
+export const SOCIAL_MEDIA_PLATFORMS = ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'] as const;
+export const SOCIAL_MEDIA_STATUSES = ['draft', 'scheduled', 'published', 'failed'] as const;
+
+export const socialMediaSchema = z.object({
+  platform:    z.enum(SOCIAL_MEDIA_PLATFORMS),
+  content:     z.string().trim().min(1),
+  mediaUrl:    z.string(),
+  scheduledAt: z.string(),
+});
+
+export type SocialMediaFormState = z.infer<typeof socialMediaSchema>;
 
 export const emptySocialMediaForm: SocialMediaFormState = {
   platform: 'instagram', content: '', mediaUrl: '', scheduledAt: '',
 };
 
-export const SOCIAL_MEDIA_PLATFORMS = ['instagram', 'facebook', 'twitter', 'youtube', 'tiktok'] as const;
-export const SOCIAL_MEDIA_STATUSES = ['draft', 'scheduled', 'published', 'failed'] as const;
-
 export function validateSocialMedia(form: SocialMediaFormState, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (!form.content.trim()) e.content = t('domain.socialMedia.fields.content') + ' — obrigatório';
-  return e;
+  const result = socialMediaSchema.safeParse(form);
+  if (result.success) return {};
+  const errors: Record<string, string> = {};
+  for (const issue of result.error.issues) {
+    const field = issue.path[0] as string;
+    if (!errors[field]) errors[field] = `${t(`domain.socialMedia.fields.${field}`)} — ${issue.message}`;
+  }
+  return errors;
 }

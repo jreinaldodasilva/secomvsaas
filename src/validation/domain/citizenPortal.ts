@@ -1,22 +1,34 @@
-export interface CitizenFormState {
-  userId: string;
-  fullName: string;
-  cpf: string;
-  phone: string;
-  email: string;
-  address: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-}
+import { z } from 'zod';
+
+export const citizenSchema = z.object({
+  userId:       z.string(),
+  fullName:     z.string().min(2),
+  cpf:          z.string(),
+  phone:        z.string(),
+  email:        z.string(),
+  address:      z.string(),
+  neighborhood: z.string(),
+  city:         z.string(),
+  state:        z.string(),
+});
+
+export type CitizenFormState = z.infer<typeof citizenSchema>;
 
 export const emptyCitizenForm: CitizenFormState = {
   userId: '', fullName: '', cpf: '', phone: '', email: '', address: '', neighborhood: '', city: '', state: '',
 };
 
 export function validateCitizen(form: CitizenFormState, editing: boolean, t: (k: string) => string): Record<string, string> {
-  const e: Record<string, string> = {};
-  if (!editing && !form.userId) e.userId = t('domain.citizenPortal.fields.userId') + ' — obrigatório';
-  if (form.fullName.length < 2) e.fullName = t('domain.citizenPortal.fields.fullName') + ' — mín. 2 caracteres';
-  return e;
+  const result = citizenSchema.safeParse(form);
+  const errors: Record<string, string> = {};
+  if (!result.success) {
+    for (const issue of result.error.issues) {
+      const field = issue.path[0] as string;
+      if (!errors[field]) errors[field] = `${t(`domain.citizenPortal.fields.${field}`)} — ${issue.message}`;
+    }
+  }
+  if (!editing && !form.userId) {
+    errors.userId = `${t('domain.citizenPortal.fields.userId')} — obrigatório`;
+  }
+  return errors;
 }

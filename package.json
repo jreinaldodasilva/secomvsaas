@@ -7,11 +7,13 @@
   "dependencies": {
     "@tanstack/react-query": "^5.89.0",
     "@vsaas/types": "file:packages/types",
-    "framer-motion": "^12.37.0",
+    "date-fns": "^4.1.0",
+    "date-fns-tz": "^3.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.6.0",
     "react-router-dom": "^6.30.1",
+    "zod": "^4.3.6",
     "zustand": "^4.5.7"
   },
   "scripts": {
@@ -22,6 +24,7 @@
     "worker": "cd backend && npm run dev:worker",
     "server": "cd backend && npm run dev",
     "build": "tsc && vite build",
+    "build:staging": "tsc && vite build --mode staging",
     "build:all": "npm run build && cd backend && npm run build",
     "preview": "vite preview",
     "test:frontend": "vitest run",

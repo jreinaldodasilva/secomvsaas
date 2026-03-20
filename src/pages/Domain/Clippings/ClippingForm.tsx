@@ -33,7 +33,7 @@ export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Pro
           <input id="publishedAt" type="date" value={form.publishedAt} onChange={e => set('publishedAt', e.target.value)} />
         </FormField>
         <FormField name="sentiment" label={t('domain.clippings.fields.sentiment')}>
-          <select id="sentiment" value={form.sentiment} onChange={e => set('sentiment', e.target.value)}>
+          <select id="sentiment" value={form.sentiment} onChange={e => set('sentiment', e.target.value as ClippingFormState['sentiment'])}>
             {CLIPPING_SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
           </select>
         </FormField>

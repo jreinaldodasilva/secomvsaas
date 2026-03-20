@@ -12,8 +12,8 @@ export function FeaturesSection() {
         desc="A Secretaria Municipal de Comunicação de Piquete atua em quatro frentes para manter a população informada"
       />
       <AnimatedGrid className={pageStyles.grid}>
-        {FEATURES.map(f => (
-          <AnimatedItem key={f.title} className={styles.featureCard}>
+        {FEATURES.map((f, i) => (
+          <AnimatedItem key={f.title} className={styles.featureCard} index={i}>
             <div className={styles.featureIcon}>
               <Icon name={f.icon} size="1.75rem" aria-hidden />
             </div>

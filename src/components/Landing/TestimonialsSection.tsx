@@ -12,8 +12,8 @@ export function TestimonialsSection() {
         desc="Como a Secretaria Municipal de Comunicação de Piquete organiza a informação pública"
       />
       <AnimatedGrid className={`${pageStyles.grid} ${pageStyles.gridTestimonials}`}>
-        {TESTIMONIALS.map(t => (
-          <AnimatedItem key={t.id} className={styles.testimonialCard}>
+        {TESTIMONIALS.map((t, i) => (
+          <AnimatedItem key={t.id} className={styles.testimonialCard} index={i}>
             <div className={styles.testimonialStars} aria-label={`${t.rating} de 5 estrelas`}>
               {Array.from({ length: t.rating }).map((_, i) => (
                 <Icon key={i} name="star" size="1rem" aria-hidden />

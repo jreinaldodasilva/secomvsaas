@@ -23,7 +23,7 @@ export interface CrudPageProps<TItem extends { id: string }, TForm> {
   emptyForm: TForm;
   toFormState: (item: TItem) => TForm;
   validate: (form: TForm, editing: boolean) => Record<string, string>;
-  buildPayload: (form: TForm, editing: boolean) => Record<string, unknown>;
+  buildPayload: (form: TForm, editing: boolean, editingItem: TItem | null) => Record<string, unknown>;
 
   listQuery: { data: unknown; isLoading: boolean; isError?: boolean; refetch?: () => void };
   getItems: (data: unknown) => TItem[];
@@ -122,7 +122,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
     e.preventDefault();
     const errs = validate(form, !!editing);
     if (Object.keys(errs).length) { setErrors(errs); return; }
-    const payload = buildPayload(form, !!editing);
+    const payload = buildPayload(form, !!editing, editing);
     if (editing) {
       onUpdate(
         { id: editing.id, ...payload },

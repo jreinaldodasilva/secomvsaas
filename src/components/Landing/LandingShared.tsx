@@ -1,29 +1,31 @@
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 import styles from './Landing.module.css';
 
-const fullContainerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
-};
+// ── useInView ─────────────────────────────────────────────────────────────────
+// Fires once when the element enters the viewport (mirrors framer-motion's
+// whileInView + viewport={{ once: true }} behaviour).
 
-const reducedContainerVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-};
+function useInView(margin = '-80px') {
+  const ref = useRef<HTMLDivElement>(null);
+  const [visible, setVisible] = useState(false);
 
-const fullItemVariants: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.25, 0.1, 0.25, 1] } },
-};
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+      { rootMargin: margin },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [margin]);
 
-const reducedItemVariants: Variants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.15 } },
-};
+  return { ref, visible };
+}
 
-// Exported for HeroSection — callers that don't use useReducedMotion directly
-export const containerVariants = fullContainerVariants;
-export const itemVariants = fullItemVariants;
+export { useInView };
+
+// ── SectionHeader ─────────────────────────────────────────────────────────────
 
 interface SectionHeaderProps {
   title: string;
@@ -40,37 +42,39 @@ export function SectionHeader({ title, desc, align = 'center' }: SectionHeaderPr
   );
 }
 
+// ── AnimatedGrid ──────────────────────────────────────────────────────────────
+
 interface AnimatedGridProps {
   children: React.ReactNode;
   className?: string;
 }
 
 export function AnimatedGrid({ children, className }: AnimatedGridProps) {
-  const reduced = useReducedMotion();
-  const cv = reduced ? reducedContainerVariants : fullContainerVariants;
+  const { ref, visible } = useInView('-80px');
   return (
-    <motion.div
-      className={className}
-      variants={cv}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: '-80px' }}
-    >
+    <div ref={ref} className={className} data-visible={visible || undefined}>
       {children}
-    </motion.div>
+    </div>
   );
 }
 
-export function AnimatedItem({ children, className }: AnimatedGridProps) {
-  const reduced = useReducedMotion();
-  const iv = reduced ? reducedItemVariants : fullItemVariants;
+// ── AnimatedItem ──────────────────────────────────────────────────────────────
+
+interface AnimatedItemProps {
+  children: React.ReactNode;
+  className?: string;
+  index?: number;
+}
+
+export function AnimatedItem({ children, className, index = 0 }: AnimatedItemProps) {
+  const { ref, visible } = useInView('-80px');
   return (
-    <motion.div
-      className={className}
-      variants={iv}
-      {...(!reduced && { whileHover: { scale: 1.02 }, transition: { type: 'spring', stiffness: 220 } })}
+    <div
+      ref={ref}
+      className={`${className ?? ''} ${visible ? styles.animItem : ''}`}
+      style={visible ? { '--anim-i': index } as React.CSSProperties : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

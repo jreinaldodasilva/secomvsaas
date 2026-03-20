@@ -27,10 +27,11 @@ export function useApiMutation<TData = unknown, TBody = unknown>(
   path: string | ((variables: TBody) => string),
   options?: Omit<UseMutationOptions<TData, ApiError, TBody>, 'mutationFn'> & {
     invalidateKeys?: string[][];
+    invalidateKeysFn?: (variables: TBody) => string[][];
   },
 ) {
   const queryClient = useQueryClient();
-  const { invalidateKeys, ...mutationOptions } = options ?? {};
+  const { invalidateKeys, invalidateKeysFn, ...mutationOptions } = options ?? {};
 
   return useMutation<TData, ApiError, TBody>({
     mutationFn: (body) => {
@@ -40,7 +41,9 @@ export function useApiMutation<TData = unknown, TBody = unknown>(
         : http[method]<TData>(url, body);
     },
     onSuccess: (...args) => {
+      const [, variables] = args;
       invalidateKeys?.forEach((key) => queryClient.invalidateQueries({ queryKey: key }));
+      invalidateKeysFn?.(variables).forEach((key) => queryClient.invalidateQueries({ queryKey: key }));
       mutationOptions.onSuccess?.(...args);
     },
     ...mutationOptions,

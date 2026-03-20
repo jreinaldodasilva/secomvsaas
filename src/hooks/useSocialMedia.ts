@@ -21,7 +21,7 @@ export function useUpdateSocialMedia() {
   return useApiMutation<ApiResult<SocialMediaPost>, { id: string } & Record<string, unknown>>(
     'patch',
     (vars) => `/api/v1/social-media/${vars.id}`,
-    { invalidateKeys: [KEYS.all as unknown as string[]] },
+    { invalidateKeys: [KEYS.all as unknown as string[]], invalidateKeysFn: (vars) => [KEYS.detail(vars.id) as unknown as string[]] },
   );
 }
 
@@ -29,6 +29,6 @@ export function useDeleteSocialMedia() {
   return useApiMutation<void, string>(
     'delete',
     (id) => `/api/v1/social-media/${id}`,
-    { invalidateKeys: [KEYS.all as unknown as string[]] },
+    { invalidateKeys: [KEYS.all as unknown as string[]], invalidateKeysFn: (id) => [KEYS.detail(id) as unknown as string[]] },
   );
 }

@@ -5,6 +5,7 @@
 **Source Document:**
 `docs/architecture/frontend/overview-part-1.md`
 `docs/architecture/frontend/overview-part-2.md`
+`docs/architecture/frontend/overview-part-3.md`
 **Scope Restriction:** Architecture document only
 
 ---
@@ -15,7 +16,7 @@ You are generating a **strategic frontend architecture improvement roadmap stric
 
 You must:
 
-* Use only findings, gaps, risks, and recommendations explicitly described in `docs/architecture/frontend/overview-part-1.md` and `docs/architecture/frontend/overview-part-2.md` 
+* Use only findings, gaps, risks, and recommendations explicitly described in `docs/architecture/frontend/overview-part-1.md`, `docs/architecture/frontend/overview-part-2.md` and `docs/architecture/frontend/overview-part-3.md` 
 * Not reference any other frontend documents
 * Not assume issues from UX audits, accessibility audits, performance audits, or testing strategy documents
 * Not invent technical debt outside what is implied in the architecture review
@@ -336,7 +337,7 @@ Must include:
 
 ## File 2:
 
-`docs/roadmaps/frontend/quick-wins.md`
+`docs/roadmaps/frontend/architecture-quick-wins.md`
 
 Must include:
 

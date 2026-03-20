@@ -10,15 +10,15 @@ const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
 vi.mock('@/hooks', () => ({
-  usePressReleaseList:   (...a: unknown[]) => mockList(...a),
-  useCreatePressRelease: () => mockCreate(),
-  useUpdatePressRelease: () => mockUpdate(),
-  useDeletePressRelease: () => mockDelete(),
+  useCitizenPortalList:   (...a: unknown[]) => mockList(...a),
+  useCreateCitizenPortal: () => mockCreate(),
+  useUpdateCitizenPortal: () => mockUpdate(),
+  useDeleteCitizenPortal: () => mockDelete(),
   useToast:     () => ({ success: vi.fn(), error: vi.fn() }),
   usePageTitle: () => {},
 }));
 
-import { PressReleasesPage } from './PressReleasesPage';
+import { CitizenRecordsPage } from './CitizenRecordsPage';
 
 function idle() { return { isPending: false, mutate: vi.fn() }; }
 
@@ -34,36 +34,36 @@ beforeEach(() => {
   mockDelete.mockReturnValue(idle());
 });
 
-describe('PressReleasesPage', () => {
+describe('CitizenRecordsPage', () => {
   it('renders page title and create button', () => {
-    render(<PressReleasesPage />, { wrapper });
-    expect(screen.getByText('Comunicados de Imprensa')).toBeInTheDocument();
-    expect(screen.getByText('Novo comunicado')).toBeInTheDocument();
+    render(<CitizenRecordsPage />, { wrapper });
+    expect(screen.getByText('Portal do Cidadão')).toBeInTheDocument();
+    expect(screen.getByText('Novo registro')).toBeInTheDocument();
   });
 
   it('shows empty state when no items', () => {
-    render(<PressReleasesPage />, { wrapper });
-    expect(screen.getByText('Nenhum comunicado encontrado')).toBeInTheDocument();
+    render(<CitizenRecordsPage />, { wrapper });
+    expect(screen.getByText('Nenhum registro encontrado')).toBeInTheDocument();
   });
 
   it('renders rows when items are returned', () => {
     mockList.mockReturnValue({
-      data: { data: { items: [{ id: '1', title: 'Nota Oficial', category: 'comunicado', status: 'draft', content: 'x', tags: [] }], total: 1 } },
+      data: { data: { items: [{ id: '1', userId: 'u1', fullName: 'Ana Lima', status: 'active' }], total: 1 } },
       isLoading: false,
     });
-    render(<PressReleasesPage />, { wrapper });
-    expect(screen.getByText('Nota Oficial')).toBeInTheDocument();
+    render(<CitizenRecordsPage />, { wrapper });
+    expect(screen.getByText('Ana Lima')).toBeInTheDocument();
   });
 
   it('opens create modal on button click', async () => {
-    render(<PressReleasesPage />, { wrapper });
-    await userEvent.click(screen.getByText('Novo comunicado'));
+    render(<CitizenRecordsPage />, { wrapper });
+    await userEvent.click(screen.getByText('Novo registro'));
     await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
   });
 
   it('renders error state when list query fails', () => {
     mockList.mockReturnValue({ data: null, isLoading: false, isError: true, refetch: vi.fn() });
-    render(<PressReleasesPage />, { wrapper });
+    render(<CitizenRecordsPage />, { wrapper });
     expect(screen.getByText('Erro ao carregar os dados.')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /tentar novamente/i })).toBeInTheDocument();
   });

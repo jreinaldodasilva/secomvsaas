@@ -60,4 +60,11 @@ describe('EventsPage', () => {
     await userEvent.click(screen.getByText('Novo evento'));
     await waitFor(() => expect(screen.getByRole('dialog')).toBeInTheDocument());
   });
+
+  it('renders error state when list query fails', () => {
+    mockList.mockReturnValue({ data: null, isLoading: false, isError: true, refetch: vi.fn() });
+    render(<EventsPage />, { wrapper });
+    expect(screen.getByText('Erro ao carregar os dados.')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /tentar novamente/i })).toBeInTheDocument();
+  });
 });

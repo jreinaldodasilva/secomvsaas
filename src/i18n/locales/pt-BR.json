@@ -20,6 +20,8 @@
     "delete": "Excluir",
     "deleted": "Excluído com sucesso",
     "deleteConfirm": "Tem certeza que deseja excluir?",
+    "errorLoading": "Erro ao carregar os dados.",
+    "retry": "Tentar novamente",
     "brand": "Secom"
   },
   "landing": {

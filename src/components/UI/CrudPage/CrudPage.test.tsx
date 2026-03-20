@@ -152,4 +152,24 @@ describe('CrudPage', () => {
     render(<CrudPage {...props} />);
     expect(screen.getByText('No items')).toBeInTheDocument();
   });
+
+  it('renders error state with retry button when isError is true', async () => {
+    const refetch = vi.fn();
+    const props = makeProps({
+      listQuery: { data: null, isLoading: false, isError: true, refetch },
+    });
+    render(<CrudPage {...props} />);
+    expect(screen.getByText('Erro ao carregar os dados.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: /tentar novamente/i }));
+    expect(refetch).toHaveBeenCalledOnce();
+  });
+
+  it('renders error state without retry button when refetch is not provided', () => {
+    const props = makeProps({
+      listQuery: { data: null, isLoading: false, isError: true },
+    });
+    render(<CrudPage {...props} />);
+    expect(screen.getByText('Erro ao carregar os dados.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /tentar novamente/i })).not.toBeInTheDocument();
+  });
 });

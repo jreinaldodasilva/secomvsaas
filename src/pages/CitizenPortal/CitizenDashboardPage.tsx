@@ -9,7 +9,6 @@ export function CitizenDashboardPage() {
 
   const quickLinks = [
     { to: '/portal/profile', icon: '👤', label: 'Meu perfil', desc: 'Visualize e atualize seus dados cadastrais' },
-    { to: '/appointments', icon: '📅', label: 'Agendamentos', desc: 'Acompanhe seus agendamentos de atendimento' },
     { to: '/', icon: '📢', label: 'Comunicados', desc: 'Leia os comunicados oficiais da Secom' },
   ];
 

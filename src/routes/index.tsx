@@ -26,7 +26,7 @@ const MediaContactsPage = lazy(() => import('../pages/Domain/MediaContacts/Media
 const ClippingsPage = lazy(() => import('../pages/Domain/Clippings/ClippingsPage').then(m => ({ default: m.ClippingsPage })));
 const EventsPage = lazy(() => import('../pages/Domain/Events/EventsPage').then(m => ({ default: m.EventsPage })));
 const AppointmentsPage = lazy(() => import('../pages/Domain/Appointments/AppointmentsPage').then(m => ({ default: m.AppointmentsPage })));
-const CitizenPortalPage = lazy(() => import('../pages/Domain/CitizenPortal/CitizenPortalPage').then(m => ({ default: m.CitizenPortalPage })));
+const CitizenRecordsPage = lazy(() => import('../pages/Domain/CitizenRecords/CitizenRecordsPage').then(m => ({ default: m.CitizenRecordsPage })));
 const SocialMediaPage = lazy(() => import('../pages/Domain/SocialMedia/SocialMediaPage').then(m => ({ default: m.SocialMediaPage })));
 const CitizenPortalHomePage = lazy(() => import('../pages/CitizenPortal/CitizenPortalHomePage').then(m => ({ default: m.CitizenPortalHomePage })));
 const CitizenLoginPage = lazy(() => import('../pages/CitizenPortal/CitizenLoginPage').then(m => ({ default: m.CitizenLoginPage })));
@@ -59,7 +59,7 @@ export function AppRoutes() {
         <Route path="/clippings" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('clippings:read')}><ClippingsPage /></ProtectedRoute></Suspense>} />
         <Route path="/events" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('events:read')}><EventsPage /></ProtectedRoute></Suspense>} />
         <Route path="/appointments" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('appointments:read')}><AppointmentsPage /></ProtectedRoute></Suspense>} />
-        <Route path="/citizen-portal" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('citizen-portal:read')}><CitizenPortalPage /></ProtectedRoute></Suspense>} />
+        <Route path="/citizen-portal" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('citizen-portal:read')}><CitizenRecordsPage /></ProtectedRoute></Suspense>} />
         <Route path="/social-media" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('social-media:read')}><SocialMediaPage /></ProtectedRoute></Suspense>} />
       </Route>
 

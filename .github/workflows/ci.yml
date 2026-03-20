@@ -48,7 +48,7 @@ jobs:
         run: npm run lint:all
 
       - name: Frontend tests
-        run: npm run test:frontend
+        run: npm run test:frontend:coverage
 
       - name: Build frontend
         env:
@@ -74,4 +74,4 @@ jobs:
         run: |
           npx vite preview --port 3000 &
           npx wait-on http://localhost:3000 --timeout 30000
-          npx cypress run --spec 'cypress/e2e/press-releases.cy.ts'
+          npx cypress run --spec 'cypress/e2e/authentication.cy.ts,cypress/e2e/press-releases.cy.ts'

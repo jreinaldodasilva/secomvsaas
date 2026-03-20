@@ -2,7 +2,7 @@
 
 Carefully review and implement the fixes described in:
 
-`docs/roadmaps/frontend/quick-wins.md`
+`docs/roadmaps/frontend/architecture-quick-wins.md`
 
 ---
 

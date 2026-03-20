@@ -61,3 +61,17 @@ describe('Protected Routes', () => {
     cy.contains('404').should('be.visible');
   });
 });
+
+describe('Citizen → Staff Route Boundary', () => {
+  it('redirects unauthenticated citizen accessing staff /appointments to staff login', () => {
+    cy.visit('/appointments');
+    cy.url().should('include', '/login');
+    cy.url().should('not.include', '/portal');
+  });
+
+  it('redirects unauthenticated citizen accessing /admin/dashboard to staff login', () => {
+    cy.visit('/admin/dashboard');
+    cy.url().should('include', '/login');
+    cy.url().should('not.include', '/portal');
+  });
+});

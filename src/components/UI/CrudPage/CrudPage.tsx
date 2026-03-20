@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import type { ReactNode } from 'react';
-import { DataTable, Modal, Button, ConfirmDialog } from '@/components/UI/index';
+import { DataTable, Modal, Button, ConfirmDialog, EmptyState } from '@/components/UI/index';
 import type { Column } from '@/components/UI/Table/DataTable';
+import { useTranslation } from '@/i18n';
 
 export interface CrudPageProps<TItem extends { id: string }, TForm> {
   title: string;
@@ -24,7 +25,7 @@ export interface CrudPageProps<TItem extends { id: string }, TForm> {
   validate: (form: TForm, editing: boolean) => Record<string, string>;
   buildPayload: (form: TForm, editing: boolean) => Record<string, unknown>;
 
-  listQuery: { data: unknown; isLoading: boolean };
+  listQuery: { data: unknown; isLoading: boolean; isError?: boolean; refetch?: () => void };
   getItems: (data: unknown) => TItem[];
   getTotal: (data: unknown) => number;
   page: number;
@@ -96,6 +97,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   FormComponent,
   formExtraProps = {},
 }: CrudPageProps<TItem, TForm>) {
+  const { t } = useTranslation();
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<TItem | null>(null);
   const [form, setForm] = useState<TForm>(emptyForm);
@@ -144,6 +146,21 @@ export function CrudPage<TItem extends { id: string }, TForm>({
 
   const items = getItems(listQuery.data);
   const total = getTotal(listQuery.data);
+  const isError = listQuery.isError ?? false;
+
+  if (isError) {
+    return (
+      <div>
+        <div className="page-header">
+          <h1>{title}</h1>
+        </div>
+        <EmptyState
+          title={t('common.errorLoading')}
+          action={listQuery.refetch ? { label: t('common.retry'), onClick: listQuery.refetch } : undefined}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>

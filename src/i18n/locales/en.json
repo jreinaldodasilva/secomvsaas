@@ -20,6 +20,8 @@
     "delete": "Delete",
     "deleted": "Deleted successfully",
     "deleteConfirm": "Are you sure you want to delete?",
+    "errorLoading": "Failed to load data.",
+    "retry": "Try again",
     "brand": "Secom"
   },
   "landing": {

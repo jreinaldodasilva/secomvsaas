@@ -1,3 +1,13 @@
+@keyframes barSlideIn {
+  from { transform: scaleX(0); opacity: 1; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+@keyframes barFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
 .bar {
   position: fixed;
   top: 0;
@@ -8,4 +18,11 @@
   box-shadow: 0 0 8px var(--color-primary-500);
   transform-origin: left;
   z-index: 9999;
+  animation: barSlideIn 0.35s ease forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
 }

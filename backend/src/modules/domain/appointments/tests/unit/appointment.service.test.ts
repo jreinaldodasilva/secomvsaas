@@ -7,6 +7,7 @@ jest.mock('../../../../../platform/events', () => ({
 const mockRepo = {
   create: jest.fn(),
   findByIdOrFail: jest.fn(),
+  findByIdForCitizen: jest.fn(),
   findWithFilters: jest.fn(),
   updateByIdOrFail: jest.fn(),
   softDeleteById: jest.fn(),
@@ -40,5 +41,43 @@ describe('AppointmentService', () => {
     mockRepo.findWithFilters.mockResolvedValue({ items: [], total: 0, page: 1, limit: 10, totalPages: 0 });
     const result = await runInTenant(() => service.list({ page: 1, limit: 10 }));
     expect(result.items).toEqual([]);
+  });
+
+  describe('citizen role scoping', () => {
+    const citizenCaller = { userId: 'citizen_user_1', role: 'citizen' };
+
+    it('list passes citizenUserId to repository', async () => {
+      mockRepo.findWithFilters.mockResolvedValue({ items: [], total: 0, page: 1, limit: 10, totalPages: 0 });
+      await runInTenant(() => service.list({ page: 1, limit: 10 }, citizenCaller));
+      expect(mockRepo.findWithFilters).toHaveBeenCalledWith({ page: 1, limit: 10 }, 'citizen_user_1');
+    });
+
+    it('findById returns own appointment for citizen', async () => {
+      const appointment = { _id: 'appt1', createdBy: 'citizen_user_1' };
+      mockRepo.findByIdForCitizen.mockResolvedValue(appointment);
+      const result = await runInTenant(() => service.findById('appt1', citizenCaller));
+      expect(mockRepo.findByIdForCitizen).toHaveBeenCalledWith('appt1', 'citizen_user_1');
+      expect(result).toEqual(appointment);
+    });
+
+    it('findById throws NotFoundError when citizen accesses another user appointment', async () => {
+      mockRepo.findByIdForCitizen.mockResolvedValue(null);
+      await expect(runInTenant(() => service.findById('appt_other', citizenCaller)))
+        .rejects.toThrow('Appointment não encontrado');
+    });
+
+    it('update throws NotFoundError when citizen tries to update another user appointment', async () => {
+      mockRepo.findByIdForCitizen.mockResolvedValue(null);
+      await expect(runInTenant(() => service.update('appt_other', { status: 'cancelled' }, citizenCaller)))
+        .rejects.toThrow('Appointment não encontrado');
+      expect(mockRepo.updateByIdOrFail).not.toHaveBeenCalled();
+    });
+
+    it('delete throws NotFoundError when citizen tries to delete another user appointment', async () => {
+      mockRepo.findByIdForCitizen.mockResolvedValue(null);
+      await expect(runInTenant(() => service.delete('appt_other', citizenCaller)))
+        .rejects.toThrow('Appointment não encontrado');
+      expect(mockRepo.softDeleteById).not.toHaveBeenCalled();
+    });
   });
 });

@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from 'express';
 import { authenticate } from '../../middleware/auth/auth';
 import { requireTenant } from '../../platform/tenants';
-import { DashboardService } from '../../services/admin/dashboardService';
+import { DashboardService } from '../../modules/domain/dashboard';
 
 const router = Router();
 const service = new DashboardService();

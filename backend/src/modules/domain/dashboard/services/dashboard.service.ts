@@ -1,10 +1,10 @@
-import { PressReleaseRepository } from '../../modules/domain/press-releases/repositories/press-release.repository';
-import { MediaContactRepository } from '../../modules/domain/media-contacts/repositories/media-contact.repository';
-import { ClippingRepository } from '../../modules/domain/clippings/repositories/clipping.repository';
-import { EventRepository } from '../../modules/domain/events/repositories/event.repository';
-import { AppointmentRepository } from '../../modules/domain/appointments/repositories/appointment.repository';
-import { CitizenPortalRepository } from '../../modules/domain/citizen-portal/repositories/citizen-portal.repository';
-import { SocialMediaRepository } from '../../modules/domain/social-media/repositories/social-media.repository';
+import { PressReleaseRepository } from '../../press-releases/repositories/press-release.repository';
+import { MediaContactRepository } from '../../media-contacts/repositories/media-contact.repository';
+import { ClippingRepository } from '../../clippings/repositories/clipping.repository';
+import { EventRepository } from '../../events/repositories/event.repository';
+import { AppointmentRepository } from '../../appointments/repositories/appointment.repository';
+import { CitizenPortalRepository } from '../../citizen-portal/repositories/citizen-portal.repository';
+import { SocialMediaRepository } from '../../social-media/repositories/social-media.repository';
 
 export class DashboardService {
   private pressReleases: PressReleaseRepository;

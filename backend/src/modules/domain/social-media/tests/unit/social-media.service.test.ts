@@ -17,6 +17,7 @@ jest.mock('../../repositories/social-media.repository', () => ({
 }));
 
 import { SocialMediaService } from '../../services/social-media.service';
+import { eventBus } from '../../../../../platform/events';
 
 describe('SocialMediaService', () => {
   let service: SocialMediaService;
@@ -29,16 +30,78 @@ describe('SocialMediaService', () => {
   const runInTenant = <T>(fn: () => T): T =>
     TenantContext.run({ tenantId: 'tenant_test' }, fn);
 
-  it('should create and emit event', async () => {
-    mockRepo.create.mockResolvedValue({ _id: 'id1', platform: 'instagram' });
-    const result = await runInTenant(() => service.create({ platform: 'instagram', content: 'Post de teste' }));
-    expect(result).toBeDefined();
-    expect(mockRepo.create).toHaveBeenCalled();
+  describe('create', () => {
+    it('persists entity and emits social-media.created', async () => {
+      mockRepo.create.mockResolvedValue({ _id: 'sm1', platform: 'instagram' });
+      const result = await runInTenant(() =>
+        service.create({ platform: 'instagram', content: 'Novo comunicado!' }, 'user1')
+      );
+      expect(result).toBeDefined();
+      expect(mockRepo.create).toHaveBeenCalledWith(
+        expect.objectContaining({ platform: 'instagram', createdBy: 'user1' })
+      );
+      expect(eventBus.emit).toHaveBeenCalledWith(
+        'social-media.created',
+        expect.objectContaining({ socialMediaId: 'sm1' }),
+        expect.objectContaining({ userId: 'user1' })
+      );
+    });
   });
 
-  it('should list with filters', async () => {
-    mockRepo.findWithFilters.mockResolvedValue({ items: [], total: 0, page: 1, limit: 10, totalPages: 0 });
-    const result = await runInTenant(() => service.list({ page: 1, limit: 10 }));
-    expect(result.items).toEqual([]);
+  describe('findById', () => {
+    it('delegates to repository.findByIdOrFail', async () => {
+      const post = { _id: 'sm1', platform: 'instagram', content: 'Novo comunicado!' };
+      mockRepo.findByIdOrFail.mockResolvedValue(post);
+      const result = await runInTenant(() => service.findById('sm1'));
+      expect(mockRepo.findByIdOrFail).toHaveBeenCalledWith('sm1');
+      expect(result).toEqual(post);
+    });
+  });
+
+  describe('list', () => {
+    it('passes filters to repository', async () => {
+      const paginated = { items: [], total: 0, page: 1, limit: 10, totalPages: 0 };
+      mockRepo.findWithFilters.mockResolvedValue(paginated);
+      const result = await runInTenant(() =>
+        service.list({ platform: 'instagram', status: 'published', page: 1, limit: 10 })
+      );
+      expect(mockRepo.findWithFilters).toHaveBeenCalledWith(
+        expect.objectContaining({ platform: 'instagram', status: 'published' })
+      );
+      expect(result).toEqual(paginated);
+    });
+  });
+
+  describe('update', () => {
+    it('persists changes and emits social-media.updated', async () => {
+      const updated = { _id: 'sm1', status: 'published' };
+      mockRepo.updateByIdOrFail.mockResolvedValue(updated);
+      const result = await runInTenant(() =>
+        service.update('sm1', { status: 'published' }, 'user1')
+      );
+      expect(mockRepo.updateByIdOrFail).toHaveBeenCalledWith(
+        'sm1',
+        expect.objectContaining({ status: 'published', updatedBy: 'user1' })
+      );
+      expect(eventBus.emit).toHaveBeenCalledWith(
+        'social-media.updated',
+        expect.objectContaining({ socialMediaId: 'sm1' }),
+        expect.objectContaining({ userId: 'user1' })
+      );
+      expect(result).toEqual(updated);
+    });
+  });
+
+  describe('delete', () => {
+    it('soft-deletes and emits social-media.deleted', async () => {
+      mockRepo.softDeleteById.mockResolvedValue(undefined);
+      await runInTenant(() => service.delete('sm1', 'user1'));
+      expect(mockRepo.softDeleteById).toHaveBeenCalledWith('sm1');
+      expect(eventBus.emit).toHaveBeenCalledWith(
+        'social-media.deleted',
+        expect.objectContaining({ socialMediaId: 'sm1' }),
+        expect.objectContaining({ userId: 'user1' })
+      );
+    });
   });
 });

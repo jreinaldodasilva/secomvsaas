@@ -2,6 +2,7 @@ import rateLimit from 'express-rate-limit';
 import RedisStore from 'rate-limit-redis';
 import redisClient from '../config/database/redis';
 import { RATE_LIMIT } from '../constants/validation';
+import { env } from '../config/env';
 import logger from '../config/logger';
 import { Request } from 'express';
 import { AuthenticatedRequest } from './auth/auth';
@@ -51,7 +52,7 @@ export const apiLimiter = createRateLimiter({
 
 export const authLimiter = createRateLimiter({
   windowMs: RATE_LIMIT.WINDOW_MS,
-  max: process.env.NODE_ENV === 'production' ? RATE_LIMIT.AUTH_MAX : 100,
+  max: process.env.NODE_ENV === 'production' ? env.rateLimit.authMax : 100,
   message: 'Muitas tentativas de autenticação. Tente novamente em 15 minutos.',
   prefix: 'auth',
   keyGenerator: (req) => req.body?.email ? `auth_${req.body.email}` : `auth_ip_${req.ip}`,
@@ -59,7 +60,7 @@ export const authLimiter = createRateLimiter({
 
 export const refreshLimiter = createRateLimiter({
   windowMs: RATE_LIMIT.WINDOW_MS,
-  max: RATE_LIMIT.REFRESH_MAX,
+  max: env.rateLimit.refreshMax,
   message: 'Muitas tentativas de renovação de token. Tente novamente em 15 minutos.',
   prefix: 'refresh',
 });

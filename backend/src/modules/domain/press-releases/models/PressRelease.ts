@@ -25,6 +25,7 @@ const PressReleaseSchema = new Schema<IPressRelease>({
 PressReleaseSchema.index({ tenantId: 1, status: 1 });
 PressReleaseSchema.index({ tenantId: 1, category: 1 });
 PressReleaseSchema.index({ tenantId: 1, createdAt: -1 });
+PressReleaseSchema.index({ title: 'text', content: 'text', summary: 'text' }, { name: 'pressreleases_text_search' });
 
 applyTenantAware(PressReleaseSchema);
 

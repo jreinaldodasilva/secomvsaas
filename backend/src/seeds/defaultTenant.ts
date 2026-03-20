@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { Tenant } from '../platform/tenants/models/Tenant';
 import { User } from '../models/User';
 import logger from '../config/logger';
+import env from '../config/env';
 
 const DEFAULT_TENANT = {
   name: 'Secretaria de Comunicação',
@@ -24,7 +25,7 @@ const DEFAULT_ADMIN = {
 };
 
 export async function ensureDefaultTenant(): Promise<void> {
-  const password = process.env.DEFAULT_ADMIN_PASSWORD;
+  const password = env.seed.defaultAdminPassword;
   if (!password) {
     throw new Error(
       'DEFAULT_ADMIN_PASSWORD is required for seeding. Set this environment variable before starting the server.',

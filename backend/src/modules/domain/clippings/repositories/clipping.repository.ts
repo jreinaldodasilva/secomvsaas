@@ -12,10 +12,7 @@ export class ClippingRepository extends BaseRepository<IClipping> {
     if (filters.sentiment) query.sentiment = filters.sentiment;
     if (filters.source) query.source = { $regex: filters.source, $options: 'i' };
     if (filters.search) {
-      query.$or = [
-        { title: { $regex: filters.search, $options: 'i' } },
-        { source: { $regex: filters.search, $options: 'i' } },
-      ];
+      query.$text = { $search: filters.search };
     }
     return this.findPaginated(query as any, {
       page: filters.page,

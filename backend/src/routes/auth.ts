@@ -8,7 +8,7 @@ import {
   forgotPasswordSchema,
   resetPasswordSchema,
 } from './validations/authValidation';
-import * as auth from '../controllers/auth.controller';
+import * as auth from './auth/auth.controller';
 
 const router = express.Router();
 

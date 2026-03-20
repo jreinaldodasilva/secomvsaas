@@ -18,8 +18,9 @@
   "scripts": {
     "setup": "bash scripts/setup.sh",
     "dev": "vite",
-    "dev:all": "concurrently \"npm run server\" \"npm run dev\"",
+    "dev:all": "concurrently \"npm run server\" \"npm run worker\" \"npm run dev\"",
     "dev:backend": "cd backend && npm run dev",
+    "worker": "cd backend && npm run dev:worker",
     "server": "cd backend && npm run dev",
     "build": "tsc && vite build",
     "build:all": "npm run build && cd backend && npm run build",

@@ -74,18 +74,32 @@ const envSchema = z
     API_RATE_LIMIT_MAX: z.coerce.number().default(100),
     CONTACT_RATE_LIMIT_WINDOW_MS: z.coerce.number().default(900000),
     CONTACT_RATE_LIMIT_MAX: z.coerce.number().default(5),
+    AUTH_RATE_LIMIT_MAX: z.coerce.number().default(5),
+    REFRESH_RATE_LIMIT_MAX: z.coerce.number().default(10),
 
     // Monitoring
     SENTRY_DSN: z.string().optional(),
 
     // Secrets backend
-    // 'env'            — secrets are read from environment variables (default, dev/CI only)
-    // 'aws-ssm'        — secrets are injected via AWS SSM Parameter Store at deploy time
-    // 'aws-secrets'    — secrets are fetched from AWS Secrets Manager at startup
-    SECRETS_BACKEND: z.enum(['env', 'aws-ssm', 'aws-secrets']).default('env'),
+    // 'env'      — secrets are read from environment variables (default, dev/CI only)
+    // 'aws-ssm'  — secrets are injected via AWS SSM Parameter Store at deploy time
+    // NOTE: 'aws-secrets' (AWS Secrets Manager) is not yet implemented.
+    //       @aws-sdk/client-secrets-manager is not installed. Do not set this value.
+    SECRETS_BACKEND: z.enum(['env', 'aws-ssm']).default('env'),
 
     // Audit
     AUDIT_LOG_TTL_DAYS: z.coerce.number().int().min(1).default(90),
+
+    // Seed — only consumed by defaultTenant.ts on first run; optional at schema level
+    // because the server must start even when the tenant already exists.
+    // Minimum 12 characters with at least one uppercase, one digit, and one special character.
+    DEFAULT_ADMIN_PASSWORD: z
+      .string()
+      .optional()
+      .refine(v => !v || v.length >= 12, { message: 'DEFAULT_ADMIN_PASSWORD must be at least 12 characters' })
+      .refine(v => !v || /[A-Z]/.test(v), { message: 'DEFAULT_ADMIN_PASSWORD must contain at least one uppercase letter' })
+      .refine(v => !v || /[0-9]/.test(v), { message: 'DEFAULT_ADMIN_PASSWORD must contain at least one digit' })
+      .refine(v => !v || /[^A-Za-z0-9]/.test(v), { message: 'DEFAULT_ADMIN_PASSWORD must contain at least one special character' }),
   })
   .superRefine((data, ctx) => {
     const isProdLike = data.NODE_ENV === 'production' || data.NODE_ENV === 'staging';
@@ -143,7 +157,11 @@ const logEnvWarnings = (): void => {
     if (!parsed.SENDGRID_API_KEY && !parsed.ETHEREAL_USER)
       logger.warn('No email service configured (SENDGRID_API_KEY or ETHEREAL_USER)');
     if (parsed.SECRETS_BACKEND === 'env')
-      logger.warn('SECRETS_BACKEND=env in production: secrets are loaded from environment variables with no rotation mechanism. Set SECRETS_BACKEND=aws-secrets or aws-ssm and configure a managed secrets store.');
+      logger.warn('SECRETS_BACKEND=env in production: secrets are loaded from environment variables with no rotation mechanism. Set SECRETS_BACKEND=aws-ssm and configure a managed secrets store.');
+    if (parsed.VERIFY_USER_ON_REQUEST === 'false')
+      logger.warn('VERIFY_USER_ON_REQUEST=false is unsafe in production: deactivated users will retain API access until their access token expires.');
+    if (parsed.AWS_ACCESS_KEY_ID && parsed.AWS_SECRET_ACCESS_KEY)
+      logger.warn('Static AWS credentials detected in production. Use IAM instance/task roles instead of AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY.');
   }
 
   if (parsed.NODE_ENV === 'staging') {
@@ -200,6 +218,8 @@ export const env = {
     apiMax: parsed.API_RATE_LIMIT_MAX,
     contactWindowMs: parsed.CONTACT_RATE_LIMIT_WINDOW_MS,
     contactMax: parsed.CONTACT_RATE_LIMIT_MAX,
+    authMax: parsed.AUTH_RATE_LIMIT_MAX,
+    refreshMax: parsed.REFRESH_RATE_LIMIT_MAX,
   },
   logging: {
     level: parsed.LOG_LEVEL,
@@ -227,6 +247,9 @@ export const env = {
     // Number of days audit log entries are retained before automatic deletion.
     // Used by both the MongoDB TTL index (AuditLog model) and the daily cleanup job.
     logTtlDays: parsed.AUDIT_LOG_TTL_DAYS,
+  },
+  seed: {
+    defaultAdminPassword: parsed.DEFAULT_ADMIN_PASSWORD,
   },
 };
 

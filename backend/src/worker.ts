@@ -26,6 +26,12 @@ const start = async () => {
   logger.info(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
   logger.info('🔧 ===================================');
 
+  // Publish a health signal so server.ts can detect the worker is running.
+  // Key expires after 60 s; the worker refreshes it every 30 s.
+  const WORKER_HEALTH_KEY = 'worker:health';
+  await redisClient.set(WORKER_HEALTH_KEY, '1', 'EX', 60);
+  setInterval(() => redisClient.set(WORKER_HEALTH_KEY, '1', 'EX', 60).catch(() => {}), 30_000);
+
   const gracefulShutdown = async (signal: string): Promise<void> => {
     logger.info(`${signal} received. Worker shutting down gracefully...`);
     try {

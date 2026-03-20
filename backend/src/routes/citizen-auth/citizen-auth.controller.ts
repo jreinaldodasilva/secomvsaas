@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { citizenAuthService, PORTAL_COOKIE, PORTAL_REFRESH_COOKIE } from '../services/auth/citizenAuthService';
-import { AuthenticatedRequest } from '../middleware/auth/auth';
-import { env } from '../config/env';
+import { citizenAuthService, PORTAL_COOKIE, PORTAL_REFRESH_COOKIE } from '../../services/auth/citizenAuthService';
+import { AuthenticatedRequest } from '../../middleware/auth/auth';
+import { env } from '../../config/env';
 
 const cookieOpts = (maxAge: number) => ({
   httpOnly: true,

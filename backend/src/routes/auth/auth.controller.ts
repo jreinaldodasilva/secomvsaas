@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-import { authService } from '../services/auth';
-import { authenticate, AuthenticatedRequest } from '../middleware/auth/auth';
-import { maskEmail } from '../utils/masking';
-import { auditService } from '../services/admin/auditService';
-import { UnauthorizedError } from '../utils/errors';
-import { env } from '../config/env';
+import { authService } from '../../services/auth';
+import { authenticate, AuthenticatedRequest } from '../../middleware/auth/auth';
+import { maskEmail } from '../../utils/masking';
+import { auditService } from '../../services/admin/auditService';
+import { UnauthorizedError } from '../../utils/errors';
+import { env } from '../../config/env';
 
 export const ACCESS_COOKIE = 'secom_access_token';
 export const REFRESH_COOKIE = 'refreshToken';

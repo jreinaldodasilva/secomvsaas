@@ -5,9 +5,14 @@
 ```bash
 npm run setup        # Install deps, generate secrets, copy .env files
 npm run infra:up     # Start MongoDB, Redis, MailHog
-npm run dev:all      # Start frontend + backend (creates secom tenant on first run)
+npm run dev:all      # Start frontend + backend API + worker (creates secom tenant on first run)
 npm run seed:test    # Populate database with Piquete domain test data
 ```
+
+> ⚠️ **Always use `npm run dev:all`**, not `npm run dev` or `npm run server` alone.
+> Running only the API server without the worker causes email delivery, webhook dispatch,
+> and domain event processing to fail silently. The API server will log a warning at startup
+> if the worker is not detected.
 
 ## Generating a Domain Module
 

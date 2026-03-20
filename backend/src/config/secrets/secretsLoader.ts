@@ -18,14 +18,11 @@
  *                    Set SECRETS_BACKEND=aws-ssm to suppress the production
  *                    warning without changing the loading mechanism.
  *
- *   'aws-secrets'  — secrets are fetched from AWS Secrets Manager at startup
- *                    using the AWS SDK. Requires:
- *                      1. @aws-sdk/client-secrets-manager installed
- *                      2. IAM role with secretsmanager:GetSecretValue on the
- *                         relevant secret ARNs
- *                      3. AWS_REGION set in the environment
- *                    See docs/operations/SECRETS_ROTATION_RUNBOOK.md for the
- *                    full integration guide.
+ * NOT YET IMPLEMENTED:
+ *   'aws-secrets'  — AWS Secrets Manager integration is not available.
+ *                    @aws-sdk/client-secrets-manager is not installed.
+ *                    This value is not accepted by the Zod schema.
+ *                    See secretsLoader.ts for the commented integration guide.
  *
  * Rotation:
  *   See docs/operations/SECRETS_ROTATION_RUNBOOK.md
@@ -56,39 +53,11 @@ export interface AppSecrets {
 export async function loadSecrets(): Promise<AppSecrets> {
   const backend = env.secretsBackend;
 
-  if (backend === 'aws-secrets') {
-    /**
-     * AWS Secrets Manager integration — uncomment when ready to implement:
-     *
-     * import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
-     *
-     * const client = new SecretsManagerClient({ region: env.aws.region });
-     *
-     * const getSecret = async (secretId: string): Promise<string> => {
-     *   const cmd = new GetSecretValueCommand({ SecretId: secretId });
-     *   const res = await client.send(cmd);
-     *   if (!res.SecretString) throw new Error(`Secret ${secretId} has no string value`);
-     *   return res.SecretString;
-     * };
-     *
-     * const [jwtSecret, jwtRefreshSecret, portalJwtSecret, csrfSecret] = await Promise.all([
-     *   getSecret(process.env.SECRET_ARN_JWT!),
-     *   getSecret(process.env.SECRET_ARN_JWT_REFRESH!),
-     *   getSecret(process.env.SECRET_ARN_PORTAL_JWT!),
-     *   getSecret(process.env.SECRET_ARN_CSRF!),
-     * ]);
-     *
-     * logger.info({ backend }, 'Secrets loaded from AWS Secrets Manager');
-     * return Object.freeze({ jwtSecret, jwtRefreshSecret, portalJwtSecret, csrfSecret });
-     */
-    throw new Error(
-      'SECRETS_BACKEND=aws-secrets is not yet implemented. ' +
-      'See src/config/secrets/secretsLoader.ts for the integration guide, ' +
-      'and docs/operations/SECRETS_ROTATION_RUNBOOK.md for the rotation procedure.'
-    );
-  }
-
   // 'env' and 'aws-ssm' both read from the validated env object.
+  // To implement 'aws-secrets' (AWS Secrets Manager), install
+  // @aws-sdk/client-secrets-manager, add 'aws-secrets' back to the
+  // SECRETS_BACKEND enum in env.ts, and implement the fetch logic here.
+  // See docs/operations/SECRETS_ROTATION_RUNBOOK.md for the rotation guide.
   // For 'aws-ssm', the deployment pipeline injects secrets as environment
   // variables before the process starts — no difference at the code level.
   if (backend === 'env') {

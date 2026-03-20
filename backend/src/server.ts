@@ -24,6 +24,15 @@ const start = async () => {
     logger.info(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
     logger.info(`🔗 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
     logger.info('🚀 ===================================');
+
+    if (process.env.NODE_ENV === 'development') {
+      redisClient.get('worker:health').then((val) => {
+        if (!val) {
+          logger.warn('⚠️  Worker process is not running. Email delivery, webhook dispatch, and domain event processing will fail silently.');
+          logger.warn('⚠️  Run \'npm run dev:all\' from the project root to start the API, worker, and frontend together.');
+        }
+      }).catch(() => {});
+    }
   });
 
   const gracefulShutdown = async (signal: string): Promise<void> => {

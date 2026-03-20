@@ -12,10 +12,7 @@ export class PressReleaseRepository extends BaseRepository<IPressRelease> {
     if (filters.status) query.status = filters.status;
     if (filters.category) query.category = filters.category;
     if (filters.search) {
-      query.$or = [
-        { title: { $regex: filters.search, $options: 'i' } },
-        { summary: { $regex: filters.search, $options: 'i' } },
-      ];
+      query.$text = { $search: filters.search };
     }
     return this.findPaginated(query as any, {
       page: filters.page,

@@ -23,6 +23,7 @@ const ClippingSchema = new Schema<IClipping>({
 ClippingSchema.index({ tenantId: 1, sentiment: 1 });
 ClippingSchema.index({ tenantId: 1, publishedAt: -1 });
 ClippingSchema.index({ tenantId: 1, createdAt: -1 });
+ClippingSchema.index({ title: 'text', summary: 'text', source: 'text' }, { name: 'clippings_text_search' });
 
 applyTenantAware(ClippingSchema);
 

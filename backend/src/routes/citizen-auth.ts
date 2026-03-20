@@ -2,7 +2,7 @@ import express from 'express';
 import { z } from 'zod';
 import { validateSchema } from '../validation/middleware';
 import { authenticateCitizen } from '../middleware/auth/citizenAuth';
-import * as citizenAuth from '../controllers/citizen-auth.controller';
+import * as citizenAuth from './citizen-auth/citizen-auth.controller';
 
 const router = express.Router();
 

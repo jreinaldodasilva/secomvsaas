@@ -2,7 +2,7 @@
 
 Carefully review and implement the fixes described in:
 
-`docs/roadmaps/backend/quick-wins.md`
+`docs/roadmaps/backend/architecture-quick-wins.md`
 
 ---
 

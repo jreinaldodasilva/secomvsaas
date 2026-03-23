@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { User } from '@vsaas/types';
 import { authService } from '@/services/api';
 
@@ -15,9 +16,10 @@ interface AuthContextValue {
 const AuthContext = createContext<AuthContextValue | null>(null);
 export { AuthContext };
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children, skip = false }: { children: React.ReactNode; skip?: boolean }) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!skip);
+  const navigate = useNavigate();
 
   const refreshUser = useCallback(async () => {
     try {
@@ -29,8 +31,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (skip) return;
     refreshUser().finally(() => setIsLoading(false));
-  }, [refreshUser]);
+  }, [skip, refreshUser]);
+
+  useEffect(() => {
+    if (skip) return;
+    const handleExpired = async () => {
+      await authService.logout().catch(() => {});
+      setUser(null);
+      navigate('/login', { state: { reason: 'session_expired' } });
+    };
+    window.addEventListener('auth:session-expired', handleExpired);
+    return () => window.removeEventListener('auth:session-expired', handleExpired);
+  }, [skip, navigate]);
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await authService.login({ email, password });

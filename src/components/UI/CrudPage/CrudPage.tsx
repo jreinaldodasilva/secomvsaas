@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import { DataTable, Modal, Button, ConfirmDialog, EmptyState } from '@/components/UI/index';
 import type { Column } from '@/components/UI/Table/DataTable';
 import { useTranslation } from '@/i18n';
+import { useAuth } from '@/contexts';
+import { hasPermission } from '@vsaas/types';
 
 export interface CrudPageProps<TItem extends { id: string }, TForm> {
   title: string;
@@ -15,9 +17,19 @@ export interface CrudPageProps<TItem extends { id: string }, TForm> {
   createModalTitle: string;
   modalSize?: 'sm' | 'md' | 'lg';
 
+  /** Permission string required to create/edit (e.g. 'press-releases:write'). When omitted, the action is always shown. */
+  writePermission?: string;
+  /** Permission string required to delete (e.g. 'press-releases:delete'). When omitted, the action is always shown. */
+  deletePermission?: string;
+
+  /** When true, opens the create modal on mount (e.g. deep-linked from dashboard quick action). */
+  initialOpen?: boolean;
+
   columns: (
     openEdit: (item: TItem) => void,
-    openDelete: (item: TItem) => void
+    openDelete: (item: TItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ) => Column<TItem>[];
 
   emptyForm: TForm;
@@ -73,6 +85,9 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   editModalTitle,
   createModalTitle,
   modalSize = 'md',
+  writePermission,
+  deletePermission,
+  initialOpen,
   columns,
   emptyForm,
   toFormState,
@@ -98,11 +113,21 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   formExtraProps = {},
 }: CrudPageProps<TItem, TForm>) {
   const { t } = useTranslation();
+  const { user } = useAuth();
+  const canWrite = !writePermission || (!!user && hasPermission(user.role, writePermission));
+  const canDelete = !deletePermission || (!!user && hasPermission(user.role, deletePermission));
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<TItem | null>(null);
   const [form, setForm] = useState<TForm>(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+
+  // Auto-open create modal when navigated from a deep-link quick action (e.g. ?create=true)
+  useEffect(() => {
+    if (initialOpen && canWrite) openCreate();
+    // Run only on mount — initialOpen is a one-shot signal
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const openDelete = (item: TItem) => {
     const itemWithName = item as TItem & { title?: string; name?: string; citizenName?: string };
@@ -180,16 +205,18 @@ export function CrudPage<TItem extends { id: string }, TForm>({
           )}
         </div>
         <div className="actions-row">
-          <Button onClick={openCreate}>
-            <svg viewBox="0 0 20 20" fill="currentColor" width={16} height={16} aria-hidden="true">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
-            {createLabel}
-          </Button>
+          {canWrite && (
+            <Button onClick={openCreate}>
+              <svg viewBox="0 0 20 20" fill="currentColor" width={16} height={16} aria-hidden="true">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              {createLabel}
+            </Button>
+          )}
         </div>
       </div>
       <DataTable
-        columns={columns(openEdit, openDelete)}
+        columns={columns(openEdit, openDelete, canWrite, canDelete)}
         data={items}
         total={total}
         page={page}

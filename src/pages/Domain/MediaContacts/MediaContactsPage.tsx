@@ -34,7 +34,9 @@ export function MediaContactsPage() {
 
   const columns = (
     openEdit: (item: MediaContactItem) => void,
-    openDelete: (item: MediaContactItem) => void
+    openDelete: (item: MediaContactItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<MediaContactItem>[] => [
     { key: 'name', header: t('domain.mediaContacts.fields.name'), sortable: true },
     { key: 'outlet', header: t('domain.mediaContacts.fields.outlet'), sortable: true },
@@ -46,8 +48,8 @@ export function MediaContactsPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -62,6 +64,8 @@ export function MediaContactsPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.mediaContacts.create')}
+      writePermission="media-contacts:write"
+      deletePermission="media-contacts:delete"
       columns={columns}
       emptyForm={emptyMediaContactForm}
       toFormState={(item) => ({

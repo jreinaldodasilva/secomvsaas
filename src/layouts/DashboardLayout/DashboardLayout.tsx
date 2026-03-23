@@ -38,6 +38,13 @@ export function DashboardLayout() {
     if (window.innerWidth < 768) setSidebarOpen(false);
   }, [location.pathname, setSidebarOpen]);
 
+  // Close the mobile drawer on viewport resize below the mobile breakpoint
+  useEffect(() => {
+    const handleResize = () => { if (window.innerWidth < 768) setSidebarOpen(false); };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [setSidebarOpen]);
+
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
     onTimeout: handleTimeoutLogout,

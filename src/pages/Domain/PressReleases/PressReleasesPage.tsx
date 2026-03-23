@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CrudPage } from '@/components/UI';
 import { Button, StatusBadge } from '@/components/UI';
 import type { Column } from '@/components/UI';
@@ -31,6 +32,15 @@ export function PressReleasesPage() {
   usePageTitle(t('domain.pressReleases.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialOpen = searchParams.get('create') === 'true';
+
+  // Clear the ?create param from the URL after reading it — keeps the URL clean
+  useEffect(() => {
+    if (initialOpen) {
+      setSearchParams(p => { p.delete('create'); return p; }, { replace: true });
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const listQuery = usePressReleaseList({ page, limit: 10, ...(search && { search }) });
   const create = useCreatePressRelease();
@@ -39,7 +49,9 @@ export function PressReleasesPage() {
 
   const columns = (
     openEdit: (item: PressReleaseItem) => void,
-    openDelete: (item: PressReleaseItem) => void
+    openDelete: (item: PressReleaseItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<PressReleaseItem>[] => [
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
@@ -49,8 +61,8 @@ export function PressReleasesPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -65,6 +77,9 @@ export function PressReleasesPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.pressReleases.create')}
+      writePermission="press-releases:write"
+      deletePermission="press-releases:delete"
+      initialOpen={initialOpen}
       columns={columns}
       emptyForm={emptyPressReleaseForm}
       toFormState={(item) => ({

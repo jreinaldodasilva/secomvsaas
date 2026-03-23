@@ -5,6 +5,9 @@ import { CrudPage } from './CrudPage';
 import type { FormComponentProps } from './CrudPage';
 import type { Column } from '@/components/UI/Table/DataTable';
 
+const mockUseAuth = vi.fn();
+vi.mock('@/contexts', () => ({ useAuth: (...args: any[]) => mockUseAuth(...args) }));
+
 interface TestItem { id: string; name: string }
 interface TestForm { name: string }
 
@@ -32,15 +35,17 @@ const items: TestItem[] = [
 function makeProps(overrides = {}) {
   const columns = (
     openEdit: (item: TestItem) => void,
-    openDelete: (item: TestItem) => void
+    openDelete: (item: TestItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<TestItem>[] => [
     { key: 'name', header: 'Name' },
     {
       key: 'actions', header: '',
       render: (r) => (
         <>
-          <button onClick={() => openEdit(r)}>Edit {r.name}</button>
-          <button onClick={() => openDelete(r)}>Delete {r.name}</button>
+          {canWrite && <button onClick={() => openEdit(r)}>Edit {r.name}</button>}
+          {canDelete && <button onClick={() => openDelete(r)}>Delete {r.name}</button>}
         </>
       ),
     },
@@ -80,6 +85,10 @@ function makeProps(overrides = {}) {
 }
 
 describe('CrudPage', () => {
+  beforeEach(() => {
+    mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
+  });
+
   it('renders title and data rows', () => {
     render(<CrudPage {...makeProps()} />);
     expect(screen.getByText('Test Items')).toBeInTheDocument();
@@ -139,7 +148,7 @@ describe('CrudPage', () => {
     const onDelete = vi.fn();
     render(<CrudPage {...makeProps({ onDelete })} />);
     await userEvent.click(screen.getByText('Delete Alpha'));
-    expect(screen.getByText(/excluir "Alpha"/i)).toBeInTheDocument();
+    expect(screen.getByText(/excluir \"Alpha\"/i)).toBeInTheDocument();
     const confirmBtn = screen.getByRole('button', { name: /excluir/i });
     await userEvent.click(confirmBtn);
     expect(onDelete).toHaveBeenCalledWith('1', expect.objectContaining({ onSuccess: expect.any(Function) }));
@@ -171,5 +180,73 @@ describe('CrudPage', () => {
     render(<CrudPage {...props} />);
     expect(screen.getByText('Erro ao carregar os dados.')).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: /tentar novamente/i })).not.toBeInTheDocument();
+  });
+
+  describe('write/delete permission gating', () => {
+    it('hides New button and Edit/Delete actions when user lacks write and delete permissions', () => {
+      // social_media role has no write/delete for press-releases
+      mockUseAuth.mockReturnValue({ user: { role: 'social_media' } });
+      render(<CrudPage {...makeProps({
+        writePermission: 'press-releases:write',
+        deletePermission: 'press-releases:delete',
+      })} />);
+      expect(screen.queryByText('New Item')).not.toBeInTheDocument();
+      expect(screen.queryByText('Edit Alpha')).not.toBeInTheDocument();
+      expect(screen.queryByText('Delete Alpha')).not.toBeInTheDocument();
+    });
+
+    it('shows New button and Edit/Delete actions when user has write and delete permissions', () => {
+      mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
+      render(<CrudPage {...makeProps({
+        writePermission: 'press-releases:write',
+        deletePermission: 'press-releases:delete',
+      })} />);
+      expect(screen.getByText('New Item')).toBeInTheDocument();
+      expect(screen.getByText('Edit Alpha')).toBeInTheDocument();
+      expect(screen.getByText('Delete Alpha')).toBeInTheDocument();
+    });
+
+    it('shows Edit but hides Delete when user has write but not delete permission', () => {
+      // assessor has press-releases:write but not press-releases:delete
+      mockUseAuth.mockReturnValue({ user: { role: 'assessor' } });
+      render(<CrudPage {...makeProps({
+        writePermission: 'press-releases:write',
+        deletePermission: 'press-releases:delete',
+      })} />);
+      expect(screen.getByText('New Item')).toBeInTheDocument();
+      expect(screen.getByText('Edit Alpha')).toBeInTheDocument();
+      expect(screen.queryByText('Delete Alpha')).not.toBeInTheDocument();
+    });
+
+    it('shows all actions when no permission props are provided', () => {
+      mockUseAuth.mockReturnValue({ user: { role: 'social_media' } });
+      render(<CrudPage {...makeProps()} />);
+      expect(screen.getByText('New Item')).toBeInTheDocument();
+      expect(screen.getByText('Edit Alpha')).toBeInTheDocument();
+      expect(screen.getByText('Delete Alpha')).toBeInTheDocument();
+    });
+  });
+
+  describe('initialOpen', () => {
+    it('opens create modal on mount when initialOpen=true and user has write permission', async () => {
+      mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
+      render(<CrudPage {...makeProps({ initialOpen: true })} />);
+      expect(screen.getByText('New Item', { selector: '[id="modal-title"]' })).toBeInTheDocument();
+    });
+
+    it('does not open create modal on mount when initialOpen=false', () => {
+      mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
+      render(<CrudPage {...makeProps({ initialOpen: false })} />);
+      expect(screen.queryByText('New Item', { selector: '[id="modal-title"]' })).not.toBeInTheDocument();
+    });
+
+    it('does not open create modal when initialOpen=true but user lacks write permission', () => {
+      mockUseAuth.mockReturnValue({ user: { role: 'social_media' } });
+      render(<CrudPage {...makeProps({
+        initialOpen: true,
+        writePermission: 'press-releases:write',
+      })} />);
+      expect(screen.queryByText('New Item', { selector: '[id="modal-title"]' })).not.toBeInTheDocument();
+    });
   });
 });

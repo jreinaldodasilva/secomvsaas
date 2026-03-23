@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { PublicLayout } from '@/layouts/PublicLayout/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout/DashboardLayout';
 import { CitizenPortalLayout } from '@/layouts/CitizenPortalLayout/CitizenPortalLayout';
@@ -66,13 +66,16 @@ export function AppRoutes() {
       </Route>
 
       {/* Citizen Portal */}
-      {/* No layout-level auth guard — ProtectedCitizenRoute handles auth per protected route */}
+      {/* Public citizen routes — no auth guard */}
       <Route element={<CitizenPortalLayout />}>
         <Route path="/portal" element={<Suspense fallback={<LoadingScreen />}><CitizenPortalHomePage /></Suspense>} />
         <Route path="/portal/login" element={<Suspense fallback={<LoadingScreen />}><CitizenLoginPage /></Suspense>} />
         <Route path="/portal/register" element={<Suspense fallback={<LoadingScreen />}><CitizenRegisterPage /></Suspense>} />
-        <Route path="/portal/dashboard" element={<Suspense fallback={<LoadingScreen />}><ProtectedCitizenRoute><CitizenDashboardPage /></ProtectedCitizenRoute></Suspense>} />
-        <Route path="/portal/profile" element={<Suspense fallback={<LoadingScreen />}><ProtectedCitizenRoute><CitizenProfilePage /></ProtectedCitizenRoute></Suspense>} />
+        {/* Protected citizen routes — explicit layout-level guard; mirrors the two-layer staff pattern */}
+        <Route element={<ProtectedCitizenRoute><Outlet /></ProtectedCitizenRoute>}>
+          <Route path="/portal/dashboard" element={<Suspense fallback={<LoadingScreen />}><CitizenDashboardPage /></Suspense>} />
+          <Route path="/portal/profile" element={<Suspense fallback={<LoadingScreen />}><CitizenProfilePage /></Suspense>} />
+        </Route>
       </Route>
 
       {/* Fallback — wrapped in PublicLayout for consistent header/footer context */}

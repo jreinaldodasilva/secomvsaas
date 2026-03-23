@@ -1,12 +1,5 @@
 import { http } from '@/services/http';
-
-export interface CitizenUser {
-  id: string;
-  name: string;
-  email: string;
-  role: 'citizen';
-  tenantId?: string;
-}
+import type { CitizenUser } from '@vsaas/types';
 
 export const citizenAuthService = {
   register: (data: { name: string; email: string; password: string }) =>

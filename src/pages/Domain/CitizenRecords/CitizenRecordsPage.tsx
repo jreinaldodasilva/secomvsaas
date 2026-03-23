@@ -37,7 +37,9 @@ export function CitizenRecordsPage() {
 
   const columns = (
     openEdit: (item: CitizenItem) => void,
-    openDelete: (item: CitizenItem) => void
+    openDelete: (item: CitizenItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<CitizenItem>[] => [
     { key: 'fullName', header: t('domain.citizenPortal.fields.fullName'), sortable: true },
     { key: 'cpf', header: t('domain.citizenPortal.fields.cpf') },
@@ -49,8 +51,8 @@ export function CitizenRecordsPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -65,6 +67,8 @@ export function CitizenRecordsPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.citizenPortal.create')}
+      writePermission="citizen-portal:write"
+      deletePermission="citizen-portal:delete"
       columns={columns}
       emptyForm={emptyCitizenForm}
       toFormState={(item) => ({

@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
-import { citizenAuthService, CitizenUser } from '@/services/api';
+import { useNavigate } from 'react-router-dom';
+import type { CitizenUser } from '@vsaas/types';
+import { citizenAuthService } from '@/services/api';
 
 interface CitizenAuthContextValue {
   citizen: CitizenUser | null;
@@ -13,9 +15,10 @@ interface CitizenAuthContextValue {
 
 const CitizenAuthContext = createContext<CitizenAuthContextValue | null>(null);
 
-export function CitizenAuthProvider({ children }: { children: React.ReactNode }) {
+export function CitizenAuthProvider({ children, skip = false }: { children: React.ReactNode; skip?: boolean }) {
   const [citizen, setCitizen] = useState<CitizenUser | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(!skip);
+  const navigate = useNavigate();
 
   const refreshCitizen = useCallback(async () => {
     try {
@@ -27,8 +30,20 @@ export function CitizenAuthProvider({ children }: { children: React.ReactNode })
   }, []);
 
   useEffect(() => {
+    if (skip) return;
     refreshCitizen().finally(() => setIsLoading(false));
-  }, [refreshCitizen]);
+  }, [skip, refreshCitizen]);
+
+  useEffect(() => {
+    if (skip) return;
+    const handleExpired = async () => {
+      await citizenAuthService.logout().catch(() => {});
+      setCitizen(null);
+      navigate('/portal/login', { state: { reason: 'session_expired' } });
+    };
+    window.addEventListener('auth:session-expired', handleExpired);
+    return () => window.removeEventListener('auth:session-expired', handleExpired);
+  }, [skip, navigate]);
 
   const login = useCallback(async (email: string, password: string) => {
     const res = await citizenAuthService.login({ email, password });

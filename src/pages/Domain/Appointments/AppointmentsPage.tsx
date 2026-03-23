@@ -37,7 +37,9 @@ export function AppointmentsPage() {
 
   const columns = (
     openEdit: (item: AppointmentItem) => void,
-    openDelete: (item: AppointmentItem) => void
+    openDelete: (item: AppointmentItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<AppointmentItem>[] => [
     { key: 'citizenName', header: t('domain.appointments.fields.citizenName'), sortable: true },
     { key: 'service', header: t('domain.appointments.fields.service'), sortable: true },
@@ -47,8 +49,8 @@ export function AppointmentsPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -63,6 +65,8 @@ export function AppointmentsPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.appointments.create')}
+      writePermission="appointments:write"
+      deletePermission="appointments:delete"
       columns={columns}
       emptyForm={emptyAppointmentForm}
       toFormState={(item) => ({

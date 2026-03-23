@@ -93,6 +93,20 @@ describe('AcceptInvitePage', () => {
     expect(mockNavigate).not.toHaveBeenCalled();
   });
 
+  it('shows expired token state and back-to-login CTA when API returns 401', async () => {
+    mockAcceptInvite.mockRejectedValue(new ApiError('Convite inválido ou expirado', 401));
+    renderPage('stale-token');
+
+    await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Convite inválido ou expirado');
+    expect(screen.getByRole('link', { name: 'Voltar ao login' })).toBeInTheDocument();
+    expect(mockRefreshUser).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
+  });
+
   it('shows fallback error on unknown failure', async () => {
     mockAcceptInvite.mockRejectedValue(new Error());
     renderPage('invite-token');

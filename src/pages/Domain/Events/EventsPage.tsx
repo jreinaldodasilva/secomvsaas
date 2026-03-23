@@ -36,7 +36,9 @@ export function EventsPage() {
 
   const columns = (
     openEdit: (item: EventItem) => void,
-    openDelete: (item: EventItem) => void
+    openDelete: (item: EventItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<EventItem>[] => [
     { key: 'title', header: t('domain.events.fields.title'), sortable: true },
     { key: 'location', header: t('domain.events.fields.location') },
@@ -47,8 +49,8 @@ export function EventsPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -63,6 +65,8 @@ export function EventsPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.events.create')}
+      writePermission="events:write"
+      deletePermission="events:delete"
       columns={columns}
       emptyForm={emptyEventForm}
       toFormState={(item) => ({

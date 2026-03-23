@@ -233,6 +233,16 @@ export function rolesWithPermission(permission: string): Role[] {
   return (Object.keys(ROLE_PERMISSIONS) as Role[]).filter(r => hasPermission(r, permission));
 }
 
+// ─── Citizen auth ────────────────────────────────────────────────────────────
+
+export type CitizenUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: 'citizen';
+  tenantId?: string;
+};
+
 // ─── Domain entities ─────────────────────────────────────────────────────────
 
 export type PressRelease = {

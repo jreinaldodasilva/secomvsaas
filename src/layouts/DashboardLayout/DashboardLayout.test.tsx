@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { vi } from 'vitest';
+
+const mockSetSidebarOpen = vi.fn();
 
 vi.mock('../../contexts/AuthContext', () => ({
   useAuth: () => ({
@@ -15,6 +17,14 @@ vi.mock('../../contexts/TenantContext', () => ({
   useTenant: () => ({
     tenant: { id: 't1', name: 'Secom', slug: 'secom' },
     isLoading: false,
+  }),
+}));
+
+vi.mock('../../store/uiStore', () => ({
+  useUIStore: () => ({
+    sidebarOpen: true,
+    toggleSidebar: vi.fn(),
+    setSidebarOpen: mockSetSidebarOpen,
   }),
 }));
 
@@ -39,6 +49,7 @@ function renderInDashboard(ui: React.ReactNode) {
 describe('DashboardLayout error boundary', () => {
   beforeEach(() => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
+    mockSetSidebarOpen.mockReset();
   });
 
   afterEach(() => {
@@ -47,9 +58,7 @@ describe('DashboardLayout error boundary', () => {
 
   it('contains a page crash without unmounting the sidebar', () => {
     renderInDashboard(<ThrowingPage />);
-    // Sidebar navigation is still present — layout shell survived
     expect(screen.getByRole('navigation')).toBeInTheDocument();
-    // Error boundary fallback is shown inside main content
     expect(screen.getByText('Algo deu errado')).toBeInTheDocument();
   });
 
@@ -57,5 +66,36 @@ describe('DashboardLayout error boundary', () => {
     renderInDashboard(<div>Page content</div>);
     expect(screen.getByText('Page content')).toBeInTheDocument();
     expect(screen.queryByText('Algo deu errado')).not.toBeInTheDocument();
+  });
+});
+
+describe('DashboardLayout sidebar resize behaviour', () => {
+  beforeEach(() => {
+    mockSetSidebarOpen.mockReset();
+  });
+
+  it('closes sidebar on resize when viewport is below 768px', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
+    renderInDashboard(<div>Page</div>);
+    mockSetSidebarOpen.mockReset();
+
+    act(() => {
+      Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    expect(mockSetSidebarOpen).toHaveBeenCalledWith(false);
+  });
+
+  it('does not close sidebar on resize when viewport is at or above 768px', () => {
+    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
+    renderInDashboard(<div>Page</div>);
+    mockSetSidebarOpen.mockReset();
+
+    act(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    expect(mockSetSidebarOpen).not.toHaveBeenCalled();
   });
 });

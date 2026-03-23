@@ -35,7 +35,9 @@ export function ClippingsPage() {
 
   const columns = (
     openEdit: (item: ClippingItem) => void,
-    openDelete: (item: ClippingItem) => void
+    openDelete: (item: ClippingItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<ClippingItem>[] => [
     { key: 'title', header: t('domain.clippings.fields.title'), sortable: true },
     { key: 'source', header: t('domain.clippings.fields.source'), sortable: true },
@@ -49,8 +51,8 @@ export function ClippingsPage() {
       render: (r) => (
         <div className="actions-row">
           {r.sourceUrl && <a href={r.sourceUrl} target="_blank" rel="noopener noreferrer"><Button variant="ghost" size="sm">🔗</Button></a>}
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -65,6 +67,8 @@ export function ClippingsPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.clippings.create')}
+      writePermission="clippings:write"
+      deletePermission="clippings:delete"
       columns={columns}
       emptyForm={emptyClippingForm}
       toFormState={(item) => ({

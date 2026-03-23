@@ -30,13 +30,35 @@ vi.mock('react-router-dom', async () => {
 
 import { CitizenPortalLayout } from './CitizenPortalLayout';
 
-function renderLayout() {
+function renderLayout(initialPath = '/') {
   return render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={[initialPath]}>
       <CitizenPortalLayout />
     </MemoryRouter>
   );
 }
+
+describe('CitizenPortalLayout — breadcrumbs', () => {
+  it('shows breadcrumb on /portal/dashboard', () => {
+    renderLayout('/portal/dashboard');
+    const nav = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    expect(nav).toBeInTheDocument();
+    expect(within(nav).getByRole('link', { name: 'Portal do Cidad\u00e3o' })).toBeInTheDocument();
+    expect(within(nav).getByText('In\u00edcio')).toBeInTheDocument();
+  });
+
+  it('shows breadcrumb on /portal/profile', () => {
+    renderLayout('/portal/profile');
+    const nav = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    expect(nav).toBeInTheDocument();
+    expect(within(nav).getByText('Meu perfil')).toBeInTheDocument();
+  });
+
+  it('does not show breadcrumb on /portal', () => {
+    renderLayout('/portal');
+    expect(screen.queryByRole('navigation', { name: 'Breadcrumb' })).not.toBeInTheDocument();
+  });
+});
 
 describe('CitizenPortalLayout — session timeout', () => {
   beforeEach(() => {

@@ -38,7 +38,9 @@ export function SocialMediaPage() {
 
   const columns = (
     openEdit: (item: SocialMediaItem) => void,
-    openDelete: (item: SocialMediaItem) => void
+    openDelete: (item: SocialMediaItem) => void,
+    canWrite: boolean,
+    canDelete: boolean,
   ): Column<SocialMediaItem>[] => [
     { key: 'platform', header: t('domain.socialMedia.fields.platform'), render: (r) => r.platform.charAt(0).toUpperCase() + r.platform.slice(1) },
     { key: 'content', header: t('domain.socialMedia.fields.content'), render: (r) => r.content.length > 80 ? r.content.slice(0, 80) + '…' : r.content },
@@ -48,8 +50,8 @@ export function SocialMediaPage() {
       key: 'actions', header: '',
       render: (r) => (
         <div className="actions-row">
-          <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
+          {canWrite && <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>}
+          {canDelete && <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>}
         </div>
       ),
     },
@@ -64,6 +66,8 @@ export function SocialMediaPage() {
       searchPlaceholder={t('common.search')}
       editModalTitle={t('common.edit')}
       createModalTitle={t('domain.socialMedia.create')}
+      writePermission="social-media:write"
+      deletePermission="social-media:delete"
       columns={columns}
       emptyForm={emptySocialMediaForm}
       toFormState={(item) => {

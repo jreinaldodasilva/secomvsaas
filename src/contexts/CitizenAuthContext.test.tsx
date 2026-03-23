@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockCitizenAuthService = vi.hoisted(() => ({
   me:       vi.fn(),
@@ -28,6 +29,14 @@ function TestConsumer() {
   );
 }
 
+function renderProvider(skip?: boolean) {
+  return render(
+    <MemoryRouter>
+      <CitizenAuthProvider skip={skip}><TestConsumer /></CitizenAuthProvider>
+    </MemoryRouter>
+  );
+}
+
 describe('CitizenAuthContext', () => {
   beforeEach(() => {
     mockCitizenAuthService.me.mockReset();
@@ -38,7 +47,7 @@ describe('CitizenAuthContext', () => {
 
   it('loads citizen on mount via me()', async () => {
     mockCitizenAuthService.me.mockResolvedValue({ data: { name: 'Carlos', email: 'c@gov.br' } });
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
     expect(screen.getByTestId('citizen')).toHaveTextContent('Carlos');
@@ -47,7 +56,7 @@ describe('CitizenAuthContext', () => {
 
   it('sets citizen to null when me() fails', async () => {
     mockCitizenAuthService.me.mockRejectedValue(new Error('Unauthorized'));
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
     expect(screen.getByTestId('citizen')).toHaveTextContent('none');
@@ -57,7 +66,7 @@ describe('CitizenAuthContext', () => {
   it('login sets citizen from response', async () => {
     mockCitizenAuthService.me.mockRejectedValue(new Error('No session'));
     mockCitizenAuthService.login.mockResolvedValue({ data: { user: { name: 'Ana', email: 'ana@gov.br' } } });
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
     await userEvent.click(screen.getByText('Login'));
@@ -68,7 +77,7 @@ describe('CitizenAuthContext', () => {
   it('register sets citizen from response', async () => {
     mockCitizenAuthService.me.mockRejectedValue(new Error('No session'));
     mockCitizenAuthService.register.mockResolvedValue({ data: { user: { name: 'New', email: 'n@b.com' } } });
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
     await userEvent.click(screen.getByText('Register'));
@@ -78,7 +87,7 @@ describe('CitizenAuthContext', () => {
   it('logout clears citizen', async () => {
     mockCitizenAuthService.me.mockResolvedValue({ data: { name: 'Carlos', email: 'c@gov.br' } });
     mockCitizenAuthService.logout.mockResolvedValue(undefined);
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('citizen')).toHaveTextContent('Carlos'));
     await userEvent.click(screen.getByText('Logout'));
@@ -89,11 +98,43 @@ describe('CitizenAuthContext', () => {
   it('logout still clears citizen even if API call fails', async () => {
     mockCitizenAuthService.me.mockResolvedValue({ data: { name: 'Carlos', email: 'c@gov.br' } });
     mockCitizenAuthService.logout.mockRejectedValue(new Error('Network error'));
-    render(<CitizenAuthProvider><TestConsumer /></CitizenAuthProvider>);
+    renderProvider();
 
     await waitFor(() => expect(screen.getByTestId('citizen')).toHaveTextContent('Carlos'));
     await userEvent.click(screen.getByText('Logout'));
     expect(screen.getByTestId('citizen')).toHaveTextContent('none');
+  });
+
+  it('skips me() call when skip=true and starts with isLoading=false', () => {
+    renderProvider(true);
+    expect(screen.getByTestId('loading')).toHaveTextContent('false');
+    expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+    expect(mockCitizenAuthService.me).not.toHaveBeenCalled();
+  });
+
+  it('clears citizen and calls logout on auth:session-expired event', async () => {
+    mockCitizenAuthService.me.mockResolvedValue({ data: { name: 'Carlos', email: 'c@gov.br' } });
+    mockCitizenAuthService.logout.mockResolvedValue(undefined);
+    renderProvider();
+
+    await waitFor(() => expect(screen.getByTestId('citizen')).toHaveTextContent('Carlos'));
+
+    window.dispatchEvent(new CustomEvent('auth:session-expired'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+    });
+    expect(mockCitizenAuthService.logout).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not register session-expired listener when skip=true', async () => {
+    mockCitizenAuthService.logout.mockResolvedValue(undefined);
+    renderProvider(true);
+
+    window.dispatchEvent(new CustomEvent('auth:session-expired'));
+    await new Promise(r => setTimeout(r, 50));
+
+    expect(mockCitizenAuthService.logout).not.toHaveBeenCalled();
   });
 
   it('throws when useCitizenAuth is used outside CitizenAuthProvider', () => {

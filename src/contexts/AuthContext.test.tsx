@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 const mockAuthService = vi.hoisted(() => ({
   me: vi.fn(),
@@ -26,6 +27,14 @@ function TestConsumer() {
   );
 }
 
+function renderProvider(skip?: boolean) {
+  return render(
+    <MemoryRouter>
+      <AuthProvider skip={skip}><TestConsumer /></AuthProvider>
+    </MemoryRouter>
+  );
+}
+
 describe('AuthContext', () => {
   beforeEach(() => {
     mockAuthService.me.mockReset();
@@ -35,7 +44,7 @@ describe('AuthContext', () => {
 
   it('loads user on mount via me()', async () => {
     mockAuthService.me.mockResolvedValue({ data: { name: 'Alice', role: 'admin' } });
-    render(<AuthProvider><TestConsumer /></AuthProvider>);
+    renderProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('loading')).toHaveTextContent('false');
@@ -46,7 +55,7 @@ describe('AuthContext', () => {
 
   it('sets user to null when me() fails', async () => {
     mockAuthService.me.mockRejectedValue(new Error('Unauthorized'));
-    render(<AuthProvider><TestConsumer /></AuthProvider>);
+    renderProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('loading')).toHaveTextContent('false');
@@ -58,7 +67,7 @@ describe('AuthContext', () => {
   it('login sets user from response', async () => {
     mockAuthService.me.mockRejectedValue(new Error('No session'));
     mockAuthService.login.mockResolvedValue({ data: { user: { name: 'Bob', role: 'staff' } } });
-    render(<AuthProvider><TestConsumer /></AuthProvider>);
+    renderProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('loading')).toHaveTextContent('false');
@@ -73,7 +82,7 @@ describe('AuthContext', () => {
   it('logout clears user', async () => {
     mockAuthService.me.mockResolvedValue({ data: { name: 'Alice', role: 'admin' } });
     mockAuthService.logout.mockResolvedValue(undefined);
-    render(<AuthProvider><TestConsumer /></AuthProvider>);
+    renderProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('user')).toHaveTextContent('Alice');
@@ -88,7 +97,7 @@ describe('AuthContext', () => {
   it('logout still clears user even if API call fails', async () => {
     mockAuthService.me.mockResolvedValue({ data: { name: 'Alice', role: 'admin' } });
     mockAuthService.logout.mockRejectedValue(new Error('Network error'));
-    render(<AuthProvider><TestConsumer /></AuthProvider>);
+    renderProvider();
 
     await waitFor(() => {
       expect(screen.getByTestId('user')).toHaveTextContent('Alice');
@@ -97,6 +106,38 @@ describe('AuthContext', () => {
     await userEvent.click(screen.getByText('Logout'));
 
     expect(screen.getByTestId('user')).toHaveTextContent('none');
+  });
+
+  it('skips me() call when skip=true and starts with isLoading=false', () => {
+    renderProvider(true);
+    expect(screen.getByTestId('loading')).toHaveTextContent('false');
+    expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+    expect(mockAuthService.me).not.toHaveBeenCalled();
+  });
+
+  it('clears user and calls logout on auth:session-expired event', async () => {
+    mockAuthService.me.mockResolvedValue({ data: { name: 'Alice', role: 'admin' } });
+    mockAuthService.logout.mockResolvedValue(undefined);
+    renderProvider();
+
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent('Alice'));
+
+    window.dispatchEvent(new CustomEvent('auth:session-expired'));
+
+    await waitFor(() => {
+      expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+    });
+    expect(mockAuthService.logout).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not register session-expired listener when skip=true', async () => {
+    mockAuthService.logout.mockResolvedValue(undefined);
+    renderProvider(true);
+
+    window.dispatchEvent(new CustomEvent('auth:session-expired'));
+    await new Promise(r => setTimeout(r, 50));
+
+    expect(mockAuthService.logout).not.toHaveBeenCalled();
   });
 
   it('throws when useAuth is used outside AuthProvider', () => {

@@ -1,14 +1,21 @@
 import { useState, useCallback } from 'react';
-import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
 import { useSessionTimeout } from '@/hooks';
 import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import styles from './CitizenPortalLayout.module.css';
 
+const CITIZEN_BREADCRUMBS: Record<string, { label: string; parent?: { label: string; to: string } }> = {
+  '/portal/dashboard': { label: 'Início', parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/profile':   { label: 'Meu perfil', parent: { label: 'Portal do Cidadão', to: '/portal' } },
+};
+
 export function CitizenPortalLayout() {
   const { isAuthenticated, citizen, logout } = useCitizenAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const crumb = CITIZEN_BREADCRUMBS[pathname];
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
 
   const handleLogout = useCallback(async () => {
@@ -64,6 +71,13 @@ export function CitizenPortalLayout() {
       </header>
 
       <main id="main-content" className={styles.main}>
+        {crumb && (
+          <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
+            <Link to={crumb.parent!.to}>{crumb.parent!.label}</Link>
+            <span aria-hidden="true"> / </span>
+            <span aria-current="page">{crumb.label}</span>
+          </nav>
+        )}
         <ErrorBoundary>
           <Outlet />
         </ErrorBoundary>

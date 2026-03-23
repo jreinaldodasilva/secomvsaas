@@ -61,7 +61,8 @@ export async function withRefreshInterceptor<T>(
         await refreshPromise;
         return baseRequest<T>(path, { ...options, _retry: true });
       } catch {
-        // Refresh failed — re-throw the original 401
+        // Refresh failed — session is unrecoverable; signal auth contexts to logout
+        window.dispatchEvent(new CustomEvent('auth:session-expired'));
       }
     }
     throw err;

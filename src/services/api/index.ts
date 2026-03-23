@@ -1,6 +1,6 @@
 export { authService } from './authService';
 export { citizenAuthService } from './citizenAuthService';
-export type { CitizenUser } from './citizenAuthService';
+export type { CitizenUser } from '@vsaas/types';
 export { tenantService } from './tenantService';
 export { pressReleaseService } from './pressReleaseService';
 export { mediaContactService } from './mediaContactService';

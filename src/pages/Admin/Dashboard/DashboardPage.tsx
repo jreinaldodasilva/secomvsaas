@@ -44,7 +44,7 @@ export function DashboardPage() {
           <button className="btn btn-outline btn-sm" onClick={() => refetch()}>
             <Icon name="refresh" size={16} /> Atualizar
           </button>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/press-releases')}>
+          <button className="btn btn-primary btn-sm" onClick={() => navigate('/press-releases?create=true')}>
             <Icon name="plus" size={16} /> Novo Comunicado
           </button>
         </div>

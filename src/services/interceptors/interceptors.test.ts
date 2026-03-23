@@ -95,5 +95,37 @@ describe('withRefreshInterceptor', () => {
       ).rejects.toMatchObject({ status: 401 });
       expect(mockFetch).toHaveBeenCalledTimes(1);
     });
+
+    it('retries after successful token refresh on 401', async () => {
+      // First /api/items call returns 401; refresh succeeds; retry returns success
+      let itemCallCount = 0;
+      mockFetch.mockImplementation((url: string) => {
+        if (String(url).includes('/api/csrf-token')) return Promise.resolve(ok({ csrfToken: 'tok' }));
+        if (String(url).includes('/auth/refresh')) return Promise.resolve(ok({}));
+        itemCallCount++;
+        return Promise.resolve(itemCallCount === 1
+          ? fail(401, { message: 'Unauthorized' })
+          : ok({ retried: true })
+        );
+      });
+      const result = await withRefreshInterceptor('/api/items', { method: 'GET' });
+      expect(result).toEqual({ retried: true });
+    });
+
+    it('dispatches auth:session-expired and re-throws 401 when refresh fails', async () => {
+      const dispatchSpy = vi.spyOn(window, 'dispatchEvent');
+      mockFetch.mockImplementation((url: string) => {
+        if (String(url).includes('/api/csrf-token')) return Promise.resolve(ok({ csrfToken: 'tok' }));
+        if (String(url).includes('/auth/refresh')) return Promise.resolve(fail(401, { message: 'Refresh failed' }));
+        return Promise.resolve(fail(401, { message: 'Unauthorized' }));
+      });
+      await expect(
+        withRefreshInterceptor('/api/items', { method: 'GET' })
+      ).rejects.toMatchObject({ status: 401 });
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'auth:session-expired' })
+      );
+      dispatchSpy.mockRestore();
+    });
   });
 });

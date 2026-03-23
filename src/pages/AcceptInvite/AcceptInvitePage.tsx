@@ -18,6 +18,7 @@ export function AcceptInvitePage() {
 
   const [form, setForm] = useState({ name: '', password: '' });
   const [error, setError] = useState('');
+  const [expired, setExpired] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -32,7 +33,11 @@ export function AcceptInvitePage() {
       await refreshUser();
       navigate('/admin/dashboard');
     } catch (err: unknown) {
-      setError(err instanceof ApiError ? err.message : t('auth.acceptInviteError'));
+      if (err instanceof ApiError && err.isUnauthorized) {
+        setExpired(true);
+      } else {
+        setError(err instanceof ApiError ? err.message : t('auth.acceptInviteError'));
+      }
     } finally {
       setLoading(false);
     }
@@ -48,10 +53,15 @@ export function AcceptInvitePage() {
         </div>
 
         <div className={s.body}>
-          {!token ? (
-            <div className={s.errorBanner} role="alert">
-              <span>⚠</span> {t('auth.acceptInviteInvalidToken')}
-            </div>
+          {!token || expired ? (
+            <>
+              <div className={s.errorBanner} role="alert">
+                <span>⚠</span> {t('auth.acceptInviteInvalidToken')}
+              </div>
+              <Link to="/login">
+                <Button type="button" fullWidth>{t('common.backToLogin')}</Button>
+              </Link>
+            </>
           ) : (
             <form onSubmit={handleSubmit} noValidate>
               {error && (

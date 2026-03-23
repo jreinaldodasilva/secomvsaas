@@ -16,6 +16,7 @@ Generate a **strategic improvement roadmap strictly from the Component Library d
 docs/architecture/frontend/component-library-part-1.md
 docs/architecture/frontend/component-library-part-2.md
 docs/architecture/frontend/component-library-part-3.md
+docs/architecture/frontend/component-library-part-4.md
 ```
 
 ---
@@ -25,7 +26,7 @@ docs/architecture/frontend/component-library-part-3.md
 * Use only findings, gaps, inconsistencies, risks, and recommendations explicitly described in the source documents.
 * Do not reference architecture, UX audit, accessibility audit, or performance documents.
 * Do not invent design system debt outside what is implied in the source documents.
-* Clearly reference the relevant Part (Part1, Part2, or Part3) for each finding.
+* Clearly reference the relevant Part (Part1, Part2, Part3 or Part4) for each finding.
 * Keep recommendations **high-level**, not implementation instructions.
 
 ### Severity Classification
@@ -283,7 +284,7 @@ Must include: prioritized component issues, phased roadmap, debt estimate, KPIs,
 
 **File 2:** `docs/roadmaps/frontend/component-library-quick-wins.md`
 
-Must include: component-level quick wins, implementation steps, effort estimates, impact explanation, source traceability (Part1/2/3).
+Must include: component-level quick wins, implementation steps, effort estimates, impact explanation, source traceability (Part1/2/3/4).
 
 ---
 

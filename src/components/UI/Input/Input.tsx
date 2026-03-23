@@ -9,7 +9,7 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   rightIcon?: React.ReactNode;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'default' | 'filled' | 'floating';
-  loading?: boolean;
+  isLoading?: boolean;
   success?: boolean;
   showClearButton?: boolean;
   onClear?: () => void;
@@ -39,7 +39,7 @@ export const Input = React.memo(forwardRef<HTMLInputElement, InputProps>((
   {
     label, error, helperText, leftIcon, rightIcon,
     size = 'md', variant = 'default',
-    loading = false, success = false,
+    isLoading = false, success = false,
     showClearButton = false, onClear,
     className = '', id, value, disabled, required, type,
     onChange, onFocus, onBlur, onKeyDown,
@@ -124,15 +124,15 @@ export const Input = React.memo(forwardRef<HTMLInputElement, InputProps>((
           </label>
         )}
         <span className={styles.iconsRight}>
-          {loading && <SpinnerIcon />}
-          {success && !error && !loading && <SuccessIcon />}
-          {error && !loading && <ErrorIcon />}
-          {showClearButton && hasValue && !loading && !disabled && (
+          {isLoading && <SpinnerIcon />}
+          {success && !error && !isLoading && <SuccessIcon />}
+          {error && !isLoading && <ErrorIcon />}
+          {showClearButton && hasValue && !isLoading && !disabled && (
             <button type="button" className={styles.clearBtn} onClick={() => { setHasValue(false); onClear?.(); }} aria-label="Limpar campo">
               <svg viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" /></svg>
             </button>
           )}
-          {rightIcon && !loading && !success && !error && !showClearButton && (
+          {rightIcon && !isLoading && !success && !error && !showClearButton && (
             <span className={styles.icon}>{rightIcon}</span>
           )}
         </span>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from '@/i18n';
 import styles from './Modal.module.css';
@@ -27,12 +27,15 @@ export const Modal = React.memo<ModalProps>(({
   closeOnEscape = true,
 }) => {
   const { t } = useTranslation();
+  const id = useId();
   const overlayRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<Element | null>(null);
 
-  // Scroll lock + Escape
+  // Scroll lock + Escape + focus restore
   useEffect(() => {
     if (!isOpen) return;
+    triggerRef.current = document.activeElement;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     const onKey = (e: KeyboardEvent) => { if (closeOnEscape && e.key === 'Escape') onClose(); };
@@ -40,6 +43,9 @@ export const Modal = React.memo<ModalProps>(({
     return () => {
       document.body.style.overflow = prev;
       document.removeEventListener('keydown', onKey);
+      if (triggerRef.current instanceof HTMLElement && document.contains(triggerRef.current)) {
+        triggerRef.current.focus();
+      }
     };
   }, [isOpen, closeOnEscape, onClose]);
 
@@ -74,14 +80,14 @@ export const Modal = React.memo<ModalProps>(({
         className={`${styles.modal} ${styles[size]}`}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={title ? 'modal-title' : undefined}
-        aria-describedby={description ? 'modal-desc' : undefined}
+        aria-labelledby={title ? `${id}-title` : undefined}
+        aria-describedby={description ? `${id}-desc` : undefined}
       >
         {(title || showCloseButton) && (
           <div className={styles.header}>
             <div>
-              {title && <h2 id="modal-title" className={styles.title}>{title}</h2>}
-              {description && <p id="modal-desc" className={styles.description}>{description}</p>}
+              {title && <h2 id={`${id}-title`} className={styles.title}>{title}</h2>}
+              {description && <p id={`${id}-desc`} className={styles.description}>{description}</p>}
             </div>
             {showCloseButton && (
               <button className={styles.close} onClick={onClose} aria-label={t('common.close')}>

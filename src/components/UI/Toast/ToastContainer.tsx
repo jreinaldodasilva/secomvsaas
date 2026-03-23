@@ -7,7 +7,7 @@ export function ToastContainer() {
   const { toasts, remove } = useToastStore();
 
   return createPortal(
-    <div className={styles.container} aria-label="Notificações" aria-live="polite">
+    <div className={styles.container} aria-label="Notificações">
       {toasts.map(t => (
         <Toast key={t.id} {...t} onClose={remove} />
       ))}

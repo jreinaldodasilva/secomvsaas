@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { CitizenUser } from '@vsaas/types';
 import { citizenAuthService } from '@/services/api';
@@ -18,6 +18,8 @@ const CitizenAuthContext = createContext<CitizenAuthContextValue | null>(null);
 export function CitizenAuthProvider({ children, skip = false }: { children: React.ReactNode; skip?: boolean }) {
   const [citizen, setCitizen] = useState<CitizenUser | null>(null);
   const [isLoading, setIsLoading] = useState(!skip);
+  const citizenRef = useRef(citizen);
+  useEffect(() => { citizenRef.current = citizen; }, [citizen]);
   const navigate = useNavigate();
 
   const refreshCitizen = useCallback(async () => {
@@ -37,6 +39,7 @@ export function CitizenAuthProvider({ children, skip = false }: { children: Reac
   useEffect(() => {
     if (skip) return;
     const handleExpired = async () => {
+      if (!citizenRef.current) return;
       await citizenAuthService.logout().catch(() => {});
       setCitizen(null);
       navigate('/portal/login', { state: { reason: 'session_expired' } });

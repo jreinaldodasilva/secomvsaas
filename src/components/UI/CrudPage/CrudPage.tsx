@@ -65,7 +65,7 @@ export interface FormComponentProps<TForm> {
   setForm: React.Dispatch<React.SetStateAction<TForm>>;
   errors: Record<string, string>;
   editing: boolean;
-  isPending: boolean;
+  isLoading: boolean;
   onSubmit: (e: React.FormEvent) => void;
   [key: string]: unknown;
 }
@@ -240,7 +240,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
           setForm={setForm}
           errors={errors}
           editing={!!editing}
-          isPending={isCreatePending || isUpdatePending}
+          isLoading={isCreatePending || isUpdatePending}
           onSubmit={handleSubmit}
           {...formExtraProps}
         />

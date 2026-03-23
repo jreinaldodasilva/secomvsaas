@@ -15,6 +15,10 @@ const STATUS_LABELS: Record<string, string> = {
   completed: 'Concluído',
   scheduled: 'Agendado',
   confirmed: 'Confirmado',
+  // Appointments
+  no_show: 'Não compareceu',
+  // Social Media
+  failed: 'Falhou',
 };
 
 const STATUS_VARIANT: Record<string, string> = {
@@ -27,9 +31,11 @@ const STATUS_VARIANT: Record<string, string> = {
   draft: 'gray',
   inactive: 'gray',
   archived: 'gray',
+  no_show: 'gray',
   pending: 'yellow',
   review: 'yellow',
   cancelled: 'red',
+  failed: 'red',
 };
 
 interface StatusBadgeProps {

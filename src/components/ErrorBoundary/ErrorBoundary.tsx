@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo } from 'react';
 import { reportError } from '@/utils/errorReporting';
+import { Button } from '@/components/UI';
 import styles from './ErrorBoundary.module.css';
 
 interface Props {
@@ -27,7 +28,7 @@ export class ErrorBoundary extends Component<Props, State> {
         <div className={styles.boundary}>
           <h2>Algo deu errado</h2>
           <p>{this.state.error?.message}</p>
-          <button onClick={() => this.setState({ hasError: false })}>Tentar novamente</button>
+          <Button variant="primary" onClick={() => this.setState({ hasError: false })}>Tentar novamente</Button>
         </div>
       );
     }

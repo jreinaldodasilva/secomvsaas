@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { Button } from '@/components/UI';
+import { Input } from '@/components/UI/Input/Input';
+import { PasswordInput } from '@/components/UI/PasswordInput/PasswordInput';
 import { ApiError } from '@/services/http';
 
 interface LoginFormProps {
@@ -32,15 +34,24 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="login-form" data-testid="login-form">
-      {error && <div className="form-error">{error}</div>}
-      <div className="form-field">
-        <label htmlFor="email">{t('auth.email')}</label>
-        <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required autoComplete="email" />
-      </div>
-      <div className="form-field">
-        <label htmlFor="password">{t('auth.password')}</label>
-        <input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required autoComplete="current-password" />
-      </div>
+      {error && <div role="alert" className="form-error">{error}</div>}
+      <Input
+        id="email"
+        type="email"
+        label={t('auth.email')}
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        autoComplete="email"
+      />
+      <PasswordInput
+        id="password"
+        label={t('auth.password')}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        autoComplete="current-password"
+      />
       <Button type="submit" isLoading={isLoading}>{t('auth.login')}</Button>
     </form>
   );

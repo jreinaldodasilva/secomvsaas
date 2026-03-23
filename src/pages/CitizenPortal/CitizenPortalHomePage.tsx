@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { usePageTitle } from '@/hooks';
+import { Card } from '@/components/UI';
 import styles from './CitizenPortal.module.css';
 
 export function CitizenPortalHomePage() {
@@ -15,8 +16,8 @@ export function CitizenPortalHomePage() {
           e mantenha seus dados atualizados.
         </p>
         <div className={styles.heroCtas}>
-          <Link to="/portal/login" className={styles.btnPrimary}>Entrar</Link>
-          <Link to="/portal/register" className={styles.btnOutline}>Criar conta</Link>
+          <Link to="/portal/login" className="btn btn-primary btn-md">Entrar</Link>
+          <Link to="/portal/register" className="btn btn-outline btn-md">Criar conta</Link>
         </div>
       </div>
 
@@ -29,11 +30,11 @@ export function CitizenPortalHomePage() {
             { icon: '📢', title: 'Comunicados', desc: 'Acompanhe os comunicados oficiais do órgão.' },
             { icon: '🏗️', title: 'Eventos', desc: 'Confira os próximos eventos públicos.' },
           ].map((s) => (
-            <div key={s.title} className={styles.serviceCard}>
+            <Card key={s.title} interactive className={styles.serviceCardInner}>
               <span className={styles.serviceIcon} aria-hidden="true">{s.icon}</span>
               <h3 className={styles.serviceCardTitle}>{s.title}</h3>
               <p className={styles.serviceCardDesc}>{s.desc}</p>
-            </div>
+            </Card>
           ))}
         </div>
       </div>

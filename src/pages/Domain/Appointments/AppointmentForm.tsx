@@ -6,7 +6,7 @@ import { APPOINTMENT_STATUSES, type AppointmentFormState } from '@/validation/do
 export type { AppointmentFormState };
 export { emptyAppointmentForm, validateAppointment } from '@/validation/domain';
 
-export function AppointmentForm({ form, setForm, errors, editing, isPending, onSubmit }: FormComponentProps<AppointmentFormState>) {
+export function AppointmentForm({ form, setForm, errors, editing, isLoading, onSubmit }: FormComponentProps<AppointmentFormState>) {
   const { t } = useTranslation();
   const set = <K extends keyof AppointmentFormState>(k: K, v: AppointmentFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -51,7 +51,7 @@ export function AppointmentForm({ form, setForm, errors, editing, isPending, onS
       </div>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

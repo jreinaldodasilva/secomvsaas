@@ -8,7 +8,7 @@ export { emptyMediaContactForm, validateMediaContact } from '@/validation/domain
 
 type Props = FormComponentProps<MediaContactFormState>;
 
-export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }: Props) {
+export function MediaContactForm({ form, setForm, errors, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof MediaContactFormState>(k: K, v: MediaContactFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -42,7 +42,7 @@ export function MediaContactForm({ form, setForm, errors, isPending, onSubmit }:
       </FormField>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

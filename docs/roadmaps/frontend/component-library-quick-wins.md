@@ -7,7 +7,7 @@
 
 ---
 
-## Quick Win #1: Fix Modal Duplicate Static IDs
+## ✅ Quick Win #1: Fix Modal Duplicate Static IDs — COMPLETED
 
 **Component:** `Modal`
 
@@ -20,9 +20,9 @@ Affects all 14 modal usages across the application. `CrudPage` (used by all 7 do
 **Effort:** 1–2 hours
 
 **Implementation Steps**
-1. Add `useId()` inside `Modal` to generate a stable, unique ID per instance.
-2. Replace the static `"modal-title"` and `"modal-desc"` strings with the generated ID suffixed (e.g., `${id}-title`, `${id}-desc`).
-3. Pass the generated IDs to `aria-labelledby` and `aria-describedby` on the dialog element.
+1. ✅ Add `useId()` inside `Modal` to generate a stable, unique ID per instance.
+2. ✅ Replace the static `"modal-title"` and `"modal-desc"` strings with the generated ID suffixed (e.g., `${id}-title`, `${id}-desc`).
+3. ✅ Pass the generated IDs to `aria-labelledby` and `aria-describedby` on the dialog element.
 
 **Risk Level:** Low — internal change; no prop API changes required.
 
@@ -30,7 +30,7 @@ Affects all 14 modal usages across the application. `CrudPage` (used by all 7 do
 
 ---
 
-## Quick Win #2: Fix `CitizenPortalLayout` `aria-current`
+## ✅ Quick Win #2: Fix `CitizenPortalLayout` `aria-current` — COMPLETED
 
 **Component:** `CitizenPortalLayout`
 
@@ -43,8 +43,8 @@ All citizen-role users navigating the portal (`/portal/dashboard`, `/portal/prof
 **Effort:** 30 minutes
 
 **Implementation Steps**
-1. Remove the explicit `aria-current={undefined}` override from citizen portal `NavLink` elements.
-2. Apply the same `navProps` pattern used in `DashboardLayout` — React Router's `NavLink` sets `aria-current="page"` automatically when `isActive` is true.
+1. ✅ Remove the explicit `aria-current={undefined}` override from citizen portal `NavLink` elements.
+2. ✅ Apply the same `navProps` pattern used in `DashboardLayout` — React Router's `NavLink` sets `aria-current="page"` automatically when `isActive` is true.
 
 **Risk Level:** Low — no visual change; purely additive ARIA attribute.
 
@@ -52,7 +52,7 @@ All citizen-role users navigating the portal (`/portal/dashboard`, `/portal/prof
 
 ---
 
-## Quick Win #3: Restore Focus on Modal Close
+## ✅ Quick Win #3: Restore Focus on Modal Close — COMPLETED
 
 **Component:** `Modal`
 
@@ -65,8 +65,8 @@ All 14 modal usages. Most critical in `CrudPage` flows where the user opens an e
 **Effort:** 1–2 hours
 
 **Implementation Steps**
-1. In `Modal`, store a `ref` to `document.activeElement` at the moment `isOpen` transitions from `false` to `true`.
-2. In the cleanup effect (when `isOpen` becomes `false`), call `.focus()` on the stored element if it is still in the DOM.
+1. ✅ In `Modal`, store a `ref` to `document.activeElement` at the moment `isOpen` transitions from `false` to `true`.
+2. ✅ In the cleanup effect (when `isOpen` becomes `false`), call `.focus()` on the stored element if it is still in the DOM.
 
 **Risk Level:** Low — additive behaviour; no existing focus management is removed.
 
@@ -74,7 +74,7 @@ All 14 modal usages. Most critical in `CrudPage` flows where the user opens an e
 
 ---
 
-## Quick Win #4: Migrate `LoginForm` to `Input` and `PasswordInput`
+## ✅ Quick Win #4: Migrate `LoginForm` to `Input` and `PasswordInput` — COMPLETED
 
 **Component:** `LoginForm`
 
@@ -87,10 +87,10 @@ Every staff login attempt. Missing: show/hide password toggle, `aria-invalid`, `
 **Effort:** 2–4 hours
 
 **Implementation Steps**
-1. Replace the raw email `<input>` with `<Input>` (label, error, autoComplete props).
-2. Replace the raw password `<input>` with `<PasswordInput>` (label, autoComplete).
-3. Add `role="alert"` to the error `<div>` (or replace with a `FormField` error pattern).
-4. Remove the now-unused raw `.form-field` class references.
+1. ✅ Replace the raw email `<input>` with `<Input>` (label, error, autoComplete props).
+2. ✅ Replace the raw password `<input>` with `<PasswordInput>` (label, autoComplete).
+3. ✅ Add `role="alert"` to the error `<div>` (or replace with a `FormField` error pattern).
+4. ✅ Remove the now-unused raw `.form-field` class references.
 
 **Risk Level:** Low — `Input` and `PasswordInput` are already used in the codebase; no new dependencies.
 
@@ -98,7 +98,7 @@ Every staff login attempt. Missing: show/hide password toggle, `aria-invalid`, `
 
 ---
 
-## Quick Win #5: Resolve Toast `aria-live` Conflict
+## ✅ Quick Win #5: Resolve Toast `aria-live` Conflict — COMPLETED
 
 **Component:** `Toast` / `ToastContainer`
 
@@ -111,9 +111,9 @@ All 12 toast usages across the application. Affects every success/error/warning 
 **Effort:** 30 minutes
 
 **Implementation Steps**
-1. Remove `aria-live="polite"` from `ToastContainer` — the container should not itself be a live region.
-2. Keep `role="alert"` and `aria-live="assertive"` on individual `Toast` components.
-3. Verify that the container still renders toasts into a portal so the live region is not nested inside another live region.
+1. ✅ Remove `aria-live="polite"` from `ToastContainer` — the container should not itself be a live region.
+2. ✅ Keep `role="alert"` and `aria-live="assertive"` on individual `Toast` components.
+3. ✅ Verify that the container still renders toasts into a portal so the live region is not nested inside another live region.
 
 **Risk Level:** Low — no visual change; no prop API changes.
 
@@ -121,7 +121,7 @@ All 12 toast usages across the application. Affects every success/error/warning 
 
 ---
 
-## Quick Win #6: Add `no_show` and `failed` to `StatusBadge`
+## ✅ Quick Win #6: Add `no_show` and `failed` to `StatusBadge` — COMPLETED
 
 **Component:** `StatusBadge`
 
@@ -134,9 +134,9 @@ Appointments module and Social Media module — both display raw English snake_c
 **Effort:** 30 minutes
 
 **Implementation Steps**
-1. Add `no_show: 'Não compareceu'` to `STATUS_LABELS` in `StatusBadge`.
-2. Add `failed: 'Falhou'` (or appropriate Portuguese label) to `STATUS_LABELS`.
-3. Map both to appropriate semantic token colors — `no_show` → gray/neutral variant; `failed` → red/danger variant.
+1. ✅ Add `no_show: 'Não compareceu'` to `STATUS_LABELS` in `StatusBadge`.
+2. ✅ Add `failed: 'Falhou'` to `STATUS_LABELS`.
+3. ✅ Map both to appropriate semantic token colors — `no_show` → gray/neutral variant; `failed` → red/danger variant.
 
 **Risk Level:** Low — additive change to a map; no existing entries modified.
 
@@ -144,7 +144,7 @@ Appointments module and Social Media module — both display raw English snake_c
 
 ---
 
-## Quick Win #7: Remove Dead Production Dependencies
+## ✅ Quick Win #7: Remove Dead Production Dependencies — COMPLETED
 
 **Area:** `package.json`
 
@@ -157,9 +157,9 @@ Bundle size reduction. `framer-motion` is a significant package (~50KB+ gzipped)
 **Effort:** 30 minutes
 
 **Implementation Steps**
-1. Run `npm uninstall framer-motion react-hot-toast`.
-2. Verify the build passes and no runtime errors appear (confirm no dynamic imports exist).
-3. Confirm `TopLoadingBar` still works — it uses a pure CSS animation, not `framer-motion`.
+1. ✅ Verified: neither `framer-motion` nor `react-hot-toast` is present in `package.json`, `package-lock.json`, or `node_modules/`. Both packages were never added to this project — no removal action required.
+2. ✅ Confirmed zero imports in `src/` (one comment in `LandingShared.tsx` references `framer-motion` by name only as documentation; no runtime dependency).
+3. ✅ `TopLoadingBar` confirmed to use pure CSS animation, not `framer-motion`.
 
 **Risk Level:** Low — confirmed zero imports in source.
 
@@ -167,7 +167,7 @@ Bundle size reduction. `framer-motion` is a significant package (~50KB+ gzipped)
 
 ---
 
-## Quick Win #8: Replace Hardcoded Hex Values in `StatusBadge`
+## ✅ Quick Win #8: Replace Hardcoded Hex Values in `StatusBadge` — COMPLETED
 
 **Component:** `StatusBadge`
 
@@ -180,10 +180,10 @@ All 10 `StatusBadge` usages. A brand color change would not propagate to yellow/
 **Effort:** 2–3 hours
 
 **Implementation Steps**
-1. Audit the exact hex values against the token scale in `tokens/index.css`.
-2. Add `--color-warning-800` (or equivalent) if `#92400e` has no exact match.
-3. Replace all 4 hardcoded values in `StatusBadge.module.css` with `var(--token-name)`.
-4. Verify visual output matches the previous hardcoded values.
+1. ✅ Audit the exact hex values against the token scale in `tokens/index.css`.
+2. ✅ Add `--color-warning-800`, `--color-info-400`, `--color-info-800` tokens for exact matches.
+3. ✅ Replace all 4 hardcoded values in `StatusBadge.module.css` with `var(--token-name)`.
+4. ✅ Visual output matches the previous hardcoded values.
 
 **Risk Level:** Low — CSS-only change; no component API changes.
 
@@ -191,7 +191,7 @@ All 10 `StatusBadge` usages. A brand color change would not propagate to yellow/
 
 ---
 
-## Quick Win #9: Replace `PasswordInput` Inline Strength Colors with Tokens
+## ✅ Quick Win #9: Replace `PasswordInput` Inline Strength Colors with Tokens — COMPLETED
 
 **Component:** `PasswordInput`
 
@@ -204,9 +204,9 @@ Auth flows (staff register, password change). Inline styles block any future the
 **Effort:** 1–2 hours
 
 **Implementation Steps**
-1. Add CSS custom property variables for each strength level to `PasswordInput.module.css` (e.g., `.strengthWeak { color: var(--color-error); }`).
-2. Replace the `STRENGTH_COLORS` inline `style` array with CSS class application per strength level.
-3. Remove the `STRENGTH_COLORS` constant from the `.tsx` file.
+1. ✅ Add CSS custom property variables for each strength level to `PasswordInput.module.css`.
+2. ✅ Replace the `STRENGTH_COLORS` inline `style` array with CSS class application per strength level.
+3. ✅ Remove the `STRENGTH_COLORS` constant from the `.tsx` file.
 
 **Risk Level:** Low — visual output should be equivalent; no prop API changes.
 
@@ -214,7 +214,7 @@ Auth flows (staff register, password change). Inline styles block any future the
 
 ---
 
-## Quick Win #10: Replace Hardcoded Values in `Auth.module.css`
+## ✅ Quick Win #10: Replace Hardcoded Values in `Auth.module.css` — COMPLETED
 
 **Component:** Auth pages (`LoginPage`, `CitizenLoginPage`, `CitizenRegisterPage`)
 
@@ -227,9 +227,9 @@ High-visibility auth pages shared by both staff and citizen flows. Token bypass 
 **Effort:** 1 hour
 
 **Implementation Steps**
-1. Open `Auth.module.css` and identify the 7 hardcoded hex values.
-2. Replace each with the corresponding `var(--token-name)` from `tokens/index.css`.
-3. Verify visual output in all three banner states (error, info, success).
+1. ✅ Open `Auth.module.css` and identify the 7 hardcoded hex values.
+2. ✅ Replace each with the corresponding `var(--token-name)` from `tokens/index.css` (adding `--color-info-200` for the one missing token).
+3. ✅ Visual output verified in all three banner states.
 
 **Risk Level:** Low — CSS-only change; no component API changes.
 
@@ -237,7 +237,7 @@ High-visibility auth pages shared by both staff and citizen flows. Token bypass 
 
 ---
 
-## Quick Win #11: Migrate `CitizenPortalHomePage` to `Button` and `Card`
+## ✅ Quick Win #11: Migrate `CitizenPortalHomePage` to `Button` and `Card` — COMPLETED
 
 **Component:** `CitizenPortalHomePage`
 
@@ -250,9 +250,9 @@ Citizen portal home page — the first page citizen users see after login. Visua
 **Effort:** 2–3 hours
 
 **Implementation Steps**
-1. Replace `<button className={styles.btnPrimary}>` and `<button className={styles.btnOutline}>` with `<Button variant="primary">` and `<Button variant="outline">`.
-2. Replace locally reimplemented card `<div>` elements with `<Card>` using appropriate `variant` and `padding` props.
-3. Remove the now-unused local CSS classes from `CitizenPortal.module.css`.
+1. ✅ Replace `<Link className={styles.btnPrimary}>` and `<Link className={styles.btnOutline}>` with global `btn btn-primary` / `btn btn-outline` classes (Link elements preserved for navigation semantics; Button renders `<button>` only).
+2. ✅ Replace locally reimplemented `serviceCard` `<div>` elements with `<Card interactive>`.
+3. ✅ Remove the now-unused `.btnPrimary`, `.btnOutline`, and `.serviceCard` CSS classes from `CitizenPortal.module.css`.
 
 **Risk Level:** Low — `Button` and `Card` are stable, well-tested primitives.
 
@@ -260,7 +260,7 @@ Citizen portal home page — the first page citizen users see after login. Visua
 
 ---
 
-## Quick Win #12: Standardise Loading Prop Naming to `isLoading`
+## ✅ Quick Win #12: Standardise Loading Prop Naming to `isLoading` — COMPLETED
 
 **Components:** `Button`, `Input`, `ConfirmDialog`, `CrudPage` (`FormComponentProps`)
 
@@ -273,10 +273,10 @@ Contributor experience across all form and action components. Risk of passing th
 **Effort:** 2–3 hours
 
 **Implementation Steps**
-1. Rename `loading` → `isLoading` in `Input`'s prop interface and all internal usages.
-2. Rename `isPending` → `isLoading` in `FormComponentProps` and update all 7 domain form components that implement this interface.
-3. Update `CrudPage` to pass `isLoading` instead of `isPending` to `FormComponent`.
-4. Verify TypeScript compilation passes with no type errors.
+1. ✅ Rename `loading` → `isLoading` in `Input`'s prop interface and all internal usages.
+2. ✅ Rename `isPending` → `isLoading` in `FormComponentProps` and all 7 domain form components.
+3. ✅ Update `CrudPage` to pass `isLoading` instead of `isPending` to `FormComponent`.
+4. ✅ Updated `CrudPage.test.tsx` to use `isLoading` and fixed stale `modal-title` ID selectors.
 
 **Risk Level:** Low-Medium — touches 7 domain form files; TypeScript will catch all missed renames at compile time.
 
@@ -284,7 +284,7 @@ Contributor experience across all form and action components. Risk of passing th
 
 ---
 
-## Quick Win #13: Replace Raw Spinners in `ProtectedRoute` and `ProtectedCitizenRoute`
+## ✅ Quick Win #13: Replace Raw Spinners in `ProtectedRoute` and `ProtectedCitizenRoute` — COMPLETED
 
 **Components:** `ProtectedRoute`, `ProtectedCitizenRoute`
 
@@ -297,9 +297,9 @@ Every authenticated page load — `ProtectedRoute` guards ~12 routes; `Protected
 **Effort:** 30 minutes
 
 **Implementation Steps**
-1. Import `Spinner` (or `LoadingScreen`) in `ProtectedRoute.tsx` and `ProtectedCitizenRoute.tsx`.
-2. Replace `<div className="spinner spinner-lg" />` with `<Spinner size="lg" />`.
-3. Remove the now-unused raw class references.
+1. ✅ Import `Spinner` in `ProtectedRoute.tsx` and `ProtectedCitizenRoute.tsx`.
+2. ✅ Replace `<div className="spinner spinner-lg" />` with `<Spinner size="lg" />`.
+3. ✅ Remove the now-unused raw class references.
 
 **Risk Level:** Low — `Spinner` is a stable, simple component.
 
@@ -307,7 +307,7 @@ Every authenticated page load — `ProtectedRoute` guards ~12 routes; `Protected
 
 ---
 
-## Quick Win #14: Replace Raw Buttons in `SessionTimeoutModal` and `ErrorBoundary`
+## ✅ Quick Win #14: Replace Raw Buttons in `SessionTimeoutModal` and `ErrorBoundary` — COMPLETED
 
 **Components:** `SessionTimeoutModal`, `ErrorBoundary`
 
@@ -320,8 +320,8 @@ Session timeout flow (affects all authenticated users) and error boundary fallba
 **Effort:** 1 hour
 
 **Implementation Steps**
-1. Import `Button` in `SessionTimeoutModal.tsx` and replace both raw buttons with `<Button variant="primary">` and `<Button variant="outline">`.
-2. Import `Button` in `ErrorBoundary.tsx` and replace the retry `<button>` with `<Button variant="primary">`.
+1. ✅ Import `Button` in `SessionTimeoutModal.tsx` and replace both raw buttons with `<Button variant="outline">` and `<Button variant="primary">`.
+2. ✅ Import `Button` in `ErrorBoundary.tsx` and replace the retry `<button>` with `<Button variant="primary">`.
 
 **Risk Level:** Low — `Button` is the most-used and best-tested component in the library.
 
@@ -329,7 +329,7 @@ Session timeout flow (affects all authenticated users) and error boundary fallba
 
 ---
 
-## Quick Win #15: Fix `Spinner` English `aria-label`
+## ✅ Quick Win #15: Fix `Spinner` English `aria-label` — COMPLETED
 
 **Component:** `Spinner` / `LoadingScreen`
 
@@ -339,8 +339,7 @@ Session timeout flow (affects all authenticated users) and error boundary fallba
 **Effort:** 15 minutes
 
 **Implementation Steps**
-1. Change `aria-label="Loading"` to `aria-label="Carregando"` in `Loading.tsx`.
-2. If the component already uses the `t()` i18n function, use `t('common.loading')` instead of a hardcoded string.
+1. ✅ Changed `aria-label="Loading"` to `aria-label="Carregando"` in `Loading.tsx`.
 
 **Risk Level:** None — string-only change.
 

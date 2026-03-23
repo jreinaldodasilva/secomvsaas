@@ -26,6 +26,11 @@ export function CitizenPortalLayout() {
 
   const handleContinue = useCallback(() => setShowTimeoutWarning(false), []);
 
+  const navProps = ({ isActive }: { isActive: boolean }) => ({
+    className: isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink,
+    'aria-current': isActive ? ('page' as const) : undefined,
+  });
+
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
     onTimeout: handleLogout,
@@ -43,16 +48,8 @@ export function CitizenPortalLayout() {
           <nav className={styles.nav}>
             {isAuthenticated ? (
               <>
-                <NavLink
-                  to="/portal/dashboard"
-                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
-                  aria-current={undefined}
-                >Início</NavLink>
-                <NavLink
-                  to="/portal/profile"
-                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
-                  aria-current={undefined}
-                >Meu perfil</NavLink>
+                <NavLink to="/portal/dashboard" {...navProps}>Início</NavLink>
+                <NavLink to="/portal/profile" {...navProps}>Meu perfil</NavLink>
                 <button onClick={handleLogout} className={styles.navBtn}>Sair</button>
               </>
             ) : (

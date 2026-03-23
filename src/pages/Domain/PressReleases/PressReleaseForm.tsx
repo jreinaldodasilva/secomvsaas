@@ -12,7 +12,7 @@ export { emptyPressReleaseForm, validatePressRelease } from '@/validation/domain
 
 type Props = FormComponentProps<PressReleaseFormState>;
 
-export function PressReleaseForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
+export function PressReleaseForm({ form, setForm, errors, editing, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof PressReleaseFormState>(k: K, v: PressReleaseFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -56,7 +56,7 @@ export function PressReleaseForm({ form, setForm, errors, editing, isPending, on
       </FormField>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

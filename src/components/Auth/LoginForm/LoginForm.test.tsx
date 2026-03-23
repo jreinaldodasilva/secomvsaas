@@ -42,7 +42,8 @@ describe('LoginForm', () => {
     await userEvent.type(screen.getByLabelText('Senha'), 'wrong');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
-    expect(await screen.findByText('Invalid credentials')).toBeInTheDocument();
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('Invalid credentials');
   });
 
   it('displays fallback error when message is missing', async () => {

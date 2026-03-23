@@ -68,6 +68,7 @@
   --color-warning-400: #f59e0b;
   --color-warning-600: #d97706;
   --color-warning-700: #b45309;
+  --color-warning-800: #92400e;
   --color-warning-light: #fde68a;
   --color-warning-dark:  #F57C00;
 
@@ -85,8 +86,11 @@
 
   --color-info:        #1976D2;
   --color-info-50:     #eff6ff;
+  --color-info-200:    #bfdbfe;
+  --color-info-400:    #3b82f6;
   --color-info-600:    #2563eb;
   --color-info-700:    #1d4ed8;
+  --color-info-800:    #1e40af;
   --color-info-light:  #dbeafe;
   --color-info-dark:   #1976D2;
 

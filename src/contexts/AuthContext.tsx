@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { User } from '@vsaas/types';
 import { authService } from '@/services/api';
@@ -19,6 +19,8 @@ export { AuthContext };
 export function AuthProvider({ children, skip = false }: { children: React.ReactNode; skip?: boolean }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(!skip);
+  const userRef = useRef(user);
+  useEffect(() => { userRef.current = user; }, [user]);
   const navigate = useNavigate();
 
   const refreshUser = useCallback(async () => {
@@ -38,6 +40,7 @@ export function AuthProvider({ children, skip = false }: { children: React.React
   useEffect(() => {
     if (skip) return;
     const handleExpired = async () => {
+      if (!userRef.current) return;
       await authService.logout().catch(() => {});
       setUser(null);
       navigate('/login', { state: { reason: 'session_expired' } });

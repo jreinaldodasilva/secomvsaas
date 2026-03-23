@@ -15,7 +15,21 @@ const RULES = [
   { test: (v: string) => /[^A-Za-z0-9]/.test(v), key: 'password.special' },
 ];
 
-const STRENGTH_COLORS = ['#e74c3c', '#e74c3c', '#f39c12', '#2ecc71', '#27ae60'] as const;
+const STRENGTH_LABEL_CLASSES = [
+  styles.strengthWeak,
+  styles.strengthWeak,
+  styles.strengthFair,
+  styles.strengthGood,
+  styles.strengthStrong,
+] as const;
+
+const STRENGTH_BAR_CLASSES = [
+  styles.strengthBarWeak,
+  styles.strengthBarWeak,
+  styles.strengthBarFair,
+  styles.strengthBarGood,
+  styles.strengthBarStrong,
+] as const;
 
 function EyeIcon({ open }: { open: boolean }) {
   return open ? (
@@ -64,11 +78,11 @@ export function PasswordInput({ showStrength = false, label, value, wrapperClass
         <div className={styles.strength} aria-live="polite">
           <div className={styles.strengthTrack}>
             <div
-              className={styles.strengthBar}
-              style={{ width: `${(score / RULES.length) * 100}%`, background: STRENGTH_COLORS[score] }}
+              className={`${styles.strengthBar} ${STRENGTH_BAR_CLASSES[score]}`}
+              style={{ width: `${(score / RULES.length) * 100}%` }}
             />
           </div>
-          <span className={styles.strengthLabel} style={{ color: STRENGTH_COLORS[score] }}>
+          <span className={`${styles.strengthLabel} ${STRENGTH_LABEL_CLASSES[score]}`}>
             {strengthLabels[score]}
           </span>
           <ul className={styles.rules}>

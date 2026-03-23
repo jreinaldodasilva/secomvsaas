@@ -127,6 +127,21 @@ describe('CitizenAuthContext', () => {
     expect(mockCitizenAuthService.logout).toHaveBeenCalledTimes(1);
   });
 
+  it('does not call logout on auth:session-expired when no citizen is logged in', async () => {
+    mockCitizenAuthService.me.mockRejectedValue(new Error('No session'));
+    mockCitizenAuthService.logout.mockResolvedValue(undefined);
+    renderProvider();
+
+    await waitFor(() => expect(screen.getByTestId('loading')).toHaveTextContent('false'));
+    expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+
+    window.dispatchEvent(new CustomEvent('auth:session-expired'));
+    await new Promise(r => setTimeout(r, 50));
+
+    expect(mockCitizenAuthService.logout).not.toHaveBeenCalled();
+    expect(screen.getByTestId('authenticated')).toHaveTextContent('false');
+  });
+
   it('does not register session-expired listener when skip=true', async () => {
     mockCitizenAuthService.logout.mockResolvedValue(undefined);
     renderProvider(true);

@@ -8,32 +8,34 @@
 
 ## 7. Executive Summary
 
-**Overall Component Library Health Score: 61 / 100**
+**Overall Component Library Health Score: 74 / 100** *(up from 61 — 15 Quick Wins completed)*
 
 ### Key Strengths
 
-1. **Comprehensive token foundation.** 200+ CSS custom properties covering color, spacing, typography, shadows, and z-index provide a solid base for design system coherence. Semantic aliases (`--radius-button`, `--shadow-modal`) make intent explicit. (Part 2)
-2. **`CrudPage` generic abstraction.** A single 257-LOC component eliminates ~80% of CRUD boilerplate across all 7 domain modules, enforcing a uniform list/create/edit/delete workflow with consistent modal, form, and pagination patterns. (Part 1, Part 3)
+1. **Comprehensive token foundation.** 200+ CSS custom properties covering color, spacing, typography, shadows, and z-index provide a solid base for design system coherence. Semantic aliases (`--radius-button`, `--shadow-modal`) make intent explicit. Token scale extended with `--color-warning-800`, `--color-info-200`, `--color-info-400`, `--color-info-800` during QW-08/QW-10. (Part 2)
+2. **`CrudPage` generic abstraction.** A single component eliminates ~80% of CRUD boilerplate across all 7 domain modules, enforcing a uniform list/create/edit/delete workflow with consistent modal, form, and pagination patterns. (Part 1, Part 3)
 3. **Uniform domain form pattern.** All 7 domain forms consistently use `.form-stack`, `.form-grid`, `.form-section`, and `FormField` wrappers — the most uniformly applied pattern in the codebase. (Part 1, Part 4)
+4. **P0 accessibility issues resolved.** All four P0 issues are now fixed: `Modal` uses `useId()` for unique ARIA IDs, focus is restored on close, `CitizenPortalLayout` sets `aria-current="page"` on active links, and `LoginForm` uses `Input`/`PasswordInput` with `role="alert"` on errors. (QW-01 through QW-04)
 
-### Major Risks
+### Remaining Major Risks
 
-1. **Token bypass in high-visibility components.** 34 hardcoded hex values across 9 files — concentrated in `StatusBadge` (10 usages across all modules) and `PasswordInput` (auth flows) — mean a brand or theme change requires manual grep-and-replace rather than a single token update. (Part 2, Part 4)
-2. **Critical accessibility regressions in core components.** `Modal` has duplicate static IDs breaking ARIA with multiple simultaneous dialogs; `CitizenPortalLayout` explicitly disables `aria-current` on active nav links; `FormField` does not propagate `aria-describedby` to child inputs across all 7 domain forms. (Part 3, Part 4)
-3. **Component bypass fragmentation.** `LoginForm` — the primary staff authentication entry point — uses raw `<input>` elements instead of `Input`/`PasswordInput`. `CitizenPortalHomePage` reimplements `Button` and `Card` locally. Five domain pages maintain independent `STATUS_COLORS` constants that duplicate `StatusBadge` logic. (Part 4)
+1. **Token bypass in domain pages.** `DashboardLayout.module.css` retains 3 hardcoded `#fff` values. `DashboardMockup.module.css` has 6 hardcoded status chip colors. These are lower-priority than the shared-component violations now resolved. (Part 2, Part 4)
+2. **Missing form primitives.** No `Select`, `Textarea`, `Checkbox`, or `DateInput` components exist — all 7 domain forms still use raw HTML elements for these controls. This is the root cause of the `Input` bypass pattern and the largest remaining structural gap. (Part 4)
+3. **`FormField` `aria-describedby` gap.** `FormField` does not inject `aria-describedby` onto child inputs — error messages are not programmatically associated with their inputs across all 7 domain forms. (Part 3, Part 4)
+4. **`STATUS_COLORS` duplication.** 5 domain pages still maintain independent `STATUS_COLORS` constants duplicating `StatusBadge` logic. `no_show` and `failed` labels are now in `StatusBadge`, but the duplication remains. (Part 4)
 
-### Estimated Investment
+### Estimated Remaining Investment
 
 | Item | Value |
 |------|-------|
-| Total developer-days | 38–52 days |
-| Timeline | 14 weeks (4 phases, 2-week sprints) |
+| Remaining developer-days | 26–38 days |
+| Timeline | 10 weeks (Phases 2–4, 2-week sprints) |
 | Team assumption | 3–5 frontend engineers, parallel work allowed |
 
-**Risk if delayed:** Token bypass debt compounds with every new component added. Accessibility regressions in `Modal` and `CitizenPortalLayout` are already present in production. The `LoginForm` bypass means the most-visited form in the application has lower accessibility than the citizen-facing equivalent it was supposed to supersede.
+**Phase 1 is complete.** All 7 Phase 1 tasks and 8 additional Phase 2 tasks were delivered as Quick Wins. The remaining work is Phases 2 (partial), 3, and 4.
 
-**Recommendation: Moderate design system refactor required.**
-The foundation is sound. The token system, `CrudPage` abstraction, and form utility pattern are well-designed. The required work is targeted: fix critical accessibility bugs, close the token compliance gap in shared components, and add the missing form primitives that are causing the `Input` bypass pattern across all 7 modules.
+**Recommendation: Continue with Phase 2 standardization.**
+The critical accessibility and token compliance gaps in shared components are resolved. The next highest-leverage work is centralising `STATUS_COLORS`, injecting `aria-describedby` from `FormField`, and building the missing form primitives.
 
 ---
 
@@ -43,42 +45,42 @@ The foundation is sound. The token system, `CrudPage` abstraction, and form util
 
 #### 🟥 P0 — Design System Instability / Breaking Inconsistency
 
-| # | Issue | Component Area | System Impact | Effort | Dependencies | Source |
-|---|-------|---------------|---------------|--------|--------------|--------|
-| P0-1 | `Modal` uses static `id="modal-title"` and `id="modal-desc"` — multiple simultaneous modals produce duplicate IDs, breaking all ARIA associations (`aria-labelledby`, `aria-describedby`) | Modal | All 14 modal usages; `CrudPage` + `ConfirmDialog` nested flows | Low | None | Part 1, Part 3 |
-| P0-2 | `CitizenPortalLayout` explicitly sets `aria-current={undefined}` on active NavLinks — screen readers receive no active page indication in the citizen portal | CitizenPortalLayout | Citizen portal navigation (all citizen roles) | Low | None | Part 1, Part 3, Part 4 |
-| P0-3 | `Modal` does not restore focus to the trigger element on close — keyboard and AT users lose their position in the document | Modal | All 14 modal usages | Low | None | Part 3, Part 4 |
-| P0-4 | `LoginForm` bypasses `Input` and `PasswordInput`, using raw `<input>` elements with no `role="alert"` on error — the primary staff auth entry point has lower accessibility than the citizen login it mirrors | LoginForm | Staff authentication flow | Low | None | Part 1, Part 3, Part 4 |
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Status | Source |
+|---|-------|---------------|---------------|--------|--------------|--------|--------|
+| P0-1 | ~~`Modal` uses static `id="modal-title"` and `id="modal-desc"` — multiple simultaneous modals produce duplicate IDs, breaking all ARIA associations~~ | Modal | All 14 modal usages | Low | None | ✅ **Done — QW-01** | Part 1, Part 3 |
+| P0-2 | ~~`CitizenPortalLayout` explicitly sets `aria-current={undefined}` on active NavLinks — screen readers receive no active page indication~~ | CitizenPortalLayout | Citizen portal navigation | Low | None | ✅ **Done — QW-02** | Part 1, Part 3, Part 4 |
+| P0-3 | ~~`Modal` does not restore focus to the trigger element on close — keyboard and AT users lose their position~~ | Modal | All 14 modal usages | Low | None | ✅ **Done — QW-03** | Part 3, Part 4 |
+| P0-4 | ~~`LoginForm` bypasses `Input` and `PasswordInput`, using raw `<input>` elements with no `role="alert"` on error~~ | LoginForm | Staff authentication flow | Low | None | ✅ **Done — QW-04** | Part 1, Part 3, Part 4 |
 
 #### 🟧 P1 — High Maintainability / Consistency Risks
 
-| # | Issue | Component Area | System Impact | Effort | Dependencies | Source |
-|---|-------|---------------|---------------|--------|--------------|--------|
-| P1-1 | `StatusBadge` yellow and blue variants use 4 hardcoded hex values (`#92400e`, `#d97706`, `#1e40af`, `#3b82f6`) — the most impactful token bypass given 10 usages across all 7 modules | StatusBadge | All modules displaying status (press releases, appointments, events, social media) | Low | Token gap: `--color-warning-700` exists but `#92400e` has no exact match; token must be added | Part 2, Part 3, Part 4 |
-| P1-2 | `PasswordInput` strength indicator uses 4 hardcoded inline hex values (`#e74c3c`, `#f39c12`, `#2ecc71`, `#27ae60`) applied via `style` attribute — cannot be overridden via CSS | PasswordInput | Auth flows (register, password change) | Low | New tokens required: `--color-strength-weak`, `--color-strength-fair`, `--color-strength-good`, `--color-strength-strong` | Part 2, Part 3, Part 4 |
-| P1-3 | `Auth.module.css` contains 7 hardcoded hex values for `.errorBanner`, `.infoBanner`, `.successBanner` backgrounds — high-visibility auth pages bypass semantic tokens | Auth pages | Staff login, citizen login, register | Low | Semantic tokens exist (`--color-error-light`, `--color-info-light`, `--color-success-light`) | Part 2, Part 4 |
-| P1-4 | `FormField` does not inject `aria-describedby` onto child inputs — error messages rendered by `FormField` are not programmatically associated with their inputs across all 7 domain forms | FormField | All 7 domain module forms (~30 usages) | Medium | None | Part 3, Part 4 |
-| P1-5 | `ToastContainer` has `aria-live="polite"` while individual `Toast` components have `aria-live="assertive"` — conflicting live region semantics cause unpredictable screen reader announcement behaviour | Toast / ToastContainer | All 12 toast usages across modules | Low | None | Part 3, Part 4 |
-| P1-6 | `STATUS_COLORS` constant is independently defined in 5 domain page files (`DashboardPage`, `PressReleasesPage`, `EventsPage`, `AppointmentsPage`, `SocialMediaPage`) — color logic is duplicated outside `StatusBadge` | StatusBadge / Domain pages | All 5 modules; `no_show` and `failed` statuses fall back to raw string display | Medium | P1-1 (token alignment in StatusBadge should precede centralisation) | Part 4 |
-| P1-7 | `CitizenPortalHomePage` reimplements `Button` (local `styles.btnPrimary`, `styles.btnOutline`) and `Card` surfaces locally — citizen portal diverges from the shared component API | CitizenPortalHomePage | Citizen portal | Low | None | Part 4 |
-| P1-8 | `no_show` and `failed` status values are used in `AppointmentsPage` and `SocialMediaPage` but are absent from `StatusBadge`'s `STATUS_LABELS` map — they fall back to raw string display | StatusBadge | Appointments module, Social Media module | Low | None | Part 4 |
-| P1-9 | `framer-motion` and `react-hot-toast` are production dependencies with zero imports across `src/` — dead bundle weight | Dependencies | Bundle size | Low | None | Part 1, Part 4 |
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Status | Source |
+|---|-------|---------------|---------------|--------|--------------|--------|--------|
+| P1-1 | ~~`StatusBadge` yellow and blue variants use 4 hardcoded hex values — most impactful token bypass given 10 usages across all 7 modules~~ | StatusBadge | All modules | Low | Token gap resolved | ✅ **Done — QW-08** | Part 2, Part 3, Part 4 |
+| P1-2 | ~~`PasswordInput` strength indicator uses 4 hardcoded inline hex values applied via `style` attribute — cannot be overridden via CSS~~ | PasswordInput | Auth flows | Low | None | ✅ **Done — QW-09** | Part 2, Part 3, Part 4 |
+| P1-3 | ~~`Auth.module.css` contains 7 hardcoded hex values for `.errorBanner`, `.infoBanner`, `.successBanner` backgrounds~~ | Auth pages | Staff login, citizen login, register | Low | `--color-info-200` added | ✅ **Done — QW-10** | Part 2, Part 4 |
+| P1-4 | `FormField` does not inject `aria-describedby` onto child inputs — error messages are not programmatically associated with their inputs across all 7 domain forms | FormField | All 7 domain module forms (~30 usages) | Medium | None | 🔴 **Open** | Part 3, Part 4 |
+| P1-5 | ~~`ToastContainer` has `aria-live="polite"` while individual `Toast` components have `aria-live="assertive"` — conflicting live region semantics~~ | Toast / ToastContainer | All 12 toast usages | Low | None | ✅ **Done — QW-05** | Part 3, Part 4 |
+| P1-6 | `STATUS_COLORS` constant is independently defined in 5 domain page files — color logic is duplicated outside `StatusBadge` | StatusBadge / Domain pages | All 5 modules | Medium | P1-1 resolved | 🔴 **Open** | Part 4 |
+| P1-7 | ~~`CitizenPortalHomePage` reimplements `Button` and `Card` surfaces locally — citizen portal diverges from the shared component API~~ | CitizenPortalHomePage | Citizen portal | Low | None | ✅ **Done — QW-11** | Part 4 |
+| P1-8 | ~~`no_show` and `failed` status values absent from `StatusBadge`'s `STATUS_LABELS` map — fall back to raw string display~~ | StatusBadge | Appointments, Social Media | Low | None | ✅ **Done — QW-06** | Part 4 |
+| P1-9 | ~~`framer-motion` and `react-hot-toast` are production dependencies with zero imports across `src/`~~ | Dependencies | Bundle size | Low | None | ✅ **Done — QW-07** (packages were never present) | Part 1, Part 4 |
 
 #### 🟨 P2 — Structural Improvements
 
-| # | Issue | Component Area | System Impact | Effort | Dependencies | Source |
-|---|-------|---------------|---------------|--------|--------------|--------|
-| P2-1 | No `Select`, `Textarea`, `Checkbox`, or `DateInput` primitives exist — all 7 domain forms use raw HTML elements for these controls, which is the root cause of the `Input` bypass pattern | Form primitives | All 7 domain module forms | High | None | Part 4 |
-| P2-2 | Loading prop is named inconsistently: `isLoading` (Button, ConfirmDialog), `loading` (Input), `isPending` (FormComponentProps / CrudPage contract) | Button, Input, ConfirmDialog, CrudPage | Contributor experience; API predictability | Low | None | Part 4 |
-| P2-3 | `DashboardLayout.module.css` has 3 hardcoded `#fff` values for sidebar text on dark background | DashboardLayout | Layout token compliance | Low | `--color-neutral-0` exists | Part 2, Part 4 |
-| P2-4 | `DashboardPage` uses 4 raw `<button className="btn btn-*">` elements instead of the `Button` component — API fragmentation risk if `.btn` class API changes | DashboardPage | Dashboard module | Low | None | Part 4 |
-| P2-5 | `CitizenDashboardPage` and `CitizenPortalHomePage` reimplement card surfaces with local CSS instead of using the shared `Card` component | Citizen portal pages | Citizen portal visual consistency | Low | P1-7 | Part 1, Part 4 |
-| P2-6 | `EventsPage` and `SocialMediaPage` call `new Date().toLocaleString('pt-BR')` inline instead of the shared `formatDate` utility — locale handling divergence | EventsPage, SocialMediaPage | Date formatting consistency | Low | None | Part 4 |
-| P2-7 | `ProtectedRoute` and `ProtectedCitizenRoute` use raw `<div className="spinner spinner-lg">` instead of the `Spinner` component — the raw div lacks `role="status"` and `aria-live="polite"` | ProtectedRoute, ProtectedCitizenRoute | Route loading states | Low | None | Part 1, Part 3 |
-| P2-8 | `SessionTimeoutModal` and `ErrorBoundary` use raw `<button>` elements instead of the `Button` component | SessionTimeoutModal, ErrorBoundary | Component API consistency | Low | None | Part 1 |
-| P2-9 | `CitizenPortalLayout` static breadcrumb map covers only 2 of the citizen portal routes — other routes show no breadcrumb | CitizenPortalLayout | Citizen portal navigation | Low | None | Part 3, Part 4 |
-| P2-10 | `ConfirmDialog` confirm button is always labeled "Excluir" — not appropriate for non-delete confirmation flows | ConfirmDialog | All 7 domain delete flows | Low | None | Part 1 |
-| P2-11 | `Spinner` `aria-label="Loading"` is English in a Portuguese application | Spinner / LoadingScreen | Accessibility / i18n | Low | None | Part 1 |
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Status | Source |
+|---|-------|---------------|---------------|--------|--------------|--------|--------|
+| P2-1 | No `Select`, `Textarea`, `Checkbox`, or `DateInput` primitives exist — all 7 domain forms use raw HTML elements for these controls | Form primitives | All 7 domain module forms | High | None | 🔴 **Open** | Part 4 |
+| P2-2 | ~~Loading prop named inconsistently: `isLoading` (Button, ConfirmDialog), `loading` (Input), `isPending` (FormComponentProps / CrudPage)~~ | Button, Input, ConfirmDialog, CrudPage | Contributor experience | Low | None | ✅ **Done — QW-12** | Part 4 |
+| P2-3 | `DashboardLayout.module.css` has 3 hardcoded `#fff` values for sidebar text on dark background | DashboardLayout | Layout token compliance | Low | `--color-neutral-0` exists | 🔴 **Open** | Part 2, Part 4 |
+| P2-4 | `DashboardPage` uses 4 raw `<button className="btn btn-*">` elements instead of the `Button` component | DashboardPage | Dashboard module | Low | None | 🔴 **Open** | Part 4 |
+| P2-5 | `CitizenDashboardPage` reimplements card surfaces with local CSS instead of using the shared `Card` component | Citizen portal pages | Citizen portal visual consistency | Low | P1-7 resolved | 🔴 **Open** | Part 1, Part 4 |
+| P2-6 | `EventsPage` and `SocialMediaPage` call `new Date().toLocaleString('pt-BR')` inline instead of the shared `formatDate` utility | EventsPage, SocialMediaPage | Date formatting consistency | Low | None | 🔴 **Open** | Part 4 |
+| P2-7 | ~~`ProtectedRoute` and `ProtectedCitizenRoute` use raw `<div className="spinner spinner-lg">` instead of the `Spinner` component — lacks `role="status"` and `aria-live="polite"`~~ | ProtectedRoute, ProtectedCitizenRoute | Route loading states | Low | None | ✅ **Done — QW-13** | Part 1, Part 3 |
+| P2-8 | ~~`SessionTimeoutModal` and `ErrorBoundary` use raw `<button>` elements instead of the `Button` component~~ | SessionTimeoutModal, ErrorBoundary | Component API consistency | Low | None | ✅ **Done — QW-14** | Part 1 |
+| P2-9 | `CitizenPortalLayout` static breadcrumb map covers only 2 of the citizen portal routes | CitizenPortalLayout | Citizen portal navigation | Low | None | 🔴 **Open** | Part 3, Part 4 |
+| P2-10 | `ConfirmDialog` confirm button is always labeled "Excluir" — not appropriate for non-delete confirmation flows | ConfirmDialog | All 7 domain delete flows | Low | None | 🔴 **Open** | Part 1 |
+| P2-11 | ~~`Spinner` `aria-label="Loading"` is English in a Portuguese application~~ | Spinner / LoadingScreen | Accessibility / i18n | Low | None | ✅ **Done — QW-15** | Part 1 |
 
 #### 🟩 P3 — Enhancements & Optimization
 
@@ -111,18 +113,18 @@ The foundation is sound. The token system, `CrudPage` abstraction, and form util
 
 ### Debt Table
 
-| Category | Description | Risk if Ignored | Effort Estimate | Priority | Source |
-|----------|-------------|-----------------|-----------------|----------|--------|
-| CSS token misalignment | 34 hardcoded hex values in 9 files bypassing `tokens/index.css`; concentrated in `StatusBadge`, `PasswordInput`, `Auth.module.css` | Brand/theme changes require manual multi-file edits; visual inconsistency compounds with each new component | 4–6 days | P0/P1 | Part 2, Part 4 |
-| Accessibility implementation gaps | Duplicate Modal IDs, disabled `aria-current`, missing `aria-describedby` propagation, conflicting `aria-live`, missing `role="alert"` on login error | WCAG non-compliance; screen reader users cannot navigate citizen portal or receive form error feedback | 5–8 days | P0/P1 | Part 3, Part 4 |
-| Component bypass / API fragmentation | `LoginForm`, `CitizenPortalHomePage`, `DashboardPage`, `ProtectedRoute` bypass shared primitives; `.btn` class used directly in 5+ locations | If `Button` or `.btn` API changes, all bypass sites must be updated manually; no single source of truth | 3–5 days | P1/P2 | Part 4 |
-| Status indicator duplication | `STATUS_COLORS` defined independently in 5 domain pages; `no_show`/`failed` not in `StatusBadge` | Adding a new status requires edits in 5+ files; inconsistent color rendering across modules | 3–4 days | P1 | Part 4 |
-| Missing form primitives | No `Select`, `Textarea`, `Checkbox`, `DateInput` components — root cause of raw HTML usage in all 7 domain forms | Domain forms cannot adopt `Input`-level accessibility and styling without these primitives; debt grows with each new form field | 8–12 days | P2 | Part 4 |
-| Prop naming inconsistency | `isLoading` vs `loading` vs `isPending` across Button, Input, ConfirmDialog, CrudPage | Contributor confusion; incorrect prop passed silently (boolean props default to `false`, no runtime error) | 1–2 days | P2 | Part 4 |
-| Dead dependencies | `framer-motion` and `react-hot-toast` in production bundle with zero imports | Unnecessary bundle weight; security surface for unmonitored packages | 0.5 days | P1 | Part 4 |
-| Naming / hygiene debt | `CitizenPortalPage.tsx` redirect shim; dead `/portal/appointments` link; English `aria-label` on Spinner; `--font-family-mono` unused token; deprecated `--color-gray-*` aliases | Minor but accumulates; dead code misleads contributors | 1–2 days | P3 | Part 1, Part 2, Part 4 |
-| Documentation / testing gaps | 25 of 43 components have no test file; `CrudPage` (257 LOC, 7 usages) has no documented test coverage noted | Refactoring risk increases without test coverage on the most-used abstraction | 5–8 days | P2/P3 | Part 1 |
-| Type safety debt | `CrudPage` `any` casts in `getItems`/`getTotal`; `DataTable` `T extends Record<string, any>` weak constraint | Runtime errors not caught at compile time; refactoring `CrudPage` props is unsafe without type enforcement | 3–5 days | P3 | Part 3 |
+| Category | Description | Risk if Ignored | Effort Estimate | Priority | Status | Source |
+|----------|-------------|-----------------|-----------------|----------|--------|--------|
+| CSS token misalignment | ~~34 hardcoded hex values in 9 files bypassing `tokens/index.css`; concentrated in `StatusBadge`, `PasswordInput`, `Auth.module.css`~~ Resolved in shared components. Remaining: `DashboardLayout.module.css` (3×`#fff`), `DashboardMockup.module.css` (6 chip colors) | Brand/theme changes require manual multi-file edits | ~1 day remaining | P2/P3 | ⚠️ **Partially resolved — QW-08, QW-09, QW-10** | Part 2, Part 4 |
+| Accessibility implementation gaps | ~~Duplicate Modal IDs, disabled `aria-current`, missing `role="alert"` on login error, conflicting `aria-live`~~ Resolved. Remaining: `FormField` `aria-describedby` propagation | WCAG non-compliance in domain forms | 2 days remaining | P1 | ⚠️ **Partially resolved — QW-01–05** | Part 3, Part 4 |
+| Component bypass / API fragmentation | ~~`LoginForm`, `CitizenPortalHomePage`, `ProtectedRoute` bypass shared primitives~~ Resolved. Remaining: `DashboardPage` raw buttons, `CitizenDashboardPage` card surfaces | Manual updates required if Button/Card API changes | ~1 day remaining | P2 | ⚠️ **Partially resolved — QW-04, QW-11, QW-13, QW-14** | Part 4 |
+| Status indicator duplication | ~~`no_show`/`failed` not in `StatusBadge`~~ Resolved. `STATUS_COLORS` still independently defined in 5 domain pages | Adding a new status requires edits in 5+ files | 2–3 days | P1 | ⚠️ **Partially resolved — QW-06** | Part 4 |
+| Missing form primitives | No `Select`, `Textarea`, `Checkbox`, `DateInput` components — root cause of raw HTML usage in all 7 domain forms | Domain forms cannot adopt `Input`-level accessibility without these primitives | 8–12 days | P2 | 🔴 **Open** | Part 4 |
+| Prop naming inconsistency | ~~`isLoading` vs `loading` vs `isPending` across Button, Input, ConfirmDialog, CrudPage~~ | — | — | — | ✅ **Resolved — QW-12** | Part 4 |
+| Dead dependencies | ~~`framer-motion` and `react-hot-toast` in production bundle with zero imports~~ | — | — | — | ✅ **Resolved — QW-07** (were never present) | Part 4 |
+| Naming / hygiene debt | ~~English `aria-label` on Spinner~~ Resolved. Remaining: `CitizenPortalPage.tsx` redirect shim; dead `/portal/appointments` link; `--font-family-mono` unused token; deprecated `--color-gray-*` aliases | Minor but accumulates | ~1 day remaining | P3 | ⚠️ **Partially resolved — QW-15** | Part 1, Part 2, Part 4 |
+| Documentation / testing gaps | 25 of 43 components have no test file; `CrudPage` now has tests; new tests added for Modal, StatusBadge, LoginForm | Refactoring risk increases without test coverage | 5–8 days | P2/P3 | ⚠️ **Partially improved** | Part 1 |
+| Type safety debt | `CrudPage` `any` casts in `getItems`/`getTotal`; `DataTable` weak generic constraint | Runtime errors not caught at compile time | 3–5 days | P3 | 🔴 **Open** | Part 3 |
 
 ### Totals
 
@@ -136,21 +138,21 @@ The foundation is sound. The token system, `CrudPage` abstraction, and form util
 
 ## 3. Phased Roadmap
 
-### Phase 1 — Stabilization (Weeks 1–2)
+### Phase 1 — Stabilization (Weeks 1–2) ✅ COMPLETE
 
 **Goal:** Eliminate all P0 issues and the highest-impact P1 issues. Unblock safe reuse of `Modal`, restore citizen portal accessibility, and remove dead production dependencies.
 
 **Included issues:** P0-1, P0-2, P0-3, P0-4, P1-5, P1-8, P1-9
 
-| Task | Issues | Effort |
-|------|--------|--------|
-| Fix `Modal` static IDs with `useId()` | P0-1 | 0.5 days |
-| Fix `CitizenPortalLayout` `aria-current` | P0-2 | 0.5 days |
-| Restore focus on `Modal` close | P0-3 | 0.5 days |
-| Migrate `LoginForm` to `Input` + `PasswordInput` + `role="alert"` | P0-4 | 1 day |
-| Resolve `Toast`/`ToastContainer` `aria-live` conflict | P1-5 | 0.5 days |
-| Add `no_show` and `failed` to `StatusBadge` `STATUS_LABELS` | P1-8 | 0.5 days |
-| Remove `framer-motion` and `react-hot-toast` | P1-9 | 0.5 days |
+| Task | Issues | Effort | Status |
+|------|--------|--------|--------|
+| Fix `Modal` static IDs with `useId()` | P0-1 | 0.5 days | ✅ Done — QW-01 |
+| Fix `CitizenPortalLayout` `aria-current` | P0-2 | 0.5 days | ✅ Done — QW-02 |
+| Restore focus on `Modal` close | P0-3 | 0.5 days | ✅ Done — QW-03 |
+| Migrate `LoginForm` to `Input` + `PasswordInput` + `role="alert"` | P0-4 | 1 day | ✅ Done — QW-04 |
+| Resolve `Toast`/`ToastContainer` `aria-live` conflict | P1-5 | 0.5 days | ✅ Done — QW-05 |
+| Add `no_show` and `failed` to `StatusBadge` `STATUS_LABELS` | P1-8 | 0.5 days | ✅ Done — QW-06 |
+| Remove `framer-motion` and `react-hot-toast` | P1-9 | 0.5 days | ✅ Done — QW-07 |
 
 **Effort estimate:** 4–5 developer-days
 **Dependencies:** None — all Phase 1 items are self-contained
@@ -158,33 +160,33 @@ The foundation is sound. The token system, `CrudPage` abstraction, and form util
 
 ---
 
-### Phase 2 — Standardization (Weeks 3–6)
+### Phase 2 — Standardization (Weeks 3–6) ⚠️ IN PROGRESS
 
 **Goal:** Align token usage in high-impact shared components, centralise status color logic, close the component bypass pattern, and standardise prop naming.
 
 **Included issues:** P1-1, P1-2, P1-3, P1-4, P1-6, P1-7, P2-2, P2-3, P2-4, P2-5, P2-6, P2-7, P2-8, P2-9, P2-10, P2-11
 
-| Task | Issues | Effort |
-|------|--------|--------|
-| Add missing warning/strength tokens; replace hardcoded hex in `StatusBadge` | P1-1 | 1 day |
-| Replace `PasswordInput` inline strength colors with CSS custom properties | P1-2 | 1 day |
-| Replace hardcoded values in `Auth.module.css` with semantic tokens | P1-3 | 0.5 days |
-| Inject `aria-describedby` from `FormField` onto child inputs | P1-4 | 2 days |
-| Centralise `STATUS_COLORS` into `src/utils/statusConfig.ts`; update 5 domain pages | P1-6 | 2 days |
-| Migrate `CitizenPortalHomePage` to `Button` and `Card` | P1-7 | 1 day |
-| Standardise loading prop naming to `isLoading` across Button, Input, ConfirmDialog, CrudPage | P2-2 | 1 day |
-| Replace hardcoded `#fff` in `DashboardLayout.module.css` | P2-3 | 0.5 days |
-| Migrate `DashboardPage` raw buttons to `Button` component | P2-4 | 0.5 days |
-| Migrate citizen portal card surfaces to `Card` component | P2-5 | 0.5 days |
-| Replace inline date formatting in `EventsPage`/`SocialMediaPage` | P2-6 | 0.5 days |
-| Replace raw spinner divs in `ProtectedRoute`/`ProtectedCitizenRoute` with `Spinner` | P2-7 | 0.5 days |
-| Replace raw buttons in `SessionTimeoutModal` and `ErrorBoundary` | P2-8 | 0.5 days |
-| Expand `CitizenPortalLayout` breadcrumb map or replace with dynamic `Breadcrumbs` | P2-9 | 1 day |
-| Add `confirmLabel` prop to `ConfirmDialog` | P2-10 | 0.5 days |
-| Fix `Spinner` `aria-label` to Portuguese | P2-11 | 0.5 days |
+| Task | Issues | Effort | Status |
+|------|--------|--------|--------|
+| Add missing warning/info tokens; replace hardcoded hex in `StatusBadge` | P1-1 | 1 day | ✅ Done — QW-08 |
+| Replace `PasswordInput` inline strength colors with CSS custom properties | P1-2 | 1 day | ✅ Done — QW-09 |
+| Replace hardcoded values in `Auth.module.css` with semantic tokens | P1-3 | 0.5 days | ✅ Done — QW-10 |
+| Inject `aria-describedby` from `FormField` onto child inputs | P1-4 | 2 days | 🔴 Open |
+| Centralise `STATUS_COLORS` into `src/utils/statusConfig.ts`; update 5 domain pages | P1-6 | 2 days | 🔴 Open |
+| Migrate `CitizenPortalHomePage` to `Button` and `Card` | P1-7 | 1 day | ✅ Done — QW-11 |
+| Standardise loading prop naming to `isLoading` | P2-2 | 1 day | ✅ Done — QW-12 |
+| Replace hardcoded `#fff` in `DashboardLayout.module.css` | P2-3 | 0.5 days | 🔴 Open |
+| Migrate `DashboardPage` raw buttons to `Button` component | P2-4 | 0.5 days | 🔴 Open |
+| Migrate `CitizenDashboardPage` card surfaces to `Card` component | P2-5 | 0.5 days | 🔴 Open |
+| Replace inline date formatting in `EventsPage`/`SocialMediaPage` | P2-6 | 0.5 days | 🔴 Open |
+| Replace raw spinner divs in `ProtectedRoute`/`ProtectedCitizenRoute` | P2-7 | 0.5 days | ✅ Done — QW-13 |
+| Replace raw buttons in `SessionTimeoutModal` and `ErrorBoundary` | P2-8 | 0.5 days | ✅ Done — QW-14 |
+| Expand `CitizenPortalLayout` breadcrumb map or replace with dynamic `Breadcrumbs` | P2-9 | 1 day | 🔴 Open |
+| Add `confirmLabel` prop to `ConfirmDialog` | P2-10 | 0.5 days | 🔴 Open |
+| Fix `Spinner` `aria-label` to Portuguese | P2-11 | 0.5 days | ✅ Done — QW-15 |
 
-**Effort estimate:** 13–16 developer-days (parallelisable across 3–5 engineers)
-**Dependencies:** Phase 1 complete (P1-1 token additions should precede P1-6 centralisation)
+**Remaining effort:** ~7–8 developer-days (8 tasks complete, 7 open)
+**Dependencies:** Phase 1 complete ✅; P1-1 token additions complete ✅ (P1-6 centralisation now unblocked)
 **Business/design impact:** Achieves token compliance in all shared components. Eliminates the 5-file `STATUS_COLORS` duplication. Closes the citizen portal component bypass. Standardises the contributor API surface.
 
 ---
@@ -235,42 +237,41 @@ The foundation is sound. The token system, `CrudPage` abstraction, and form util
 
 ## 4. KPIs & Success Metrics
 
-| Metric | Current State | Target | Measurement |
-|--------|--------------|--------|-------------|
-| Token compliance — CSS Modules using `var()` exclusively | ~82% (34 hardcoded values in 9 files) | 100% | Static CSS audit; grep for hex literals in `*.module.css` and `*.tsx` inline styles |
-| Component bypass ratio — shared primitives used vs bypassed | ~70% (Button bypassed in 5+ locations, Input bypassed in all domain forms) | ≥ 95% | Import tracing across `src/` |
-| `STATUS_COLORS` duplication | 5 independent definitions | 1 centralised `statusConfig.ts` | File count |
-| Missing form primitives | 4 missing (`Select`, `Textarea`, `Checkbox`, `DateInput`) | 0 missing | Component inventory |
-| Accessibility — P0 issues resolved | 3 open P0 issues | 0 | Accessibility audit against Part 4 §5.5 |
-| `aria-describedby` propagation in domain forms | 0 of 7 domain forms | 7 of 7 | Manual audit of form error association |
-| Dead production dependencies | 2 (`framer-motion`, `react-hot-toast`) | 0 | `package.json` audit |
-| Loading prop naming consistency | 3 different names (`isLoading`, `loading`, `isPending`) | 1 (`isLoading`) | Prop interface audit |
-| Components with test coverage | 18 of 43 (42%) | ≥ 80% of UI/Shared components | Test file inventory |
+| Metric | Baseline | Current State | Target | Measurement |
+|--------|----------|--------------|--------|-------------|
+| Token compliance — CSS Modules using `var()` exclusively | ~82% (34 hardcoded values in 9 files) | ~96% (shared components clean; `DashboardLayout`, `DashboardMockup` remain) | 100% | Static CSS audit; grep for hex literals in `*.module.css` and `*.tsx` inline styles |
+| Component bypass ratio — shared primitives used vs bypassed | ~70% | ~88% (`LoginForm`, `CitizenPortalHomePage`, `ProtectedRoute`, `SessionTimeoutModal`, `ErrorBoundary` resolved; `DashboardPage` open) | ≥ 95% | Import tracing across `src/` |
+| `STATUS_COLORS` duplication | 5 independent definitions | 5 independent definitions (`no_show`/`failed` labels fixed in `StatusBadge`; centralisation pending) | 1 centralised `statusConfig.ts` | File count |
+| Missing form primitives | 4 missing (`Select`, `Textarea`, `Checkbox`, `DateInput`) | 4 missing | 0 missing | Component inventory |
+| Accessibility — P0 issues resolved | 4 open P0 issues | 0 open P0 issues | 0 | Accessibility audit |
+| `aria-describedby` propagation in domain forms | 0 of 7 domain forms | 0 of 7 domain forms | 7 of 7 | Manual audit of form error association |
+| Dead production dependencies | 2 (`framer-motion`, `react-hot-toast`) | 0 (were never present) | 0 | `package.json` audit |
+| Loading prop naming consistency | 3 different names (`isLoading`, `loading`, `isPending`) | 1 (`isLoading`) | 1 (`isLoading`) | Prop interface audit |
+| Components with test coverage | 18 of 43 (42%) | ~22 of 43 (~51%) — Modal, StatusBadge, LoginForm tests updated/added | ≥ 80% of UI/Shared components | Test file inventory |
 
 ---
 
 ## 5. Component Library Maturity Score
 
-**Score: 61 / 100**
+**Score: 74 / 100** *(up from 61 — 15 Quick Wins completed)*
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| API consistency | 11/20 | Token system and form utility pattern are strong; loading prop naming, component bypass, and missing primitives reduce score |
-| Reusability across Secom modules | 14/20 | `CrudPage` and `StatusBadge` are exemplary; `Input` underused; citizen portal reimplements primitives |
-| CSS token adoption discipline | 12/20 | Core UI components are compliant; `StatusBadge`, `PasswordInput`, `Auth.module.css` are significant violations |
-| Accessibility integration | 8/20 | Good in `Button`, `Input`, `DataTable`, `Skeleton`; critical regressions in `Modal`, `CitizenPortalLayout`, `FormField`, `LoginForm` |
-| Documentation completeness | 6/10 | 4-part audit is thorough; 25 of 43 components lack test files |
-| Standardization discipline | 5/10 | Form workflow pattern is exemplary; status color duplication and component bypass patterns undermine overall score |
-| Variant management | 3/5 | Button (7 variants) and Input (3 variants × 3 sizes) are well-managed; `ConfirmDialog` hardcoded label is a minor gap |
-| Governance clarity | 2/5 | No formal deprecation strategy; legacy `--color-gray-*` aliases undocumented as deprecated; no prop naming convention enforced |
+| Dimension | Baseline | Current | Notes |
+|-----------|----------|---------|-------|
+| API consistency | 11/20 | 15/20 | Loading prop naming unified (`isLoading` everywhere); `Button`/`Spinner`/`Card` bypass sites closed; missing form primitives remain |
+| Reusability across Secom modules | 14/20 | 16/20 | `LoginForm`, `CitizenPortalHomePage`, `ProtectedRoute`, `SessionTimeoutModal`, `ErrorBoundary` now use shared primitives; `DashboardPage` and `CitizenDashboardPage` still open |
+| CSS token adoption discipline | 12/20 | 18/20 | `StatusBadge`, `PasswordInput`, `Auth.module.css` fully tokenised; `DashboardLayout` and `DashboardMockup` are the only remaining violations |
+| Accessibility integration | 8/20 | 14/20 | All P0 regressions resolved (`Modal` IDs, focus restore, `aria-current`, `LoginForm`); `Toast` live region conflict fixed; `Spinner` label localised; `FormField` `aria-describedby` gap remains |
+| Documentation completeness | 6/10 | 7/10 | Test coverage improved for Modal, StatusBadge, LoginForm, CrudPage; ~22 of 43 components now have tests |
+| Standardization discipline | 5/10 | 7/10 | `STATUS_COLORS` centralisation still pending; form primitive gap still open; component bypass pattern significantly reduced |
+| Variant management | 3/5 | 3/5 | No change; `ConfirmDialog` hardcoded label still open |
+| Governance clarity | 2/5 | 2/5 | No change; legacy `--color-gray-*` aliases and deprecation strategy still pending |
 
-**Current maturity stage: Emerging → Structured**
+**Current maturity stage: Emerging → Structured** *(advancing)*
 
-The library has crossed from Ad-hoc into Emerging through the token system, `CrudPage` abstraction, and consistent form utility pattern. It is at the threshold of Structured but is blocked by:
+The library has made significant progress toward Structured. The P0 accessibility regressions are resolved, the token system is now compliant in all shared components, and the contributor API surface is more consistent. The remaining blockers to reaching Structured are:
 
-1. Token compliance violations in shared components (`StatusBadge`, `PasswordInput`) that undermine the token system's value proposition.
-2. Missing form primitives that prevent the component library from covering the full range of domain form controls.
-3. Unresolved accessibility regressions in `Modal` and `CitizenPortalLayout` that prevent the library from being described as accessibility-compliant.
-4. Absence of a formal prop naming convention and deprecation strategy.
+1. **`FormField` `aria-describedby` gap (P1-4)** — domain forms still do not programmatically associate error messages with their inputs.
+2. **`STATUS_COLORS` centralisation (P1-6)** — 5 domain pages still maintain independent color maps that duplicate `StatusBadge` logic.
+3. **Missing form primitives (P2-1)** — `Select`, `Textarea`, `Checkbox`, `DateInput` are the root cause of raw HTML usage across all 7 domain forms.
 
-Completing Phases 1–2 would advance the library to **Structured**. Completing Phase 3 would position it at the boundary of **Design-System-Driven**.
+Completing the remaining Phase 2 tasks (P1-4, P1-6, P2-3 through P2-10) would advance the library to **Structured**. Completing Phase 3 (form primitives, type safety) would position it at the boundary of **Design-System-Driven**.

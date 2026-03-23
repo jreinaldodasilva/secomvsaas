@@ -8,7 +8,7 @@ export { emptyCitizenForm, validateCitizen } from '@/validation/domain';
 
 type Props = FormComponentProps<CitizenFormState>;
 
-export function CitizenRecordsForm({ form, setForm, errors, editing, isPending, onSubmit }: Props) {
+export function CitizenRecordsForm({ form, setForm, errors, editing, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof CitizenFormState>(k: K, v: CitizenFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -57,7 +57,7 @@ export function CitizenRecordsForm({ form, setForm, errors, editing, isPending, 
       </div>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

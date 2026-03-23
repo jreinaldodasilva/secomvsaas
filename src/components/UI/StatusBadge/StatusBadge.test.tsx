@@ -27,11 +27,13 @@ describe('StatusBadge', () => {
 
   it('maps all default statuses correctly', () => {
     const expected: Array<[string, string, keyof typeof styles]> = [
-      ['active',    'Ativo',      'green'],
-      ['inactive',  'Inativo',    'gray'],
-      ['pending',   'Pendente',   'yellow'],
-      ['cancelled', 'Cancelado',  'red'],
-      ['completed', 'Concluído',  'blue'],
+      ['active',    'Ativo',             'green'],
+      ['inactive',  'Inativo',           'gray'],
+      ['pending',   'Pendente',          'yellow'],
+      ['cancelled', 'Cancelado',         'red'],
+      ['completed', 'Concluído',         'blue'],
+      ['no_show',   'Não compareceu',    'gray'],
+      ['failed',    'Falhou',            'red'],
     ];
     for (const [status, label, colorKey] of expected) {
       const { unmount } = render(<StatusBadge status={status} />);

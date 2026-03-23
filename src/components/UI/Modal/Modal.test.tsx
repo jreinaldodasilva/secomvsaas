@@ -58,6 +58,33 @@ describe('Modal', () => {
     render(<Modal isOpen onClose={vi.fn()} title="Accessible">Body</Modal>);
     const dialog = screen.getByRole('dialog');
     expect(dialog).toHaveAttribute('aria-modal', 'true');
-    expect(dialog).toHaveAttribute('aria-labelledby', 'modal-title');
+    const labelledBy = dialog.getAttribute('aria-labelledby');
+    expect(labelledBy).toBeTruthy();
+    expect(screen.getByText('Accessible').id).toBe(labelledBy);
+  });
+
+  it('generates unique IDs for two simultaneous modals', () => {
+    render(
+      <>
+        <Modal isOpen onClose={vi.fn()} title="First">A</Modal>
+        <Modal isOpen onClose={vi.fn()} title="Second">B</Modal>
+      </>
+    );
+    const [first, second] = screen.getAllByRole('dialog');
+    expect(first.getAttribute('aria-labelledby')).not.toBe(second.getAttribute('aria-labelledby'));
+  });
+
+  it('restores focus to the trigger element when closed', async () => {
+    const trigger = document.createElement('button');
+    trigger.textContent = 'Open';
+    document.body.appendChild(trigger);
+    trigger.focus();
+    expect(document.activeElement).toBe(trigger);
+
+    const { rerender } = render(<Modal isOpen onClose={vi.fn()}>Body</Modal>);
+    rerender(<Modal isOpen={false} onClose={vi.fn()}>Body</Modal>);
+
+    expect(document.activeElement).toBe(trigger);
+    document.body.removeChild(trigger);
   });
 });

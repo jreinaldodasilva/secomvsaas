@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal } from '../Modal/Modal';
+import { Button } from '@/components/UI';
 import styles from './SessionTimeoutModal.module.css';
 
 interface SessionTimeoutModalProps {
@@ -18,8 +19,8 @@ export const SessionTimeoutModal: React.FC<SessionTimeoutModalProps> = ({ show, 
     closeOnOverlayClick={false}
     footer={
       <div className={styles.actions}>
-        <button onClick={onLogout} className="btn btn-secondary">Sair</button>
-        <button onClick={onContinue} className="btn btn-primary" autoFocus>Continuar Conectado</button>
+        <Button variant="outline" onClick={onLogout}>Sair</Button>
+        <Button variant="primary" onClick={onContinue} autoFocus>Continuar Conectado</Button>
       </div>
     }
   >

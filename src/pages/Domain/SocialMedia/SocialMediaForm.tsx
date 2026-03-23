@@ -15,7 +15,7 @@ interface Props extends FormComponentProps<SocialMediaFormState> {
   setEditStatus?: (s: string) => void;
 }
 
-export function SocialMediaForm({ form, setForm, errors, editing, editStatus = 'draft', setEditStatus = () => {}, isPending, onSubmit }: Props) {
+export function SocialMediaForm({ form, setForm, errors, editing, editStatus = 'draft', setEditStatus = () => {}, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof SocialMediaFormState>(k: K, v: SocialMediaFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -50,7 +50,7 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
       )}
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

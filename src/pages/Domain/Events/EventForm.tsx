@@ -8,7 +8,7 @@ export { emptyEventForm, validateEvent } from '@/validation/domain';
 
 type Props = FormComponentProps<EventFormState>;
 
-export function EventForm({ form, setForm, errors, isPending, onSubmit }: Props) {
+export function EventForm({ form, setForm, errors, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof EventFormState>(k: K, v: EventFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -42,7 +42,7 @@ export function EventForm({ form, setForm, errors, isPending, onSubmit }: Props)
       </label>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

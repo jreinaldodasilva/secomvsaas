@@ -13,7 +13,7 @@ interface TestForm { name: string }
 
 const emptyForm: TestForm = { name: '' };
 
-function TestForm({ form, setForm, errors, isPending, onSubmit }: FormComponentProps<TestForm>) {
+function TestForm({ form, setForm, errors, isLoading, onSubmit }: FormComponentProps<TestForm>) {
   return (
     <form onSubmit={onSubmit}>
       <input
@@ -22,7 +22,7 @@ function TestForm({ form, setForm, errors, isPending, onSubmit }: FormComponentP
         onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
       />
       {errors.name && <span role="alert">{errors.name}</span>}
-      <button type="submit" disabled={isPending}>Save</button>
+      <button type="submit" disabled={isLoading}>Save</button>
     </form>
   );
 }
@@ -99,7 +99,8 @@ describe('CrudPage', () => {
   it('opens create modal on create button click', async () => {
     render(<CrudPage {...makeProps()} />);
     await userEvent.click(screen.getByText('New Item'));
-    expect(screen.getByText('New Item', { selector: '[id="modal-title"]' })).toBeInTheDocument();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(screen.getByText('New Item', { selector: 'h2' })).toBeInTheDocument();
   });
 
   it('opens edit modal with pre-filled form', async () => {
@@ -231,13 +232,13 @@ describe('CrudPage', () => {
     it('opens create modal on mount when initialOpen=true and user has write permission', async () => {
       mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
       render(<CrudPage {...makeProps({ initialOpen: true })} />);
-      expect(screen.getByText('New Item', { selector: '[id="modal-title"]' })).toBeInTheDocument();
+      expect(screen.getByText('New Item', { selector: 'h2' })).toBeInTheDocument();
     });
 
     it('does not open create modal on mount when initialOpen=false', () => {
       mockUseAuth.mockReturnValue({ user: { role: 'admin' } });
       render(<CrudPage {...makeProps({ initialOpen: false })} />);
-      expect(screen.queryByText('New Item', { selector: '[id="modal-title"]' })).not.toBeInTheDocument();
+      expect(screen.queryByText('New Item', { selector: 'h2' })).not.toBeInTheDocument();
     });
 
     it('does not open create modal when initialOpen=true but user lacks write permission', () => {
@@ -246,7 +247,7 @@ describe('CrudPage', () => {
         initialOpen: true,
         writePermission: 'press-releases:write',
       })} />);
-      expect(screen.queryByText('New Item', { selector: '[id="modal-title"]' })).not.toBeInTheDocument();
+      expect(screen.queryByText('New Item', { selector: 'h2' })).not.toBeInTheDocument();
     });
   });
 });

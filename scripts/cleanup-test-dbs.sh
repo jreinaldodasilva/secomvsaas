@@ -7,7 +7,7 @@ echo ""
 
 # MongoDB cleanup
 # DB name comes from backend/.env.test: DATABASE_URL=mongodb://localhost:27017/vsaas-test
-MONGO_DB="vsaas-test"
+MONGO_DB="secom"
 
 if command -v mongosh &> /dev/null; then
     echo "🗄️  Dropping MongoDB test database: ${MONGO_DB}..."

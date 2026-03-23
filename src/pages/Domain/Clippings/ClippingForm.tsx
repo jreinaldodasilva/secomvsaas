@@ -8,7 +8,7 @@ export { emptyClippingForm, validateClipping } from '@/validation/domain';
 
 type Props = FormComponentProps<ClippingFormState>;
 
-export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Props) {
+export function ClippingForm({ form, setForm, errors, isLoading, onSubmit }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof ClippingFormState>(k: K, v: ClippingFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -48,7 +48,7 @@ export function ClippingForm({ form, setForm, errors, isPending, onSubmit }: Pro
       </FormField>
 
       <div className="form-actions">
-        <Button type="submit" isLoading={isPending}>{t('common.saving')}</Button>
+        <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
       </div>
     </form>
   );

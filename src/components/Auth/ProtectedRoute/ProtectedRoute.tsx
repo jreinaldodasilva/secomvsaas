@@ -2,6 +2,7 @@ import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
+import { Spinner } from '@/components/UI';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -17,7 +18,7 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     return (
       <div className="loading-screen">
         <div className="loading-screen-content">
-          <div className="spinner spinner-lg" />
+          <Spinner size="lg" />
           <p className="loading-screen-text">{t('common.loading')}</p>
         </div>
       </div>

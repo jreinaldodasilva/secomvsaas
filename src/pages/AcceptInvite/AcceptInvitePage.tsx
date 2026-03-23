@@ -1,6 +1,8 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { http, ApiError } from '@/services/http';
+import { authService } from '@/services/api';
+import { useAuth } from '@/contexts';
+import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
@@ -10,6 +12,7 @@ export function AcceptInvitePage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   usePageTitle(t('auth.acceptInvite'));
+  const { refreshUser } = useAuth();
   const [params] = useSearchParams();
   const token = params.get('token') || '';
 
@@ -25,7 +28,8 @@ export function AcceptInvitePage() {
     setError('');
     setLoading(true);
     try {
-      await http.post('/api/v1/auth/accept-invite', { token, ...form });
+      await authService.acceptInvite(token, form.name, form.password);
+      await refreshUser();
       navigate('/admin/dashboard');
     } catch (err: unknown) {
       setError(err instanceof ApiError ? err.message : t('auth.acceptInviteError'));

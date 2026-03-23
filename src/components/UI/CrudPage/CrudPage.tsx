@@ -17,7 +17,7 @@ export interface CrudPageProps<TItem extends { id: string }, TForm> {
 
   columns: (
     openEdit: (item: TItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: TItem) => void
   ) => Column<TItem>[];
 
   emptyForm: TForm;
@@ -102,7 +102,13 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   const [editing, setEditing] = useState<TItem | null>(null);
   const [form, setForm] = useState<TForm>(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+
+  const openDelete = (item: TItem) => {
+    const itemWithName = item as TItem & { title?: string; name?: string; citizenName?: string };
+    const displayName = itemWithName.title ?? itemWithName.name ?? itemWithName.citizenName ?? '';
+    setDeleteTarget({ id: item.id, name: displayName });
+  };
 
   const openCreate = () => {
     setEditing(null);
@@ -139,7 +145,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   const handleDelete = () => {
     if (!deleteTarget) return;
     onDelete(
-      deleteTarget,
+      deleteTarget.id,
       { onSuccess: () => { onSuccess(deletedMessage); setDeleteTarget(null); }, onError: (err) => onError(err.message) }
     );
   };
@@ -183,7 +189,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         </div>
       </div>
       <DataTable
-        columns={columns(openEdit, setDeleteTarget)}
+        columns={columns(openEdit, openDelete)}
         data={items}
         total={total}
         page={page}
@@ -217,6 +223,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         onClose={() => setDeleteTarget(null)}
         onConfirm={handleDelete}
         isLoading={isDeletePending}
+        message={deleteTarget?.name ? t('common.deleteConfirmNamed', { name: deleteTarget.name }) : undefined}
       />
     </div>
   );

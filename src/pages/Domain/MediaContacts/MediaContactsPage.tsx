@@ -34,7 +34,7 @@ export function MediaContactsPage() {
 
   const columns = (
     openEdit: (item: MediaContactItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: MediaContactItem) => void
   ): Column<MediaContactItem>[] => [
     { key: 'name', header: t('domain.mediaContacts.fields.name'), sortable: true },
     { key: 'outlet', header: t('domain.mediaContacts.fields.outlet'), sortable: true },
@@ -47,7 +47,7 @@ export function MediaContactsPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

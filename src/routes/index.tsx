@@ -51,8 +51,10 @@ export function AppRoutes() {
 
       {/* Protected dashboard routes — staff only (excludes citizen role) */}
       <Route element={<ProtectedRoute allowedRoles={STAFF_ROLES}><DashboardLayout /></ProtectedRoute>}>
+        {/* No inner guard — accessible to all STAFF_ROLES by design */}
         <Route path="/admin/dashboard" element={<Suspense fallback={<LoadingScreen />}><DashboardPage /></Suspense>} />
         <Route path="/admin/users" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('users:read')}><UsersPage /></ProtectedRoute></Suspense>} />
+        {/* No inner guard — accessible to all STAFF_ROLES by design */}
         <Route path="/settings/profile" element={<Suspense fallback={<LoadingScreen />}><ProfilePage /></Suspense>} />
         <Route path="/press-releases" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('press-releases:read')}><PressReleasesPage /></ProtectedRoute></Suspense>} />
         <Route path="/media-contacts" element={<Suspense fallback={<LoadingScreen />}><ProtectedRoute allowedRoles={rolesWithPermission('media-contacts:read')}><MediaContactsPage /></ProtectedRoute></Suspense>} />
@@ -64,6 +66,7 @@ export function AppRoutes() {
       </Route>
 
       {/* Citizen Portal */}
+      {/* No layout-level auth guard — ProtectedCitizenRoute handles auth per protected route */}
       <Route element={<CitizenPortalLayout />}>
         <Route path="/portal" element={<Suspense fallback={<LoadingScreen />}><CitizenPortalHomePage /></Suspense>} />
         <Route path="/portal/login" element={<Suspense fallback={<LoadingScreen />}><CitizenLoginPage /></Suspense>} />
@@ -72,9 +75,11 @@ export function AppRoutes() {
         <Route path="/portal/profile" element={<Suspense fallback={<LoadingScreen />}><ProtectedCitizenRoute><CitizenProfilePage /></ProtectedCitizenRoute></Suspense>} />
       </Route>
 
-      {/* Fallback */}
-      <Route path="/unauthorized" element={<Suspense fallback={<LoadingScreen />}><UnauthorizedPage /></Suspense>} />
-      <Route path="*" element={<Suspense fallback={<LoadingScreen />}><NotFoundPage /></Suspense>} />
+      {/* Fallback — wrapped in PublicLayout for consistent header/footer context */}
+      <Route element={<PublicLayout />}>
+        <Route path="/unauthorized" element={<Suspense fallback={<LoadingScreen />}><UnauthorizedPage /></Suspense>} />
+        <Route path="*" element={<Suspense fallback={<LoadingScreen />}><NotFoundPage /></Suspense>} />
+      </Route>
     </Routes>
   );
 }

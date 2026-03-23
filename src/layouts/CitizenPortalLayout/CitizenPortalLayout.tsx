@@ -1,16 +1,29 @@
-import { Outlet, Link, useNavigate } from 'react-router-dom';
+import { useState, useCallback } from 'react';
+import { Outlet, Link, NavLink, useNavigate } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
+import { useSessionTimeout } from '@/hooks';
+import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import styles from './CitizenPortalLayout.module.css';
 
 export function CitizenPortalLayout() {
   const { isAuthenticated, citizen, logout } = useCitizenAuth();
   const navigate = useNavigate();
+  const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
+    setShowTimeoutWarning(false);
     await logout();
     navigate('/portal/login');
-  };
+  }, [logout, navigate]);
+
+  const handleContinue = useCallback(() => setShowTimeoutWarning(false), []);
+
+  useSessionTimeout({
+    onWarning: () => setShowTimeoutWarning(true),
+    onTimeout: handleLogout,
+    enabled: isAuthenticated,
+  });
 
   return (
     <div className={styles.layout}>
@@ -23,8 +36,16 @@ export function CitizenPortalLayout() {
           <nav className={styles.nav}>
             {isAuthenticated ? (
               <>
-                <Link to="/portal/dashboard" className={styles.navLink}>Início</Link>
-                <Link to="/portal/profile" className={styles.navLink}>Meu perfil</Link>
+                <NavLink
+                  to="/portal/dashboard"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+                  aria-current={undefined}
+                >Início</NavLink>
+                <NavLink
+                  to="/portal/profile"
+                  className={({ isActive }) => isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink}
+                  aria-current={undefined}
+                >Meu perfil</NavLink>
                 <button onClick={handleLogout} className={styles.navBtn}>Sair</button>
               </>
             ) : (
@@ -58,6 +79,12 @@ export function CitizenPortalLayout() {
           </div>
         </div>
       </footer>
+
+      <SessionTimeoutModal
+        show={showTimeoutWarning}
+        onContinue={handleContinue}
+        onLogout={handleLogout}
+      />
     </div>
   );
 }

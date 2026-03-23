@@ -37,7 +37,7 @@ export function CitizenRecordsPage() {
 
   const columns = (
     openEdit: (item: CitizenItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: CitizenItem) => void
   ): Column<CitizenItem>[] => [
     { key: 'fullName', header: t('domain.citizenPortal.fields.fullName'), sortable: true },
     { key: 'cpf', header: t('domain.citizenPortal.fields.cpf') },
@@ -50,7 +50,7 @@ export function CitizenRecordsPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

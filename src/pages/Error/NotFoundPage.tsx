@@ -10,7 +10,7 @@ export function NotFoundPage() {
     <div className={styles.page}>
       <h1 className={styles.code}>404</h1>
       <p className={styles.message}>{t('errors.notFound')}</p>
-      <Button onClick={() => navigate('/admin/dashboard')}>{t('common.backToHome')}</Button>
+      <Button onClick={() => navigate('/')}>{t('common.backToHome')}</Button>
     </div>
   );
 }

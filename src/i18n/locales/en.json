@@ -20,6 +20,7 @@
     "delete": "Delete",
     "deleted": "Deleted successfully",
     "deleteConfirm": "Are you sure you want to delete?",
+    "deleteConfirmNamed": "Are you sure you want to delete \"{{name}}\"?",
     "errorLoading": "Failed to load data.",
     "retry": "Try again",
     "brand": "Secom"
@@ -100,6 +101,7 @@
     "newPassword": "New password",
     "confirmPassword": "Confirm password",
     "loginError": "Login failed",
+    "sessionExpired": "Your session has expired. Please log in again.",
     "registerError": "Registration failed",
     "resetError": "Password reset failed",
     "forgotError": "Failed to send recovery email",

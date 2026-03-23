@@ -38,7 +38,7 @@ export function SocialMediaPage() {
 
   const columns = (
     openEdit: (item: SocialMediaItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: SocialMediaItem) => void
   ): Column<SocialMediaItem>[] => [
     { key: 'platform', header: t('domain.socialMedia.fields.platform'), render: (r) => r.platform.charAt(0).toUpperCase() + r.platform.slice(1) },
     { key: 'content', header: t('domain.socialMedia.fields.content'), render: (r) => r.content.length > 80 ? r.content.slice(0, 80) + '…' : r.content },
@@ -49,7 +49,7 @@ export function SocialMediaPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

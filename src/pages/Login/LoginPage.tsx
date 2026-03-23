@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
@@ -18,13 +18,17 @@ export function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const location = useLocation();
+  const sessionExpired = (location.state as { reason?: string })?.reason === 'session_expired';
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/admin/dashboard');
+      const from = (location.state as { from?: { pathname?: string } })?.from?.pathname ?? '/admin/dashboard';
+      navigate(from, { replace: true });
     } catch (err: unknown) {
       setError(err instanceof ApiError ? err.message : t('auth.loginError'));
     } finally {
@@ -41,6 +45,11 @@ export function LoginPage() {
         </div>
 
         <div className={s.body}>
+          {sessionExpired && (
+            <div className={s.infoBanner} role="status">
+              {t('auth.sessionExpired')}
+            </div>
+          )}
           {error && (
             <div className={s.errorBanner} role="alert">
               <span>⚠</span> {error}

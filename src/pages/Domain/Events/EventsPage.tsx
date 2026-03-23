@@ -36,7 +36,7 @@ export function EventsPage() {
 
   const columns = (
     openEdit: (item: EventItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: EventItem) => void
   ): Column<EventItem>[] => [
     { key: 'title', header: t('domain.events.fields.title'), sortable: true },
     { key: 'location', header: t('domain.events.fields.location') },
@@ -48,7 +48,7 @@ export function EventsPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

@@ -5,6 +5,7 @@ import { ApiError } from '@/services/http';
 
 const mockLogin = vi.fn();
 const mockNavigate = vi.fn();
+let mockLocation = { state: null as unknown };
 
 vi.mock('../../contexts/AuthContext', () => ({
   useAuth: () => ({ login: mockLogin }),
@@ -12,7 +13,11 @@ vi.mock('../../contexts/AuthContext', () => ({
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
-  return { ...actual, useNavigate: () => mockNavigate };
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+    useLocation: () => mockLocation,
+  };
 });
 
 import { LoginPage } from './LoginPage';
@@ -29,6 +34,18 @@ describe('LoginPage', () => {
   beforeEach(() => {
     mockLogin.mockReset();
     mockNavigate.mockReset();
+    mockLocation = { state: null };
+  });
+
+  it('shows session expired banner when reason is session_expired', () => {
+    mockLocation = { state: { reason: 'session_expired' } };
+    renderPage();
+    expect(screen.getByRole('status')).toHaveTextContent('Sua sessão expirou');
+  });
+
+  it('does not show session expired banner when no reason', () => {
+    renderPage();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
   it('renders email, password fields and submit button', () => {
@@ -44,7 +61,7 @@ describe('LoginPage', () => {
     expect(screen.getByRole('link', { name: 'Criar conta' })).toBeInTheDocument();
   });
 
-  it('calls login and navigates to dashboard on success', async () => {
+  it('calls login and navigates to dashboard when no state.from', async () => {
     mockLogin.mockResolvedValue(undefined);
     renderPage();
 
@@ -53,7 +70,19 @@ describe('LoginPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
     expect(mockLogin).toHaveBeenCalledWith('user@test.com', 'secret123');
-    expect(mockNavigate).toHaveBeenCalledWith('/admin/dashboard');
+    expect(mockNavigate).toHaveBeenCalledWith('/admin/dashboard', { replace: true });
+  });
+
+  it('navigates to state.from after login when set by ProtectedRoute', async () => {
+    mockLogin.mockResolvedValue(undefined);
+    mockLocation = { state: { from: { pathname: '/admin/press-releases' } } };
+    renderPage();
+
+    await userEvent.type(screen.getByLabelText('Email'), 'user@test.com');
+    await userEvent.type(screen.getByLabelText('Senha'), 'secret123');
+    await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
+
+    expect(mockNavigate).toHaveBeenCalledWith('/admin/press-releases', { replace: true });
   });
 
   it('shows error banner on login failure', async () => {

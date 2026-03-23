@@ -35,7 +35,7 @@ export function ClippingsPage() {
 
   const columns = (
     openEdit: (item: ClippingItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: ClippingItem) => void
   ): Column<ClippingItem>[] => [
     { key: 'title', header: t('domain.clippings.fields.title'), sortable: true },
     { key: 'source', header: t('domain.clippings.fields.source'), sortable: true },
@@ -50,7 +50,7 @@ export function ClippingsPage() {
         <div className="actions-row">
           {r.sourceUrl && <a href={r.sourceUrl} target="_blank" rel="noopener noreferrer"><Button variant="ghost" size="sm">🔗</Button></a>}
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

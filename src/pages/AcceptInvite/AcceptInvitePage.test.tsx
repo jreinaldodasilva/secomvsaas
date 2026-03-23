@@ -3,13 +3,17 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import { ApiError } from '@/services/http';
 
-const mockPost = vi.hoisted(() => vi.fn());
+const mockAcceptInvite = vi.hoisted(() => vi.fn());
+const mockRefreshUser = vi.hoisted(() => vi.fn());
 const mockNavigate = vi.hoisted(() => vi.fn());
 
-vi.mock('../../services/http', async () => {
-  const actual = await vi.importActual('../../services/http');
-  return { ...actual, http: { post: mockPost } };
-});
+vi.mock('../../services/api/authService', () => ({
+  authService: { acceptInvite: mockAcceptInvite },
+}));
+
+vi.mock('../../contexts/AuthContext', () => ({
+  useAuth: () => ({ refreshUser: mockRefreshUser }),
+}));
 
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
@@ -29,7 +33,8 @@ function renderPage(token?: string) {
 
 describe('AcceptInvitePage', () => {
   beforeEach(() => {
-    mockPost.mockReset();
+    mockAcceptInvite.mockReset();
+    mockRefreshUser.mockReset();
     mockNavigate.mockReset();
   });
 
@@ -46,24 +51,37 @@ describe('AcceptInvitePage', () => {
     expect(screen.getByRole('button', { name: 'Criar conta' })).toBeInTheDocument();
   });
 
-  it('submits form and navigates to dashboard on success', async () => {
-    mockPost.mockResolvedValue(undefined);
+  it('calls acceptInvite, refreshUser, then navigates to dashboard on success', async () => {
+    mockAcceptInvite.mockResolvedValue(undefined);
+    mockRefreshUser.mockResolvedValue(undefined);
     renderPage('invite-token');
 
     await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
     await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
 
-    expect(mockPost).toHaveBeenCalledWith('/api/v1/auth/accept-invite', {
-      token: 'invite-token',
-      name: 'Bob',
-      password: 'Senha@123',
-    });
+    expect(mockAcceptInvite).toHaveBeenCalledWith('invite-token', 'Bob', 'Senha@123');
+    expect(mockRefreshUser).toHaveBeenCalledTimes(1);
     expect(mockNavigate).toHaveBeenCalledWith('/admin/dashboard');
   });
 
+  it('navigates only after refreshUser resolves', async () => {
+    const order: string[] = [];
+    mockAcceptInvite.mockResolvedValue(undefined);
+    mockRefreshUser.mockImplementation(async () => { order.push('refresh'); });
+    mockNavigate.mockImplementation(() => { order.push('navigate'); });
+    renderPage('invite-token');
+
+    await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+
+    await screen.findByRole('button', { name: 'Criar conta' });
+    expect(order).toEqual(['refresh', 'navigate']);
+  });
+
   it('shows error banner on failure', async () => {
-    mockPost.mockRejectedValue(new ApiError('Convite expirado', 400));
+    mockAcceptInvite.mockRejectedValue(new ApiError('Convite expirado', 400));
     renderPage('invite-token');
 
     await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
@@ -71,10 +89,12 @@ describe('AcceptInvitePage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Convite expirado');
+    expect(mockRefreshUser).not.toHaveBeenCalled();
+    expect(mockNavigate).not.toHaveBeenCalled();
   });
 
   it('shows fallback error on unknown failure', async () => {
-    mockPost.mockRejectedValue(new Error());
+    mockAcceptInvite.mockRejectedValue(new Error());
     renderPage('invite-token');
 
     await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
@@ -85,7 +105,7 @@ describe('AcceptInvitePage', () => {
   });
 
   it('disables submit button while loading', async () => {
-    mockPost.mockImplementation(() => new Promise(() => {}));
+    mockAcceptInvite.mockImplementation(() => new Promise(() => {}));
     renderPage('invite-token');
 
     await userEvent.type(screen.getByLabelText('Nome'), 'Bob');

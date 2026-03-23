@@ -32,7 +32,7 @@ const items: TestItem[] = [
 function makeProps(overrides = {}) {
   const columns = (
     openEdit: (item: TestItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: TestItem) => void
   ): Column<TestItem>[] => [
     { key: 'name', header: 'Name' },
     {
@@ -40,7 +40,7 @@ function makeProps(overrides = {}) {
       render: (r) => (
         <>
           <button onClick={() => openEdit(r)}>Edit {r.name}</button>
-          <button onClick={() => setDeleteTarget(r.id)}>Delete {r.name}</button>
+          <button onClick={() => openDelete(r)}>Delete {r.name}</button>
         </>
       ),
     },
@@ -135,11 +135,11 @@ describe('CrudPage', () => {
     );
   });
 
-  it('opens confirm dialog and calls onDelete', async () => {
+  it('opens confirm dialog with item name and calls onDelete', async () => {
     const onDelete = vi.fn();
     render(<CrudPage {...makeProps({ onDelete })} />);
     await userEvent.click(screen.getByText('Delete Alpha'));
-    // ConfirmDialog renders "Excluir" (pt-BR) as the confirm button
+    expect(screen.getByText(/excluir "Alpha"/i)).toBeInTheDocument();
     const confirmBtn = screen.getByRole('button', { name: /excluir/i });
     await userEvent.click(confirmBtn);
     expect(onDelete).toHaveBeenCalledWith('1', expect.objectContaining({ onSuccess: expect.any(Function) }));

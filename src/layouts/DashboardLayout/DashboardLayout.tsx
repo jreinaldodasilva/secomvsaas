@@ -21,9 +21,14 @@ export function DashboardLayout() {
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
 
   const handleLogout = useCallback(async () => {
-    setShowTimeoutWarning(false);
     await logout();
     navigate('/login');
+  }, [logout, navigate]);
+
+  const handleTimeoutLogout = useCallback(async () => {
+    setShowTimeoutWarning(false);
+    await logout();
+    navigate('/login', { state: { reason: 'session_expired' } });
   }, [logout, navigate]);
 
   const handleContinue = useCallback(() => setShowTimeoutWarning(false), []);
@@ -35,7 +40,7 @@ export function DashboardLayout() {
 
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
-    onTimeout: handleLogout,
+    onTimeout: handleTimeoutLogout,
     enabled: !!user,
   });
 
@@ -115,7 +120,7 @@ export function DashboardLayout() {
       <SessionTimeoutModal
         show={showTimeoutWarning}
         onContinue={handleContinue}
-        onLogout={handleLogout}
+        onLogout={handleTimeoutLogout}
       />
     </div>
   );

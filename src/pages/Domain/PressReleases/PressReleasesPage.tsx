@@ -39,7 +39,7 @@ export function PressReleasesPage() {
 
   const columns = (
     openEdit: (item: PressReleaseItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: PressReleaseItem) => void
   ): Column<PressReleaseItem>[] => [
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
@@ -50,7 +50,7 @@ export function PressReleasesPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

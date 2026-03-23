@@ -49,6 +49,7 @@
   transition: color var(--transition-fast);
 }
 .navLink:hover { color: var(--color-neutral-0); }
+.navLinkActive { color: var(--color-neutral-0); font-weight: var(--font-weight-semibold); }
 
 .navBtn {
   background: none;

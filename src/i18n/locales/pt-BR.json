@@ -20,6 +20,7 @@
     "delete": "Excluir",
     "deleted": "Excluído com sucesso",
     "deleteConfirm": "Tem certeza que deseja excluir?",
+    "deleteConfirmNamed": "Tem certeza que deseja excluir \"{{name}}\"?",
     "errorLoading": "Erro ao carregar os dados.",
     "retry": "Tentar novamente",
     "brand": "Secom"
@@ -100,6 +101,7 @@
     "newPassword": "Nova senha",
     "confirmPassword": "Confirmar senha",
     "loginError": "Erro ao fazer login",
+    "sessionExpired": "Sua sessão expirou. Por favor, faça login novamente.",
     "registerError": "Erro ao criar conta",
     "resetError": "Erro ao redefinir senha",
     "forgotError": "Erro ao enviar e-mail de recuperação",

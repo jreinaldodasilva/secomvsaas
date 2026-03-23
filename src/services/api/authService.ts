@@ -24,4 +24,7 @@ export const authService = {
 
   changePassword: (currentPassword: string, newPassword: string) =>
     http.patch('/api/v1/auth/change-password', { currentPassword, newPassword }),
+
+  acceptInvite: (token: string, name: string, password: string) =>
+    http.post('/api/v1/auth/accept-invite', { token, name, password }),
 };

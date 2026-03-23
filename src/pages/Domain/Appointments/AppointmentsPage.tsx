@@ -37,7 +37,7 @@ export function AppointmentsPage() {
 
   const columns = (
     openEdit: (item: AppointmentItem) => void,
-    setDeleteTarget: (id: string) => void
+    openDelete: (item: AppointmentItem) => void
   ): Column<AppointmentItem>[] => [
     { key: 'citizenName', header: t('domain.appointments.fields.citizenName'), sortable: true },
     { key: 'service', header: t('domain.appointments.fields.service'), sortable: true },
@@ -48,7 +48,7 @@ export function AppointmentsPage() {
       render: (r) => (
         <div className="actions-row">
           <Button variant="ghost" size="sm" onClick={() => openEdit(r)}>{t('common.edit')}</Button>
-          <Button variant="ghost" size="sm" onClick={() => setDeleteTarget(r.id)}>{t('common.delete')}</Button>
+          <Button variant="ghost" size="sm" onClick={() => openDelete(r)}>{t('common.delete')}</Button>
         </div>
       ),
     },

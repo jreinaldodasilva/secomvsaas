@@ -70,30 +70,48 @@ describe('DashboardLayout error boundary', () => {
 });
 
 describe('DashboardLayout sidebar resize behaviour', () => {
+  let mqListeners: Array<(e: MediaQueryListEvent) => void>;
+  let mockMq: MediaQueryList;
+
   beforeEach(() => {
     mockSetSidebarOpen.mockReset();
+    mqListeners = [];
+    mockMq = {
+      matches: true,
+      media: '(min-width: 768px)',
+      addEventListener: (_: string, fn: EventListenerOrEventListenerObject) => {
+        mqListeners.push(fn as (e: MediaQueryListEvent) => void);
+      },
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+    } as unknown as MediaQueryList;
+    vi.spyOn(window, 'matchMedia').mockReturnValue(mockMq);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   it('closes sidebar on resize when viewport is below 768px', () => {
-    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
     renderInDashboard(<div>Page</div>);
     mockSetSidebarOpen.mockReset();
 
     act(() => {
-      Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 500 });
-      window.dispatchEvent(new Event('resize'));
+      mqListeners.forEach(fn => fn({ matches: false } as MediaQueryListEvent));
     });
 
     expect(mockSetSidebarOpen).toHaveBeenCalledWith(false);
   });
 
   it('does not close sidebar on resize when viewport is at or above 768px', () => {
-    Object.defineProperty(window, 'innerWidth', { writable: true, configurable: true, value: 1024 });
     renderInDashboard(<div>Page</div>);
     mockSetSidebarOpen.mockReset();
 
     act(() => {
-      window.dispatchEvent(new Event('resize'));
+      mqListeners.forEach(fn => fn({ matches: true } as MediaQueryListEvent));
     });
 
     expect(mockSetSidebarOpen).not.toHaveBeenCalled();

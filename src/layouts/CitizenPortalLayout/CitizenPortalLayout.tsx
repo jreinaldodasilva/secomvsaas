@@ -7,8 +7,11 @@ import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import styles from './CitizenPortalLayout.module.css';
 
 const CITIZEN_BREADCRUMBS: Record<string, { label: string; parent?: { label: string; to: string } }> = {
-  '/portal/dashboard': { label: 'Início', parent: { label: 'Portal do Cidadão', to: '/portal' } },
-  '/portal/profile':   { label: 'Meu perfil', parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal':            { label: 'Portal do Cidadão' },
+  '/portal/login':      { label: 'Entrar',     parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/register':   { label: 'Cadastrar',  parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/dashboard':  { label: 'Início',     parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/profile':    { label: 'Meu perfil', parent: { label: 'Portal do Cidadão', to: '/portal' } },
 };
 
 export function CitizenPortalLayout() {

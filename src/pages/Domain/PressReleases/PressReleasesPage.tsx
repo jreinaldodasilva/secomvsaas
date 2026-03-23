@@ -10,6 +10,7 @@ import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { PressReleaseForm, validatePressRelease, emptyPressReleaseForm } from './PressReleaseForm';
 import type { PressReleaseFormState } from './PressReleaseForm';
+import { PRESS_RELEASE_STATUS_COLORS } from '@/utils/statusConfig';
 
 interface PressReleaseItem {
   id: string;
@@ -23,8 +24,6 @@ interface PressReleaseItem {
   publishedAt?: string;
   createdAt?: string;
 }
-
-const STATUS_COLORS: Record<string, string> = { draft: 'gray', review: 'yellow', approved: 'blue', published: 'green', archived: 'red' };
 
 export function PressReleasesPage() {
   const { t } = useTranslation();
@@ -55,7 +54,7 @@ export function PressReleasesPage() {
   ): Column<PressReleaseItem>[] => [
     { key: 'title', header: t('domain.pressReleases.fields.title'), sortable: true },
     { key: 'category', header: t('domain.pressReleases.fields.category'), render: (r) => t(`domain.pressReleases.categories.${r.category}`) },
-    { key: 'status', header: t('domain.pressReleases.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
+    { key: 'status', header: t('domain.pressReleases.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={PRESS_RELEASE_STATUS_COLORS} /> },
     { key: 'createdAt', header: t('domain.pressReleases.fields.createdAt'), render: (r) => formatDate(r.createdAt) },
     {
       key: 'actions', header: '',

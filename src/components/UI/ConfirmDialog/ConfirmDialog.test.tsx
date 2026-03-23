@@ -46,6 +46,14 @@ describe('ConfirmDialog', () => {
     expect(baseProps.onClose).not.toHaveBeenCalled();
   });
 
+  it('renders custom confirmLabel instead of default delete label', async () => {
+    render(<ConfirmDialog {...baseProps} confirmLabel="Desativar" />);
+    expect(screen.queryByRole('button', { name: 'Excluir' })).not.toBeInTheDocument();
+    const btn = screen.getByRole('button', { name: 'Desativar' });
+    await userEvent.click(btn);
+    expect(baseProps.onConfirm).toHaveBeenCalledTimes(1);
+  });
+
   it('disables both buttons and shows spinner when isLoading', () => {
     render(<ConfirmDialog {...baseProps} isLoading />);
     expect(screen.getByRole('button', { name: 'Cancelar' })).toBeDisabled();

@@ -9,6 +9,7 @@ import { useTranslation } from '@/i18n';
 import { AppointmentForm, validateAppointment, emptyAppointmentForm } from './AppointmentForm';
 import type { AppointmentFormState } from './AppointmentForm';
 import { formatDateTime } from '@/utils/date';
+import { APPOINTMENT_STATUS_COLORS } from '@/utils/statusConfig';
 
 interface AppointmentItem {
   id: string;
@@ -20,8 +21,6 @@ interface AppointmentItem {
   notes?: string;
   status: string;
 }
-
-const STATUS_COLORS: Record<string, string> = { pending: 'yellow', confirmed: 'blue', completed: 'green', cancelled: 'red', no_show: 'gray' };
 
 export function AppointmentsPage() {
   const { t } = useTranslation();
@@ -44,7 +43,7 @@ export function AppointmentsPage() {
     { key: 'citizenName', header: t('domain.appointments.fields.citizenName'), sortable: true },
     { key: 'service', header: t('domain.appointments.fields.service'), sortable: true },
     { key: 'scheduledAt', header: t('domain.appointments.fields.scheduledAt'), render: (r) => formatDateTime(r.scheduledAt) },
-    { key: 'status', header: t('domain.appointments.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
+    { key: 'status', header: t('domain.appointments.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={APPOINTMENT_STATUS_COLORS} /> },
     {
       key: 'actions', header: '',
       render: (r) => (

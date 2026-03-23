@@ -8,6 +8,8 @@ import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { SocialMediaForm, validateSocialMedia, emptySocialMediaForm } from './SocialMediaForm';
 import type { SocialMediaFormState } from './SocialMediaForm';
+import { SOCIAL_MEDIA_STATUS_COLORS } from '@/utils/statusConfig';
+import { formatDateTime } from '@/utils/date';
 
 interface SocialMediaItem {
   id: string;
@@ -18,8 +20,6 @@ interface SocialMediaItem {
   publishedAt?: string;
   status: string;
 }
-
-const STATUS_COLORS: Record<string, string> = { draft: 'gray', scheduled: 'blue', published: 'green', failed: 'red' };
 
 export function SocialMediaPage() {
   const { t } = useTranslation();
@@ -44,8 +44,8 @@ export function SocialMediaPage() {
   ): Column<SocialMediaItem>[] => [
     { key: 'platform', header: t('domain.socialMedia.fields.platform'), render: (r) => r.platform.charAt(0).toUpperCase() + r.platform.slice(1) },
     { key: 'content', header: t('domain.socialMedia.fields.content'), render: (r) => r.content.length > 80 ? r.content.slice(0, 80) + '…' : r.content },
-    { key: 'scheduledAt', header: t('domain.socialMedia.fields.scheduledAt'), render: (r) => r.scheduledAt ? new Date(r.scheduledAt).toLocaleString('pt-BR') : '—' },
-    { key: 'status', header: t('domain.socialMedia.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
+    { key: 'scheduledAt', header: t('domain.socialMedia.fields.scheduledAt'), render: (r) => formatDateTime(r.scheduledAt) },
+    { key: 'status', header: t('domain.socialMedia.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={SOCIAL_MEDIA_STATUS_COLORS} /> },
     {
       key: 'actions', header: '',
       render: (r) => (

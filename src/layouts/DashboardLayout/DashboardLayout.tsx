@@ -35,14 +35,15 @@ export function DashboardLayout() {
 
   // Close the mobile drawer on route change (no-op on desktop)
   useEffect(() => {
-    if (window.innerWidth < 768) setSidebarOpen(false);
+    if (!window.matchMedia('(min-width: 768px)').matches) setSidebarOpen(false);
   }, [location.pathname, setSidebarOpen]);
 
   // Close the mobile drawer on viewport resize below the mobile breakpoint
   useEffect(() => {
-    const handleResize = () => { if (window.innerWidth < 768) setSidebarOpen(false); };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    const mq = window.matchMedia('(min-width: 768px)');
+    const handleChange = (e: MediaQueryListEvent) => { if (!e.matches) setSidebarOpen(false); };
+    mq.addEventListener('change', handleChange);
+    return () => mq.removeEventListener('change', handleChange);
   }, [setSidebarOpen]);
 
   useSessionTimeout({

@@ -8,6 +8,8 @@ import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { EventForm, validateEvent, emptyEventForm } from './EventForm';
 import type { EventFormState } from './EventForm';
+import { EVENT_STATUS_COLORS } from '@/utils/statusConfig';
+import { formatDateTime } from '@/utils/date';
 
 interface EventItem {
   id: string;
@@ -19,8 +21,6 @@ interface EventItem {
   isPublic: boolean;
   status: string;
 }
-
-const STATUS_COLORS: Record<string, string> = { scheduled: 'blue', ongoing: 'yellow', completed: 'green', cancelled: 'red' };
 
 export function EventsPage() {
   const { t } = useTranslation();
@@ -42,9 +42,9 @@ export function EventsPage() {
   ): Column<EventItem>[] => [
     { key: 'title', header: t('domain.events.fields.title'), sortable: true },
     { key: 'location', header: t('domain.events.fields.location') },
-    { key: 'startsAt', header: t('domain.events.fields.startsAt'), render: (r) => new Date(r.startsAt).toLocaleString('pt-BR') },
+    { key: 'startsAt', header: t('domain.events.fields.startsAt'), render: (r) => formatDateTime(r.startsAt) },
     { key: 'isPublic', header: t('domain.events.fields.isPublic'), render: (r) => r.isPublic ? '✓' : '—' },
-    { key: 'status', header: t('domain.events.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={STATUS_COLORS} /> },
+    { key: 'status', header: t('domain.events.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={EVENT_STATUS_COLORS} /> },
     {
       key: 'actions', header: '',
       render: (r) => (

@@ -3,9 +3,10 @@ import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { useDashboard } from '@/hooks';
 import { usePageTitle } from '@/hooks';
-import { StatusBadge, Skeleton, Icon } from '@/components/UI';
+import { Button, StatusBadge, Skeleton, Icon } from '@/components/UI';
 import type { IconName } from '@/components/UI';
 import { formatDate } from '@/utils/date';
+import { PRESS_RELEASE_STATUS_COLORS } from '@/utils/statusConfig';
 import styles from './DashboardPage.module.css';
 
 const STAT_CARDS: { key: string; nav: string; label: string; icon: IconName; color: string }[] = [
@@ -17,10 +18,6 @@ const STAT_CARDS: { key: string; nav: string; label: string; icon: IconName; col
   { key: 'citizens',      nav: '/citizen-portal',   label: 'nav.citizenPortal',  icon: 'citizen',  color: 'indigo' },
   { key: 'socialMedia',   nav: '/social-media',     label: 'nav.socialMedia',    icon: 'social',   color: 'pink'   },
 ];
-
-const STATUS_COLORS: Record<string, string> = {
-  draft: 'gray', review: 'yellow', approved: 'blue', published: 'green', archived: 'red',
-};
 
 export function DashboardPage() {
   const { user } = useAuth();
@@ -41,12 +38,12 @@ export function DashboardPage() {
           <p className={styles.bannerSub}>Secretaria de Comunicação — visão geral do sistema</p>
         </div>
         <div className={styles.bannerActions}>
-          <button className="btn btn-outline btn-sm" onClick={() => refetch()}>
+          <Button variant="outline" size="sm" onClick={() => refetch()}>
             <Icon name="refresh" size={16} /> Atualizar
-          </button>
-          <button className="btn btn-primary btn-sm" onClick={() => navigate('/press-releases?create=true')}>
+          </Button>
+          <Button variant="primary" size="sm" onClick={() => navigate('/press-releases?create=true')}>
             <Icon name="plus" size={16} /> Novo Comunicado
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -98,9 +95,7 @@ export function DashboardPage() {
           <div className={styles.widget}>
             <div className={styles.widgetHeader}>
               <h2 className={styles.widgetTitle}>{t('dashboard.recentPressReleases')}</h2>
-              <button className="btn btn-ghost btn-sm" onClick={() => navigate('/press-releases')}>
-                Ver todos
-              </button>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/press-releases')}>Ver todos</Button>
             </div>
             <div className={styles.widgetBody}>
               {summary?.recentPressReleases.length ? (
@@ -108,7 +103,7 @@ export function DashboardPage() {
                   {summary.recentPressReleases.map((pr, i) => (
                     <li key={i} className={styles.listItem}>
                       <span className={styles.listItemTitle}>{pr.title}</span>
-                      <StatusBadge status={pr.status} colorMap={STATUS_COLORS} />
+                      <StatusBadge status={pr.status} colorMap={PRESS_RELEASE_STATUS_COLORS} />
                     </li>
                   ))}
                 </ul>
@@ -122,9 +117,7 @@ export function DashboardPage() {
           <div className={styles.widget}>
             <div className={styles.widgetHeader}>
               <h2 className={styles.widgetTitle}>{t('dashboard.upcomingEvents')}</h2>
-              <button className="btn btn-ghost btn-sm" onClick={() => navigate('/events')}>
-                Ver todos
-              </button>
+              <Button variant="ghost" size="sm" onClick={() => navigate('/events')}>Ver todos</Button>
             </div>
             <div className={styles.widgetBody}>
               {summary?.upcomingEvents.length ? (

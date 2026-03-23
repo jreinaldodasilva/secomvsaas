@@ -9,10 +9,11 @@ interface ConfirmDialogProps {
   onConfirm: () => void;
   title?: string;
   message?: string;
+  confirmLabel?: string;
   isLoading?: boolean;
 }
 
-export function ConfirmDialog({ isOpen, onClose, onConfirm, title, message, isLoading }: ConfirmDialogProps) {
+export function ConfirmDialog({ isOpen, onClose, onConfirm, title, message, confirmLabel, isLoading }: ConfirmDialogProps) {
   const { t } = useTranslation();
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title || t('common.confirm')} size="sm">
@@ -20,7 +21,7 @@ export function ConfirmDialog({ isOpen, onClose, onConfirm, title, message, isLo
         <p>{message || t('common.deleteConfirm')}</p>
         <div className={styles.actions}>
           <Button variant="secondary" size="sm" onClick={onClose} disabled={isLoading}>{t('common.cancel')}</Button>
-          <Button variant="danger" size="sm" onClick={onConfirm} isLoading={isLoading}>{t('common.delete')}</Button>
+          <Button variant="danger" size="sm" onClick={onConfirm} isLoading={isLoading}>{confirmLabel ?? t('common.delete')}</Button>
         </div>
       </div>
     </Modal>

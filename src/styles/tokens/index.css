@@ -42,14 +42,15 @@
   --color-neutral-800: #111827;
   --color-neutral-900: #0F172A;
 
-  /* Legacy gray aliases */
-  --color-gray-50:  var(--color-neutral-50);
-  --color-gray-100: var(--color-neutral-100);
-  --color-gray-200: var(--color-neutral-200);
-  --color-gray-400: var(--color-neutral-400);
-  --color-gray-600: var(--color-neutral-500);
-  --color-gray-800: var(--color-neutral-700);
-  --color-gray-900: var(--color-neutral-900);
+  /* Legacy gray aliases — deprecated; use --color-neutral-* instead */
+  /* TODO: remove in next major token cleanup (Phase 4) */
+  /* --color-gray-50:  var(--color-neutral-50);  */
+  /* --color-gray-100: var(--color-neutral-100); */
+  /* --color-gray-200: var(--color-neutral-200); */
+  /* --color-gray-400: var(--color-neutral-400); */
+  /* --color-gray-600: var(--color-neutral-500); */
+  /* --color-gray-800: var(--color-neutral-700); */
+  /* --color-gray-900: var(--color-neutral-900); */
 
   /* Semantic — full scale */
   --color-success:     #00A344;
@@ -138,7 +139,7 @@
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-family-sans: 'Inter', system-ui, -apple-system, sans-serif;
   --font-family-base: var(--font-family-sans);
-  --font-family-mono: 'JetBrains Mono', monospace;
+  --font-family-mono: 'JetBrains Mono', monospace; /* defined; not yet used in components — reserved for code/pre blocks */
   --font-size-xs:   0.75rem;
   --font-size-sm:   0.875rem;
   --font-size-base: 1rem;

@@ -65,4 +65,40 @@ describe('FormField', () => {
     render(<FormField name="x"><input id="x" /></FormField>);
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
+
+  it('injects aria-describedby pointing to error id when error is present', () => {
+    render(
+      <FormField name="email" error="Campo obrigatório">
+        <input id="email" />
+      </FormField>,
+    );
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-error');
+  });
+
+  it('injects aria-describedby pointing to help id when helpText is present', () => {
+    render(
+      <FormField name="email" helpText="Dica">
+        <input id="email" />
+      </FormField>,
+    );
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-help');
+  });
+
+  it('injects aria-describedby with both ids when error and helpText are present', () => {
+    render(
+      <FormField name="email" error="Inválido" helpText="Dica">
+        <input id="email" />
+      </FormField>,
+    );
+    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-error email-help');
+  });
+
+  it('does not inject aria-describedby when neither error nor helpText is present', () => {
+    render(
+      <FormField name="email">
+        <input id="email" />
+      </FormField>,
+    );
+    expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+  });
 });

@@ -167,7 +167,8 @@ export function UsersPage() {
         isOpen={!!deactivateTarget}
         onClose={() => setDeactivateTarget(null)}
         onConfirm={() => { if (deactivateTarget) deactivateUser.mutate({ id: deactivateTarget }, { onSuccess: () => setDeactivateTarget(null) }); }}
-        message={t('users.deactivateConfirm')}
+        title={t('users.deactivateConfirm')}
+        confirmLabel={t('users.deactivate')}
         isLoading={deactivateUser.isPending}
       />
     </div>

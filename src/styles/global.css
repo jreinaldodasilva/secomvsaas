@@ -1,3 +1,16 @@
+/* =============================================================
+   Breakpoint reference
+   These values are used in media queries throughout global.css
+   and component CSS Modules. Update here when changing breakpoints.
+
+   --bp-sm:  480px   (small mobile)
+   --bp-md:  600px   (form grid collapse)
+   --bp-lg:  640px   (container padding step)
+   --bp-xl:  767px   (mobile/tablet boundary — page-header, DashboardLayout)
+   --bp-2xl: 768px   (desktop boundary — hide-mobile, touch targets)
+   --bp-3xl: 1024px  (container padding step, widget grid collapse)
+============================================================= */
+
 @import './tokens/index.css';
 
 *, *::before, *::after {

@@ -11,13 +11,12 @@
  *   4. CitizenAuthProvider is independent of TenantProvider;
  *      its position between AuthProvider and TenantProvider is arbitrary.
  *
- * Cold-load optimisation (P1-4):
- *   On cold load, only the portal-appropriate /me call is fired.
- *   - Citizen portal paths (/portal/*) skip AuthProvider's /me.
- *   - All other paths skip CitizenAuthProvider's /me.
- *   Both contexts remain fully functional after their initial load.
- *
- * See: docs/frontend/02-Secom-Frontend-Architecture-Overview-Part2.md §5.1
+ * Both auth contexts are always active. The cold-load /me skip optimisation
+ * (P1-4) was removed because the module-level isCitizenPortal flag was
+ * computed once at initial page load and did not update on client-side
+ * navigation, causing CitizenAuthProvider to be permanently skipped when
+ * the user navigated to /portal/* from the landing page within the same
+ * session.
  */
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
@@ -30,14 +29,12 @@ interface AppProvidersProps {
   children: React.ReactNode;
 }
 
-const isCitizenPortal = window.location.pathname.startsWith('/portal');
-
 export function AppProviders({ children }: AppProvidersProps) {
   return (
     <QueryProvider>
       <BrowserRouter>
-        <AuthProvider skip={isCitizenPortal}>
-          <CitizenAuthProvider skip={!isCitizenPortal}>
+        <AuthProvider>
+          <CitizenAuthProvider>
             <TenantProvider>
               {children}
             </TenantProvider>

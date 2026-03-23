@@ -41,7 +41,7 @@
 | P1-1 | `LoginPage` ignores `location.state.from` — always redirects to `/admin/dashboard` regardless of the originally requested URL | Staff authentication flow | Users who bookmark deep links lose their intended destination after login; `state.from` is set correctly by `ProtectedRoute` but discarded | S (< 1 day) | ✅ Fixed — QW-02 | Part 2 §6 Journey 1, §7.3 |
 | P1-2 | `UnauthorizedPage` and `NotFoundPage` render without any layout wrapper — jarring context switch for authenticated users | Error / 403 / 404 navigation | Staff users inside the dashboard lose sidebar and header context on error pages; `navigate(-1)` on `UnauthorizedPage` may exit the app if no history entry exists | S (< 1 day) | ✅ Fixed — QW-06 | Part 2 §6 Journey 3, §7.3 |
 | P1-3 | `AcceptInvitePage` calls `http.post` directly instead of `authService` — bypasses service layer | Invite acceptance flow | Inconsistent with all other auth flows; bypasses any future service-layer middleware or interceptor logic | S (< 1 day) | ✅ Fixed — QW-04 | Part 1 §3.8, Part 2 §7.3 |
-| P1-4 | Both `AuthContext` and `CitizenAuthContext` fire `/me` on every page load regardless of which portal the user is accessing | All protected routes (cold load) | Two unnecessary parallel network requests on every cold load for single-portal users | M (1–2 days) | ✅ Fixed — P1-4 | Part 2 §7.2, §7.3 |
+| P1-4 | Both `AuthContext` and `CitizenAuthContext` fire `/me` on every page load regardless of which portal the user is accessing | All protected routes (cold load) | Two unnecessary parallel network requests on every cold load for single-portal users | M (1–2 days) | ✅ Fixed — P1-4 (skip optimisation reverted: see ADR-0001 §1) | Part 2 §7.2, §7.3 |
 
 ---
 
@@ -179,7 +179,7 @@
 | Unauthorized route exposure (citizen session timeout gap) | 1 confirmed | 0 | 0 | ✅ |
 | Post-login deep-link success rate | 0% | 100% | 100% | ✅ |
 | Redirect chains on 404 for citizen users | 2 hops | 1 hop | Max 1 hop | ✅ |
-| Cold-load auth network requests | 2 (both `/me` always fire) | 1 (portal-appropriate only) | 1 (portal-appropriate only) | ✅ Resolved — P1-4 |
+| Cold-load auth network requests | 2 (both `/me` always fire) | 2 (both always fire — skip optimisation reverted) | 1 (portal-appropriate only) | ⚠️ Reverted — see ADR-0001 §1 |
 | Guard centralization coverage (service-layer consistency) | Partial | 100% | 100% | ✅ |
 | Write-permission UI/API alignment | Misaligned | Aligned | Aligned | ✅ Resolved — P2-1 |
 | Error page layout consistency | 0% | 100% | 100% | ✅ |

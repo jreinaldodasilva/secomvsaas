@@ -59,6 +59,7 @@ export function MainHeader() {
         </nav>
 
         <div className={styles.actions}>
+          <Link to="/portal" className={`btn btn-ghost ${styles.hideOnMobile}`}>{t('landing.nav.citizenPortal')}</Link>
           <Link to="/login" className={`btn btn-ghost ${styles.hideOnMobile}`}>{t('auth.login')}</Link>
           <Link to="/register" className={`btn btn-primary ${styles.hideOnMobile}`}>{t('landing.nav.getStarted')}</Link>
           <button
@@ -80,6 +81,7 @@ export function MainHeader() {
             ))}
           </nav>
           <div className={styles.mobileAuth}>
+            <Link to="/portal" className={`btn btn-ghost ${styles.fullWidth}`} onClick={() => setMobileOpen(false)}>{t('landing.nav.citizenPortal')}</Link>
             <Link to="/login" className={`btn btn-ghost ${styles.fullWidth}`} onClick={() => setMobileOpen(false)}>{t('auth.login')}</Link>
             <Link to="/register" className={`btn btn-primary ${styles.fullWidth}`} onClick={() => setMobileOpen(false)}>{t('landing.nav.getStarted')}</Link>
           </div>

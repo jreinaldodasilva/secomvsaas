@@ -29,6 +29,7 @@ export function Footer() {
           </div>
           <div className={styles.col}>
             <h4>{t('landing.footer.access')}</h4>
+            <Link to="/portal">{t('landing.nav.citizenPortal')}</Link>
             <Link to="/login">{t('auth.login')}</Link>
             <Link to="/register">{t('auth.register')}</Link>
           </div>

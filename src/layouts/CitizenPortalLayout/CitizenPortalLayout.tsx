@@ -71,9 +71,9 @@ export function CitizenPortalLayout() {
       </header>
 
       <main id="main-content" className={styles.main}>
-        {crumb && (
+        {crumb?.parent && (
           <nav aria-label="Breadcrumb" className={styles.breadcrumbs}>
-            <Link to={crumb.parent!.to}>{crumb.parent!.label}</Link>
+            <Link to={crumb.parent.to}>{crumb.parent.label}</Link>
             <span aria-hidden="true"> / </span>
             <span aria-current="page">{crumb.label}</span>
           </nav>

@@ -27,7 +27,7 @@ export function CitizenPortalHomePage() {
             { icon: '📅', title: 'Agendamentos', desc: 'Agende atendimentos presenciais com a Secom.' },
             { icon: '📋', title: 'Meu perfil', desc: 'Mantenha seus dados cadastrais atualizados.' },
             { icon: '📢', title: 'Comunicados', desc: 'Acompanhe os comunicados oficiais do órgão.' },
-            { icon: '📅', title: 'Eventos', desc: 'Confira os próximos eventos públicos.' },
+            { icon: '🏗️', title: 'Eventos', desc: 'Confira os próximos eventos públicos.' },
           ].map((s) => (
             <div key={s.title} className={styles.serviceCard}>
               <span className={styles.serviceIcon} aria-hidden="true">{s.icon}</span>

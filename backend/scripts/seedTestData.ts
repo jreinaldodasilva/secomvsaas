@@ -94,6 +94,7 @@ interface SeededData {
   clippings:     any[];
   events:        any[];
   appointments:  any[];
+  citizenUsers:  any[];
   citizens:      any[];
   socialMedia:   any[];
 }
@@ -108,7 +109,7 @@ async function seedDatabase(): Promise<SeededData> {
   const data: SeededData = {
     tenant: null, admin: null, users: [],
     pressReleases: [], mediaContacts: [], clippings: [],
-    events: [], appointments: [], citizens: [], socialMedia: [],
+    events: [], appointments: [], citizenUsers: [], citizens: [], socialMedia: [],
   };
 
   // -------------------------------------------------------------------------
@@ -498,13 +499,39 @@ async function seedDatabase(): Promise<SeededData> {
   console.log(`✅ Created ${data.appointments.length} appointments\n`);
 
   // -------------------------------------------------------------------------
-  // 9. Citizen profiles
+  // 9. Citizen portal users (login accounts)
+  // -------------------------------------------------------------------------
+  console.log('👤 Creating citizen portal users...');
+  const citizenUserDefs = [
+    { name: 'Maria das Graças Silva',  email: `cidadao01${EMAIL_DOMAIN}` },
+    { name: 'João Carlos Oliveira',    email: `cidadao02${EMAIL_DOMAIN}` },
+    { name: 'Ana Paula Ferreira',      email: `cidadao03${EMAIL_DOMAIN}` },
+    { name: 'Pedro Henrique Santos',   email: `cidadao04${EMAIL_DOMAIN}` },
+    { name: 'Carla Regina Souza',      email: `cidadao05${EMAIL_DOMAIN}` },
+  ];
+
+  for (const def of citizenUserDefs) {
+    const [cu] = await User.create([{
+      tenantId,
+      name: def.name,
+      email: def.email,
+      password: TEST_PASSWORD,
+      role: 'citizen',
+    }]);
+    data.citizenUsers.push(cu);
+  }
+  console.log(`✅ Created ${data.citizenUsers.length} citizen portal users\n`);
+
+  // -------------------------------------------------------------------------
+  // 10. Citizen profiles (staff-side records)
   // -------------------------------------------------------------------------
   console.log('🏘️  Creating citizen profiles...');
   for (let i = 1; i <= 20; i++) {
     const firstName = randomItem(FIRST_NAMES);
     const lastName  = randomItem(LAST_NAMES);
-    const userId    = new mongoose.Types.ObjectId().toString();
+    // Link first 5 profiles to the seeded citizen login accounts
+    const linkedUser = data.citizenUsers[i - 1];
+    const userId = linkedUser ? linkedUser._id.toString() : new mongoose.Types.ObjectId().toString();
 
     const [citizen] = await CitizenPortal.create([{
       tenantId,
@@ -512,7 +539,7 @@ async function seedDatabase(): Promise<SeededData> {
       fullName:     `${firstName} ${lastName}`,
       cpf:          generateCPF(),
       phone:        generatePhone(),
-      email:        `cidadao${String(i).padStart(2, '0')}${EMAIL_DOMAIN}`,
+      email:        linkedUser ? linkedUser.email : `cidadao${String(i).padStart(2, '0')}${EMAIL_DOMAIN}`,
       address:      `Rua ${randomItem(LAST_NAMES)}, ${randomInt(1, 999)}`,
       neighborhood: randomItem(['Centro', 'Cachoeira', 'Vila Nova', 'Bela Vista', 'Jardim das Flores']),
       city:         'Piquete',
@@ -654,6 +681,7 @@ async function main() {
     console.log(`   Clippings:       ${data.clippings.length}`);
     console.log(`   Events:          ${data.events.length}`);
     console.log(`   Appointments:    ${data.appointments.length}`);
+    console.log(`   Citizen users:   ${data.citizenUsers.length}`);
     console.log(`   Citizens:        ${data.citizens.length}`);
     console.log(`   Social media:    ${data.socialMedia.length}`);
 
@@ -664,7 +692,7 @@ async function main() {
     console.log('   Social Media:    social_media@secom.test');
     console.log('   Social Media 2:  social_media2@secom.test');
     console.log('   Atendente:       atendente@secom.test');
-    console.log('   Atendente 2:     atendente2@secom.test');
+    console.log('   Citizen portal:  cidadao01@secom.test … cidadao05@secom.test');
 
     await mongoose.connection.close();
     console.log('\n✅ Database connection closed');

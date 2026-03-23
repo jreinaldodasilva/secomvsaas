@@ -35,16 +35,14 @@ Over the course of the navigation improvement roadmap (P0–P3), a set of patter
 - Both expose `isAuthenticated`, `isLoading`, `login`, `logout`, and `refreshUser` (or `refreshCitizenAuth`).
 - `CitizenUser` is defined in `packages/types/src/index.ts` alongside `User` — not locally in the service file.
 
-**Cold-load optimisation:**
-- `AppProviders` reads `window.location.pathname` at module load time.
-- If the path starts with `/portal`, `AuthProvider` receives `skip={true}` and `CitizenAuthProvider` receives `skip={false}`.
-- Otherwise, `AuthProvider` receives `skip={false}` and `CitizenAuthProvider` receives `skip={true}`.
-- `isLoading` initialises to `!skip`, so the skipped context is immediately non-loading and does not fire a `/me` request.
-- This ensures exactly one `/me` request fires on every cold load.
+**Cold-load optimisation — REVERTED:**
+- The original P1-4 implementation added a `skip` prop to both providers, computed from `window.location.pathname` at module load time in `AppProviders`.
+- This caused a correctness regression: when a user navigated from the landing page (`/`) to `/portal/*` via client-side React Router navigation, `isCitizenPortal` was `false` (computed at module load when the path was `/`), so `CitizenAuthProvider` received `skip={true}` for the entire session. The citizen could log in (the `login()` function still set `citizen` in state), but `AuthProvider` was also active with `skip={false}`. If a valid staff session cookie was present, `AuthContext.isAuthenticated` became `true`, which caused `ProtectedRoute` to evaluate the staff user — resulting in a redirect to `/unauthorized` for citizen users navigating within the portal.
+- **Resolution:** Both `AuthProvider` and `CitizenAuthProvider` are always active (no `skip` prop). Both `/me` calls fire on every cold load. The two-request overhead is acceptable given the correctness requirement.
 
 **Consequences:**
-- Any new portal added to the application requires a third auth context and a corresponding `skip` condition in `AppProviders`.
-- The `skip` logic in `AppProviders` is path-prefix based — it is evaluated once at module load, not reactively. This is intentional: the staff and citizen portals are never accessed in the same browser session.
+- Any new portal added to the application requires a third auth context.
+- Both `/me` endpoints fire on every cold load — two parallel requests. Each is lightweight (JWT verification + DB lookup) and they run in parallel, so total latency equals the slower of the two, not their sum.
 
 ---
 

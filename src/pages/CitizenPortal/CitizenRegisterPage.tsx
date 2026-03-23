@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput } from '@/components/UI';
+import { PasswordInput, Button } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function CitizenRegisterPage() {
@@ -20,12 +20,13 @@ export function CitizenRegisterPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
+    if (name.trim().length < 2) { setError('O nome deve ter pelo menos 2 caracteres'); return; }
     if (password.length < 8) { setError('A senha deve ter pelo menos 8 caracteres'); return; }
     if (!/[A-Z]/.test(password)) { setError('A senha deve conter pelo menos uma letra maiúscula'); return; }
     if (!/[0-9]/.test(password)) { setError('A senha deve conter pelo menos um número'); return; }
     setLoading(true);
     try {
-      await register({ name, email, password });
+      await register({ name: name.trim(), email, password });
       navigate('/portal/dashboard');
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Erro ao criar conta');
@@ -58,6 +59,7 @@ export function CitizenRegisterPage() {
                 onChange={(e) => setName(e.target.value)}
                 required
                 minLength={2}
+                autoComplete="name"
                 autoFocus
               />
             </div>
@@ -79,12 +81,12 @@ export function CitizenRegisterPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              minLength={8}
+              showStrength
               autoComplete="new-password"
               wrapperClassName={s.field}
             />
-            <button type="submit" className={s.btnPrimary} disabled={loading}>
-              {loading ? 'Criando conta...' : 'Criar conta'}
-            </button>
+            <Button type="submit" fullWidth isLoading={loading}>Criar conta</Button>
           </form>
         </div>
         <div className={s.footer}>

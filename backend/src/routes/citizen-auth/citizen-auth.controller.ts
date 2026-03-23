@@ -2,6 +2,16 @@ import { Request, Response, NextFunction } from 'express';
 import { citizenAuthService, PORTAL_COOKIE, PORTAL_REFRESH_COOKIE } from '../../services/auth/citizenAuthService';
 import { AuthenticatedRequest } from '../../middleware/auth/auth';
 import { env } from '../../config/env';
+import { tenantService } from '../../platform/tenants/services/tenant.service';
+
+const DEFAULT_TENANT_SLUG = 'secom';
+
+async function resolveTenantId(req: Request): Promise<string | undefined> {
+  const fromReq = (req as any).tenant?.id || req.body.tenantId;
+  if (fromReq) return fromReq;
+  const tenant = await tenantService.findBySlug(DEFAULT_TENANT_SLUG);
+  return tenant?._id?.toString();
+}
 
 const cookieOpts = (maxAge: number) => ({
   httpOnly: true,
@@ -18,7 +28,7 @@ const clearOpts = {
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tenantId = (req as any).tenant?.id || req.body.tenantId;
+    const tenantId = await resolveTenantId(req);
     const result = await citizenAuthService.register({ ...req.body, tenantId });
     res.cookie(PORTAL_COOKIE, result.accessToken, cookieOpts(15 * 60 * 1000));
     res.cookie(PORTAL_REFRESH_COOKIE, result.refreshToken, cookieOpts(env.auth.portalRefreshTokenExpiresDays * 86400 * 1000));
@@ -28,7 +38,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tenantId = (req as any).tenant?.id || req.body.tenantId;
+    const tenantId = await resolveTenantId(req);
     const result = await citizenAuthService.login({ ...req.body, tenantId });
     res.cookie(PORTAL_COOKIE, result.accessToken, cookieOpts(15 * 60 * 1000));
     res.cookie(PORTAL_REFRESH_COOKIE, result.refreshToken, cookieOpts(env.auth.portalRefreshTokenExpiresDays * 86400 * 1000));
@@ -63,7 +73,13 @@ export const me = [
     try {
       if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Não autenticado' });
       const user = await citizenAuthService.getMe(authReq.user.id);
-      return res.json({ success: true, data: user });
+      return res.json({ success: true, data: {
+        id: (user as any)._id.toString(),
+        name: (user as any).name,
+        email: (user as any).email,
+        role: 'citizen' as const,
+        tenantId: (user as any).tenantId?.toString(),
+      } });
     } catch (error) { next(error); }
   },
 ];

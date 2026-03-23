@@ -1,158 +1,123 @@
-Excellent — below is the **component-library scoped equivalent** of your architecture prompt, adapted specifically for:
-
-* `docs/architecture/frontend/component-library-part-1.md`
-* `docs/architecture/frontend/component-library-part-2.md`
-* `docs/architecture/frontend/component-library-part-3.md`
-
-This version:
-
-* Keeps strict scope boundaries
-* Prevents cross-document inference
-* Focuses on design system & component architecture quality
-* Converts documented issues into an actionable roadmap
-* Maintains CTO-level clarity
-
----
-
-# PROMPT (Component Library–Scoped Version)
-
 # Secom – Component Library Improvement Roadmap
+
+## Objective
+
+Generate a **strategic improvement roadmap strictly from the Component Library documentation**. The goal is to transform documented findings into a prioritized, phased plan that improves design system coherence, component quality, and long-term maintainability.
+
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação, built on the vSaaS boilerplate. The component library supports:
+- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
+- **Styling**: CSS custom properties defined in `src/styles/tokens/index.css`, consumed via `var()` in per-component CSS Modules and global utility classes in `src/styles/global.css`
+- **Components**: `src/components/UI/` (Button, Input, Modal, Card, FormField, StatusBadge, DataTable, Toast, etc.)
 
 **Source Documents:**
 
-* `docs/architecture/frontend/component-library-part-1.md`
-* `docs/architecture/frontend/component-library-part-2.md`
-* `docs/architecture/frontend/component-library-part-3.md`
-
-**Scope Restriction:** Component Library documentation only
-
----
-
-## Context
-
-You are generating a **strategic improvement roadmap strictly from the Component Library documentation**.
-
-You must:
-
-* Use only findings, gaps, inconsistencies, risks, and recommendations explicitly described in the three Part1–Part3 documents
-* Not reference any other frontend documents
-* Not assume issues from architecture, UX audit, accessibility audit, or performance documents
-* Not invent design system debt outside what is implied in these documents
-* Clearly reference the relevant Part (Part1, Part2, or Part3)
-
-This is a **component-library-focused roadmap**, not a full frontend or product roadmap.
+```
+docs/architecture/frontend/component-library-part-1.md
+docs/architecture/frontend/component-library-part-2.md
+docs/architecture/frontend/component-library-part-3.md
+```
 
 ---
 
-# Objective
+## Scope & Analysis Guidelines
 
-Transform documented findings into:
+* Use only findings, gaps, inconsistencies, risks, and recommendations explicitly described in the source documents.
+* Do not reference architecture, UX audit, accessibility audit, or performance documents.
+* Do not invent design system debt outside what is implied in the source documents.
+* Clearly reference the relevant Part (Part1, Part2, or Part3) for each finding.
+* Keep recommendations **high-level**, not implementation instructions.
 
-1. Prioritized component system issues
-2. Design system hardening plan
-3. Component-level technical debt estimate
-4. Phased improvement roadmap
-5. Component library maturity score
-6. Executive summary for leadership
+### Severity Classification
+
+* 🟥 P0 – Component API instability or inconsistent behavior breaking UX predictability
+* 🟧 P1 – Long-term maintainability or design system coherence risk
+* 🟨 P2 – Standardization opportunity
+* 🟩 P3 – Strategic enhancement or optimization
 
 ---
 
-# 1. Component Library Issue Extraction
+## Tasks
+
+---
+
+### 1. Component Library Issue Extraction
 
 Extract every issue related to:
 
-* Component consistency
-* API standardization
-* Prop design patterns
-* Reusability gaps
-* Variant inconsistency
-* Theming support
-* Token usage
-* Accessibility implementation (only if documented)
-* Responsiveness patterns
-* Composition vs inheritance problems
-* Duplication across components
+* Component API consistency and prop design patterns
+* CSS token adoption — whether components consume `var(--token-name)` correctly or bypass tokens with hardcoded values in CSS Modules
+* Global utility class usage (`.btn`, `.form-stack`, `.form-grid`, `.form-section`, `.page-header`, `.spinner`, `.skeleton`) vs per-component reimplementation
+* Variant inconsistency across components
+* Reusability gaps across the 7 Secom modules
+* Duplication across components or between modules
 * Naming conventions
-* Documentation gaps
-* Storybook coverage (if mentioned)
-* Testing strategy for components (if mentioned)
-* Styling strategy inconsistencies
-* Atomic design violations (if mentioned)
-* Dependency usage within components
+* Accessibility implementation gaps (only if documented)
+* Form component standardization across press releases, events, appointments, and media contacts
+* Status and state indicator consistency (approval states, publication statuses, appointment statuses)
+* Loading, error, and empty state standardization
 * Cross-component coupling
-* Layout primitives consistency
-* Form component standardization
-* Interaction behavior inconsistencies
-* Error/empty/loading state standardization
+* Documentation and testing gaps (only if documented)
 
 ---
 
-## 1.1 Prioritized Component Issues
+#### 1.1 Prioritized Component Issues
 
-### 🟥 P0 – Design System Instability / Breaking Inconsistency
+##### 🟥 P0 – Design System Instability / Breaking Inconsistency
+
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | -------------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟧 P1 – High Maintainability / Consistency Risks
+
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | -------------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟨 P2 – Structural Improvements
+
+| # | Issue | Component Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | -------------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟩 P3 – Enhancements & Optimization
 
 | # | Issue | Component Area | System Impact | Effort | Dependencies | Source Part |
 | - | ----- | -------------- | ------------- | ------ | ------------ | ----------- |
 
 ---
 
-### 🟧 P1 – High Maintainability / Consistency Risks
-
-[Same structure]
-
----
-
-### 🟨 P2 – Structural Improvements
-
-[Same structure]
-
----
-
-### 🟩 P3 – Enhancements & Optimization
-
-[Same structure]
-
----
-
-### Severity Criteria
-
-* 🟥 Component API instability, inconsistent behavior breaking UX predictability
-* 🟧 Long-term maintainability or scaling risk
-* 🟨 Standardization opportunity
-* 🟩 Strategic enhancement
-
----
-
-## Deliverable:
+#### Deliverable
 
 Component-prioritized issue inventory with traceability to Part1/2/3.
 
+**Secom-Specific Focus**:
+- Are token bypass issues (hardcoded colors, spacing, or radii in CSS Modules instead of `var()`) concentrated in specific modules or components?
+- Are form components (used across press releases, events, appointments) the primary source of API inconsistency?
+- Are StatusBadge and related state indicators the primary source of token misalignment?
+
 ---
 
-# 2. Component Library Quick Wins
+### 2. Component Library Quick Wins
 
-Identify low-effort improvements clearly supported by the documentation.
+Identify low-effort improvements clearly supported by the source documents.
 
 Examples (only if supported):
 
-* Prop normalization
+* Prop normalization across similar components
 * Variant consolidation
-* Naming standard cleanup
+* Naming convention cleanup
 * Removing duplicate components
-* Token alignment fixes
-* Default accessibility attributes
-* Loading state standardization
+* Replacing hardcoded values with `var(--token-name)` in CSS Modules
+* Standardizing loading state usage (`.spinner`, `Skeleton`, `TopLoadingBar`)
+* Default accessibility attributes on interactive components
 * Ref forwarding consistency
-* Documentation template standardization
-* Story coverage expansion (if documented gap)
 
-⚠️ Only include improvements supported by the three documents.
+⚠️ Only include improvements supported by the source documents.
 
 ---
 
-## Quick Win Format
+#### Quick Win Format
 
-**Quick Win #1: [Title]**
+**Quick Win #N: [Title]**
 
 * **Component Problem**
 * **Impact**
@@ -165,34 +130,36 @@ Target: 8–15 quick wins.
 
 ---
 
-## Deliverable:
+#### Deliverable
 
-Component-scoped quick wins with clear implementation guidance.
+Component-scoped quick wins with clear implementation guidance and source traceability.
 
----
-
-# 3. Component Library Technical Debt Assessment
-
-Break down only component-system-related debt.
+**Secom-Specific Focus**:
+- Are there quick wins specific to form components shared across the 7 modules?
+- Are there token alignment fixes applicable to the StatusBadge or Toast components that would immediately improve cross-module consistency?
 
 ---
 
-## Categories
+### 3. Component Library Technical Debt Assessment
+
+Break down component-system-related debt by category.
+
+#### Debt Categories
 
 * Component API inconsistency debt
-* Styling standardization debt
-* Token misalignment debt
-* Accessibility implementation gaps (if documented)
+* CSS token misalignment debt (hardcoded values bypassing `src/styles/tokens/index.css`)
+* Global utility class vs CSS Module duplication debt
 * Variant explosion debt
+* Accessibility implementation gaps (if documented)
 * Documentation debt
-* Testing debt (component-level only if mentioned)
-* Duplication debt
+* Testing debt (component-level only, if documented)
+* Duplication debt across modules
 * Naming inconsistency debt
 * Composition misuse debt
 
 ---
 
-## Debt Table
+#### Debt Table
 
 | Category | Description | Risk if Ignored | Effort Estimate | Priority | Source Part |
 | -------- | ----------- | --------------- | --------------- | -------- | ----------- |
@@ -205,7 +172,7 @@ Provide:
 
 ---
 
-# 4. Phased Component Library Roadmap
+### 4. Phased Component Library Roadmap
 
 Assume:
 
@@ -215,90 +182,60 @@ Assume:
 
 ---
 
-## Phase 1 – Stabilization (Weeks 1–2)
+#### Phase 1 – Stabilization (Weeks 1–2)
 
-Focus:
+Focus: P0 issues, API-breaking inconsistencies, critical duplication, core component instability.
 
-* P0 issues
-* API-breaking inconsistencies
-* Critical duplication
-* Core component instability
+#### Phase 2 – Standardization (Weeks 3–6)
 
----
+Focus: Prop consistency, variant normalization, token alignment across CSS Modules, naming conventions, form component standardization across Secom modules.
 
-## Phase 2 – Standardization (Weeks 3–6)
+#### Phase 3 – Hardening & Scalability (Weeks 7–10)
 
-Focus:
+Focus: Accessibility enforcement (if documented), testing improvements, documentation coverage, composition refinement.
 
-* Prop consistency
-* Variant normalization
-* Token alignment
-* Naming conventions
-* Layout primitives cleanup
+#### Phase 4 – Design System Maturity (Weeks 11–14)
 
----
-
-## Phase 3 – Hardening & Scalability (Weeks 7–10)
-
-Focus:
-
-* Accessibility enforcement (if documented)
-* Testing improvements
-* Documentation coverage
-* Composition refinement
-* Theming improvements
-
----
-
-## Phase 4 – Design System Maturity (Weeks 11–14)
-
-Focus:
-
-* Advanced composition patterns
-* Strict API governance
-* Deprecation strategy
-* Performance optimization within components
+Focus: Advanced composition patterns, strict API governance, deprecation strategy, performance optimization within components.
 
 ---
 
 Each phase must include:
 
 * Goal
-* Included issues (by ID)
+* Included issues (by ID from Section 1)
 * Effort estimate
 * Dependencies
 * Business/design impact
 
 ---
 
-# 5. Component Library KPIs & Success Metrics
+### 5. Component Library KPIs & Success Metrics
 
-Define metrics strictly relevant to component system quality.
+Define metrics strictly relevant to component system quality, based only on what the source documents support.
 
-Examples (only if supported by documents):
+| Metric | Current State | Target | Measurement |
+| ------ | ------------- | ------ | ----------- |
+| Token compliance (CSS Modules using `var()`) | ? | 100% | Style audit |
+| Component duplication ratio | ? | −50% | Static analysis |
+| Variant consistency | ? | Standardized APIs | Component audit |
+| Accessibility coverage | ? | Full compliance for base components | Accessibility audit |
+| Documentation coverage | ? | 100% core components documented | Doc review |
+| API consistency score | ? | ≥ 90% standardized | Prop analysis |
 
-| Metric                      | Current State | Target                              | Measurement         |
-| --------------------------- | ------------- | ----------------------------------- | ------------------- |
-| Component duplication ratio | ?             | -50%                                | Static analysis     |
-| Variant consistency         | ?             | Standardized APIs                   | Component audit     |
-| Token compliance            | ?             | 100% usage                          | Style audit         |
-| Accessibility coverage      | ?             | Full compliance for base components | Accessibility audit |
-| Documentation coverage      | ?             | 100% core components documented     | Doc review          |
-| API consistency score       | ?             | ≥ 90% standardized                  | Prop analysis       |
-
-Do NOT include unrelated frontend architecture metrics.
+Do not include unrelated frontend architecture metrics.
 
 ---
 
-# 6. Component Library Maturity Score
+### 6. Component Library Maturity Score
 
-Score 0–100 based only on the three documents.
+Score 0–100 based only on the source documents.
 
 Breakdown:
 
 * API consistency
-* Reusability
-* Theming structure
+* Reusability across Secom modules
+* CSS token adoption discipline
 * Accessibility integration
 * Documentation completeness
 * Standardization discipline
@@ -307,95 +244,67 @@ Breakdown:
 
 Provide:
 
-* Current maturity stage (Ad-hoc, Emerging, Structured, Design-System-Driven, Enterprise-Ready)
-* Key blockers preventing next level
+* Current maturity stage: Ad-hoc → Emerging → Structured → Design-System-Driven → Enterprise-Ready
+* Key blockers preventing advancement to the next stage
 
 ---
 
-# 7. Executive Summary (Leadership-Level)
+### 7. Executive Summary (Leadership-Level)
 
 Provide:
 
-### Overall Component Library Health Score
+**Overall Component Library Health Score**: X / 100
 
-X / 100
+**Key Strengths** (3 items)
 
----
+**Major Risks** (3 items)
 
-### Key Strengths
+**Estimated Investment**:
+* Total developer-days
+* Timeline
+* Risk if delayed
 
-1.
-2.
-3.
-
----
-
-### Major Risks
-
-1.
-2.
-3.
-
----
-
-### Estimated Investment
-
-* Total developer-days:
-* Timeline:
-* Risk if delayed:
-
----
-
-### Recommendation
-
-Choose one:
-
+**Recommendation** — choose one:
 * Requires targeted standardization
 * Moderate design system refactor required
 * Strategic design system overhaul recommended
 
-Keep concise and strategic (1–2 pages equivalent).
+Keep concise and strategic.
 
 ---
 
-# Output Files
+## Output Requirements
 
-## File 1:
+### Output Files
 
-`docs/roadmaps/frontend/component-library-improvement.md`
+**File 1:** `docs/roadmaps/frontend/component-library-improvement.md`
 
-Must include:
+Must include: prioritized component issues, phased roadmap, debt estimate, KPIs, maturity score, executive summary.
 
-* Prioritized component issues
-* Phased roadmap
-* Debt estimate
-* KPIs
-* Maturity score
-* Executive summary
+**File 2:** `docs/roadmaps/frontend/component-library-quick-wins.md`
+
+Must include: component-level quick wins, implementation steps, effort estimates, impact explanation, source traceability (Part1/2/3).
 
 ---
 
-## File 2:
+## Formatting & Style Requirements
 
-`docs/roadmaps/frontend/component-library-quick-wins.md`
-
-Must include:
-
-* Component-level quick wins
-* Implementation steps
-* Effort estimates
-* Impact explanation
-* Source traceability (Part1/2/3)
-
----
-
-# Writing Guidelines
-
-* Component-library-only scope
-* No cross-document inference
-* Clear traceability to Part1/2/3
-* Executive-level clarity
-* Focus on systemic consistency
-* Avoid feature-level product commentary
+* Use structured Markdown
+* Prefer tables for inventories and comparisons
+* Maintain a neutral, technical tone
+* Avoid speculative assumptions
+* Avoid step-by-step refactoring instructions
 * Prioritize predictability, scalability, reusability, and governance
 
+---
+
+## Secom-Specific Analysis Points
+
+When generating the roadmap, pay special attention to:
+
+* **Token Adoption**: Whether CSS Modules across components consistently use `var(--token-name)` from `src/styles/tokens/index.css` or bypass them with hardcoded values
+* **Form Standardization**: Whether form components (FormField, Input, PasswordInput) and global form utilities (`.form-stack`, `.form-grid`, `.form-section`) are used consistently across all 7 modules
+* **Status Indicators**: Whether StatusBadge and related components use semantic tokens (`--color-success`, `--color-warning`, `--color-error`) for approval states, publication statuses, and appointment statuses
+* **Loading & Error States**: Whether Loading, Skeleton, TopLoadingBar, and Toast are used consistently or reimplemented per module
+* **Citizen Portal Separation**: Whether citizen-facing components are structurally and visually separated from admin components
+* **Role-Based Rendering**: Whether role-based UI variations are handled consistently at the component level

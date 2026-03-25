@@ -1,75 +1,61 @@
-Excellent — below is the **forms & validation–scoped equivalent** of your previous structured prompts, tailored specifically for:
-
-* `docs/architecture/frontend/forms-validation-part-1.md`
-* `docs/architecture/frontend/forms-validation-part-2.md`
-
-This version:
-
-* Strictly isolates scope to forms and validation architecture
-* Avoids cross-contamination with state, component, or backend audits
-* Converts documented gaps into an execution roadmap
-* Maintains CTO-level structure and traceability
-* Focuses on systemic form reliability, validation consistency, and data integrity
-
----
-
-# PROMPT (Forms & Validation–Scoped Version)
-
 # Secom – Frontend Forms & Validation Improvement Roadmap
+
+## Objective
+
+Generate a **strategic improvement roadmap strictly from the Forms & Validation documentation**. The goal is to transform documented findings into a prioritized, phased plan that improves form reliability, validation consistency, and data-entry integrity.
+
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação, built on the vSaaS boilerplate. Forms are central to:
+- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
+- **Styling**: CSS custom properties defined in `src/styles/tokens/index.css`, consumed via `var()` in per-component CSS Modules and global form utility classes (`.form-field`, `.form-stack`, `.form-grid`, `.form-section`) in `src/styles/global.css`
+- **Form Components**: `src/components/` (Input, Select, FormField, PasswordInput, DatePicker, etc.)
 
 **Source Documents:**
 
-* `docs/architecture/frontend/forms-validation-part-1.md`
-* `docs/architecture/frontend/forms-validation-part-2.md`
-
-**Scope Restriction:** Forms and Validation documentation only
-
----
-
-## Context
-
-You are generating a **strategic improvement roadmap strictly from the Forms & Validation documentation**.
-
-You must:
-
-* Use only findings, risks, inconsistencies, gaps, and recommendations explicitly described in Part1–Part3
-* Not reference any other frontend documents
-* Not assume issues from backend validation, API contracts, accessibility audits, or component architecture unless explicitly mentioned
-* Not invent technical debt outside what is implied in these documents
-* Clearly reference the relevant Part (Part1, Part2, or Part3)
-
-This is a **forms & validation-focused roadmap**, not a full frontend roadmap.
+```
+docs/architecture/frontend/forms-validation-part-1.md
+docs/architecture/frontend/forms-validation-part-2.md
+docs/architecture/frontend/forms-validation-part-3.md
+```
 
 ---
 
-# Objective
+## Scope & Analysis Guidelines
 
-Transform the documented findings into:
+* Use only findings, gaps, inconsistencies, risks, and recommendations explicitly described in the source documents.
+* Do not reference architecture, component library, UX audit, or performance documents unless explicitly mentioned in the source documents.
+* Do not invent validation debt outside what is implied in the source documents.
+* Clearly reference the relevant Part (Part1, Part2 or Part3) for each finding.
+* Keep recommendations **high-level**, not implementation instructions.
 
-1. Prioritized forms & validation risks
-2. Form reliability and standardization plan
-3. Validation-related technical debt estimate
-4. Phased improvement roadmap
-5. Forms maturity score
-6. Executive summary for leadership
+### Severity Classification
+
+* 🟥 P0 – Data corruption, failed submissions, inconsistent validation enforcement, or security exposure
+* 🟧 P1 – Long-term maintainability or scalability risk
+* 🟨 P2 – Structural standardization opportunity
+* 🟩 P3 – Optimization or governance improvement
 
 ---
 
-# 1. Forms & Validation Issue Extraction
+## Tasks
+
+---
+
+### 1. Forms & Validation Issue Extraction
 
 Extract every issue related to:
 
 * Validation strategy inconsistencies
 * Client-side vs server-side validation gaps (only if discussed)
-* Schema validation structure
+* Schema validation structure and centralization
 * Field-level vs form-level validation misalignment
 * Reusable form abstraction gaps
 * Form state duplication
 * Async validation handling
 * Debouncing and performance issues
-* Error message inconsistency
-* Missing loading/submit states
-* Validation timing (onBlur/onChange/onSubmit inconsistencies)
+* Error message inconsistency and localization gaps
+* Missing loading or submit states
+* Validation timing inconsistencies (onBlur / onChange / onSubmit)
 * Cross-field validation issues
 * Dynamic form handling instability
 * Conditional field rendering problems
@@ -87,76 +73,69 @@ Extract every issue related to:
 * File upload validation issues (if mentioned)
 * Security risks at validation layer (if described)
 * Form testing gaps (if mentioned)
-* Schema versioning problems (if mentioned)
 
 ---
 
-## 1.1 Prioritized Forms & Validation Issues
+#### 1.1 Prioritized Forms & Validation Issues
 
-### 🟥 P0 – Data Integrity / Submission Risk
+##### 🟥 P0 – Data Integrity / Submission Risk
+
+| # | Issue | Form Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | --------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟧 P1 – Reliability / Maintainability Risks
+
+| # | Issue | Form Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | --------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟨 P2 – Structural Standardization Improvements
+
+| # | Issue | Form Area | System Impact | Effort | Dependencies | Source Part |
+| - | ----- | --------- | ------------- | ------ | ------------ | ----------- |
+
+##### 🟩 P3 – Optimization & Refinements
 
 | # | Issue | Form Area | System Impact | Effort | Dependencies | Source Part |
 | - | ----- | --------- | ------------- | ------ | ------------ | ----------- |
 
 ---
 
-### 🟧 P1 – Reliability / Maintainability Risks
+#### Deliverable
 
-[Same structure]
+Forms-prioritized issue inventory with traceability to Part1/Part2/Part3.
 
----
-
-### 🟨 P2 – Structural Standardization Improvements
-
-[Same structure]
-
----
-
-### 🟩 P3 – Optimization & Refinements
-
-[Same structure]
+**Secom-Specific Focus**:
+- Are validation inconsistencies concentrated in specific modules (e.g., appointments, press releases) or systemic across all 7 modules?
+- Are citizen-facing forms (citizen portal, appointments) the primary source of data integrity risk?
+- Are approval workflow constraints (press release, event management) enforced at the validation layer?
 
 ---
 
-### Severity Criteria
+### 2. Forms & Validation Quick Wins
 
-* 🟥 Data corruption, failed submissions, inconsistent validation enforcement, security exposure
-* 🟧 Long-term maintainability or scalability risk
-* 🟨 Structural standardization opportunity
-* 🟩 Optimization or governance improvement
-
----
-
-## Deliverable:
-
-Forms-prioritized issue inventory with traceability to Part1/2/3.
-
----
-
-# 2. Forms & Validation Quick Wins
-
-Identify low-effort improvements clearly supported by the documentation.
+Identify low-effort improvements clearly supported by the source documents.
 
 Examples (only if supported):
 
 * Centralizing validation schemas
 * Standardizing validation trigger timing
-* Normalizing error message format
+* Normalizing error message format and language (Portuguese)
 * Removing duplicated validation logic
 * Enforcing consistent default value handling
-* Adding missing loading states
-* Simplifying cross-field validation pattern
+* Adding missing loading or submit states
+* Simplifying cross-field validation patterns
 * Extracting reusable form hooks
 * Aligning validation naming conventions
-* Debounce optimization
+* Replacing hardcoded error styles with semantic tokens (`--color-error`, `--color-success`)
+* Debounce optimization for async validation
 
-⚠️ Only include improvements supported by Part1–Part3.
+⚠️ Only include improvements supported by the source documents.
 
 ---
 
-## Quick Win Format
+#### Quick Win Format
 
-**Quick Win #1: [Title]**
+**Quick Win #N: [Title]**
 
 * **Form/Validation Problem**
 * **Impact**
@@ -169,19 +148,21 @@ Target: 8–15 quick wins.
 
 ---
 
-## Deliverable:
+#### Deliverable
 
-Forms-scoped quick wins with actionable implementation guidance.
+Forms-scoped quick wins with actionable implementation guidance and source traceability.
 
----
-
-# 3. Forms & Validation Technical Debt Assessment
-
-Break down only forms-related debt.
+**Secom-Specific Focus**:
+- Are there quick wins specific to form components shared across the 7 modules (e.g., error message normalization, token alignment for validation states)?
+- Are there localization fixes (Portuguese validation messages) applicable across multiple modules simultaneously?
 
 ---
 
-## Categories
+### 3. Forms & Validation Technical Debt Assessment
+
+Break down only forms-related debt by category.
+
+#### Debt Categories
 
 * Validation duplication debt
 * Schema inconsistency debt
@@ -199,7 +180,7 @@ Break down only forms-related debt.
 
 ---
 
-## Debt Table
+#### Debt Table
 
 | Category | Description | Risk if Ignored | Effort Estimate | Priority | Source Part |
 | -------- | ----------- | --------------- | --------------- | -------- | ----------- |
@@ -212,7 +193,7 @@ Provide:
 
 ---
 
-# 4. Phased Forms & Validation Roadmap
+### 4. Phased Forms & Validation Roadmap
 
 Assume:
 
@@ -222,58 +203,28 @@ Assume:
 
 ---
 
-## Phase 1 – Stabilization (Weeks 1–2)
+#### Phase 1 – Stabilization (Weeks 1–2)
 
-Focus:
+Focus: P0 issues, data integrity risks, submission failures, critical validation inconsistencies, security exposure at the validation layer.
 
-* P0 issues
-* Data integrity risks
-* Submission failures
-* Critical validation inconsistencies
-* Security exposure at validation layer
+#### Phase 2 – Standardization (Weeks 3–6)
 
----
+Focus: Schema consolidation, validation timing alignment, error message normalization (Portuguese), form abstraction enforcement, cross-field validation correction, token alignment for validation states.
 
-## Phase 2 – Standardization (Weeks 3–6)
+#### Phase 3 – Performance & Resilience (Weeks 7–10)
 
-Focus:
+Focus: Debounce optimization, re-render reduction, async validation flow improvement, multi-step flow stabilization, conditional rendering simplification.
 
-* Schema consolidation
-* Validation timing alignment
-* Error message normalization
-* Form abstraction enforcement
-* Cross-field validation correction
+#### Phase 4 – Forms Governance & Maturity (Weeks 11–14)
 
----
-
-## Phase 3 – Performance & Resilience (Weeks 7–10)
-
-Focus:
-
-* Debounce optimization
-* Re-render reduction
-* Async validation flow improvement
-* Multi-step flow stabilization
-* Conditional rendering simplification
-
----
-
-## Phase 4 – Forms Governance & Maturity (Weeks 11–14)
-
-Focus:
-
-* Validation governance patterns
-* Testing coverage expansion (if mentioned)
-* Documentation alignment
-* Reusable form toolkit consolidation
-* Future-proofing strategy
+Focus: Validation governance patterns, testing coverage expansion (if mentioned), documentation alignment, reusable form toolkit consolidation, future-proofing strategy.
 
 ---
 
 Each phase must include:
 
 * Goal
-* Included issues (by ID)
+* Included issues (by ID from Section 1)
 * Effort estimate
 * Dependencies
 * Risk mitigation impact
@@ -281,28 +232,27 @@ Each phase must include:
 
 ---
 
-# 5. Forms & Validation KPIs
+### 5. Forms & Validation KPIs & Success Metrics
 
-Define metrics strictly relevant to forms reliability and validation consistency.
+Define metrics strictly relevant to form reliability and validation consistency, based only on what the source documents support.
 
-Examples (only if aligned with document findings):
+| Metric | Current State | Target | Measurement |
+| ------ | ------------- | ------ | ----------- |
+| Validation duplication instances | ? | −50% | Code audit |
+| Submission failure rate | ? | −75% | Error logs |
+| Cross-field validation bugs | ? | 0 | QA tracking |
+| Form re-render frequency | ? | −30% | Profiler |
+| Schema centralization | ? | 100% unified | Code review |
+| Error message consistency (Portuguese) | ? | Standardized | Audit |
+| Semantic token usage for validation states | ? | 100% | Style audit |
 
-| Metric                           | Current State | Target       | Measurement |
-| -------------------------------- | ------------- | ------------ | ----------- |
-| Validation duplication instances | ?             | -50%         | Code audit  |
-| Submission failure rate          | ?             | -75%         | Error logs  |
-| Cross-field validation bugs      | ?             | 0            | QA tracking |
-| Form re-render frequency         | ?             | -30%         | Profiler    |
-| Schema centralization            | ?             | 100% unified | Code review |
-| Error message consistency        | ?             | Standardized | Audit       |
-
-Do NOT include unrelated performance, architecture, or accessibility metrics unless documented.
+Do not include unrelated performance, architecture, or accessibility metrics unless documented.
 
 ---
 
-# 6. Forms Maturity Score
+### 6. Forms Maturity Score
 
-Score 0–100 based only on Part1–Part3 findings.
+Score 0–100 based only on the source documents.
 
 Breakdown:
 
@@ -313,99 +263,74 @@ Breakdown:
 * Error handling standardization
 * Reusability & abstraction
 * Multi-step form robustness
+* Localization completeness
 * Documentation clarity
 
 Provide:
 
-* Current maturity stage (Ad-hoc, Fragmented, Standardizing, Structured, Enterprise-Grade)
-* Key blockers preventing next level
+* Current maturity stage: Ad-hoc → Fragmented → Standardizing → Structured → Enterprise-Grade
+* Key blockers preventing advancement to the next stage
 
 ---
 
-# 7. Executive Summary (Leadership-Level)
+### 7. Executive Summary (Leadership-Level)
 
 Provide:
 
-### Overall Forms & Validation Health Score
+**Overall Forms & Validation Health Score**: X / 100
 
-X / 100
+**Key Strengths** (3 items)
 
----
+**Major Risks** (3 items)
 
-### Key Strengths
+**Estimated Investment**:
+* Total developer-days
+* Timeline
+* Risk if delayed
 
-1.
-2.
-3.
-
----
-
-### Major Risks
-
-1.
-2.
-3.
-
----
-
-### Estimated Investment
-
-* Total developer-days:
-* Timeline:
-* Risk if delayed:
-
----
-
-### Recommendation
-
-Choose one:
-
+**Recommendation** — choose one:
 * Requires targeted validation standardization
 * Moderate forms refactor required
 * Strategic form system overhaul recommended
 
-Keep concise, strategic, and traceable to documented findings (1–2 pages equivalent).
+Keep concise and strategic.
 
 ---
 
-# Output Files
+## Output Requirements
 
-## File 1:
+### Output Files
 
-`docs/roadmaps/frontend/forms-validation-improvement.md`
+**File 1:** `docs/roadmaps/frontend/forms-validation-improvement.md`
 
-Must include:
+Must include: prioritized forms issues, phased roadmap, debt estimate, KPIs, maturity score, executive summary.
 
-* Prioritized forms issues
-* Phased roadmap
-* Debt estimate
-* KPIs
-* Maturity score
-* Executive summary
+**File 2:** `docs/roadmaps/frontend/forms-validation-quick-wins.md`
+
+Must include: forms-level quick wins, implementation steps, effort estimates, impact explanation, source traceability (Part1/Part2/Part3).
 
 ---
 
-## File 2:
+## Formatting & Style Requirements
 
-`docs/roadmaps/frontend/forms-validation-quick-wins.md`
-
-Must include:
-
-* Forms-level quick wins
-* Implementation steps
-* Effort estimates
-* Impact explanation
-* Source traceability (Part1/2/3)
+* Use structured Markdown
+* Prefer tables for inventories and comparisons
+* Maintain a neutral, technical tone
+* Avoid speculative assumptions
+* Avoid step-by-step refactoring instructions
+* Prioritize reliability, predictability, consistency, and governance
 
 ---
 
-# Writing Guidelines
+## Secom-Specific Analysis Points
 
-* Forms-and-validation-only scope
-* No cross-document inference
-* Clear traceability to Part1/2/3
-* Executive-level clarity
-* Focus on data integrity, consistency, and maintainability
-* Avoid UI design critique unless structurally documented
-* Prioritize reliability, predictability, and governance
+When generating the roadmap, pay special attention to:
 
+* **Validation Localization**: Whether all validation messages across the 7 modules are consistently written in Portuguese and appropriate for a government communication context
+* **Approval Workflow Validation**: Whether press release and event forms enforce multi-step approval constraints at the validation layer
+* **Citizen Portal Forms**: Whether citizen-facing forms (appointments, citizen portal) have adequate data integrity safeguards and accessible error handling
+* **Semantic Token Usage**: Whether form validation states (error, success, warning) use `var(--color-error)`, `var(--color-success)`, `var(--color-warning)` from `src/styles/tokens/index.css` consistently across CSS Modules
+* **Global Form Utilities**: Whether `.form-stack`, `.form-grid`, `.form-section` from `global.css` are used consistently or reimplemented per module
+* **Data Loss Risk**: Whether long or multi-step forms (press release creation, event management) have navigation guards, autosave, or draft behavior
+* **Schema Governance**: Whether validation schemas are centralized or scattered across the 7 modules
+* **Role-Based Validation**: Whether field-level validation rules adapt correctly based on user role (e.g., assessor vs atendente vs citizen)

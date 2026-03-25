@@ -20,7 +20,7 @@ export function AppointmentForm({ form, setForm, errors, editing, isLoading, onS
         </FormField>
         <div className="form-grid">
           <FormField name="citizenCpf" label={t('domain.appointments.fields.citizenCpf')} error={errors.citizenCpf}>
-            <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} onBlur={() => onBlur('citizenCpf')} maxLength={11} placeholder="00000000000" inputMode="numeric" />
+            <input id="citizenCpf" type="text" value={form.citizenCpf} onChange={e => set('citizenCpf', e.target.value)} onBlur={() => onBlur('citizenCpf')} maxLength={14} placeholder="000.000.000-00" inputMode="numeric" />
           </FormField>
           <FormField name="citizenPhone" label={t('domain.appointments.fields.citizenPhone')}>
             <input id="citizenPhone" type="text" value={form.citizenPhone} onChange={e => set('citizenPhone', e.target.value)} onBlur={() => onBlur('citizenPhone')} inputMode="tel" autoComplete="tel" />

@@ -57,12 +57,11 @@ export function ForgotPasswordPage() {
                 </div>
               )}
 
-              <div className={s.field}>
-                <label htmlFor="email" className={s.label}>{t('auth.email')}</label>
+              <div className="form-field">
+                <label htmlFor="email">{t('auth.email')}</label>
                 <input
                   id="email"
                   type="email"
-                  className={s.input}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required

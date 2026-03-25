@@ -27,7 +27,7 @@ export function CitizenRecordsForm({ form, setForm, errors, editing, isLoading, 
         </FormField>
         <div className="form-grid">
           <FormField name="cpf" label={t('domain.citizenPortal.fields.cpf')} error={errors.cpf}>
-            <input id="cpf" type="text" value={form.cpf} onChange={e => set('cpf', e.target.value)} onBlur={() => onBlur('cpf')} maxLength={11} placeholder="00000000000" inputMode="numeric" />
+            <input id="cpf" type="text" value={form.cpf} onChange={e => set('cpf', e.target.value)} onBlur={() => onBlur('cpf')} maxLength={14} placeholder="000.000.000-00" inputMode="numeric" />
           </FormField>
           <FormField name="phone" label={t('domain.citizenPortal.fields.phone')}>
             <input id="phone" type="text" value={form.phone} onChange={e => set('phone', e.target.value)} onBlur={() => onBlur('phone')} inputMode="tel" autoComplete="tel" />

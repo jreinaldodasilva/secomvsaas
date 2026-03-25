@@ -73,7 +73,7 @@ export function ResetPasswordPage() {
                 </div>
               )}
 
-              <div className={s.field}>
+              <div className="form-field">
                 <PasswordInput
                   id="password"
                   label={t('auth.newPassword')}
@@ -87,7 +87,7 @@ export function ResetPasswordPage() {
                 />
               </div>
 
-              <div className={s.field}>
+              <div className="form-field">
                 <PasswordInput
                   id="confirmPassword"
                   label={t('auth.confirmPassword')}

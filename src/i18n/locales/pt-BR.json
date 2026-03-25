@@ -27,6 +27,7 @@
     "unsavedChanges": "Alterações não salvas",
     "unsavedChangesMessage": "Você tem alterações não salvas. Deseja descartá-las?",
     "discard": "Descartar",
+    "characters": "caracteres",
     "status": {
       "draft": "Rascunho",
       "review": "Em revisão",
@@ -311,7 +312,8 @@
     "invalidPhone": "Telefone inválido. Use o formato (00) 00000-0000",
     "invalidState": "Selecione um estado válido",
     "endsAfterStarts": "O término deve ser após o início",
-    "scheduledInFuture": "O agendamento deve ser em uma data futura"
+    "scheduledInFuture": "O agendamento deve ser em uma data futura",
+    "statusTransitionForbidden": "Você não tem permissão para definir este status"
   },
   "domain": {
     "pressReleases": {

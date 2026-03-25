@@ -74,12 +74,11 @@ export function AcceptInvitePage() {
                 </div>
               )}
 
-              <div className={s.field}>
-                <label htmlFor="name" className={s.label}>{t('auth.name')}</label>
+              <div className="form-field">
+                <label htmlFor="name">{t('auth.name')}</label>
                 <input
                   id="name"
                   type="text"
-                  className={s.input}
                   value={form.name}
                   onChange={set('name')}
                   required
@@ -89,7 +88,7 @@ export function AcceptInvitePage() {
                 />
               </div>
 
-              <div className={s.field}>
+              <div className="form-field">
                 <PasswordInput
                   id="password"
                   label={t('auth.password')}
@@ -102,7 +101,7 @@ export function AcceptInvitePage() {
                 />
               </div>
 
-              <div className={s.field}>
+              <div className="form-field">
                 <PasswordInput
                   id="confirmPassword"
                   label={t('auth.confirmPassword')}

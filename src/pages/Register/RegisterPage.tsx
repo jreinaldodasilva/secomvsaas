@@ -56,12 +56,11 @@ export function RegisterPage() {
           )}
 
           <form onSubmit={handleSubmit} noValidate>
-            <div className={s.field}>
-              <label htmlFor="name" className={s.label}>{t('auth.name')}</label>
+            <div className="form-field">
+              <label htmlFor="name">{t('auth.name')}</label>
               <input
                 id="name"
                 type="text"
-                className={s.input}
                 value={form.name}
                 onChange={set('name')}
                 required
@@ -71,12 +70,11 @@ export function RegisterPage() {
               />
             </div>
 
-            <div className={s.field}>
-              <label htmlFor="email" className={s.label}>{t('auth.email')}</label>
+            <div className="form-field">
+              <label htmlFor="email">{t('auth.email')}</label>
               <input
                 id="email"
                 type="email"
-                className={s.input}
                 value={form.email}
                 onChange={set('email')}
                 required
@@ -84,12 +82,11 @@ export function RegisterPage() {
               />
             </div>
 
-            <div className={s.field}>
-              <label htmlFor="companyName" className={s.label}>{t('auth.companyName')}</label>
+            <div className="form-field">
+              <label htmlFor="companyName">{t('auth.companyName')}</label>
               <input
                 id="companyName"
                 type="text"
-                className={s.input}
                 value={form.companyName}
                 onChange={set('companyName')}
                 required
@@ -106,7 +103,7 @@ export function RegisterPage() {
               minLength={8}
               showStrength
               autoComplete="new-password"
-              wrapperClassName={s.field}
+              wrapperClassName="form-field"
             />
 
             <PasswordInput
@@ -116,7 +113,7 @@ export function RegisterPage() {
               onChange={set('confirmPassword')}
               required
               autoComplete="new-password"
-              wrapperClassName={s.field}
+              wrapperClassName="form-field"
               error={confirmError ? t(confirmError) : undefined}
             />
 

@@ -36,10 +36,12 @@ export function EventForm({ form, setForm, errors, isLoading, onSubmit, onBlur }
         </FormField>
       </div>
 
-      <label className="form-check">
-        <input type="checkbox" checked={form.isPublic} onChange={e => set('isPublic', e.target.checked)} />
-        {t('domain.events.fields.isPublic')}
-      </label>
+      <FormField name="isPublic">
+        <label className="form-check">
+          <input id="isPublic" type="checkbox" checked={form.isPublic} onChange={e => set('isPublic', e.target.checked)} />
+          {t('domain.events.fields.isPublic')}
+        </label>
+      </FormField>
 
       <div className="form-actions">
         <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>

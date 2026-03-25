@@ -5,6 +5,7 @@ import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
+import Input from '@/components/UI/Input/Input';
 import s from '@/pages/Auth.module.css';
 
 export function LoginPage() {
@@ -57,19 +58,16 @@ export function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} data-testid="login-form" noValidate>
-            <div className={s.field}>
-              <label htmlFor="email" className={s.label}>{t('auth.email')}</label>
-              <input
-                id="email"
-                type="email"
-                className={s.input}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-                autoFocus
-              />
-            </div>
+            <Input
+              id="email"
+              type="email"
+              label={t('auth.email')}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoComplete="email"
+              autoFocus
+            />
 
             <PasswordInput
               id="password"
@@ -78,7 +76,6 @@ export function LoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
-              wrapperClassName={s.field}
             />
 
             <div className={s.forgotRow}>

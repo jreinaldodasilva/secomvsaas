@@ -48,12 +48,11 @@ export function CitizenLoginPage() {
             </div>
           )}
           <form onSubmit={handleSubmit} noValidate>
-            <div className={s.field}>
-              <label htmlFor="email" className={s.label}>E-mail</label>
+            <div className="form-field">
+              <label htmlFor="email">E-mail</label>
               <input
                 id="email"
                 type="email"
-                className={s.input}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -68,7 +67,7 @@ export function CitizenLoginPage() {
               onChange={(e) => setPassword(e.target.value)}
               required
               autoComplete="current-password"
-              wrapperClassName={s.field}
+              wrapperClassName="form-field"
             />
             <Button type="submit" fullWidth isLoading={loading}>{t('auth.login')}</Button>
           </form>

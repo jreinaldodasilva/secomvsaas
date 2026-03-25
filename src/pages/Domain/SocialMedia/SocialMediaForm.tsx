@@ -36,6 +36,9 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
       <FormField name="content" label={t('domain.socialMedia.fields.content')} error={errors.content} required>
         <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} onBlur={() => onBlur('content')} rows={4} />
       </FormField>
+      <p className={`form-char-count${form.content.trim().length < 1 ? ' form-char-count--warn' : ''}`}>
+        {form.content.length} {t('common.characters')}
+      </p>
 
       <FormField name="mediaUrl" label={t('domain.socialMedia.fields.mediaUrl')} error={errors.mediaUrl}>
         <input id="mediaUrl" type="url" value={form.mediaUrl} onChange={e => set('mediaUrl', e.target.value)} onBlur={() => onBlur('mediaUrl')} />

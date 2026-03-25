@@ -64,12 +64,11 @@ export function CitizenRegisterPage() {
             </div>
           )}
           <form onSubmit={handleSubmit} noValidate>
-            <div className={s.field}>
-              <label htmlFor="name" className={s.label}>Nome completo</label>
+            <div className="form-field">
+              <label htmlFor="name">Nome completo</label>
               <input
                 id="name"
                 type="text"
-                className={s.input}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
@@ -78,12 +77,11 @@ export function CitizenRegisterPage() {
                 autoFocus
               />
             </div>
-            <div className={s.field}>
-              <label htmlFor="email" className={s.label}>E-mail</label>
+            <div className="form-field">
+              <label htmlFor="email">E-mail</label>
               <input
                 id="email"
                 type="email"
-                className={s.input}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -99,7 +97,7 @@ export function CitizenRegisterPage() {
               minLength={8}
               showStrength
               autoComplete="new-password"
-              wrapperClassName={s.field}
+              wrapperClassName="form-field"
             />
             <PasswordInput
               id="confirmPassword"
@@ -108,7 +106,7 @@ export function CitizenRegisterPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               autoComplete="new-password"
-              wrapperClassName={s.field}
+              wrapperClassName="form-field"
               error={confirmError ? 'As senhas não coincidem' : undefined}
             />
             <div className={s.consent}>

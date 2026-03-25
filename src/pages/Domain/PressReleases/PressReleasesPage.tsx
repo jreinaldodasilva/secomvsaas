@@ -8,6 +8,7 @@ import { formatDate } from '@/utils/date';
 import { useToast } from '@/hooks';
 import { usePageTitle } from '@/hooks';
 import { useTranslation } from '@/i18n';
+import { useAuth } from '@/contexts';
 import { PressReleaseForm, validatePressRelease, emptyPressReleaseForm } from './PressReleaseForm';
 import type { PressReleaseFormState } from './PressReleaseForm';
 import { PRESS_RELEASE_STATUS_COLORS } from '@/utils/statusConfig';
@@ -28,6 +29,8 @@ interface PressReleaseItem {
 export function PressReleasesPage() {
   const { t } = useTranslation();
   const toast = useToast();
+  const { user } = useAuth();
+  const userRole = user?.role;
   usePageTitle(t('domain.pressReleases.title'));
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
@@ -90,7 +93,7 @@ export function PressReleasesPage() {
         tags: (item.tags ?? []).join(', '),
         status: item.status as PressReleaseFormState['status'],
       })}
-      validate={(form) => validatePressRelease(form, t)}
+      validate={(form) => validatePressRelease(form, t, userRole)}
       buildPayload={(form) => ({
         ...form,
         tags: form.tags ? form.tags.split(',').map(s => s.trim()).filter(Boolean) : [],
@@ -114,6 +117,7 @@ export function PressReleasesPage() {
       deletedMessage={t('common.deleted')}
       onSuccess={(msg) => toast.success(msg)}
       onError={(msg) => toast.error(msg)}
+      formExtraProps={{ userRole }}
       FormComponent={PressReleaseForm}
     />
   );

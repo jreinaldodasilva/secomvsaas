@@ -53,6 +53,68 @@ describe('validatePressRelease', () => {
     expect(e.category).toContain('validation.invalidEnum');
     expect(e.category).not.toMatch(/Invalid enum value/i);
   });
+
+  it('assessor cannot set status to approved', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'approved' },
+      t,
+      'assessor',
+    );
+    expect(e.status).toBe('validation.statusTransitionForbidden');
+  });
+
+  it('assessor cannot set status to published', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'published' },
+      t,
+      'assessor',
+    );
+    expect(e.status).toBe('validation.statusTransitionForbidden');
+  });
+
+  it('assessor can set status to draft', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'draft' },
+      t,
+      'assessor',
+    );
+    expect(e.status).toBeUndefined();
+  });
+
+  it('assessor can set status to review', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'review' },
+      t,
+      'assessor',
+    );
+    expect(e.status).toBeUndefined();
+  });
+
+  it('admin can set status to published', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'published' },
+      t,
+      'admin',
+    );
+    expect(e.status).toBeUndefined();
+  });
+
+  it('super_admin can set status to approved', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'approved' },
+      t,
+      'super_admin',
+    );
+    expect(e.status).toBeUndefined();
+  });
+
+  it('no role provided — no status restriction applied', () => {
+    const e = validatePressRelease(
+      { ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', status: 'published' },
+      t,
+    );
+    expect(e.status).toBeUndefined();
+  });
 });
 
 // ── Appointment ───────────────────────────────────────────────────────────────

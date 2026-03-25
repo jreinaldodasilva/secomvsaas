@@ -4,40 +4,6 @@
   gap: var(--space-4);
 }
 
-.field { display: flex; flex-direction: column; gap: var(--space-1); }
-
-.input {
-  width: 100%;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-input);
-  font-size: var(--font-size-base);
-  background: var(--color-bg-primary);
-  color: var(--color-text-primary);
-  min-height: var(--input-height-md);
-  transition: border-color var(--transition-fast);
-}
-.input:focus { outline: none; border-color: var(--color-primary-500); box-shadow: 0 0 0 3px var(--color-primary-50); }
-.input:disabled { opacity: 0.6; cursor: not-allowed; background: var(--color-neutral-100); }
-.inputError   { border-color: var(--color-error); background: var(--color-error-50); }
-.inputSuccess { border-color: var(--color-success); background: var(--color-success-50); }
-
-.error {
-  color: var(--color-error);
-  font-size: var(--font-size-sm);
-  animation: shake 0.4s ease;
-}
-
-.errorGeneral {
-  background: var(--color-error-50);
-  border: 1px solid var(--color-error-200);
-  border-radius: var(--radius-md);
-  padding: var(--space-3) var(--space-4);
-  color: var(--color-error);
-  font-size: var(--font-size-sm);
-  text-align: center;
-}
-
 /* Extends global .btn .btn-primary */
 .btn {
   width: 100%;
@@ -75,12 +41,6 @@
 }
 .resetBtn:hover { background: var(--color-primary-600); color: #fff; }
 
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-4px); }
-  40%, 80% { transform: translateX(4px); }
-}
-
 @keyframes bounce {
   0%, 100% { transform: translateY(0); }
   40% { transform: translateY(-14px); }
@@ -88,5 +48,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .error, .successIcon { animation: none; }
+  .successIcon { animation: none; }
 }

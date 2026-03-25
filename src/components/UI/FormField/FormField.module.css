@@ -21,7 +21,6 @@
   color: var(--color-text-tertiary);
   margin: 0;
   line-height: var(--line-height-normal);
-  order: 3;
 }
 
 .input { position: relative; }

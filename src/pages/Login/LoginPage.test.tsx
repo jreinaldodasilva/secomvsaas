@@ -50,7 +50,7 @@ describe('LoginPage', () => {
 
   it('renders email, password fields and submit button', () => {
     renderPage();
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
+    expect(screen.getByLabelText('Email', { exact: false })).toBeInTheDocument();
     expect(screen.getByLabelText('Senha')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Entrar' })).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe('LoginPage', () => {
     mockLogin.mockResolvedValue(undefined);
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Email'), 'user@test.com');
+    await userEvent.type(screen.getByLabelText('Email', { exact: false }), 'user@test.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'secret123');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
@@ -78,7 +78,7 @@ describe('LoginPage', () => {
     mockLocation = { state: { from: { pathname: '/admin/press-releases' } } };
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Email'), 'user@test.com');
+    await userEvent.type(screen.getByLabelText('Email', { exact: false }), 'user@test.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'secret123');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
@@ -89,7 +89,7 @@ describe('LoginPage', () => {
     mockLogin.mockRejectedValue(new ApiError('Credenciais inválidas', 401));
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Email'), 'bad@test.com');
+    await userEvent.type(screen.getByLabelText('Email', { exact: false }), 'bad@test.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'wrong');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
@@ -100,7 +100,7 @@ describe('LoginPage', () => {
     mockLogin.mockRejectedValue(new Error());
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('Email', { exact: false }), 'a@b.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'x');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 
@@ -111,7 +111,7 @@ describe('LoginPage', () => {
     mockLogin.mockImplementation(() => new Promise(() => {}));
     renderPage();
 
-    await userEvent.type(screen.getByLabelText('Email'), 'a@b.com');
+    await userEvent.type(screen.getByLabelText('Email', { exact: false }), 'a@b.com');
     await userEvent.type(screen.getByLabelText('Senha'), 'x');
     await userEvent.click(screen.getByRole('button', { name: 'Entrar' }));
 

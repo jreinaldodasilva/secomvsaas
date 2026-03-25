@@ -1,29 +1,42 @@
 import { useState, type FormEvent } from 'react';
+import { z } from 'zod';
+import { FormField, Button } from '@/components/UI';
+import Input from '@/components/UI/Input/Input';
+import { isValidPhone } from '@/validation/shared/phone';
 import styles from './ContactForm.module.css';
 
-interface FormData { name: string; email: string; department: string; specialty: string; phone: string; }
-interface FormErrors { name?: string; email?: string; department?: string; specialty?: string; phone?: string; general?: string; }
+const contactSchema = z.object({
+  name:       z.string().min(2, 'Nome é obrigatório (mín. 2 caracteres)'),
+  email:      z.string().email('Digite um e-mail válido'),
+  department: z.string().min(2, 'Nome da secretaria é obrigatório'),
+  specialty:  z.string().min(2, 'Área de atuação é obrigatória'),
+  phone:      z.string().refine(isValidPhone, 'Digite um telefone válido (10–11 dígitos)'),
+});
 
-function validate(d: FormData): FormErrors {
-  const e: FormErrors = {};
-  if (!d.name || d.name.length < 2) e.name = 'Nome é obrigatório (mín. 2 caracteres)';
-  if (!d.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email)) e.email = 'Digite um e-mail válido';
-  if (!d.department || d.department.length < 2) e.department = 'Nome da secretaria é obrigatório';
-  if (!d.specialty || d.specialty.length < 2) e.specialty = 'Área de atuação é obrigatória';
-  if (!d.phone || !/^[\d\s\-()+]{10,20}$/.test(d.phone)) e.phone = 'Digite um telefone válido (10–20 dígitos)';
-  return e;
+type ContactFormState = z.infer<typeof contactSchema>;
+
+const empty: ContactFormState = { name: '', email: '', department: '', specialty: '', phone: '' };
+
+function validate(data: ContactFormState): Record<string, string> {
+  const result = contactSchema.safeParse(data);
+  if (result.success) return {};
+  const errors: Record<string, string> = {};
+  for (const issue of result.error.issues) {
+    const field = issue.path[0] as string;
+    if (!errors[field]) errors[field] = issue.message;
+  }
+  return errors;
 }
 
 export function ContactForm() {
-  const [form, setForm] = useState<FormData>({ name: '', email: '', department: '', specialty: '', phone: '' });
-  const [errors, setErrors] = useState<FormErrors>({});
+  const [form, setForm] = useState<ContactFormState>(empty);
+  const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm(p => ({ ...p, [name]: value }));
-    if (errors[name as keyof FormErrors]) setErrors(p => ({ ...p, [name]: undefined }));
+  const set = (field: keyof ContactFormState) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm(p => ({ ...p, [field]: e.target.value }));
+    if (errors[field]) setErrors(p => { const n = { ...p }; delete n[field]; return n; });
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -42,7 +55,7 @@ export function ContactForm() {
         <div className={styles.successIcon}>✅</div>
         <h3>Mensagem Enviada com Sucesso!</h3>
         <p>Nossa equipe retornará em até 24 horas úteis.</p>
-        <button className={styles.resetBtn} onClick={() => { setSubmitted(false); setForm({ name: '', email: '', department: '', specialty: '', phone: '' }); }}>
+        <button className={styles.resetBtn} onClick={() => { setSubmitted(false); setForm(empty); }}>
           Enviar outra mensagem
         </button>
       </div>
@@ -51,33 +64,29 @@ export function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.form} noValidate>
-      {errors.general && <div className={styles.errorGeneral}>{errors.general}</div>}
+      <FormField name="name" label="Nome completo" error={errors.name} required>
+        <Input id="name" type="text" value={form.name} onChange={set('name')} disabled={submitting} autoComplete="name" />
+      </FormField>
 
-      {([
-        { name: 'name',       type: 'text',  placeholder: 'Nome completo *' },
-        { name: 'email',      type: 'email', placeholder: 'E-mail profissional *' },
-        { name: 'department', type: 'text',  placeholder: 'Nome da secretaria *' },
-        { name: 'specialty',  type: 'text',  placeholder: 'Área de atuação (ex: Jornalismo, Design, Cerimonial) *' },
-        { name: 'phone',      type: 'tel',   placeholder: 'Telefone com WhatsApp (ex: 11999999999) *' },
-      ] as const).map(f => (
-        <div key={f.name} className={styles.field}>
-          <input
-            name={f.name}
-            type={f.type}
-            value={form[f.name]}
-            onChange={handleChange}
-            placeholder={f.placeholder}
-            disabled={submitting}
-            className={`${styles.input} ${errors[f.name] ? styles.inputError : form[f.name] && !errors[f.name] ? styles.inputSuccess : ''}`}
-            aria-invalid={!!errors[f.name]}
-          />
-          {errors[f.name] && <span className={styles.error} role="alert">{errors[f.name]}</span>}
-        </div>
-      ))}
+      <FormField name="email" label="E-mail profissional" error={errors.email} required>
+        <Input id="email" type="email" value={form.email} onChange={set('email')} disabled={submitting} autoComplete="email" />
+      </FormField>
 
-      <button type="submit" disabled={submitting} className={`btn btn-primary ${styles.btn}`}>
-        {submitting ? '⏳ Enviando...' : 'Quero conhecer o Secom em Ação'}
-      </button>
+      <FormField name="department" label="Nome da secretaria" error={errors.department} required>
+        <Input id="department" type="text" value={form.department} onChange={set('department')} disabled={submitting} />
+      </FormField>
+
+      <FormField name="specialty" label="Área de atuação" error={errors.specialty} required>
+        <Input id="specialty" type="text" value={form.specialty} onChange={set('specialty')} disabled={submitting} placeholder="ex: Jornalismo, Design, Cerimonial" />
+      </FormField>
+
+      <FormField name="phone" label="Telefone com WhatsApp" error={errors.phone} required>
+        <Input id="phone" type="tel" value={form.phone} onChange={set('phone')} disabled={submitting} autoComplete="tel" inputMode="tel" placeholder="ex: 11999999999" />
+      </FormField>
+
+      <Button type="submit" fullWidth isLoading={submitting} className={styles.btn}>
+        Quero conhecer o Secom em Ação
+      </Button>
       <p className={styles.help}>Retornaremos em até 24 horas úteis</p>
     </form>
   );

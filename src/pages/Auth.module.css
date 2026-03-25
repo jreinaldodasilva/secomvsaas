@@ -125,6 +125,35 @@
   text-align: center;
 }
 
+/* LGPD consent checkbox */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-5);
+}
+
+.consent label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  line-height: var(--line-height-relaxed);
+}
+
+.consent input[type="checkbox"] {
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--color-primary-600);
+}
+
+.consent a {
+  color: var(--color-primary-500);
+  text-decoration: underline;
+}
+
 /* Forgot password row */
 .forgotRow {
   text-align: right;

@@ -89,7 +89,7 @@ export function UsersPage() {
           onChange={(e) => updateUser.mutate({ id: u.id, role: e.target.value })}
           aria-label={t('users.roleLabel', { name: u.name })}
         >
-          {INVITE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+          {INVITE_ROLES.map(r => <option key={r} value={r}>{t(`users.roles.${r}`)}</option>)}
         </select>
       ),
     },
@@ -153,7 +153,7 @@ export function UsersPage() {
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value)}
               >
-                {INVITE_ROLES.map(r => <option key={r} value={r}>{r}</option>)}
+                {INVITE_ROLES.map(r => <option key={r} value={r}>{t(`users.roles.${r}`)}</option>)}
               </select>
             </FormField>
             <Button type="submit" isLoading={invite.isPending}>

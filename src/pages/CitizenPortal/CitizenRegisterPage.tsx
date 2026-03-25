@@ -4,6 +4,8 @@ import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
+import { passwordMatchError } from '@/validation/shared/passwordMatch';
+import { validatePassword } from '@/validation/shared/passwordRules';
 import s from '@/pages/Auth.module.css';
 
 export function CitizenRegisterPage() {
@@ -14,16 +16,29 @@ export function CitizenRegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [lgpdConsent, setLgpdConsent] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const confirmError = passwordMatchError(password, confirmPassword);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
     if (name.trim().length < 2) { setError('O nome deve ter pelo menos 2 caracteres'); return; }
-    if (password.length < 8) { setError('A senha deve ter pelo menos 8 caracteres'); return; }
-    if (!/[A-Z]/.test(password)) { setError('A senha deve conter pelo menos uma letra maiúscula'); return; }
-    if (!/[0-9]/.test(password)) { setError('A senha deve conter pelo menos um número'); return; }
+    const pwError = validatePassword(password);
+    if (pwError) {
+      const msgs: Record<string, string> = {
+        'password.minLength': 'A senha deve ter pelo menos 8 caracteres',
+        'password.uppercase': 'A senha deve conter pelo menos uma letra maiúscula',
+        'password.number':    'A senha deve conter pelo menos um número',
+      };
+      setError(msgs[pwError] ?? 'Senha inválida');
+      return;
+    }
+    if (confirmError) return;
+    if (!lgpdConsent) { setError('Você deve aceitar a Política de Privacidade para continuar.'); return; }
     setLoading(true);
     try {
       await register({ name: name.trim(), email, password });
@@ -86,6 +101,28 @@ export function CitizenRegisterPage() {
               autoComplete="new-password"
               wrapperClassName={s.field}
             />
+            <PasswordInput
+              id="confirmPassword"
+              label="Confirmar senha"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+              autoComplete="new-password"
+              wrapperClassName={s.field}
+              error={confirmError ? 'As senhas não coincidem' : undefined}
+            />
+            <div className={s.consent}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={lgpdConsent}
+                  onChange={(e) => setLgpdConsent(e.target.checked)}
+                />
+                {' Li e concordo com a '}
+                <Link to="/privacy">Política de Privacidade</Link>
+                {' e autorizo o tratamento dos meus dados conforme a LGPD.'}
+              </label>
+            </div>
             <Button type="submit" fullWidth isLoading={loading}>Criar conta</Button>
           </form>
         </div>

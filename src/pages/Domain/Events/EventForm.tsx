@@ -8,7 +8,7 @@ export { emptyEventForm, validateEvent } from '@/validation/domain';
 
 type Props = FormComponentProps<EventFormState>;
 
-export function EventForm({ form, setForm, errors, isLoading, onSubmit }: Props) {
+export function EventForm({ form, setForm, errors, isLoading, onSubmit, onBlur }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof EventFormState>(k: K, v: EventFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -16,23 +16,23 @@ export function EventForm({ form, setForm, errors, isLoading, onSubmit }: Props)
   return (
     <form onSubmit={onSubmit} className="form-stack" noValidate>
       <FormField name="title" label={t('domain.events.fields.title')} error={errors.title} required>
-        <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} />
+        <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} onBlur={() => onBlur('title')} />
       </FormField>
 
       <FormField name="description" label={t('domain.events.fields.description')}>
-        <textarea id="description" value={form.description} onChange={e => set('description', e.target.value)} rows={3} />
+        <textarea id="description" value={form.description} onChange={e => set('description', e.target.value)} onBlur={() => onBlur('description')} rows={3} />
       </FormField>
 
       <FormField name="location" label={t('domain.events.fields.location')}>
-        <input id="location" type="text" value={form.location} onChange={e => set('location', e.target.value)} />
+        <input id="location" type="text" value={form.location} onChange={e => set('location', e.target.value)} onBlur={() => onBlur('location')} />
       </FormField>
 
       <div className="form-grid">
         <FormField name="startsAt" label={t('domain.events.fields.startsAt')} error={errors.startsAt} required>
-          <input id="startsAt" type="datetime-local" value={form.startsAt} onChange={e => set('startsAt', e.target.value)} />
+          <input id="startsAt" type="datetime-local" value={form.startsAt} onChange={e => set('startsAt', e.target.value)} onBlur={() => onBlur('startsAt')} />
         </FormField>
-        <FormField name="endsAt" label={t('domain.events.fields.endsAt')}>
-          <input id="endsAt" type="datetime-local" value={form.endsAt} onChange={e => set('endsAt', e.target.value)} />
+        <FormField name="endsAt" label={t('domain.events.fields.endsAt')} error={errors.endsAt}>
+          <input id="endsAt" type="datetime-local" value={form.endsAt} onChange={e => set('endsAt', e.target.value)} onBlur={() => onBlur('endsAt')} />
         </FormField>
       </div>
 

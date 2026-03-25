@@ -37,6 +37,7 @@ describe('RegisterPage', () => {
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
     expect(screen.getByLabelText('Nome do órgão')).toBeInTheDocument();
     expect(screen.getByLabelText('Senha')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirmar senha')).toBeInTheDocument();
   });
 
   it('renders link back to login', () => {
@@ -87,5 +88,27 @@ describe('RegisterPage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Erro ao criar conta');
+  });
+
+  it('shows inline error when passwords do not match', async () => {
+    renderPage();
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    expect(screen.getByRole('alert')).toHaveTextContent('As senhas não coincidem');
+  });
+
+  it('does not call register when passwords do not match', async () => {
+    renderPage();
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    expect(mockRegister).not.toHaveBeenCalled();
+  });
+
+  it('clears mismatch error when confirm matches password', async () => {
+    renderPage();
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Senha@123');
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });

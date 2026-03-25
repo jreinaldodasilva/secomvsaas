@@ -31,9 +31,9 @@ describe('tArray()', () => {
   it('returns an array for a known array key', () => {
     const result = tArray('password.strength');
     expect(Array.isArray(result)).toBe(true);
-    expect(result).toHaveLength(5);
+    expect(result).toHaveLength(4);
     expect(result[0]).toBe('Fraca');
-    expect(result[4]).toBe('Forte');
+    expect(result[3]).toBe('Forte');
   });
 
   it('returns [] for a non-array key', () => {
@@ -53,7 +53,7 @@ describe('useTranslation()', () => {
 
   it('tArray() returns array values', () => {
     const { result } = renderHook(() => useTranslation());
-    expect(result.current.tArray('password.strength')).toHaveLength(5);
+    expect(result.current.tArray('password.strength')).toHaveLength(4);
   });
 
   it('setLocale ignores unsupported locales', () => {

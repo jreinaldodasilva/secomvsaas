@@ -23,7 +23,33 @@
     "deleteConfirmNamed": "Tem certeza que deseja excluir \"{{name}}\"?",
     "errorLoading": "Erro ao carregar os dados.",
     "retry": "Tentar novamente",
-    "brand": "Secom"
+    "brand": "Secom",
+    "unsavedChanges": "Alterações não salvas",
+    "unsavedChangesMessage": "Você tem alterações não salvas. Deseja descartá-las?",
+    "discard": "Descartar",
+    "status": {
+      "draft": "Rascunho",
+      "review": "Em revisão",
+      "approved": "Aprovado",
+      "published": "Publicado",
+      "archived": "Arquivado",
+      "pending": "Pendente",
+      "confirmed": "Confirmado",
+      "completed": "Concluído",
+      "cancelled": "Cancelado",
+      "no_show": "Não compareceu",
+      "scheduled": "Agendado",
+      "failed": "Falhou",
+      "active": "Ativo",
+      "inactive": "Inativo"
+    },
+    "platform": {
+      "instagram": "Instagram",
+      "facebook": "Facebook",
+      "twitter": "Twitter / X",
+      "youtube": "YouTube",
+      "tiktok": "TikTok"
+    }
   },
   "landing": {
     "nav": {
@@ -101,6 +127,7 @@
     "currentPassword": "Senha atual",
     "newPassword": "Nova senha",
     "confirmPassword": "Confirmar senha",
+    "confirmPasswordMismatch": "As senhas não coincidem",
     "loginError": "Erro ao fazer login",
     "sessionExpired": "Sua sessão expirou. Por favor, faça login novamente.",
     "registerError": "Erro ao criar conta",
@@ -208,7 +235,7 @@
     "uppercase": "Letra maiúscula",
     "number": "Número",
     "special": "Caractere especial",
-    "strength": ["Fraca", "Fraca", "Razoável", "Boa", "Forte"]
+    "strength": ["Fraca", "Razoável", "Boa", "Forte"]
   },
   "lgpd": {
     "message": "Este site utiliza cookies essenciais para o funcionamento da plataforma, em conformidade com a LGPD.",
@@ -272,6 +299,19 @@
         "desc": "Estes termos podem ser atualizados a qualquer momento. Alterações significativas serão comunicadas aos usuários pela plataforma."
       }
     }
+  },
+  "validation": {
+    "required": "Campo obrigatório",
+    "minLength": "Mínimo {{min}} caractere(s)",
+    "invalidEnum": "Selecione uma opção válida",
+    "invalidEmail": "Informe um e-mail válido",
+    "invalidUrl": "Informe uma URL válida",
+    "invalidFormat": "Formato inválido",
+    "invalidCpf": "CPF inválido",
+    "invalidPhone": "Telefone inválido. Use o formato (00) 00000-0000",
+    "invalidState": "Selecione um estado válido",
+    "endsAfterStarts": "O término deve ser após o início",
+    "scheduledInFuture": "O agendamento deve ser em uma data futura"
   },
   "domain": {
     "pressReleases": {

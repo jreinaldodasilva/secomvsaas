@@ -15,7 +15,7 @@ interface Props extends FormComponentProps<SocialMediaFormState> {
   setEditStatus?: (s: string) => void;
 }
 
-export function SocialMediaForm({ form, setForm, errors, editing, editStatus = 'draft', setEditStatus = () => {}, isLoading, onSubmit }: Props) {
+export function SocialMediaForm({ form, setForm, errors, editing, editStatus = 'draft', setEditStatus = () => {}, isLoading, onSubmit, onBlur }: Props) {
   const { t } = useTranslation();
   const set = <K extends keyof SocialMediaFormState>(k: K, v: SocialMediaFormState[K]) =>
     setForm(f => ({ ...f, [k]: v }));
@@ -24,27 +24,27 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
     <form onSubmit={onSubmit} className="form-stack" noValidate>
       <div className="form-grid">
         <FormField name="platform" label={t('domain.socialMedia.fields.platform')}>
-          <select id="platform" value={form.platform} onChange={e => set('platform', e.target.value as SocialMediaFormState['platform'])}>
-            {SOCIAL_MEDIA_PLATFORMS.map(p => <option key={p} value={p}>{p.charAt(0).toUpperCase() + p.slice(1)}</option>)}
+          <select id="platform" value={form.platform} onChange={e => set('platform', e.target.value as SocialMediaFormState['platform'])} onBlur={() => onBlur('platform')}>
+            {SOCIAL_MEDIA_PLATFORMS.map(p => <option key={p} value={p}>{t(`common.platform.${p}`)}</option>)}
           </select>
         </FormField>
         <FormField name="scheduledAt" label={t('domain.socialMedia.fields.scheduledAt')}>
-          <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} />
+          <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} onBlur={() => onBlur('scheduledAt')} />
         </FormField>
       </div>
 
       <FormField name="content" label={t('domain.socialMedia.fields.content')} error={errors.content} required>
-        <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} rows={4} />
+        <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} onBlur={() => onBlur('content')} rows={4} />
       </FormField>
 
-      <FormField name="mediaUrl" label={t('domain.socialMedia.fields.mediaUrl')}>
-        <input id="mediaUrl" type="url" value={form.mediaUrl} onChange={e => set('mediaUrl', e.target.value)} />
+      <FormField name="mediaUrl" label={t('domain.socialMedia.fields.mediaUrl')} error={errors.mediaUrl}>
+        <input id="mediaUrl" type="url" value={form.mediaUrl} onChange={e => set('mediaUrl', e.target.value)} onBlur={() => onBlur('mediaUrl')} />
       </FormField>
 
       {editing && (
         <FormField name="editStatus" label={t('domain.socialMedia.fields.status')}>
           <select id="editStatus" value={editStatus} onChange={e => setEditStatus(e.target.value)}>
-            {SOCIAL_MEDIA_STATUSES.map(s => <option key={s} value={s}>{s}</option>)}
+            {SOCIAL_MEDIA_STATUSES.map(s => <option key={s} value={s}>{t(`common.status.${s}`)}</option>)}
           </select>
         </FormField>
       )}

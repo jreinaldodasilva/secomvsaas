@@ -7,7 +7,9 @@
 
 ---
 
-## Quick Win #1: Replace Zod English Messages with Portuguese Custom Messages
+## Quick Win #1: Replace Zod English Messages with Portuguese Custom Messages ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 All 7 domain `validate()` functions produce hybrid messages by concatenating a translated field label with Zod's built-in English issue message. Users see strings like `"Título — String must contain at least 5 character(s)"` and `"Categoria — Invalid enum value. Expected 'nota_oficial' | 'comunicado' | ..."`. This is the most visible validation defect in the system — a Portuguese government application surfacing technical English to all staff roles.
@@ -31,7 +33,9 @@ Part1 §1.2, Part3 §5.3, Part3 §6.1, Part3 §6.2
 
 ---
 
-## Quick Win #2: Add Navigation Guard to `CrudPage` Modal Close
+## Quick Win #2: Add Navigation Guard to `CrudPage` Modal Close ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 No form in the codebase implements a dirty-state check before modal close. `CrudPage`'s `onClose` handler calls `setModalOpen(false)` directly with no unsaved-changes check. All form state is held in `useState` and is permanently discarded on modal close. This affects all 17 forms — press release body content, event descriptions, and citizen PII are silently lost.
@@ -55,7 +59,9 @@ Part1 §1.2, Part1 §2.1, Part2 §4.1, Part3 §7.5, Part3 §8
 
 ---
 
-## Quick Win #3: Add Zod Format Validation for CPF, Email, and URL Fields
+## Quick Win #3: Add Zod Format Validation for CPF, Email, and URL Fields ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 29 of 46 schema fields (63%) use bare `z.string()` with no validation rules. The most critical gaps are: CPF fields accept any string (including `"abc"`); email fields in `citizenSchema` and `mediaContactSchema` use `z.string()` without `.email()`; URL fields in `clippingSchema.sourceUrl` and `socialMediaSchema.mediaUrl` use `z.string()` without `.url()`. The `CitizenRecordsForm` email field uses `type="email"` for browser-level validation but the Zod schema does not enforce it — programmatic or non-browser submissions bypass the check entirely.
@@ -80,7 +86,9 @@ Part1 §1.2, Part1 §2.3, Part2 §4.3, Part3 §5.4, Part3 §8
 
 ---
 
-## Quick Win #4: Translate Status and Enum `<select>` Option Labels
+## Quick Win #4: Translate Status and Enum `<select>` Option Labels ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 All status `<select>` elements across PressReleaseForm, AppointmentForm, SocialMediaForm, and the UsersPage role select display raw TypeScript constant values: `draft`, `review`, `approved`, `published`, `archived`, `pending`, `confirmed`, `completed`, `cancelled`, `no_show`, `scheduled`, `failed`, `admin`, `assessor`, `social_media`, `atendente`. The `pt-BR.json` locale file has no translations for these values. `StatusBadge` also displays raw keys when no `labelMap` is provided.
@@ -104,7 +112,9 @@ Part1 §1.2, Part1 §2.1, Part2 §3.1, Part3 §6.4
 
 ---
 
-## Quick Win #5: Replace Hardcoded Colors with Semantic Tokens in `PasswordInput` and `Auth.module.css`
+## Quick Win #5: Replace Hardcoded Colors with Semantic Tokens in `PasswordInput` and `Auth.module.css` ✅ Completed
+
+**Status:** Completed — already implemented. Both files use `var(--token-name)` exclusively; no hardcoded hex values present.
 
 **Form/Validation Problem**
 `PasswordInput.tsx` uses 4 hardcoded hex values for the strength indicator (`#e74c3c`, `#f39c12`, `#2ecc71`, `#27ae60`). These do not match the semantic token values (`--color-error: #D32F2F`). `Auth.module.css` contains 7 hardcoded hex values for error, info, and success banners. Both bypass the design token system defined in `src/styles/tokens/index.css`. `PasswordInput` is used in 6 auth forms; `Auth.module.css` is used by all auth pages.
@@ -127,7 +137,9 @@ Part2 §3.8
 
 ---
 
-## Quick Win #6: Add `error` Prop to `PasswordInput`
+## Quick Win #6: Add `error` Prop to `PasswordInput` ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 `PasswordInput` has no `error` prop and cannot display field-level validation errors. In all auth forms where it is used, password errors are displayed as a banner above the form rather than inline next to the field. This is the only shared component in the form system that lacks error state support — `Input`, `FormField`, and `Button` all support error or loading states.
@@ -152,7 +164,9 @@ Part2 §3.1, Part2 §3.2, Part2 §3.5
 
 ---
 
-## Quick Win #7: Add Cross-Field Validation for Event Date Range and Appointment Future-Date
+## Quick Win #7: Add Cross-Field Validation for Event Date Range and Appointment Future-Date ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 Zero cross-field validation rules exist across all 17 forms. The two most impactful missing rules are: (1) `EventForm` — `endsAt` must be after `startsAt`; (2) `AppointmentForm` — `scheduledAt` must be in the future. Both are documented as unimplemented in Part 1 §2.3. Events with inverted date ranges and past appointments can be created and stored without rejection.
@@ -177,7 +191,9 @@ Part1 §1.2, Part1 §2.3, Part2 §4.2, Part3 §8
 
 ---
 
-## Quick Win #8: Add Password Confirmation Field to Auth Forms
+## Quick Win #8: Add Password Confirmation Field to Auth Forms ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 No password confirmation field exists in Register, CitizenRegister, AcceptInvite, or ResetPassword forms. Password typos are undetectable — a user who miskeys their password during registration or reset has no way to catch the error before submission. This is documented as a missing cross-field rule in Part 1 §2.3.
@@ -202,7 +218,9 @@ Part1 §2.1, Part1 §2.3, Part2 §4.4, Part3 §11.3
 
 ---
 
-## Quick Win #9: Consolidate Duplicate Password Validation Logic
+## Quick Win #9: Consolidate Duplicate Password Validation Logic ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 Password validation rules are duplicated between `CitizenRegisterPage` and `RegisterPage` — same rules (length ≥ 8, uppercase, digit), different implementations. Divergence has already occurred: `PasswordInput` shows a "special character" strength rule that `RegisterPage` does not enforce, while `CitizenRegisterPage` also does not enforce it despite showing it in the UI. Two implementations of the same rules with observable inconsistency.
@@ -226,7 +244,9 @@ Part2 §4.4, Part3 §7.7, Part3 §11.3
 
 ---
 
-## Quick Win #10: Add `onBlur` Validation Trigger to Domain Forms
+## Quick Win #10: Add `onBlur` Validation Trigger to Domain Forms ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 All 7 domain forms validate exclusively on submit. The `ContactForm` is the only form that clears individual field errors on `onChange`. No form validates on `onBlur`. Users receive no feedback until they attempt to submit, which increases the error-correction cost on longer forms — CitizenRecordsForm (9 fields) and PressReleaseForm (7 fields) are the most affected.
@@ -251,7 +271,9 @@ Part1 §1.2, Part3 §5.5, Part3 §11.2
 
 ---
 
-## Quick Win #11: Translate Phone Field Validation and Add Format Constraint
+## Quick Win #11: Translate Phone Field Validation and Add Format Constraint ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 Phone fields in AppointmentForm, CitizenRecordsForm, and MediaContactForm use bare `z.string()` with no format or length validation. Any string passes. The fields use `inputMode="tel"` (correct mobile optimization) but the schema does not enforce a valid Brazilian phone number format.
@@ -275,7 +297,9 @@ Part1 §1.2, Part2 §4.3, Part3 §5.4, Part3 §8
 
 ---
 
-## Quick Win #12: Replace `state` (UF) Free-Text Input with a Brazilian State `<select>`
+## Quick Win #12: Replace `state` (UF) Free-Text Input with a Brazilian State `<select>` ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 The `state` field in CitizenRecordsForm is a free-text `<input type="text" maxLength={2}>`. Only `maxLength={2}` constrains the input — no validation against the 27 valid Brazilian state codes (UF). Invalid state codes (e.g., `"XX"`, `"BR"`) pass validation and are stored.
@@ -299,7 +323,9 @@ Part2 §4.3, Part3 §8, Part3 §11.3
 
 ---
 
-## Quick Win #13: Remove `CitizenPortalForm.tsx` Deprecated Shim
+## Quick Win #13: Remove `CitizenPortalForm.tsx` Deprecated Shim ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 `CitizenPortalForm.tsx` is a deprecated re-export shim with a file comment explicitly stating it can be deleted once all references are updated. It is dead code that creates maintenance confusion and risks accidental use in future development.
@@ -323,7 +349,9 @@ Part1 §1.2, Part1 §2.1, Part3 §8
 
 ---
 
-## Quick Win #14: Add `autoComplete` Attributes to Domain Form Fields
+## Quick Win #14: Add `autoComplete` Attributes to Domain Form Fields ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 No domain form field has an `autoComplete` attribute. Auth forms correctly set `autoComplete` on all fields (`email`, `current-password`, `new-password`, `name`). Domain forms — particularly AppointmentForm and CitizenRecordsForm — contain fields like `citizenName`, `citizenPhone`, `email`, `address`, `city` that would benefit from browser autofill, especially for `atendente` staff who enter the same citizen's data repeatedly.
@@ -348,7 +376,9 @@ Part2 §4.3, Part3 §7.4, Part3 §11.2
 
 ---
 
-## Quick Win #15: Add LGPD Consent Checkbox to `CitizenRegisterPage`
+## Quick Win #15: Add LGPD Consent Checkbox to `CitizenRegisterPage` ✅ Completed
+
+**Status:** Completed
 
 **Form/Validation Problem**
 `CitizenRegisterPage` collects citizen name, email, and password but has no explicit LGPD (Lei Geral de Proteção de Dados) consent checkbox. A cookie consent banner is present on the site, but no explicit data processing consent is collected at the point of citizen account creation. This is documented as a compliance gap in Part 3 §10.5.
@@ -376,21 +406,21 @@ Part3 §10.5, Part3 §11.4
 
 | # | Title | Effort | Priority | Modules Affected | Source |
 |---|---|---|---|---|---|
-| QW-01 | Replace Zod English messages with Portuguese custom messages | 2–3 dev-days | P0 | All 7 domain modules | Part1, Part3 |
-| QW-02 | Add navigation guard to `CrudPage` modal close | 1 dev-day | P0 | All 7 domain modules | Part1, Part3 |
-| QW-03 | Add Zod format validation for CPF, email, and URL fields | 2 dev-days | P0 | Appointments, CitizenRecords, MediaContacts, Clippings, SocialMedia | Part1, Part2, Part3 |
-| QW-04 | Translate status and enum `<select>` option labels | 1 dev-day | P1 | PressReleases, Appointments, SocialMedia, Admin/Users | Part1, Part3 |
-| QW-05 | Replace hardcoded colors with semantic tokens in `PasswordInput` and `Auth.module.css` | 1 dev-day | P1 | All auth forms | Part2 |
-| QW-06 | Add `error` prop to `PasswordInput` | 1 dev-day | P1 | All auth forms | Part2 |
-| QW-07 | Add cross-field validation for event date range and appointment future-date | 1 dev-day | P0 | Events, Appointments | Part1, Part2, Part3 |
-| QW-08 | Add password confirmation field to auth forms | 1.5 dev-days | P1 | Register, CitizenRegister, AcceptInvite, ResetPassword | Part1, Part2, Part3 |
-| QW-09 | Consolidate duplicate password validation logic | 1 dev-day | P1 | Register, CitizenRegister | Part2, Part3 |
-| QW-10 | Add `onBlur` validation trigger to domain forms | 2 dev-days | P1 | All 7 domain modules | Part1, Part3 |
-| QW-11 | Translate phone field validation and add format constraint | 1 dev-day | P1 | Appointments, CitizenRecords, MediaContacts | Part1, Part2, Part3 |
-| QW-12 | Replace `state` (UF) free-text input with Brazilian state `<select>` | 0.5 dev-days | P2 | CitizenRecords | Part2, Part3 |
-| QW-13 | Remove `CitizenPortalForm.tsx` deprecated shim | 0.5 dev-days | P1 | CitizenPortal | Part1, Part3 |
-| QW-14 | Add `autoComplete` attributes to domain form fields | 0.5 dev-days | P2 | Appointments, CitizenRecords, MediaContacts | Part2, Part3 |
-| QW-15 | Add LGPD consent checkbox to `CitizenRegisterPage` | 0.5 dev-days | P2 | CitizenPortal | Part3 |
+| QW-01 | Replace Zod English messages with Portuguese custom messages | 2–3 dev-days | P0 | All 7 domain modules | Part1, Part3 | ✅ Completed |
+| QW-02 | Add navigation guard to `CrudPage` modal close | 1 dev-day | P0 | All 7 domain modules | Part1, Part3 | ✅ Completed |
+| QW-03 | Add Zod format validation for CPF, email, and URL fields | 2 dev-days | P0 | Appointments, CitizenRecords, MediaContacts, Clippings, SocialMedia | Part1, Part2, Part3 | ✅ Completed |
+| QW-04 | Translate status and enum `<select>` option labels | 1 dev-day | P1 | PressReleases, Appointments, SocialMedia, Admin/Users | Part1, Part3 | ✅ Completed |
+| QW-05 | Replace hardcoded colors with semantic tokens in `PasswordInput` and `Auth.module.css` | 1 dev-day | P1 | All auth forms | Part2 | ✅ Completed |
+| QW-06 | Add `error` prop to `PasswordInput` | 1 dev-day | P1 | All auth forms | Part2 | ✅ Completed |
+| QW-07 | Add cross-field validation for event date range and appointment future-date | 1 dev-day | P0 | Events, Appointments | Part1, Part2, Part3 | ✅ Completed |
+| QW-08 | Add password confirmation field to auth forms | 1.5 dev-days | P1 | Register, CitizenRegister, AcceptInvite, ResetPassword | Part1, Part2, Part3 | ✅ Completed |
+| QW-09 | Consolidate duplicate password validation logic | 1 dev-day | P1 | Register, CitizenRegister | Part2, Part3 | ✅ Completed |
+| QW-10 | Add `onBlur` validation trigger to domain forms | 2 dev-days | P1 | All 7 domain modules | Part1, Part3 | ✅ Completed |
+| QW-11 | Translate phone field validation and add format constraint | 1 dev-day | P1 | Appointments, CitizenRecords, MediaContacts | Part1, Part2, Part3 | ✅ Completed |
+| QW-12 | Replace `state` (UF) free-text input with Brazilian state `<select>` | 0.5 dev-days | P2 | CitizenRecords | Part2, Part3 | ✅ Completed |
+| QW-13 | Remove `CitizenPortalForm.tsx` deprecated shim | 0.5 dev-days | P1 | CitizenPortal | Part1, Part3 | ✅ Completed |
+| QW-14 | Add `autoComplete` attributes to domain form fields | 0.5 dev-days | P2 | Appointments, CitizenRecords, MediaContacts | Part2, Part3 | ✅ Completed |
+| QW-15 | Add LGPD consent checkbox to `CitizenRegisterPage` | 0.5 dev-days | P2 | CitizenPortal | Part3 | ✅ Completed |
 | **Total** | | **~17 dev-days** | | | |
 
 ### Secom-Specific Notes

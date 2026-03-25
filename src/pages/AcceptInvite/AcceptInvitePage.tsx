@@ -6,6 +6,7 @@ import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
+import { passwordMatchError } from '@/validation/shared/passwordMatch';
 import s from '@/pages/Auth.module.css';
 
 export function AcceptInvitePage() {
@@ -16,7 +17,7 @@ export function AcceptInvitePage() {
   const [params] = useSearchParams();
   const token = params.get('token') || '';
 
-  const [form, setForm] = useState({ name: '', password: '' });
+  const [form, setForm] = useState({ name: '', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [expired, setExpired] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -24,8 +25,11 @@ export function AcceptInvitePage() {
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [field]: e.target.value }));
 
+  const confirmError = passwordMatchError(form.password, form.confirmPassword);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (confirmError) return;
     setError('');
     setLoading(true);
     try {
@@ -95,6 +99,18 @@ export function AcceptInvitePage() {
                   minLength={8}
                   showStrength
                   autoComplete="new-password"
+                />
+              </div>
+
+              <div className={s.field}>
+                <PasswordInput
+                  id="confirmPassword"
+                  label={t('auth.confirmPassword')}
+                  value={form.confirmPassword}
+                  onChange={set('confirmPassword')}
+                  required
+                  autoComplete="new-password"
+                  error={confirmError ? t(confirmError) : undefined}
                 />
               </div>
 

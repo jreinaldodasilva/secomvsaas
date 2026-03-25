@@ -32,6 +32,7 @@ describe('ResetPasswordPage', () => {
   it('renders password field and submit button when token is present', () => {
     renderPage('abc123');
     expect(screen.getByLabelText('Nova senha')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirmar senha')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Redefinir senha' })).toBeInTheDocument();
   });
 
@@ -56,5 +57,20 @@ describe('ResetPasswordPage', () => {
 
     // After success the form is gone — button was active during submission
     expect(screen.queryByRole('button', { name: 'Redefinir senha' })).not.toBeInTheDocument();
+  });
+
+  it('shows inline error when passwords do not match', async () => {
+    renderPage('abc123');
+    await userEvent.type(screen.getByLabelText('Nova senha'), 'Nova@Senha1');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    expect(screen.getByRole('alert')).toHaveTextContent('As senhas não coincidem');
+  });
+
+  it('does not call resetPassword when passwords do not match', async () => {
+    renderPage('abc123');
+    await userEvent.type(screen.getByLabelText('Nova senha'), 'Nova@Senha1');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    await userEvent.click(screen.getByRole('button', { name: 'Redefinir senha' }));
+    expect(mockResetPassword).not.toHaveBeenCalled();
   });
 });

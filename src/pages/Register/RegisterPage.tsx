@@ -5,6 +5,8 @@ import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
+import { passwordMatchError } from '@/validation/shared/passwordMatch';
+import { validatePassword } from '@/validation/shared/passwordRules';
 import s from '@/pages/Auth.module.css';
 
 export function RegisterPage() {
@@ -13,19 +15,23 @@ export function RegisterPage() {
   const { t } = useTranslation();
   usePageTitle(t('auth.register'));
 
-  const [form, setForm] = useState({ name: '', email: '', password: '', companyName: '' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', companyName: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const set = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm(prev => ({ ...prev, [field]: e.target.value }));
 
+  const confirmError = passwordMatchError(form.password, form.confirmPassword);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (validatePassword(form.password) || confirmError) return;
     setError('');
     setLoading(true);
     try {
-      await register(form);
+      const { confirmPassword: _, ...payload } = form;
+      await register(payload);
       navigate('/admin/dashboard');
     } catch (err: unknown) {
       setError(err instanceof ApiError ? err.message : t('auth.registerError'));
@@ -101,6 +107,17 @@ export function RegisterPage() {
               showStrength
               autoComplete="new-password"
               wrapperClassName={s.field}
+            />
+
+            <PasswordInput
+              id="confirmPassword"
+              label={t('auth.confirmPassword')}
+              value={form.confirmPassword}
+              onChange={set('confirmPassword')}
+              required
+              autoComplete="new-password"
+              wrapperClassName={s.field}
+              error={confirmError ? t(confirmError) : undefined}
             />
 
             <Button type="submit" fullWidth isLoading={loading}>{t('auth.register')}</Button>

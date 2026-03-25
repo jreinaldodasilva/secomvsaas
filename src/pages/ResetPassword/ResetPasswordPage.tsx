@@ -5,6 +5,7 @@ import { PasswordInput, Button } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
+import { passwordMatchError } from '@/validation/shared/passwordMatch';
 import s from '@/pages/Auth.module.css';
 
 export function ResetPasswordPage() {
@@ -14,12 +15,16 @@ export function ResetPasswordPage() {
   const token = params.get('token') || '';
 
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const confirmError = passwordMatchError(password, confirmPassword);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    if (confirmError) return;
     setError('');
     setLoading(true);
     try {
@@ -79,6 +84,18 @@ export function ResetPasswordPage() {
                   showStrength
                   autoComplete="new-password"
                   autoFocus
+                />
+              </div>
+
+              <div className={s.field}>
+                <PasswordInput
+                  id="confirmPassword"
+                  label={t('auth.confirmPassword')}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  autoComplete="new-password"
+                  error={confirmError ? t(confirmError) : undefined}
                 />
               </div>
 

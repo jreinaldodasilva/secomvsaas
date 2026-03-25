@@ -41,17 +41,17 @@ describe('validatePressRelease', () => {
 // ── Appointment ───────────────────────────────────────────────────────────────
 describe('validateAppointment', () => {
   it('returns no errors for valid input', () => {
-    const form = { ...emptyAppointmentForm, citizenName: 'João Silva', service: 'Atendimento', scheduledAt: '2025-12-01T10:00' };
+    const form = { ...emptyAppointmentForm, citizenName: 'João Silva', service: 'Atendimento', scheduledAt: '2099-12-31T10:00' };
     expect(validateAppointment(form, t)).toEqual({});
   });
 
   it('errors when citizenName < 2 chars', () => {
-    const form = { ...emptyAppointmentForm, citizenName: 'J', service: 'Atendimento', scheduledAt: '2025-12-01T10:00' };
+    const form = { ...emptyAppointmentForm, citizenName: 'J', service: 'Atendimento', scheduledAt: '2099-12-31T10:00' };
     expect(validateAppointment(form, t).citizenName).toBeDefined();
   });
 
   it('errors when service is empty', () => {
-    const form = { ...emptyAppointmentForm, citizenName: 'João', service: '', scheduledAt: '2025-12-01T10:00' };
+    const form = { ...emptyAppointmentForm, citizenName: 'João', service: '', scheduledAt: '2099-12-31T10:00' };
     expect(validateAppointment(form, t).service).toBeDefined();
   });
 
@@ -68,12 +68,12 @@ describe('validateAppointment', () => {
 // ── Event ─────────────────────────────────────────────────────────────────────
 describe('validateEvent', () => {
   it('returns no errors for valid input', () => {
-    const form = { ...emptyEventForm, title: 'Evento público', startsAt: '2025-12-01T10:00' };
+    const form = { ...emptyEventForm, title: 'Evento público', startsAt: '2099-12-31T10:00' };
     expect(validateEvent(form, t)).toEqual({});
   });
 
   it('errors when title < 3 chars', () => {
-    const form = { ...emptyEventForm, title: 'Ev', startsAt: '2025-12-01T10:00' };
+    const form = { ...emptyEventForm, title: 'Ev', startsAt: '2099-12-31T10:00' };
     expect(validateEvent(form, t).title).toBeDefined();
   });
 

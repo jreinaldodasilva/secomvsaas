@@ -48,6 +48,7 @@ describe('AcceptInvitePage', () => {
     renderPage('invite-token');
     expect(screen.getByLabelText('Nome')).toBeInTheDocument();
     expect(screen.getByLabelText('Senha')).toBeInTheDocument();
+    expect(screen.getByLabelText('Confirmar senha')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Criar conta' })).toBeInTheDocument();
   });
 
@@ -116,6 +117,22 @@ describe('AcceptInvitePage', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Erro ao aceitar convite');
+  });
+
+  it('shows inline error when passwords do not match', async () => {
+    renderPage('invite-token');
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    expect(screen.getByRole('alert')).toHaveTextContent('As senhas não coincidem');
+  });
+
+  it('does not call acceptInvite when passwords do not match', async () => {
+    renderPage('invite-token');
+    await userEvent.type(screen.getByLabelText('Nome'), 'Bob');
+    await userEvent.type(screen.getByLabelText('Senha'), 'Senha@123');
+    await userEvent.type(screen.getByLabelText('Confirmar senha'), 'Diferente@1');
+    await userEvent.click(screen.getByRole('button', { name: 'Criar conta' }));
+    expect(mockAcceptInvite).not.toHaveBeenCalled();
   });
 
   it('disables submit button while loading', async () => {

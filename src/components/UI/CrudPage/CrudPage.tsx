@@ -67,6 +67,8 @@ export interface FormComponentProps<TForm> {
   editing: boolean;
   isLoading: boolean;
   onSubmit: (e: React.FormEvent) => void;
+  onBlur: (field: string) => void;
+  touched: Set<string>;
   [key: string]: unknown;
 }
 
@@ -121,6 +123,32 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   const [form, setForm] = useState<TForm>(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null);
+  const [originalForm, setOriginalForm] = useState<TForm>(emptyForm);
+  const [discardOpen, setDiscardOpen] = useState(false);
+  const [touched, setTouched] = useState<Set<string>>(new Set());
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleBlur = (field: string) => {
+    setTouched(prev => {
+      if (prev.has(field)) return prev;
+      const next = new Set(prev);
+      next.add(field);
+      return next;
+    });
+    const allErrors = validate(form, !!editing);
+    setErrors(allErrors);
+  };
+
+  const isDirty = JSON.stringify(form) !== JSON.stringify(originalForm);
+
+  const requestClose = () => {
+    if (isDirty) { setDiscardOpen(true); } else { setModalOpen(false); }
+  };
+
+  const confirmDiscard = () => {
+    setDiscardOpen(false);
+    setModalOpen(false);
+  };
 
   // Auto-open create modal when navigated from a deep-link quick action (e.g. ?create=true)
   useEffect(() => {
@@ -138,19 +166,27 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   const openCreate = () => {
     setEditing(null);
     setForm(emptyForm);
+    setOriginalForm(emptyForm);
     setErrors({});
+    setTouched(new Set());
+    setSubmitted(false);
     setModalOpen(true);
   };
 
   const openEdit = (item: TItem) => {
     setEditing(item);
-    setForm(toFormState(item));
+    const fs = toFormState(item);
+    setForm(fs);
+    setOriginalForm(fs);
     setErrors({});
+    setTouched(new Set());
+    setSubmitted(false);
     setModalOpen(true);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitted(true);
     const errs = validate(form, !!editing);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     const payload = buildPayload(form, !!editing, editing);
@@ -231,20 +267,30 @@ export function CrudPage<TItem extends { id: string }, TForm>({
       />
       <Modal
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={requestClose}
         title={editing ? editModalTitle : createModalTitle}
         size={modalSize}
       >
         <FormComponent
           form={form}
           setForm={setForm}
-          errors={errors}
+          errors={submitted ? errors : Object.fromEntries(Object.entries(errors).filter(([k]) => touched.has(k)))}
           editing={!!editing}
           isLoading={isCreatePending || isUpdatePending}
           onSubmit={handleSubmit}
+          onBlur={handleBlur}
+          touched={touched}
           {...formExtraProps}
         />
       </Modal>
+      <ConfirmDialog
+        isOpen={discardOpen}
+        onClose={() => setDiscardOpen(false)}
+        onConfirm={confirmDiscard}
+        title={t('common.unsavedChanges')}
+        message={t('common.unsavedChangesMessage')}
+        confirmLabel={t('common.discard')}
+      />
       <ConfirmDialog
         isOpen={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}

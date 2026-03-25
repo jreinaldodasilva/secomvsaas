@@ -13,13 +13,14 @@ interface TestForm { name: string }
 
 const emptyForm: TestForm = { name: '' };
 
-function TestForm({ form, setForm, errors, isLoading, onSubmit }: FormComponentProps<TestForm>) {
+function TestForm({ form, setForm, errors, isLoading, onSubmit, onBlur }: FormComponentProps<TestForm>) {
   return (
     <form onSubmit={onSubmit}>
       <input
         aria-label="name"
         value={form.name}
         onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+        onBlur={() => onBlur('name')}
       />
       {errors.name && <span role="alert">{errors.name}</span>}
       <button type="submit" disabled={isLoading}>Save</button>
@@ -225,6 +226,85 @@ describe('CrudPage', () => {
       expect(screen.getByText('New Item')).toBeInTheDocument();
       expect(screen.getByText('Edit Alpha')).toBeInTheDocument();
       expect(screen.getByText('Delete Alpha')).toBeInTheDocument();
+    });
+  });
+
+  describe('onBlur validation', () => {
+    it('does not show error before field is blurred', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    });
+
+    it('shows error for a field after it is blurred with invalid value', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.click(screen.getByLabelText('name'));
+      await userEvent.tab();
+      expect(screen.getByRole('alert')).toHaveTextContent('Name required');
+    });
+
+    it('does not show errors for untouched fields after one field is blurred', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.click(screen.getByLabelText('name'));
+      await userEvent.tab();
+      // Only the blurred field shows an error — no other alerts
+      expect(screen.getAllByRole('alert')).toHaveLength(1);
+    });
+
+    it('shows all errors after submit attempt regardless of touched state', async () => {
+      const validate = vi.fn((form: TestForm) => ({
+        name: form.name ? undefined : 'Name required',
+        extra: 'Extra error',
+      } as Record<string, string>));
+      render(<CrudPage {...makeProps({ validate })} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.click(screen.getByText('Save'));
+      expect(screen.getAllByRole('alert').length).toBeGreaterThanOrEqual(1);
+    });
+  });
+
+  describe('dirty-state navigation guard', () => {
+    it('closes modal immediately when form is untouched', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      expect(screen.getByRole('dialog')).toBeInTheDocument();
+      await userEvent.click(screen.getByRole('button', { name: /fechar/i }));
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+
+    it('shows discard confirm dialog when form is dirty and user tries to close', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.type(screen.getByLabelText('name'), 'Something');
+      await userEvent.click(screen.getByRole('button', { name: /fechar/i }));
+      expect(screen.getByText('Alterações não salvas')).toBeInTheDocument();
+    });
+
+    it('keeps modal open when user cancels the discard dialog', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.type(screen.getByLabelText('name'), 'Something');
+      await userEvent.click(screen.getByRole('button', { name: /fechar/i }));
+      await userEvent.click(screen.getByRole('button', { name: /cancelar/i }));
+      expect(screen.getByLabelText('name')).toBeInTheDocument();
+    });
+
+    it('closes modal when user confirms discard', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('New Item'));
+      await userEvent.type(screen.getByLabelText('name'), 'Something');
+      await userEvent.click(screen.getByRole('button', { name: /fechar/i }));
+      await userEvent.click(screen.getByRole('button', { name: /descartar/i }));
+      expect(screen.queryByLabelText('name')).not.toBeInTheDocument();
+    });
+
+    it('does not show discard dialog when edit form is unchanged', async () => {
+      render(<CrudPage {...makeProps()} />);
+      await userEvent.click(screen.getByText('Edit Alpha'));
+      await userEvent.click(screen.getByRole('button', { name: /fechar/i }));
+      expect(screen.queryByText('Alterações não salvas')).not.toBeInTheDocument();
     });
   });
 

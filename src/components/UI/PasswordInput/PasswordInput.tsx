@@ -1,22 +1,16 @@
 import { useState, useMemo, InputHTMLAttributes } from 'react';
 import { useTranslation } from '@/i18n';
+import { PASSWORD_RULES } from '@/validation/shared/passwordRules';
 import styles from './PasswordInput.module.css';
 
 interface PasswordInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   showStrength?: boolean;
   label?: string;
   wrapperClassName?: string;
+  error?: string;
 }
 
-const RULES = [
-  { test: (v: string) => v.length >= 8,          key: 'password.minLength' },
-  { test: (v: string) => /[A-Z]/.test(v),         key: 'password.uppercase' },
-  { test: (v: string) => /[0-9]/.test(v),         key: 'password.number' },
-  { test: (v: string) => /[^A-Za-z0-9]/.test(v), key: 'password.special' },
-];
-
 const STRENGTH_LABEL_CLASSES = [
-  styles.strengthWeak,
   styles.strengthWeak,
   styles.strengthFair,
   styles.strengthGood,
@@ -24,7 +18,6 @@ const STRENGTH_LABEL_CLASSES = [
 ] as const;
 
 const STRENGTH_BAR_CLASSES = [
-  styles.strengthBarWeak,
   styles.strengthBarWeak,
   styles.strengthBarFair,
   styles.strengthBarGood,
@@ -46,12 +39,13 @@ function EyeIcon({ open }: { open: boolean }) {
   );
 }
 
-export function PasswordInput({ showStrength = false, label, value, wrapperClassName, ...props }: PasswordInputProps) {
+export function PasswordInput({ showStrength = false, label, value, wrapperClassName, error, ...props }: PasswordInputProps) {
   const { t, tArray } = useTranslation();
   const [visible, setVisible] = useState(false);
   const val = String(value ?? '');
+  const errorId = props.id ? `${props.id}-error` : undefined;
 
-  const passed = useMemo(() => RULES.filter((r) => r.test(val)), [val]);
+  const passed = useMemo(() => PASSWORD_RULES.filter((r) => r.test(val)), [val]);
   const score = passed.length;
   const strengthLabels = tArray('password.strength');
 
@@ -64,6 +58,8 @@ export function PasswordInput({ showStrength = false, label, value, wrapperClass
           type={visible ? 'text' : 'password'}
           value={value}
           className={styles.input}
+          aria-invalid={error ? true : undefined}
+          aria-describedby={errorId}
         />
         <button
           type="button"
@@ -74,19 +70,22 @@ export function PasswordInput({ showStrength = false, label, value, wrapperClass
           <EyeIcon open={visible} />
         </button>
       </div>
+      {error && (
+        <p id={errorId} role="alert" className={styles.errorMsg}>{error}</p>
+      )}
       {showStrength && val.length > 0 && (
         <div className={styles.strength} aria-live="polite">
           <div className={styles.strengthTrack}>
             <div
               className={`${styles.strengthBar} ${STRENGTH_BAR_CLASSES[score]}`}
-              style={{ width: `${(score / RULES.length) * 100}%` }}
+              style={{ width: `${(score / PASSWORD_RULES.length) * 100}%` }}
             />
           </div>
           <span className={`${styles.strengthLabel} ${STRENGTH_LABEL_CLASSES[score]}`}>
             {strengthLabels[score]}
           </span>
           <ul className={styles.rules}>
-            {RULES.map((r) => (
+            {PASSWORD_RULES.map((r) => (
               <li key={r.key} className={r.test(val) ? styles.rulePass : styles.ruleFail}>
                 {t(r.key)}
               </li>

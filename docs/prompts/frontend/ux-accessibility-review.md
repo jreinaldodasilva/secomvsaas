@@ -1,77 +1,133 @@
-# Secom Frontend Review
+# Secom Frontend UX, Accessibility & Visual Design Audit
 
-## UI/UX, Accessibility & Responsive Design
+## Initial Setup & Analysis
 
 ### Objective
 
-Conduct a **holistic user experience audit** of the Secom frontend, evaluating:
+Perform a **comprehensive audit of the UX, accessibility, responsive design, and visual modernity** of the Secom frontend. The goal is to document the complete UX ecosystem, evaluate accessibility compliance, assess visual design quality and modernity, and produce a **clear reference document** for governance, onboarding, and long-term maintenance.
 
-* Visual and design consistency
-* Responsive and adaptive behavior across devices
-* Accessibility compliance (WCAG 2.1 AA)
-* Interaction quality and motion design
-* Loading, feedback, and error handling
-* Mobile-specific usability
+**Project Context**: Secom is a communication management system for the Secretaria de Comunicação, built on the vSaaS boilerplate. UX and visual design are central to:
+- **Modules**: Press releases, media contacts, clipping, events, appointments, citizen portal, social media
+- **Roles**: super_admin, admin, assessor, social_media, atendente, citizen
+- **Key Features**: Multi-tenant dashboard, role-based UI, real-time updates, form-heavy workflows
+- **Styling**: Custom CSS design token system (`src/styles/tokens/index.css`) consumed via `var()` in CSS Modules per component and global utility classes in `src/styles/global.css`
+- **Build Tool**: Vite with React 18
 
-The goal is to identify **UX risks, accessibility gaps, and improvement opportunities**, and to produce a clear reference document for design, frontend, and product teams.
+Assume you have **full read access to the frontend repository**, including source code, configuration files, and documentation.
 
-Assume you have **full read access to the frontend codebase** and can reason about UI behavior based on components, styles, and layout logic.
+Cross-reference the previously generated architecture overview and component library documentation:
+
+```
+docs/architecture/frontend/overview.md
+docs/architecture/frontend/component-library.md
+docs/architecture/frontend/navigation-userflows.md
+docs/architecture/frontend/forms-validation.md
+```
+
+Use them to understand state management context, routing structure, component inventory, and design system constraints. Do not re-document what already exists there. Do not contradict documented findings unless evidence shows inconsistencies.
 
 ---
 
-## Analysis Guidelines
+## Scope & Analysis Guidelines
 
-* Base findings on observable UI patterns, styles, and component usage.
-* Distinguish **visual consistency**, **usability**, and **accessibility** concerns.
-* Consider both **first-time users** and **experienced users**.
-* Evaluate both **desktop and mobile** experiences.
-* Classify findings using severity indicators.
+* Base all findings strictly on observable code and configuration.
+* Do not assume undocumented architecture or design decisions.
+* Evaluate both happy paths and error/edge cases.
+* Prefer verifiable facts and measurable metrics over speculation.
+* Clearly separate facts from interpretation.
+* Mark anything unverifiable as: *"Not inferable from repository structure."*
+* Keep recommendations **high-level**, not implementation instructions.
 
 ### Severity Classification
 
 * 🟥 Critical – Blocks usage or violates accessibility standards
-* 🟧 High – Strong usability or consistency issue
-* 🟨 Medium – UX friction or polish issue
+* 🟧 High – Strong usability, consistency, or visual quality issue
+* 🟨 Medium – UX friction, polish, or modernity gap
 * 🟩 Low – Optimization or enhancement opportunity
 
 ---
 
 ## Tasks
 
-### 1. Design Consistency Audit
-
-Evaluate **visual consistency** across **10–15 representative pages**, including authentication, dashboards, and core workflows.
-
-Assess consistency in:
-
-* Color usage and token adherence
-* Typography (font, scale, hierarchy)
-* Spacing and layout rhythm
-* Component styling and variants
-* Visual hierarchy and alignment
-
 ---
 
-#### Required Documentation
+### 1. Design Consistency & Visual Modernity Audit
 
-| Page | Color Consistency | Typography | Spacing | Layout | Issues |
-| ---- | ----------------- | ---------- | ------- | ------ | ------ |
+Evaluate **visual consistency and modernity** across **10–15 representative pages**, including authentication, dashboards, and core module workflows.
 
-Also summarize:
+Assess consistency and modernity in:
 
-* Common inconsistencies
-* Components most often violating design standards
-* Impact on brand and usability
+* Color usage and design token adherence (`src/styles/tokens/index.css`)
+* Typography (font choice, scale, hierarchy, readability)
+* Spacing and layout rhythm (grid, whitespace, density)
+* Component styling, variants, and visual states
+* Visual hierarchy, alignment, and information architecture
+* Use of modern UI patterns: cards, surfaces, elevation/shadow, rounded corners
+* Iconography consistency and quality
+* Micro-interactions and hover/focus states
+* Overall aesthetic alignment with modern government digital services
 
 ---
 
 #### Deliverable
 
-Visual consistency audit report with findings and examples.
+A **design consistency and modernity audit table**:
+
+| Page | Color Consistency | Typography | Spacing | Layout | Modernity Score | Issues |
+| ---- | ----------------- | ---------- | ------- | ------ | --------------- | ------ |
+
+Also summarize:
+
+* Common inconsistencies across pages
+* Components most often violating design standards
+* Areas where the UI feels dated or inconsistent with modern design expectations
+* Token adoption gaps (hardcoded values vs. semantic tokens)
+* Impact on brand perception and usability
+
+**Secom-Specific Focus**:
+- Does the visual design reflect the institutional identity expected of a government communication secretariat?
+- Are citizen-facing pages (citizen portal, appointments) visually distinct and approachable for general audiences?
+- Are staff-facing dashboards (press releases, clipping, social media) information-dense but visually organized?
 
 ---
 
-### 2. Responsive Design Evaluation
+### 2. Layout & Style Modernization Assessment
+
+Evaluate the current layout and styling approach against modern frontend design standards and identify opportunities for improvement.
+
+Analyze:
+
+* **Layout patterns**: Use of CSS Grid, Flexbox, and layout primitives vs. legacy approaches
+* **Component surface design**: Card elevation, border usage, background layering, and depth cues
+* **Color system**: Palette range, semantic color usage, dark mode readiness
+* **Typography system**: Font pairing, scale steps, line-height, and letter-spacing
+* **Spacing system**: Consistency of spacing scale, padding/margin token usage
+* **Interactive states**: Hover, focus, active, and disabled state design quality
+* **Empty and loading states**: Visual quality and consistency of skeleton screens, spinners, and empty state illustrations
+* **Data visualization**: Table design, list density, and readability of data-heavy views
+* **Form aesthetics**: Input field styling, label placement, and error state visual design
+
+---
+
+#### Modernization Gap Table
+
+| Area | Current State | Modern Standard | Gap Severity | Notes |
+| ---- | ------------- | --------------- | ------------ | ----- |
+
+Classify gaps:
+* 🟥 Significantly dated — impacts credibility or usability
+* 🟧 Noticeable gap — inconsistent with modern expectations
+* 🟨 Minor gap — polish opportunity
+* 🟩 Acceptable — meets modern baseline
+
+**Secom-Specific Focus**:
+- Does the dashboard layout leverage modern patterns (sidebar navigation, content cards, data tables with actions)?
+- Are module pages (press releases, events, clipping) using consistent list/detail layout patterns?
+- Is the design system token coverage sufficient to support a visual refresh without component rewrites?
+
+---
+
+### 3. Responsive Design Evaluation
 
 Evaluate responsiveness and layout behavior across defined breakpoints.
 
@@ -99,21 +155,19 @@ Simulated devices:
 
 Evaluate:
 
-* Layout breakage
+* Layout breakage and overflow
 * Horizontal scrolling
-* Content overflow
-* Navigation behavior
-* Readability and spacing
+* Navigation behavior and mobile menu
+* Readability and spacing at each breakpoint
+* Component reflow quality
+
+**Secom-Specific Focus**:
+- Are citizen-facing pages (appointments, citizen portal) fully functional on mobile, given likely mobile access patterns?
+- Are staff dashboards (press releases, clipping) usable on tablet for field use?
 
 ---
 
-#### Deliverable
-
-Responsive design evaluation with summarized issues and severity.
-
----
-
-### 3. Accessibility Compliance Audit (WCAG 2.1 AA)
+### 4. Accessibility Compliance Audit (WCAG 2.1 AA)
 
 Evaluate accessibility across key pages and components.
 
@@ -128,9 +182,9 @@ Document results from:
 
 Capture:
 
-* Accessibility scores
-* Rule violations
-* Affected components or pages
+* Accessibility scores per page
+* Rule violations and affected components
+* Recurring patterns across modules
 
 ---
 
@@ -139,9 +193,9 @@ Capture:
 Evaluate:
 
 * Logical tab order
-* Focus visibility
+* Focus visibility and focus ring styling
 * Keyboard access to all interactive elements
-* Modal focus trapping
+* Modal and drawer focus trapping
 * Escape and close behaviors
 
 ---
@@ -150,29 +204,29 @@ Evaluate:
 
 Evaluate expected behavior with screen readers (NVDA / VoiceOver):
 
-* Navigation landmarks
+* Navigation landmarks (`<main>`, `<nav>`, `<aside>`)
+* Heading hierarchy
 * Form labels and instructions
 * Error and validation announcements
-* Dynamic content updates
+* Dynamic content updates (live regions)
 
 ---
 
 #### Color Contrast Audit
 
-| Element | Foreground | Background | Contrast Ratio | Pass/Fail |
-| ------- | ---------- | ---------- | -------------- | --------- |
+| Element | Foreground | Background | Contrast Ratio | WCAG Level | Pass/Fail |
+| ------- | ---------- | ---------- | -------------- | ---------- | --------- |
 
-Evaluate text, buttons, links, and UI states.
+Evaluate text, buttons, links, icons, and UI states (error, warning, success).
+
+**Secom-Specific Focus**:
+- Are citizen-facing pages accessible to users with limited digital literacy and assistive technology needs?
+- Are role-based UI elements (e.g., approval status badges, role indicators) accessible to screen readers?
+- Are semantic color tokens (`--color-error`, `--color-success`, `--color-warning`) meeting contrast requirements?
 
 ---
 
-#### Deliverable
-
-Comprehensive accessibility compliance report with WCAG references and severity classification.
-
----
-
-### 4. Animation & Interaction Quality
+### 5. Animation & Interaction Quality
 
 Inventory and evaluate all UI animations and transitions.
 
@@ -182,61 +236,52 @@ Inventory and evaluate all UI animations and transitions.
 Evaluate:
 
 * Perceived performance (60fps target)
-* Use of GPU-friendly properties
+* Use of GPU-friendly properties (`transform`, `opacity`)
 * Respect for `prefers-reduced-motion`
-* Functional vs decorative animations
+* Functional vs. decorative animations
+* Consistency of transition durations and easing curves
 
 ---
 
-#### Deliverable
-
-Animation and interaction quality report.
-
----
-
-### 5. Loading States & User Feedback
+### 6. Loading States & User Feedback
 
 Evaluate how the UI communicates system status.
 
 Document:
 
 * Loading indicators (spinners, skeletons, progress bars)
-* Success feedback (toasts, confirmations)
-* Error feedback (clarity, recovery options)
-* Empty states (messaging, CTAs, guidance)
+* Success feedback (toasts, confirmations, inline messages)
+* Error feedback (clarity, recovery options, retry affordances)
+* Empty states (messaging, CTAs, visual quality)
 
 Assess:
 
-* Consistency
-* Visibility
-* Timing
-* Clarity
+* Consistency across modules
+* Visibility and timing
+* Clarity of messaging (Portuguese, non-technical language)
+
+**Secom-Specific Focus**:
+- Are loading and error states consistent across all 7 modules?
+- Are approval workflow status changes (press releases, events) communicated clearly to the relevant roles?
 
 ---
 
-#### Deliverable
-
-Feedback and system-status communication documentation.
-
----
-
-### 6. Mobile-Specific UX Evaluation
+### 7. Mobile-Specific UX Evaluation
 
 Focus on **touch-first usability**.
 
 Evaluate:
 
 * Touch target sizes (≥44×44px)
-* Mobile navigation ergonomics
-* Form usability on mobile keyboards
+* Mobile navigation ergonomics (thumb zones, bottom navigation)
+* Form usability on mobile keyboards (`inputMode`, `type` attributes)
 * Scroll behavior and gesture conflicts
 * Perceived mobile performance
+* Sticky/fixed CTAs and their impact on content visibility
 
----
-
-#### Deliverable
-
-Mobile UX evaluation with prioritized findings.
+**Secom-Specific Focus**:
+- Are citizen-facing flows (appointment booking, citizen registration) optimized for one-handed mobile use?
+- Are staff workflows (clipping entry, social media scheduling) acceptable on mobile for field use?
 
 ---
 
@@ -248,30 +293,60 @@ Mobile UX evaluation with prioritized findings.
 `docs/architecture/frontend/ux-accessibility-part-1.md`
 `docs/architecture/frontend/ux-accessibility-part-2.md`
 
+Note: Consider splitting into additional parts if the document becomes large.
+
 ---
 
 ### Required Sections
 
 1. Executive Summary
-2. Design Consistency Audit
-3. Responsive Design Evaluation
-4. Accessibility Compliance Report
-5. Keyboard Navigation & Screen Reader Support
-6. Animation & Interaction Quality
-7. Loading States & User Feedback
-8. Mobile UX Analysis
-9. Improvement Priorities & Risk Summary
+2. Design Consistency & Visual Modernity Audit
+3. Layout & Style Modernization Assessment
+4. Responsive Design Evaluation
+5. Accessibility Compliance Report
+6. Keyboard Navigation & Screen Reader Support
+7. Animation & Interaction Quality
+8. Loading States & User Feedback
+9. Mobile UX Analysis
+10. Secom-Specific Patterns (role-based UI, citizen portal, approval workflows)
+11. High-Level Recommendations & Improvement Priorities
+
+---
+
+### Executive Summary Must Include
+
+* Overall UX maturity and visual design quality
+* Accessibility compliance level
+* Responsive design readiness
+* Visual modernity assessment
+* Mobile experience quality
+* Top 5 risks by severity
 
 ---
 
 ## Formatting & Style Requirements
 
 * Use structured Markdown
-* Use tables for audits and comparisons
-* Clearly label severity levels
-* Maintain neutral, analytical tone
+* Prefer tables for audits and comparisons
+* Use Mermaid or ASCII diagrams where they add clarity
+* Maintain a neutral, analytical tone
 * Avoid speculative assumptions
-* Avoid implementation-level instructions
+* Avoid step-by-step refactoring instructions
+* Align with previously documented architecture
+
+---
+
+## Secom-Specific Analysis Points
+
+When auditing UX and visual design, pay special attention to:
+
+* **Role-Based UI**: How the interface adapts layout, navigation, and visual hierarchy based on roles (super_admin, admin, assessor, social_media, atendente, citizen)
+* **Module Coverage**: Whether all 7 Secom modules have consistent UX patterns, visual language, and interaction quality
+* **Approval Workflows**: Whether press release and event approval states are visually clear and actionable
+* **Citizen Portal**: Whether citizen-facing pages are visually approachable, accessible, and structurally separated from staff interfaces
+* **Government Context**: Whether the visual design meets the credibility and accessibility expectations of a government digital service
+* **Design Token Adoption**: Whether all visual properties (color, spacing, typography) use semantic tokens from `src/styles/tokens/index.css` consistently
+* **Modernity Baseline**: Whether the UI aligns with current design standards (2023–2025) for government and SaaS dashboards
 
 ---
 
@@ -279,9 +354,10 @@ Mobile UX evaluation with prioritized findings.
 
 The analysis should:
 
-* Clearly identify UX and accessibility risks
-* Highlight inconsistencies affecting usability
-* Support design system evolution
+* Clearly identify UX, accessibility, and visual design risks
+* Highlight inconsistencies affecting usability and brand credibility
+* Assess the gap between current visual design and modern standards
+* Support design system evolution and visual refresh planning
 * Improve inclusivity and mobile experience
-* Serve as a baseline UX quality reference
-
+* Integrate coherently with previously generated architectural documents
+* Serve as a baseline UX quality reference for design, frontend, and product teams

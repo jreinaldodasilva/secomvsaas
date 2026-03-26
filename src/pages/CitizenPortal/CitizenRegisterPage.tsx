@@ -1,17 +1,21 @@
 import { useState, FormEvent } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
 import { passwordMatchError } from '@/validation/shared/passwordMatch';
 import { validatePassword } from '@/validation/shared/passwordRules';
-import s from '@/pages/Auth.module.css';
+import styles from './CitizenPortal.module.css';
 
 export function CitizenRegisterPage() {
   usePageTitle('Criar conta — Portal do Cidadão');
   const navigate = useNavigate();
-  const { register } = useCitizenAuth();
+  const { register, isAuthenticated } = useCitizenAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/portal/dashboard" replace />;
+  }
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,15 +30,15 @@ export function CitizenRegisterPage() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError('');
-    if (name.trim().length < 2) { setError('O nome deve ter pelo menos 2 caracteres'); return; }
+    if (name.trim().length < 2) { setError('O nome deve ter pelo menos 2 caracteres.'); return; }
     const pwError = validatePassword(password);
     if (pwError) {
       const msgs: Record<string, string> = {
-        'password.minLength': 'A senha deve ter pelo menos 8 caracteres',
-        'password.uppercase': 'A senha deve conter pelo menos uma letra maiúscula',
-        'password.number':    'A senha deve conter pelo menos um número',
+        'password.minLength': 'A senha deve ter pelo menos 8 caracteres.',
+        'password.uppercase': 'A senha deve conter pelo menos uma letra maiúscula.',
+        'password.number':    'A senha deve conter pelo menos um número.',
       };
-      setError(msgs[pwError] ?? 'Senha inválida');
+      setError(msgs[pwError] ?? 'Senha inválida.');
       return;
     }
     if (confirmError) return;
@@ -44,25 +48,27 @@ export function CitizenRegisterPage() {
       await register({ name: name.trim(), email, password });
       navigate('/portal/dashboard');
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : 'Erro ao criar conta');
+      setError(err instanceof ApiError ? err.message : 'Erro ao criar conta. Tente novamente.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={s.page}>
-      <div className={`${s.card} ${s.cardWide}`}>
-        <div className={s.header}>
-          <h1 className={s.title}>Criar conta</h1>
-          <p className={s.subtitle}>Cadastre-se no Portal do Cidadão</p>
+    <div className={styles.authPage}>
+      <div className={`${styles.authCard} ${styles.authCardWide}`}>
+        <div className={styles.authHeader}>
+          <h1 className={styles.authTitle}>Criar conta</h1>
+          <p className={styles.authSubtitle}>Cadastre-se no Portal do Cidadão</p>
         </div>
-        <div className={s.body}>
+
+        <div className={styles.authBody}>
           {error && (
-            <div className={s.errorBanner} role="alert">
-              <span>⚠</span> {error}
+            <div className={styles.authError} role="alert">
+              {error}
             </div>
           )}
+
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-field">
               <label htmlFor="name">Nome completo</label>
@@ -107,25 +113,30 @@ export function CitizenRegisterPage() {
               required
               autoComplete="new-password"
               wrapperClassName="form-field"
-              error={confirmError ? 'As senhas não coincidem' : undefined}
+              error={confirmError ? 'As senhas não coincidem.' : undefined}
             />
-            <div className={s.consent}>
-              <label>
+            <div className={styles.authConsent}>
+              <label className={styles.authConsentLabel}>
                 <input
                   type="checkbox"
                   checked={lgpdConsent}
                   onChange={(e) => setLgpdConsent(e.target.checked)}
+                  className={styles.authConsentCheck}
                 />
-                {' Li e concordo com a '}
-                <Link to="/privacy">Política de Privacidade</Link>
-                {' e autorizo o tratamento dos meus dados conforme a LGPD.'}
+                <span>
+                  Li e concordo com a{' '}
+                  <Link to="/privacy">Política de Privacidade</Link>
+                  {' '}e autorizo o tratamento dos meus dados conforme a LGPD.
+                </span>
               </label>
             </div>
             <Button type="submit" fullWidth isLoading={loading}>Criar conta</Button>
           </form>
         </div>
-        <div className={s.footer}>
-          Já tem conta? <Link to="/portal/login">Entrar</Link>
+
+        <div className={styles.authFooter}>
+          Já tem conta?{' '}
+          <Link to="/portal/login">Entrar</Link>
         </div>
       </div>
     </div>

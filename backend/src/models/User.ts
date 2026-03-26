@@ -37,6 +37,12 @@ const UserSchema = new Schema({
   passwordResetToken: { type: String, select: false },
   passwordResetExpires: { type: Date, select: false },
   phone: { type: String, trim: true },
+  cpf: { type: String, trim: true },
+  birthDate: { type: Date },
+  address: { type: String, trim: true },
+  neighborhood: { type: String, trim: true },
+  city: { type: String, trim: true },
+  state: { type: String, trim: true },
   passwordHistory: {
     type: [{ password: String, changedAt: Date }],
     select: false,

@@ -178,7 +178,17 @@ class CitizenAuthService {
     return user;
   }
 
-  async updateProfile(userId: string, data: { name?: string; email?: string }) {
+  async updateProfile(userId: string, data: {
+    name?: string;
+    email?: string;
+    phone?: string;
+    cpf?: string;
+    birthDate?: string;
+    address?: string;
+    neighborhood?: string;
+    city?: string;
+    state?: string;
+  }) {
     const user = await User.findById(userId) as any;
     if (!user || user.role !== 'citizen') throw new NotFoundError('Cidadão');
     if (data.name !== undefined) user.name = data.name.trim();
@@ -188,6 +198,11 @@ class CitizenAuthService {
       if (conflict) throw new ConflictError('E-mail já está em uso');
       user.email = email;
     }
+    const optionalFields = ['phone', 'cpf', 'address', 'neighborhood', 'city', 'state'] as const;
+    for (const field of optionalFields) {
+      if (data[field] !== undefined) user[field] = data[field];
+    }
+    if (data.birthDate !== undefined) user.birthDate = data.birthDate ? new Date(data.birthDate) : undefined;
     await user.save();
     return user;
   }

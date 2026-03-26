@@ -41,7 +41,7 @@ function renderLayout(initialPath = '/') {
 describe('CitizenPortalLayout — breadcrumbs', () => {
   it('shows breadcrumb on /portal/dashboard', () => {
     renderLayout('/portal/dashboard');
-    const nav = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    const nav = screen.getByRole('navigation', { name: 'Localização atual' });
     expect(nav).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: 'Portal do Cidad\u00e3o' })).toBeInTheDocument();
     expect(within(nav).getByText('In\u00edcio')).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe('CitizenPortalLayout — breadcrumbs', () => {
 
   it('shows breadcrumb on /portal/profile', () => {
     renderLayout('/portal/profile');
-    const nav = screen.getByRole('navigation', { name: 'Breadcrumb' });
+    const nav = screen.getByRole('navigation', { name: 'Localização atual' });
     expect(nav).toBeInTheDocument();
     expect(within(nav).getByText('Meu perfil')).toBeInTheDocument();
   });

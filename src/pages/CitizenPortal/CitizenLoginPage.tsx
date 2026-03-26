@@ -1,24 +1,26 @@
 import { useState, FormEvent } from 'react';
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useLocation, Navigate } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
-import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
 import { PasswordInput, Button } from '@/components/UI';
-import s from '@/pages/Auth.module.css';
+import styles from './CitizenPortal.module.css';
 
 export function CitizenLoginPage() {
   usePageTitle('Entrar — Portal do Cidadão');
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useCitizenAuth();
-  const { t } = useTranslation();
+  const { login, isAuthenticated } = useCitizenAuth();
   const from = (location.state as any)?.from?.pathname || '/portal/dashboard';
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (isAuthenticated) {
+    return <Navigate to="/portal/dashboard" replace />;
+  }
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -28,25 +30,27 @@ export function CitizenLoginPage() {
       await login(email, password);
       navigate(from, { replace: true });
     } catch (err) {
-      setError(err instanceof ApiError ? err.message : t('auth.loginError'));
+      setError(err instanceof ApiError ? err.message : 'Erro ao fazer login. Tente novamente.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className={s.page}>
-      <div className={s.card}>
-        <div className={s.header}>
-          <h1 className={s.title}>{t('auth.login')}</h1>
-          <p className={s.subtitle}>{t('auth.citizenLoginSubtitle')}</p>
+    <div className={styles.authPage}>
+      <div className={styles.authCard}>
+        <div className={styles.authHeader}>
+          <h1 className={styles.authTitle}>Entrar</h1>
+          <p className={styles.authSubtitle}>Acesse o Portal do Cidadão</p>
         </div>
-        <div className={s.body}>
+
+        <div className={styles.authBody}>
           {error && (
-            <div className={s.errorBanner} role="alert">
-              <span>⚠</span> {error}
+            <div className={styles.authError} role="alert">
+              {error}
             </div>
           )}
+
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-field">
               <label htmlFor="email">E-mail</label>
@@ -69,11 +73,13 @@ export function CitizenLoginPage() {
               autoComplete="current-password"
               wrapperClassName="form-field"
             />
-            <Button type="submit" fullWidth isLoading={loading}>{t('auth.login')}</Button>
+            <Button type="submit" fullWidth isLoading={loading}>Entrar</Button>
           </form>
         </div>
-        <div className={s.footer}>
-          Não tem conta? <Link to="/portal/register">Cadastrar</Link>
+
+        <div className={styles.authFooter}>
+          Não tem conta?{' '}
+          <Link to="/portal/register">Criar conta</Link>
         </div>
       </div>
     </div>

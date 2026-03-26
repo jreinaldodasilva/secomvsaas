@@ -241,6 +241,13 @@ export type CitizenUser = {
   email: string;
   role: 'citizen';
   tenantId?: string;
+  phone?: string;
+  cpf?: string;
+  birthDate?: string;
+  address?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
 };
 
 // ─── Domain entities ─────────────────────────────────────────────────────────

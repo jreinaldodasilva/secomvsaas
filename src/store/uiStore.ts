@@ -11,7 +11,7 @@ interface UIState {
   setTheme: (theme: Theme) => void;
 }
 
-const initialUIState = { sidebarOpen: true, theme: 'system' as Theme };
+const initialUIState = { sidebarOpen: true, theme: 'light' as Theme };
 
 export const useUIStore = create<UIState>()(
   persist(
@@ -22,7 +22,7 @@ export const useUIStore = create<UIState>()(
       setTheme: (theme) => set({ theme }),
     }),
     {
-      name: 'secom-ui-state',
+      name: 'secom-ui-state-v2',
       partialize: (state) => ({ sidebarOpen: state.sidebarOpen, theme: state.theme }),
     }
   )

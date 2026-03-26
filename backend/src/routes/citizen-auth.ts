@@ -4,6 +4,7 @@ import { validateSchema } from '../validation/middleware';
 import { authenticateCitizen } from '../middleware/auth/citizenAuth';
 import * as citizenAuth from './citizen-auth/citizen-auth.controller';
 import { appointmentFiltersSchema } from '../modules/domain/appointments/validators/appointment.validator';
+import { resolveTenant, setTenantContext } from '../platform/tenants';
 
 const router = express.Router();
 
@@ -25,9 +26,16 @@ const loginSchema = z.object({
 });
 
 const updateProfileSchema = z.object({
-  name: z.string().trim().min(2).max(100).optional(),
-  email: z.string().email().toLowerCase().optional(),
-}).refine(d => d.name !== undefined || d.email !== undefined, {
+  name:         z.string().trim().min(2).max(100).optional(),
+  email:        z.string().email().toLowerCase().optional(),
+  phone:        z.string().max(20).optional(),
+  cpf:          z.string().max(14).optional(),
+  birthDate:    z.string().optional(),
+  address:      z.string().max(200).optional(),
+  neighborhood: z.string().max(100).optional(),
+  city:         z.string().max(100).optional(),
+  state:        z.string().max(2).optional(),
+}).refine(d => Object.values(d).some(v => v !== undefined), {
   message: 'Informe ao menos um campo para atualizar',
 });
 
@@ -133,7 +141,7 @@ router.get('/me', authenticateCitizen, ...citizenAuth.me);
  *       401: { description: Not authenticated }
  *       409: { description: Email already in use }
  */
-router.patch('/profile', authenticateCitizen, validateSchema(updateProfileSchema), citizenAuth.updateProfile);
+router.patch('/profile', authenticateCitizen, resolveTenant, setTenantContext, validateSchema(updateProfileSchema), citizenAuth.updateProfile);
 
 /**
  * @swagger
@@ -150,6 +158,6 @@ router.patch('/profile', authenticateCitizen, validateSchema(updateProfileSchema
  *       200: { description: Paginated list of citizen appointments }
  *       401: { description: Not authenticated }
  */
-router.get('/appointments', authenticateCitizen, validateSchema(appointmentFiltersSchema, 'query'), citizenAuth.myAppointments);
+router.get('/appointments', authenticateCitizen, resolveTenant, setTenantContext, validateSchema(appointmentFiltersSchema, 'query'), citizenAuth.myAppointments);
 
 export default router;

@@ -75,13 +75,20 @@ export const me = [
     const authReq = req as AuthenticatedRequest;
     try {
       if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Não autenticado' });
-      const user = await citizenAuthService.getMe(authReq.user.id);
+      const user = await citizenAuthService.getMe(authReq.user.id) as any;
       return res.json({ success: true, data: {
-        id: (user as any)._id.toString(),
-        name: (user as any).name,
-        email: (user as any).email,
+        id: user._id.toString(),
+        name: user.name,
+        email: user.email,
         role: 'citizen' as const,
-        tenantId: (user as any).tenantId?.toString(),
+        tenantId: user.tenantId?.toString(),
+        phone: user.phone ?? '',
+        cpf: user.cpf ?? '',
+        birthDate: user.birthDate ? user.birthDate.toISOString().split('T')[0] : '',
+        address: user.address ?? '',
+        neighborhood: user.neighborhood ?? '',
+        city: user.city ?? '',
+        state: user.state ?? '',
       } });
     } catch (error) { next(error); }
   },
@@ -91,13 +98,20 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
   const authReq = req as AuthenticatedRequest;
   try {
     if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Não autenticado' });
-    const updated = await citizenAuthService.updateProfile(authReq.user.id, req.body);
+    const updated = await citizenAuthService.updateProfile(authReq.user.id, req.body) as any;
     return res.json({ success: true, data: {
-      id: (updated as any)._id.toString(),
-      name: (updated as any).name,
-      email: (updated as any).email,
+      id: updated._id.toString(),
+      name: updated.name,
+      email: updated.email,
       role: 'citizen' as const,
-      tenantId: (updated as any).tenantId?.toString(),
+      tenantId: updated.tenantId?.toString(),
+      phone: updated.phone ?? '',
+      cpf: updated.cpf ?? '',
+      birthDate: updated.birthDate ? updated.birthDate.toISOString().split('T')[0] : '',
+      address: updated.address ?? '',
+      neighborhood: updated.neighborhood ?? '',
+      city: updated.city ?? '',
+      state: updated.state ?? '',
     } });
   } catch (error) { next(error); }
 };

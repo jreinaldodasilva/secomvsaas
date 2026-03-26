@@ -1,10 +1,36 @@
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
+import Skeleton from '@/components/UI/Skeleton/Skeleton';
 import styles from './CitizenPortal.module.css';
 
 export function CitizenProfilePage() {
   usePageTitle('Meu perfil — Portal do Cidadão');
-  const { citizen } = useCitizenAuth();
+  const { citizen, isLoading } = useCitizenAuth();
+
+  if (isLoading) {
+    return (
+      <div className={styles.profilePage}>
+        <div className={styles.profileHeader}>
+          <Skeleton variant="circular" width={72} height={72} />
+          <div>
+            <Skeleton variant="text" width="12rem" height="1.75rem" />
+            <Skeleton variant="text" width="8rem" />
+          </div>
+        </div>
+        <div className={styles.profileCard}>
+          <Skeleton variant="text" width="10rem" height="1.25rem" />
+          <div className={styles.fieldList} style={{ marginTop: 'var(--space-6)' }}>
+            {[1, 2, 3].map((i) => (
+              <div key={i} className={styles.fieldRow}>
+                <Skeleton variant="text" width="8rem" />
+                <Skeleton variant="text" width="14rem" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!citizen) return null;
 

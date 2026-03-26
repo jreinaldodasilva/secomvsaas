@@ -121,7 +121,7 @@ thead {
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: background var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-  height: 2.25rem;
+  min-height: var(--touch-target-min);
 }
 .pagination button:hover:not(:disabled) {
   background: var(--color-primary-50);

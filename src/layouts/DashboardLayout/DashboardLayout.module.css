@@ -116,16 +116,31 @@
   overflow: hidden;
 }
 
+.sidebarUserInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1;
+  overflow: hidden;
+}
+
 .sidebarUser {
   font-size: var(--font-size-sm);
   color: rgba(255,255,255,0.65);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  flex: 1;
 }
 
-.sidebarClosed .sidebarUser { display: none; }
+.sidebarRole {
+  font-size: var(--font-size-xs);
+  color: rgba(255,255,255,0.4);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebarClosed .sidebarUserInfo { display: none; }
 
 .mainContent {
   flex: 1;
@@ -222,5 +237,5 @@
     overflow: visible;
   }
   .sidebarClosed .brandLogo { display: block; }
-  .sidebarClosed .sidebarUser { display: block; }
+  .sidebarClosed .sidebarUserInfo { display: flex; }
 }

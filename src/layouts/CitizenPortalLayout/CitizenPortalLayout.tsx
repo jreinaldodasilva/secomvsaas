@@ -4,6 +4,7 @@ import { useCitizenAuth } from '@/contexts';
 import { useSessionTimeout } from '@/hooks';
 import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
+import { Icon } from '@/components/UI/Icon/Icon';
 import styles from './CitizenPortalLayout.module.css';
 
 const CITIZEN_BREADCRUMBS: Record<string, { label: string; parent?: { label: string; to: string } }> = {
@@ -45,7 +46,7 @@ export function CitizenPortalLayout() {
       <header className={styles.header}>
         <div className={styles.headerInner}>
           <Link to="/portal" className={styles.brand}>
-            <span className={styles.brandIcon} aria-hidden="true">🏛️</span>
+            <Icon name="home" size="1.4rem" className={styles.brandIcon} aria-hidden={true} />
             <span>Portal do Cidadão</span>
           </Link>
           <nav className={styles.nav}>

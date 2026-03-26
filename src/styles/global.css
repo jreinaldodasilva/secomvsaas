@@ -189,6 +189,10 @@ select:focus-visible {
 .btn-loading { color: transparent; pointer-events: none; }
 .btn-loading .spinner { position: absolute; }
 
+@media (prefers-reduced-motion: no-preference) {
+  .btn:active:not(:disabled) { transform: scale(0.97); }
+}
+
 /* --- Forms --- */
 .form-field { display: flex; flex-direction: column; gap: var(--space-1); margin-bottom: var(--space-4); }
 .form-field label { font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }

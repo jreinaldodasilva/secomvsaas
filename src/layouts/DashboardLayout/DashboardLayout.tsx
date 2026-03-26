@@ -113,7 +113,10 @@ export function DashboardLayout() {
           </PermissionGate>
         </nav>
         <div className={styles.sidebarFooter}>
-          <span className={styles.sidebarUser}>{user?.name}</span>
+          <div className={styles.sidebarUserInfo}>
+            <span className={styles.sidebarUser}>{user?.name}</span>
+            {user?.role && <span className={styles.sidebarRole}>{t(`users.roles.${user.role}`)}</span>}
+          </div>
           <button className="btn btn-ghost btn-sm" onClick={handleLogout}>{t('auth.logout')}</button>
         </div>
       </aside>

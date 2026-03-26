@@ -42,6 +42,9 @@
 }
 
 .navLink {
+  display: flex;
+  align-items: center;
+  min-height: var(--touch-target-min);
   color: var(--color-primary-100);
   text-decoration: none;
   font-size: var(--font-size-sm);

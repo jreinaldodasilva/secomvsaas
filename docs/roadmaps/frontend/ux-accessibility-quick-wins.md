@@ -11,24 +11,24 @@
 
 | # | Title | Effort | Impact | Priority | Source Part |
 |---|---|---|---|---|---|
-| QW-01 | Fix Modal duplicate `id="modal-title"` via `useId()` | 0.5 days | Critical — all 7 domain workflows | P0 | Part 2, Part 4 |
-| QW-02 | Restore focus on Modal close | 0.5 days | Critical — all modal interactions | P0 | Part 2, Part 4 |
-| QW-03 | Add `role="alert"` to `LoginForm` error display | 2 hours | High — all staff login errors | P1 | Part 2, Part 4 |
-| QW-04 | Resolve Toast `aria-live` conflict | 2 hours | High — all screen reader users | P1 | Part 2, Part 4 |
-| QW-05 | Fix citizen portal nav touch targets to ≥44px | 2 hours | High — all mobile citizen users | P1 | Part 3, Part 4 |
-| QW-06 | Fix pagination button touch targets to ≥44px | 2 hours | Medium — all mobile users on paginated lists | P1 | Part 3, Part 4 |
-| QW-07 | Add `no_show` and `failed` to `StatusBadge` | 2 hours | High — Appointments and Social Media modules | P1 | Part 1, Part 4 |
-| QW-08 | Replace emoji icons in citizen portal with SVG `Icon` component | 1 day | High — institutional credibility | P1 | Part 1, Part 4 |
-| QW-09 | Add layout wrapper to error pages; fix 404 destination | 1 day | Medium — all users on error pages | P1 | Part 1, Part 4 |
-| QW-10 | Remove dead production dependencies (`framer-motion`, `react-hot-toast`) | 2 hours | Medium — ~100KB bundle reduction | P1 | Part 3, Part 4 |
-| QW-11 | Add role indicator to sidebar footer | 2 hours | Medium — role clarity for new staff | P2 | Part 3, Part 4 |
-| QW-12 | Add skeleton loading to citizen portal pages | 1 day | Medium — citizen perceived performance | P2 | Part 3, Part 4 |
-| QW-13 | Add `inputMode` and `type` to domain form fields | 1 day | Medium — mobile data entry for staff | P2 | Part 3, Part 4 |
-| QW-14 | Add `autoComplete` to citizen registration form | 2 hours | Medium — citizen mobile onboarding | P2 | Part 3, Part 4 |
-| QW-15 | Fix `aria-label="Loading"` to Portuguese | 1 hour | Low — screen reader language consistency | P2 | Part 2, Part 4 |
-| QW-16 | Standardize loading prop naming to `isLoading` | 1 day | Low — contributor DX and API consistency | P2 | Part 4 |
-| QW-17 | Add `:active` state to `Button` and interactive `Card` | 1 day | Low-Medium — touch feedback on mobile | P2 | Part 3, Part 4 |
-| QW-18 | Add `ConnectionBanner` ARIA live region | 1 hour | Low — screen reader connectivity alerts | P3 | Part 2, Part 4 |
+| QW-01 | ~~Fix Modal duplicate `id="modal-title"` via `useId()`~~ ✅ | 0.5 days | Critical — all 7 domain workflows | P0 | Part 2, Part 4 |
+| QW-02 | ~~Restore focus on Modal close~~ ✅ | 0.5 days | Critical — all modal interactions | P0 | Part 2, Part 4 |
+| QW-03 | ~~Add `role="alert"` to `LoginForm` error display~~ ✅ | 2 hours | High — all staff login errors | P1 | Part 2, Part 4 |
+| QW-04 | ~~Resolve Toast `aria-live` conflict~~ ✅ | 2 hours | High — all screen reader users | P1 | Part 2, Part 4 |
+| QW-05 | ~~Fix citizen portal nav touch targets to ≥44px~~ ✅ | 2 hours | High — all mobile citizen users | P1 | Part 3, Part 4 |
+| QW-06 | ~~Fix pagination button touch targets to ≥44px~~ ✅ | 2 hours | Medium — all mobile users on paginated lists | P1 | Part 3, Part 4 |
+| QW-07 | ~~Add `no_show` and `failed` to `StatusBadge`~~ ✅ | 2 hours | High — Appointments and Social Media modules | P1 | Part 1, Part 4 |
+| QW-08 | ~~Replace emoji icons in citizen portal with SVG `Icon` component~~ ✅ | 1 day | High — institutional credibility | P1 | Part 1, Part 4 |
+| QW-09 | ~~Add layout wrapper to error pages; fix 404 destination~~ ✅ | 1 day | Medium — all users on error pages | P1 | Part 1, Part 4 |
+| QW-10 | ~~Remove dead production dependencies (`framer-motion`, `react-hot-toast`)~~ ✅ | 2 hours | Medium — ~100KB bundle reduction | P1 | Part 3, Part 4 |
+| QW-11 | ~~Add role indicator to sidebar footer~~ ✅ | 2 hours | Medium — role clarity for new staff | P2 | Part 3, Part 4 |
+| QW-12 | ~~Add skeleton loading to citizen portal pages~~ ✅ | 1 day | Medium — citizen perceived performance | P2 | Part 3, Part 4 |
+| QW-13 | ~~Add `inputMode` and `type` to domain form fields~~ ✅ | 1 day | Medium — mobile data entry for staff | P2 | Part 3, Part 4 |
+| QW-14 | ~~Add `autoComplete` to citizen registration form~~ ✅ | 2 hours | Medium — citizen mobile onboarding | P2 | Part 3, Part 4 |
+| QW-15 | ~~Fix `aria-label="Loading"` to Portuguese~~ ✅ | 1 hour | Low — screen reader language consistency | P2 | Part 2, Part 4 |
+| QW-16 | ~~Standardize loading prop naming to `isLoading`~~ ✅ | 1 day | Low — contributor DX and API consistency | P2 | Part 4 |
+| QW-17 | ~~Add `:active` state to `Button` and interactive `Card`~~ ✅ | 1 day | Low-Medium — touch feedback on mobile | P2 | Part 3, Part 4 |
+| QW-18 | ~~Add `ConnectionBanner` ARIA live region~~ ✅ | 1 hour | Low — screen reader connectivity alerts | P3 | Part 2, Part 4 |
 
 ---
 
@@ -44,7 +44,7 @@
 
 ## Quick Win Details
 
-### QW-01: Fix Modal Duplicate `id="modal-title"`
+### ~~QW-01: Fix Modal Duplicate `id="modal-title"`~~ ✅ COMPLETED
 
 **Problem:** `Modal.tsx` uses static string IDs `"modal-title"` and `"modal-desc"` for `aria-labelledby` and `aria-describedby`. When `CrudPage` renders both the form modal and the delete `ConfirmDialog` simultaneously, two elements with `id="modal-title"` exist in the DOM. The HTML spec requires unique IDs — screen readers and ARIA tooling associate `aria-labelledby` with the first matching ID, producing incorrect modal title announcements.
 
@@ -60,7 +60,7 @@
 
 ---
 
-### QW-02: Restore Focus on Modal Close
+### ~~QW-02: Restore Focus on Modal Close~~ ✅ COMPLETED
 
 **Problem:** `Modal.tsx` moves focus to the first focusable element on open (via focus trap) but does not store a reference to the trigger element and restore focus on close. After closing any modal, keyboard focus falls to `<body>` — users must re-navigate from the top of the page.
 
@@ -76,7 +76,7 @@
 
 ---
 
-### QW-03: Add `role="alert"` to `LoginForm` Error Display
+### ~~QW-03: Add `role="alert"` to `LoginForm` Error Display~~ ✅ COMPLETED
 
 **Problem:** The `LoginForm` error `<div>` (styled with `errorBanner` class in `Auth.module.css`) has no `role="alert"` or `aria-live` attribute. When a login attempt fails, the error message appears visually but is not announced by screen readers.
 
@@ -92,7 +92,7 @@
 
 ---
 
-### QW-04: Resolve Toast `aria-live` Conflict
+### ~~QW-04: Resolve Toast `aria-live` Conflict~~ ✅ COMPLETED
 
 **Problem:** `ToastContainer` has `aria-live="polite"` while individual `Toast` components have `role="alert"` (which implies `aria-live="assertive"`). These conflicting live region semantics produce unpredictable screen reader announcement behavior — some screen readers may announce toasts twice, others may suppress them.
 
@@ -108,7 +108,7 @@
 
 ---
 
-### QW-05: Fix Citizen Portal Nav Touch Targets to ≥44px
+### ~~QW-05: Fix Citizen Portal Nav Touch Targets to ≥44px~~ ✅ COMPLETED
 
 **Problem:** `.navLink` in `CitizenPortalLayout.module.css` has no `min-height` defined. Citizen portal navigation links are approximately 20px tall — well below the WCAG 2.5.5 minimum of 44px. This is the primary navigation for the public-facing portal, used predominantly on mobile devices.
 
@@ -124,7 +124,7 @@
 
 ---
 
-### QW-06: Fix Pagination Button Touch Targets to ≥44px
+### ~~QW-06: Fix Pagination Button Touch Targets to ≥44px~~ ✅ COMPLETED
 
 **Problem:** `DataTable` pagination buttons have `height: 2.25rem` (36px) — 8px below the WCAG 2.5.5 minimum of 44px. Pagination is used on every domain module page with more than one page of results.
 
@@ -139,7 +139,7 @@
 **Source Part:** Part 3 §8.1, Part 4 §10.3 (H2)
 
 ---
-### QW-07: Add `no_show` and `failed` to `StatusBadge`
+### ~~QW-07: Add `no_show` and `failed` to `StatusBadge`~~ ✅ COMPLETED
 
 **Problem:** `AppointmentsPage` uses `no_show` and `SocialMediaPage` uses `failed` as status values. Neither is present in `StatusBadge`'s `STATUS_LABELS` map. Users see the raw enum strings `"no_show"` and `"failed"` as literal text in the table — an unfinished appearance visible to all users of these modules.
 
@@ -155,7 +155,7 @@
 
 ---
 
-### QW-08: Replace Emoji Icons in Citizen Portal with SVG `Icon` Component
+### ~~QW-08: Replace Emoji Icons in Citizen Portal with SVG `Icon` Component~~ ✅ COMPLETED
 
 **Problem:** `CitizenPortalHomePage`, `CitizenDashboardPage`, and `CitizenPortalLayout` use emoji (`🏛️`, `📅`, `📋`, `📢`, `🏗️`, `👤`, `👋`, `ℹ️`) as primary icons. The staff dashboard uses the `Icon` component (react-icons SVG set) consistently. This creates a visible quality gap between the two surfaces and reduces the institutional credibility of the public-facing portal.
 
@@ -171,7 +171,7 @@
 
 ---
 
-### QW-09: Add Layout Wrapper to Error Pages; Fix 404 Destination
+### ~~QW-09: Add Layout Wrapper to Error Pages; Fix 404 Destination~~ ✅ COMPLETED
 
 **Problem:** The `/unauthorized` and `*` (404) pages render without any layout wrapper — no header, footer, or navigation context. The 404 "back to home" button hard-codes `/admin/dashboard`, which redirects citizen users to the staff login page rather than the landing page.
 
@@ -187,7 +187,7 @@
 
 ---
 
-### QW-10: Remove Dead Production Dependencies
+### ~~QW-10: Remove Dead Production Dependencies~~ ✅ COMPLETED
 
 **Problem:** `framer-motion` and `react-hot-toast` are listed in `package.json` `dependencies` but are not imported anywhere in the source tree. `framer-motion` is included in the `motion` manual chunk in `vite.config.ts`, adding approximately 100KB gzipped to the production bundle on every initial page load.
 
@@ -203,7 +203,7 @@
 
 ---
 
-### QW-11: Add Role Indicator to Sidebar Footer
+### ~~QW-11: Add Role Indicator to Sidebar Footer~~ ✅ COMPLETED
 
 **Problem:** The sidebar footer displays the logged-in user's name but not their role. Staff users unfamiliar with the RBAC system cannot understand why certain modules or actions are unavailable to them — there is no persistent UI signal indicating their current role.
 
@@ -219,7 +219,7 @@
 
 ---
 
-### QW-12: Add Skeleton Loading to Citizen Portal Pages
+### ~~QW-12: Add Skeleton Loading to Citizen Portal Pages~~ ✅ COMPLETED
 
 **Problem:** `CitizenDashboardPage` and `CitizenProfilePage` show no skeleton loading state during data fetch. The citizen name renders as empty or undefined briefly during context initialization, creating a visible layout flash on every page load.
 
@@ -234,7 +234,7 @@
 **Source Part:** Part 3 §7.1, Part 4 §10.4 (M6)
 
 ---
-### QW-13: Add `inputMode` and `type` Attributes to Domain Form Fields
+### ~~QW-13: Add `inputMode` and `type` Attributes to Domain Form Fields~~ ✅ COMPLETED
 
 **Problem:** Phone fields, CPF fields, and URL fields in all 7 domain module forms use `type="text"` with no `inputMode` hint. On iOS and Android, this presents a standard QWERTY keyboard instead of the appropriate numeric or URL keyboard, requiring extra taps to switch keyboard modes.
 
@@ -250,7 +250,7 @@
 
 ---
 
-### QW-14: Add `autoComplete` Attributes to Citizen Registration Form
+### ~~QW-14: Add `autoComplete` Attributes to Citizen Registration Form~~ ✅ COMPLETED
 
 **Problem:** The citizen registration form (`CitizenRegisterPage`) does not set `autoComplete` attributes on any fields. Browser autofill is effectively disabled, requiring citizens to manually type their name, email, and password on mobile — the primary device for citizen-facing government services.
 
@@ -266,7 +266,7 @@
 
 ---
 
-### QW-15: Fix `aria-label="Loading"` to Portuguese
+### ~~QW-15: Fix `aria-label="Loading"` to Portuguese~~ ✅ COMPLETED
 
 **Problem:** The `Loading` component uses `aria-label="Loading"` in English. In a Portuguese-language government application, all ARIA labels should be in Portuguese to provide a consistent screen reader experience.
 
@@ -282,7 +282,7 @@
 
 ---
 
-### QW-16: Standardize Loading Prop Naming to `isLoading`
+### ~~QW-16: Standardize Loading Prop Naming to `isLoading`~~ ✅ COMPLETED
 
 **Problem:** Loading state is expressed with three different prop names across the component library: `isLoading` (`Button`, `ConfirmDialog`), `loading` (`Input`), and `isPending` (`FormComponentProps`). Contributors must check each component's API to know the correct prop name.
 
@@ -298,7 +298,7 @@
 
 ---
 
-### QW-17: Add `:active` State to `Button` and Interactive `Card`
+### ~~QW-17: Add `:active` State to `Button` and Interactive `Card`~~ ✅ COMPLETED
 
 **Problem:** No component defines an explicit `:active` state beyond the browser default. On touch devices, the `:active` pseudo-class provides the primary tactile feedback signal — without it, interactive elements feel unresponsive to touch.
 
@@ -314,7 +314,7 @@
 
 ---
 
-### QW-18: Add `ConnectionBanner` ARIA Live Region
+### ~~QW-18: Add `ConnectionBanner` ARIA Live Region~~ ✅ COMPLETED
 
 **Problem:** `ConnectionBanner` has no `role="alert"` or `aria-live` attribute. When the API becomes unreachable, the banner appears visually at the top of the page but screen reader users receive no notification of the connectivity loss.
 

@@ -6,19 +6,29 @@ import { ScrollToTop } from './components/UI/ScrollToTop';
 import { CookieConsent } from './components/LGPD/CookieConsent';
 import { ToastContainer } from './components/UI/Toast/ToastContainer';
 import { AppRoutes } from './routes';
+import { useTheme } from './hooks/useTheme';
 import './styles/global.css';
+
+function AppInner() {
+  useTheme();
+  return (
+    <>
+      <a href="#main-content" className="skip-link">Ir para o conteúdo principal</a>
+      <TopLoadingBar />
+      <ScrollToTop />
+      <ConnectionBanner />
+      <AppRoutes />
+      <CookieConsent />
+      <ToastContainer />
+    </>
+  );
+}
 
 export default function App() {
   return (
     <ErrorBoundary>
       <AppProviders>
-        <a href="#main-content" className="skip-link">Ir para o conteúdo principal</a>
-        <TopLoadingBar />
-        <ScrollToTop />
-        <ConnectionBanner />
-        <AppRoutes />
-        <CookieConsent />
-        <ToastContainer />
+        <AppInner />
       </AppProviders>
     </ErrorBoundary>
   );

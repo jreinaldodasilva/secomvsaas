@@ -33,6 +33,7 @@ const CitizenLoginPage = lazy(() => import('../pages/CitizenPortal/CitizenLoginP
 const CitizenRegisterPage = lazy(() => import('../pages/CitizenPortal/CitizenRegisterPage').then(m => ({ default: m.CitizenRegisterPage })));
 const CitizenDashboardPage = lazy(() => import('../pages/CitizenPortal/CitizenDashboardPage').then(m => ({ default: m.CitizenDashboardPage })));
 const CitizenProfilePage = lazy(() => import('../pages/CitizenPortal/CitizenProfilePage').then(m => ({ default: m.CitizenProfilePage })));
+const CitizenAppointmentsPage = lazy(() => import('../pages/CitizenPortal/CitizenAppointmentsPage').then(m => ({ default: m.CitizenAppointmentsPage })));
 
 export function AppRoutes() {
   return (
@@ -75,6 +76,7 @@ export function AppRoutes() {
         <Route element={<ProtectedCitizenRoute><Outlet /></ProtectedCitizenRoute>}>
           <Route path="/portal/dashboard" element={<Suspense fallback={<LoadingScreen />}><CitizenDashboardPage /></Suspense>} />
           <Route path="/portal/profile" element={<Suspense fallback={<LoadingScreen />}><CitizenProfilePage /></Suspense>} />
+          <Route path="/portal/appointments" element={<Suspense fallback={<LoadingScreen />}><CitizenAppointmentsPage /></Suspense>} />
         </Route>
       </Route>
 

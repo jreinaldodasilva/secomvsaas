@@ -75,3 +75,12 @@ jobs:
           npx vite preview --port 3000 &
           npx wait-on http://localhost:3000 --timeout 30000
           npx cypress run --spec 'cypress/e2e/authentication.cy.ts,cypress/e2e/press-releases.cy.ts'
+
+      - name: Lighthouse CI
+        env:
+          VITE_API_URL: https://api.placeholder.example
+        run: |
+          npx vite preview --port 3001 &
+          npx wait-on http://localhost:3001 --timeout 30000
+          sed 's/localhost:3000/localhost:3001/g' .lighthouserc.json > .lighthouserc.ci.json
+          npx lhci autorun --config=.lighthouserc.ci.json || true

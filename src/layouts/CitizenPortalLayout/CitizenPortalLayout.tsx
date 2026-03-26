@@ -8,11 +8,12 @@ import { Icon } from '@/components/UI/Icon/Icon';
 import styles from './CitizenPortalLayout.module.css';
 
 const CITIZEN_BREADCRUMBS: Record<string, { label: string; parent?: { label: string; to: string } }> = {
-  '/portal':            { label: 'Portal do Cidadão' },
-  '/portal/login':      { label: 'Entrar',     parent: { label: 'Portal do Cidadão', to: '/portal' } },
-  '/portal/register':   { label: 'Cadastrar',  parent: { label: 'Portal do Cidadão', to: '/portal' } },
-  '/portal/dashboard':  { label: 'Início',     parent: { label: 'Portal do Cidadão', to: '/portal' } },
-  '/portal/profile':    { label: 'Meu perfil', parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal':                 { label: 'Portal do Cidadão' },
+  '/portal/login':           { label: 'Entrar',           parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/register':        { label: 'Cadastrar',        parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/dashboard':       { label: 'Início',           parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/profile':         { label: 'Meu perfil',       parent: { label: 'Portal do Cidadão', to: '/portal' } },
+  '/portal/appointments':    { label: 'Agendamentos',     parent: { label: 'Portal do Cidadão', to: '/portal' } },
 };
 
 export function CitizenPortalLayout() {
@@ -35,6 +36,13 @@ export function CitizenPortalLayout() {
     'aria-current': isActive ? ('page' as const) : undefined,
   });
 
+  const bottomNavProps = ({ isActive }: { isActive: boolean }) => ({
+    className: isActive
+      ? `${styles.bottomNavLink} ${styles.bottomNavLinkActive}`
+      : styles.bottomNavLink,
+    'aria-current': isActive ? ('page' as const) : undefined,
+  });
+
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
     onTimeout: handleLogout,
@@ -51,11 +59,11 @@ export function CitizenPortalLayout() {
           </Link>
           <nav className={styles.nav}>
             {isAuthenticated ? (
-              <>
+              <span className={styles.navAuthMobile}>
                 <NavLink to="/portal/dashboard" {...navProps}>Início</NavLink>
                 <NavLink to="/portal/profile" {...navProps}>Meu perfil</NavLink>
                 <button onClick={handleLogout} className={styles.navBtn}>Sair</button>
-              </>
+              </span>
             ) : (
               <>
                 <Link to="/portal/login" className={styles.navLink}>Entrar</Link>
@@ -100,6 +108,26 @@ export function CitizenPortalLayout() {
         onContinue={handleContinue}
         onLogout={handleLogout}
       />
+
+      {isAuthenticated && (
+        <nav className={styles.bottomNav} aria-label="Navegação principal">
+          <NavLink to="/portal/dashboard" {...bottomNavProps}>
+            <span className={styles.bottomNavIndicator} aria-hidden="true" />
+            <Icon name="home" size="1.25rem" aria-hidden={true} />
+            <span>Início</span>
+          </NavLink>
+          <NavLink to="/portal/appointments" {...bottomNavProps}>
+            <span className={styles.bottomNavIndicator} aria-hidden="true" />
+            <Icon name="schedule" size="1.25rem" aria-hidden={true} />
+            <span>Agendamentos</span>
+          </NavLink>
+          <NavLink to="/portal/profile" {...bottomNavProps}>
+            <span className={styles.bottomNavIndicator} aria-hidden="true" />
+            <Icon name="person" size="1.25rem" aria-hidden={true} />
+            <span>Perfil</span>
+          </NavLink>
+        </nav>
+      )}
     </div>
   );
 }

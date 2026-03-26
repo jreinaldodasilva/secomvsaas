@@ -126,3 +126,10 @@
   .field, .labelFloating, .clearBtn { transition: none; }
   .spinner { animation: none; }
 }
+
+@media (prefers-contrast: high) {
+  .field { border-width: 2px; }
+  .hasError .field { border-width: 2px; }
+  .hasSuccess .field { border-width: 2px; }
+  .disabled .field { border-width: 2px; }
+}

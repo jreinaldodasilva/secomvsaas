@@ -61,7 +61,7 @@
   --color-success-600: #16a34a;
   --color-success-700: #15803d;
   --color-success-light: #dcfce7;
-  --color-success-dark:  #00A344;
+  --color-success-dark:  #166534;
 
   --color-warning:     #E65100;
   --color-warning-50:  #fffbeb;
@@ -232,4 +232,97 @@
   --card-padding-sm: var(--space-3);
   --card-padding-md: var(--space-4);
   --card-padding-lg: var(--space-6);
+
+  /* White — used on dark/colored backgrounds */
+  --color-white: #ffffff;
+
+  /* Overlay / backdrop */
+  --color-backdrop:  rgba(0, 0, 0, 0.5);
+  --color-overlay:   rgba(0, 0, 0, 0.45);
+
+  /* Sidebar on-dark palette (sidebar bg is --color-primary-900) */
+  --color-sidebar-border:           rgba(255, 255, 255, 0.08);
+  --color-sidebar-text:             rgba(255, 255, 255, 0.87);
+  --color-sidebar-text-secondary:   rgba(255, 255, 255, 0.65);
+  --color-sidebar-text-muted:       rgba(255, 255, 255, 0.6);
+  --color-sidebar-text-dim:         rgba(255, 255, 255, 0.4);
+  --color-sidebar-text-section:     rgba(255, 255, 255, 0.75);
+  --color-sidebar-hover:            rgba(255, 255, 255, 0.08);
+  --color-sidebar-active:           rgba(255, 255, 255, 0.12);
+  --color-sidebar-active-collapsed: rgba(255, 255, 255, 0.15);
+  --color-sidebar-scrollbar:        rgba(255, 255, 255, 0.2);
+
+  /* Frosted-glass header */
+  --color-header-bg: rgba(255, 255, 255, 0.95);
+
+  /* Extra radius step */
+  --radius-xs: 2px;
+
+  /* Error focus ring (FormField child element) */
+  --focus-ring-error-field: 0 0 0 3px rgba(239, 68, 68, 0.12);
+
+  /* On-dark button outline states (used on gradient banners) */
+  --color-on-dark-text:         rgba(255, 255, 255, 0.8);
+  --color-on-dark-border:       rgba(255, 255, 255, 0.3);
+  --color-on-dark-hover-bg:     rgba(255, 255, 255, 0.1);
+  --color-on-dark-hover-border: rgba(255, 255, 255, 0.6);
+  --color-on-dark-subtle-bg:    rgba(255, 255, 255, 0.15);
+
+  /*
+   * Breakpoint scale
+   * CSS custom properties cannot be used inside @media queries (CSS spec limitation).
+   * Use these values directly in media queries. Do not introduce new breakpoints
+   * outside this scale without updating this reference.
+   *
+   * Name     | Value  | Usage
+   * ---------|--------|------------------------------------------
+   * xs       | 480px  | Small phones (modal bottom-sheet, compact stacks)
+   * sm       | 640px  | Large phones / small tablets (form grid collapse)
+   * md       | 768px  | Tablets (navigation, sidebar, two-column layouts)
+   * lg       | 1024px | Small desktops (dashboard widgets, multi-column)
+   * xl       | 1280px | Large desktops (reserved — not yet in use)
+   *
+   * Mobile-first convention:
+   *   @media (min-width: 640px)  { ... }   sm and above
+   *   @media (max-width: 767px)  { ... }   below md (mobile only)
+   *   @media (max-width: 479px)  { ... }   below xs (very small phones)
+   *
+   * One-off layout breakpoints (intentional, not part of the standard scale):
+   *   840px — DashboardPage banner/stats layout (between md and lg)
+   */
+}
+
+/* ── Dark mode token overrides ─────────────────────────────────────────────
+   Applied via [data-theme="dark"] on <html>.
+   Only semantic surface tokens are overridden; the full color scale
+   (primary, neutral, etc.) remains unchanged so components that reference
+   scale tokens directly continue to work correctly.
+   Activated by useTheme() in src/hooks/useTheme.ts.
+   ─────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg-primary:     #0F172A;
+  --color-bg-secondary:   #1E293B;
+  --color-text-primary:   #F1F5F9;
+  --color-text-secondary: #CBD5E1;
+  --color-text-tertiary:  #94A3B8;
+  --color-border-primary: #334155;
+  --color-border-focus:   #60A5FA;
+
+  /* Frosted-glass header — dark variant */
+  --color-header-bg: rgba(15, 23, 42, 0.95);
+
+  /* Backdrop / overlay — slightly deeper in dark mode */
+  --color-backdrop: rgba(0, 0, 0, 0.7);
+  --color-overlay:  rgba(0, 0, 0, 0.6);
+
+  /* Focus rings — adjusted for dark backgrounds */
+  --focus-ring:       0 0 0 3px rgba(96, 165, 250, 0.35);
+  --focus-ring-error: 0 0 0 3px rgba(239, 68, 68, 0.35);
+  --focus-ring-error-field: 0 0 0 3px rgba(239, 68, 68, 0.25);
+
+  /* Shadows — more pronounced on dark backgrounds */
+  --shadow-level-1: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-level-2: 0 4px 12px rgba(0,0,0,0.4);
+  --shadow-level-3: 0 8px 24px rgba(0,0,0,0.5);
+  --shadow-level-4: 0 16px 48px rgba(0,0,0,0.6);
 }

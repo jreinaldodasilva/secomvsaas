@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { CrudPage } from '@/components/UI';
 import { Button, StatusBadge } from '@/components/UI';
@@ -36,6 +36,7 @@ export function PressReleasesPage() {
   const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
   const initialOpen = searchParams.get('create') === 'true';
+  const pendingStatusRef = useRef<string | null>(null);
 
   // Clear the ?create param from the URL after reading it — keeps the URL clean
   useEffect(() => {
@@ -69,6 +70,17 @@ export function PressReleasesPage() {
       ),
     },
   ];
+
+  const statusSavedMessage = (status: string | null) => {
+    const key = {
+      draft: 'domain.pressReleases.savedDraft',
+      review: 'domain.pressReleases.savedReview',
+      approved: 'domain.pressReleases.savedApproved',
+      published: 'domain.pressReleases.savedPublished',
+      archived: 'domain.pressReleases.savedArchived',
+    }[status ?? ''];
+    return key ? t(key) : t('common.saved');
+  };
 
   return (
     <CrudPage<PressReleaseItem, PressReleaseFormState>
@@ -108,14 +120,23 @@ export function PressReleasesPage() {
         (() => { const p = { ...payload }; delete p.status; return p; })(),
         cb
       )}
-      onUpdate={(payload, cb) => update.mutate(payload, cb)}
+      onUpdate={(payload, cb) => {
+        pendingStatusRef.current = (payload.status as string) ?? null;
+        update.mutate(payload, cb);
+      }}
       onDelete={(id, cb) => del.mutate(id, cb)}
       isCreatePending={create.isPending}
       isUpdatePending={update.isPending}
       isDeletePending={del.isPending}
       savedMessage={t('common.saved')}
       deletedMessage={t('common.deleted')}
-      onSuccess={(msg) => toast.success(msg)}
+      onSuccess={(msg) => {
+        const resolved = pendingStatusRef.current !== null
+          ? statusSavedMessage(pendingStatusRef.current)
+          : msg;
+        pendingStatusRef.current = null;
+        toast.success(resolved);
+      }}
       onError={(msg) => toast.error(msg)}
       formExtraProps={{ userRole }}
       FormComponent={PressReleaseForm}

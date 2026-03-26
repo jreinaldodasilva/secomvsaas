@@ -8,6 +8,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
 import { Icon } from '@/components/UI/Icon/Icon';
 import { Breadcrumbs } from '@/components/UI/Breadcrumbs/Breadcrumbs';
 import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
+import { ThemeToggle } from '@/components/UI/ThemeToggle/ThemeToggle';
 import { TopLoadingBar } from '@/components/UI/TopLoadingBar/TopLoadingBar';
 import { useSessionTimeout } from '@/hooks';
 import styles from './DashboardLayout.module.css';
@@ -117,6 +118,7 @@ export function DashboardLayout() {
             <span className={styles.sidebarUser}>{user?.name}</span>
             {user?.role && <span className={styles.sidebarRole}>{t(`users.roles.${user.role}`)}</span>}
           </div>
+          <ThemeToggle className={styles.sidebarToggle} />
           <button className="btn btn-ghost btn-sm" onClick={handleLogout}>{t('auth.logout')}</button>
         </div>
       </aside>

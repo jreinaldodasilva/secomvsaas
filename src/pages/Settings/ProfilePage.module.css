@@ -28,7 +28,7 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 3px solid rgba(255,255,255,0.15);
+  border: 3px solid var(--color-sidebar-active-collapsed);
 }
 
 .bannerInfo { display: flex; flex-direction: column; gap: var(--space-1); }

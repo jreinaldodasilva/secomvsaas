@@ -1,11 +1,56 @@
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
+import { Button } from '@/components/UI';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
+import { citizenAuthService } from '@/services/api';
 import styles from './CitizenPortal.module.css';
 
 export function CitizenProfilePage() {
   usePageTitle('Meu perfil — Portal do Cidadão');
-  const { citizen, isLoading } = useCitizenAuth();
+  const { citizen, isLoading, refreshCitizen } = useCitizenAuth();
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const mutation = useMutation({
+    mutationFn: (data: { name?: string; email?: string }) =>
+      citizenAuthService.updateProfile(data),
+    onSuccess: async () => {
+      await refreshCitizen();
+      setEditing(false);
+      setSuccessMsg('Perfil atualizado com sucesso.');
+      setErrorMsg('');
+    },
+    onError: (err: any) => {
+      setErrorMsg(err?.message ?? 'Erro ao atualizar perfil. Tente novamente.');
+    },
+  });
+
+  const handleEdit = () => {
+    setName(citizen?.name ?? '');
+    setEmail(citizen?.email ?? '');
+    setSuccessMsg('');
+    setErrorMsg('');
+    setEditing(true);
+  };
+
+  const handleCancel = () => {
+    setEditing(false);
+    setErrorMsg('');
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const data: { name?: string; email?: string } = {};
+    if (name.trim() && name.trim() !== citizen?.name) data.name = name.trim();
+    if (email.trim() && email.trim() !== citizen?.email) data.email = email.trim();
+    if (Object.keys(data).length === 0) { setEditing(false); return; }
+    mutation.mutate(data);
+  };
 
   if (isLoading) {
     return (
@@ -34,12 +79,6 @@ export function CitizenProfilePage() {
 
   if (!citizen) return null;
 
-  const fields = [
-    { label: 'Nome completo', value: citizen.name },
-    { label: 'E-mail', value: citizen.email },
-    { label: 'Tipo de acesso', value: 'Cidadão' },
-  ];
-
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileHeader}>
@@ -53,18 +92,70 @@ export function CitizenProfilePage() {
       </div>
 
       <div className={styles.profileCard}>
-        <h2 className={styles.profileCardTitle}>Dados cadastrais</h2>
-        <dl className={styles.fieldList}>
-          {fields.map((f) => (
-            <div key={f.label} className={styles.fieldRow}>
-              <dt className={styles.fieldLabel}>{f.label}</dt>
-              <dd className={styles.fieldValue}>{f.value}</dd>
+        <div className={styles.profileCardHeader}>
+          <h2 className={styles.profileCardTitle}>Dados cadastrais</h2>
+          {!editing && (
+            <Button variant="outline" size="sm" onClick={handleEdit}>
+              Editar
+            </Button>
+          )}
+        </div>
+
+        {successMsg && (
+          <p className={styles.successMsg} role="status">{successMsg}</p>
+        )}
+        {errorMsg && (
+          <p className={styles.errorMsg} role="alert">{errorMsg}</p>
+        )}
+
+        {editing ? (
+          <form onSubmit={handleSubmit} className={styles.editForm} noValidate>
+            <div className={styles.editField}>
+              <label htmlFor="profile-name" className={styles.editLabel}>Nome completo</label>
+              <input
+                id="profile-name"
+                type="text"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required
+                minLength={2}
+                autoComplete="name"
+                className={styles.editInput}
+              />
             </div>
-          ))}
-        </dl>
-        <p className={styles.profileNote}>
-          Para atualizar seus dados, entre em contato com a Secretaria de Comunicação.
-        </p>
+            <div className={styles.editField}>
+              <label htmlFor="profile-email" className={styles.editLabel}>E-mail</label>
+              <input
+                id="profile-email"
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                autoComplete="email"
+                className={styles.editInput}
+              />
+            </div>
+            <div className={styles.editActions}>
+              <Button type="submit" isLoading={mutation.isPending}>Salvar</Button>
+              <Button type="button" variant="ghost" onClick={handleCancel} disabled={mutation.isPending}>
+                Cancelar
+              </Button>
+            </div>
+          </form>
+        ) : (
+          <dl className={styles.fieldList}>
+            {[
+              { label: 'Nome completo', value: citizen.name },
+              { label: 'E-mail', value: citizen.email },
+              { label: 'Tipo de acesso', value: 'Cidadão' },
+            ].map((f) => (
+              <div key={f.label} className={styles.fieldRow}>
+                <dt className={styles.fieldLabel}>{f.label}</dt>
+                <dd className={styles.fieldValue}>{f.value}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
       </div>
     </div>
   );

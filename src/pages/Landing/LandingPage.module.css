@@ -133,7 +133,7 @@
   bottom: var(--space-4);
   left: var(--space-4);
   background: var(--color-primary-700);
-  color: #fff;
+  color: var(--color-white);
   border-radius: var(--radius-full);
   padding: var(--space-2) var(--space-4);
   font-size: var(--font-size-sm);
@@ -191,13 +191,13 @@
 .ctaBtnPrimary.ctaBtnPrimary:hover { background: var(--color-accent-300); }
 
 .ctaBtnOutline.ctaBtnOutline {
-  color: #fff;
+  color: var(--color-white);
   border: 2px solid rgba(255,255,255,0.7);
   background: transparent;
 }
 .ctaBtnOutline.ctaBtnOutline:hover {
-  background: rgba(255,255,255,0.15);
-  border-color: #fff;
+  background: var(--color-on-dark-subtle-bg);
+  border-color: var(--color-white);
 }
 
 /* ── Responsive ── */

@@ -11,6 +11,7 @@ export function CitizenDashboardPage() {
   const { citizen, isLoading } = useCitizenAuth();
 
   const quickLinks = [
+    { to: '/portal/appointments', icon: 'schedule' as const, label: 'Meus agendamentos', desc: 'Consulte seus agendamentos e acompanhe o status' },
     { to: '/portal/profile', icon: 'person' as const, label: 'Meu perfil', desc: 'Visualize e atualize seus dados cadastrais' },
   ];
 

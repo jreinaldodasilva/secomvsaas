@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-backdrop);
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@
 .md   { max-width: 38rem; }
 .lg   { max-width: 54rem; }
 .xl   { max-width: 72rem; }
-.full { max-width: 100%; max-height: 100%; border-radius: 0; }
+.full { max-width: 100%; max-height: 100%; border-radius: var(--radius-none); }
 
 /* ── Header ── */
 .header {
@@ -121,4 +121,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .overlay, .modal { animation: none; }
+}
+
+@media (prefers-contrast: high) {
+  .modal { border: 2px solid var(--color-border-primary); }
+  .header { border-bottom-width: 2px; }
+  .footer { border-top-width: 2px; }
 }

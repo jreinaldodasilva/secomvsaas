@@ -43,11 +43,11 @@ export function validateCitizen(form: CitizenFormState, editing: boolean, t: (k:
   if (!result.success) {
     for (const issue of result.error.issues) {
       const field = issue.path[0] as string;
-      if (!errors[field]) errors[field] = `${t(`domain.citizenPortal.fields.${field}`)} — ${zodMsg(issue, t)}`;
+      if (!errors[field]) errors[field] = zodMsg(issue, t);
     }
   }
   if (!editing && !form.userId) {
-    errors.userId = `${t('domain.citizenPortal.fields.userId')} — ${t('validation.required')}`;
+    errors.userId = t('validation.required');
   }
   return errors;
 }

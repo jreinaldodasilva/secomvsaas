@@ -3,6 +3,9 @@ import { citizenAuthService, PORTAL_COOKIE, PORTAL_REFRESH_COOKIE } from '../../
 import { AuthenticatedRequest } from '../../middleware/auth/auth';
 import { env } from '../../config/env';
 import { tenantService } from '../../platform/tenants/services/tenant.service';
+import { AppointmentService } from '../../modules/domain/appointments/services/appointment.service';
+
+const appointmentService = new AppointmentService();
 
 const DEFAULT_TENANT_SLUG = 'secom';
 
@@ -83,3 +86,30 @@ export const me = [
     } catch (error) { next(error); }
   },
 ];
+
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => {
+  const authReq = req as AuthenticatedRequest;
+  try {
+    if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Não autenticado' });
+    const updated = await citizenAuthService.updateProfile(authReq.user.id, req.body);
+    return res.json({ success: true, data: {
+      id: (updated as any)._id.toString(),
+      name: (updated as any).name,
+      email: (updated as any).email,
+      role: 'citizen' as const,
+      tenantId: (updated as any).tenantId?.toString(),
+    } });
+  } catch (error) { next(error); }
+};
+
+export const myAppointments = async (req: Request, res: Response, next: NextFunction) => {
+  const authReq = req as AuthenticatedRequest;
+  try {
+    if (!authReq.user?.id) return res.status(401).json({ success: false, message: 'Não autenticado' });
+    const result = await appointmentService.list(
+      req.query as any,
+      { userId: authReq.user.id, role: 'citizen' },
+    );
+    return res.json({ success: true, data: result });
+  } catch (error) { next(error); }
+};

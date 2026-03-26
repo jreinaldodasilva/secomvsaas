@@ -43,14 +43,14 @@ describe('validatePressRelease', () => {
 
   it('reports title too short', () => {
     const e = validatePressRelease({ ...emptyPressReleaseForm, title: 'abc', content: 'conteúdo longo o suficiente' }, t);
-    expect(e.title).toContain('domain.pressReleases.fields.title');
-    expect(e.title).toContain('validation.minLength');
+    expect(e.title).toBe('validation.minLength');
     expect(e.title).not.toMatch(/must contain at least/i);
+    expect(e.title).not.toContain('domain.pressReleases.fields.title');
   });
 
   it('reports invalid category with Portuguese key (no enum exposure)', () => {
     const e = validatePressRelease({ ...emptyPressReleaseForm, title: 'Título válido', content: 'Conteúdo suficiente aqui', category: 'invalid' as any }, t);
-    expect(e.category).toContain('validation.invalidEnum');
+    expect(e.category).toBe('validation.invalidEnum');
     expect(e.category).not.toMatch(/Invalid enum value/i);
   });
 

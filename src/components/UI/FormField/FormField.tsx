@@ -15,10 +15,12 @@ export const FormField = React.memo<FormFieldProps>((
 ) => {
   const uid = useId();
   const fieldId = `${uid}-${name}`;
+  const errorId = `${uid}-${name}-error`;
+  const helpId = `${uid}-${name}-help`;
 
   const describedBy = [
-    error ? `${name}-error` : null,
-    helpText ? `${name}-help` : null,
+    error ? errorId : null,
+    helpText ? helpId : null,
   ].filter(Boolean).join(' ') || undefined;
 
   const child = React.isValidElement(children)
@@ -38,10 +40,10 @@ export const FormField = React.memo<FormFieldProps>((
       )}
       <div className={styles.input}>{child}</div>
       {helpText && (
-        <p className={styles.help} id={`${name}-help`}>{helpText}</p>
+        <p className={styles.help} id={helpId}>{helpText}</p>
       )}
       {error && (
-        <p className={styles.error} id={`${name}-error`} role="alert">{error}</p>
+        <p className={styles.error} id={errorId} role="alert">{error}</p>
       )}
     </div>
   );

@@ -177,6 +177,20 @@ class CitizenAuthService {
     if (!user || (user as any).role !== 'citizen') throw new NotFoundError('Cidadão');
     return user;
   }
+
+  async updateProfile(userId: string, data: { name?: string; email?: string }) {
+    const user = await User.findById(userId) as any;
+    if (!user || user.role !== 'citizen') throw new NotFoundError('Cidadão');
+    if (data.name !== undefined) user.name = data.name.trim();
+    if (data.email !== undefined) {
+      const email = data.email.toLowerCase();
+      const conflict = await User.findOne({ email, tenantId: user.tenantId, _id: { $ne: user._id } });
+      if (conflict) throw new ConflictError('E-mail já está em uso');
+      user.email = email;
+    }
+    await user.save();
+    return user;
+  }
 }
 
 export const citizenAuthService = new CitizenAuthService();

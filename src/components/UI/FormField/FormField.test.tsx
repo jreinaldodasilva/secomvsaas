@@ -39,7 +39,7 @@ describe('FormField', () => {
     expect(screen.queryByText('*')).not.toBeInTheDocument();
   });
 
-  it('renders helpText with correct id', () => {
+  it('renders helpText with a unique id', () => {
     render(
       <FormField name="pwd" helpText="Mínimo 8 caracteres">
         <input id="pwd" />
@@ -47,10 +47,11 @@ describe('FormField', () => {
     );
     const help = screen.getByText('Mínimo 8 caracteres');
     expect(help).toBeInTheDocument();
-    expect(help).toHaveAttribute('id', 'pwd-help');
+    expect(help).toHaveAttribute('id');
+    expect(help.id).toBeTruthy();
   });
 
-  it('renders error with role=alert and correct id', () => {
+  it('renders error with role=alert and a unique id', () => {
     render(
       <FormField name="pwd" error="Campo obrigatório">
         <input id="pwd" />
@@ -58,7 +59,8 @@ describe('FormField', () => {
     );
     const err = screen.getByRole('alert');
     expect(err).toHaveTextContent('Campo obrigatório');
-    expect(err).toHaveAttribute('id', 'pwd-error');
+    expect(err).toHaveAttribute('id');
+    expect(err.id).toBeTruthy();
   });
 
   it('does not render error element when error is omitted', () => {
@@ -66,22 +68,26 @@ describe('FormField', () => {
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 
-  it('injects aria-describedby pointing to error id when error is present', () => {
+  it('injects aria-describedby on input matching the error element id', () => {
     render(
       <FormField name="email" error="Campo obrigatório">
         <input id="email" />
       </FormField>,
     );
-    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-error');
+    const input = screen.getByRole('textbox');
+    const errorEl = screen.getByRole('alert');
+    expect(input).toHaveAttribute('aria-describedby', errorEl.id);
   });
 
-  it('injects aria-describedby pointing to help id when helpText is present', () => {
+  it('injects aria-describedby on input matching the help element id', () => {
     render(
       <FormField name="email" helpText="Dica">
         <input id="email" />
       </FormField>,
     );
-    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-help');
+    const input = screen.getByRole('textbox');
+    const helpEl = screen.getByText('Dica');
+    expect(input).toHaveAttribute('aria-describedby', helpEl.id);
   });
 
   it('injects aria-describedby with both ids when error and helpText are present', () => {
@@ -90,7 +96,10 @@ describe('FormField', () => {
         <input id="email" />
       </FormField>,
     );
-    expect(screen.getByRole('textbox')).toHaveAttribute('aria-describedby', 'email-error email-help');
+    const input = screen.getByRole('textbox');
+    const errorEl = screen.getByRole('alert');
+    const helpEl = screen.getByText('Dica');
+    expect(input).toHaveAttribute('aria-describedby', `${errorEl.id} ${helpEl.id}`);
   });
 
   it('does not inject aria-describedby when neither error nor helpText is present', () => {
@@ -100,5 +109,23 @@ describe('FormField', () => {
       </FormField>,
     );
     expect(screen.getByRole('textbox')).not.toHaveAttribute('aria-describedby');
+  });
+
+  it('generates unique ids for two FormField instances with the same name', () => {
+    render(
+      <>
+        <FormField name="title" error="Erro A">
+          <input id="title-a" />
+        </FormField>
+        <FormField name="title" error="Erro B">
+          <input id="title-b" />
+        </FormField>
+      </>,
+    );
+    const [errA, errB] = screen.getAllByRole('alert');
+    expect(errA.id).not.toBe(errB.id);
+    const inputs = screen.getAllByRole('textbox');
+    expect(inputs[0]).toHaveAttribute('aria-describedby', errA.id);
+    expect(inputs[1]).toHaveAttribute('aria-describedby', errB.id);
   });
 });

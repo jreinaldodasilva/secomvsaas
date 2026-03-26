@@ -39,7 +39,7 @@ export function validatePressRelease(
   if (!result.success) {
     for (const issue of result.error.issues) {
       const field = issue.path[0] as string;
-      if (!errors[field]) errors[field] = `${t(`domain.pressReleases.fields.${field}`)} — ${zodMsg(issue, t)}`;
+      if (!errors[field]) errors[field] = zodMsg(issue, t);
     }
   }
   // Role-based status transition enforcement

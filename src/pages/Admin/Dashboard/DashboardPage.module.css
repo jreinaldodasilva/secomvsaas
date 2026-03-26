@@ -21,7 +21,7 @@
 
 .bannerSub {
   font-size: var(--font-size-base);
-  color: rgba(255,255,255,0.65);
+  color: var(--color-sidebar-text-secondary);
   margin: 0;
 }
 
@@ -32,10 +32,10 @@
 }
 
 .bannerActions .btn-outline {
-  color: rgba(255,255,255,0.8);
-  border-color: rgba(255,255,255,0.3);
+  color: var(--color-on-dark-text);
+  border-color: var(--color-on-dark-border);
 }
-.bannerActions .btn-outline:hover { background: rgba(255,255,255,0.1); color: #fff; border-color: rgba(255,255,255,0.6); }
+.bannerActions .btn-outline:hover { background: rgba(255,255,255,0.1); color: var(--color-white); border-color: rgba(255,255,255,0.6); }
 
 /* ── Stats ────────────────────────────────────────────── */
 .stats {
@@ -80,7 +80,7 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-xl);
-  color: #fff;
+  color: var(--color-white);
 }
 .statIcon svg { width: 1.4rem; height: 1.4rem; }
 
@@ -103,7 +103,7 @@
   align-items: center;
   gap: var(--space-2);
   background: var(--color-warning-50);
-  color: #92400e;
+  color: var(--color-warning-800);
   border: 1px solid var(--color-warning-200);
   border-radius: var(--radius-lg);
   padding: var(--space-3) var(--space-4);

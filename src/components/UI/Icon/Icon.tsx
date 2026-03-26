@@ -5,6 +5,7 @@ import {
   MdDashboard, MdPeople, MdPerson, MdArticle, MdContacts, MdContentCut,
   MdSchedule, MdAccountBox, MdShare, MdMenu, MdClose, MdExpandMore,
   MdLogout, MdNotifications, MdRefresh, MdAdd, MdWarning,
+  MdDarkMode, MdBrightnessHigh,
 } from 'react-icons/md';
 
 export const ICONS = {
@@ -42,6 +43,8 @@ export const ICONS = {
   refresh:     MdRefresh,
   plus:        MdAdd,
   warning:     MdWarning,
+  darkMode:    MdDarkMode,
+  lightMode:   MdBrightnessHigh,
 } as const;
 
 export type IconName = keyof typeof ICONS;

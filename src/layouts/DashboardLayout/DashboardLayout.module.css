@@ -23,7 +23,7 @@
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4);
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid var(--color-sidebar-border);
   min-height: 4rem;
 }
 
@@ -32,7 +32,7 @@
 .sidebarToggle {
   background: none;
   border: none;
-  color: rgba(255,255,255,0.6);
+  color: var(--color-sidebar-text-muted);
   cursor: pointer;
   font-size: var(--font-size-lg);
   padding: var(--space-1);
@@ -40,7 +40,7 @@
   transition: background var(--transition-fast), color var(--transition-fast);
   flex-shrink: 0;
 }
-.sidebarToggle:hover { background: rgba(255,255,255,0.1); color: var(--color-neutral-0); }
+.sidebarToggle:hover { background: var(--color-sidebar-hover); color: var(--color-neutral-0); }
 
 .sidebarNav {
   flex: 1;
@@ -51,10 +51,10 @@
   overflow-y: auto;
   overflow-x: hidden;
   scrollbar-width: thin;
-  scrollbar-color: rgba(255,255,255,0.2) transparent;
+  scrollbar-color: var(--color-sidebar-scrollbar) transparent;
 }
 .sidebarNav::-webkit-scrollbar { width: 4px; }
-.sidebarNav::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+.sidebarNav::-webkit-scrollbar-thumb { background: var(--color-sidebar-scrollbar); border-radius: var(--radius-xs); }
 .sidebarNav::-webkit-scrollbar-track { background: transparent; }
 
 .navLink {
@@ -62,7 +62,7 @@
   align-items: center;
   gap: var(--space-3);
   padding: var(--space-2) var(--space-3);
-  color: rgba(255,255,255,0.87);
+  color: var(--color-sidebar-text);
   text-decoration: none;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
@@ -76,12 +76,12 @@
 .navLink svg { flex-shrink: 0; width: 1.15rem; height: 1.15rem; }
 
 .navLink:hover {
-  background: rgba(255,255,255,0.08);
+  background: var(--color-sidebar-hover);
   color: var(--color-neutral-0);
 }
 
 .navLinkActive {
-  background: rgba(255,255,255,0.12);
+  background: var(--color-sidebar-active);
   color: var(--color-neutral-0);
   border-left-color: var(--color-accent-400);
 }
@@ -91,7 +91,7 @@
   font-size: var(--font-size-xs);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.75);
+  color: var(--color-sidebar-text-section);
   white-space: nowrap;
   overflow: hidden;
 }
@@ -102,13 +102,13 @@
   padding: var(--space-2);
   border-left-color: transparent;
 }
-.sidebarClosed .navLinkActive { background: rgba(255,255,255,0.15); }
+.sidebarClosed .navLinkActive { background: var(--color-sidebar-active-collapsed); }
 .sidebarClosed .navSectionLabel { opacity: 0; height: 0; padding: 0; overflow: hidden; }
 .sidebarClosed .brandLogo { display: none; }
 
 .sidebarFooter {
   padding: var(--space-3) var(--space-4);
-  border-top: 1px solid rgba(255,255,255,0.08);
+  border-top: 1px solid var(--color-sidebar-border);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -126,7 +126,7 @@
 
 .sidebarUser {
   font-size: var(--font-size-sm);
-  color: rgba(255,255,255,0.65);
+  color: var(--color-sidebar-text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -134,7 +134,7 @@
 
 .sidebarRole {
   font-size: var(--font-size-xs);
-  color: rgba(255,255,255,0.4);
+  color: var(--color-sidebar-text-dim);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -190,7 +190,7 @@
     display: block;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    background: var(--color-overlay);
     z-index: calc(var(--z-modal) - 1);
   }
 
@@ -216,7 +216,7 @@
     right: 0;
     height: var(--header-height, 4rem);
     background: var(--color-primary-900);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid var(--color-sidebar-border);
     z-index: calc(var(--z-modal) + 1);
     display: flex;
     align-items: center;

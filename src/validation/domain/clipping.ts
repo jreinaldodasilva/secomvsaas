@@ -25,7 +25,7 @@ export function validateClipping(form: ClippingFormState, t: (k: string, p?: Rec
   const errors: Record<string, string> = {};
   for (const issue of result.error.issues) {
     const field = issue.path[0] as string;
-    if (!errors[field]) errors[field] = `${t(`domain.clippings.fields.${field}`)} — ${zodMsg(issue, t)}`;
+    if (!errors[field]) errors[field] = zodMsg(issue, t);
   }
   return errors;
 }

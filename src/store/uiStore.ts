@@ -1,13 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
+export type Theme = 'light' | 'dark' | 'system';
+
 interface UIState {
   sidebarOpen: boolean;
+  theme: Theme;
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
+  setTheme: (theme: Theme) => void;
 }
 
-const initialUIState = { sidebarOpen: true };
+const initialUIState = { sidebarOpen: true, theme: 'system' as Theme };
 
 export const useUIStore = create<UIState>()(
   persist(
@@ -15,10 +19,11 @@ export const useUIStore = create<UIState>()(
       ...initialUIState,
       toggleSidebar: () => set((s) => ({ sidebarOpen: !s.sidebarOpen })),
       setSidebarOpen: (open) => set({ sidebarOpen: open }),
+      setTheme: (theme) => set({ theme }),
     }),
     {
       name: 'secom-ui-state',
-      partialize: (state) => ({ sidebarOpen: state.sidebarOpen }),
+      partialize: (state) => ({ sidebarOpen: state.sidebarOpen, theme: state.theme }),
     }
   )
 );

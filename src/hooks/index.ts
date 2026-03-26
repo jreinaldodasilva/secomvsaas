@@ -12,3 +12,4 @@ export { usePressReleaseList, usePressReleaseDetail, useCreatePressRelease, useU
 export { useSessionTimeout } from './useSessionTimeout';
 export { useSocialMediaList, useSocialMediaDetail, useCreateSocialMedia, useUpdateSocialMedia, useDeleteSocialMedia } from './useSocialMedia';
 export { useToast } from './useToast';
+export { useTheme } from './useTheme';

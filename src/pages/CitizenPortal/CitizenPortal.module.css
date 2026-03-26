@@ -203,9 +203,66 @@
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
-  margin: 0 0 var(--space-6);
+  margin: 0;
   padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--color-neutral-100);
+}
+
+.profileCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-neutral-100);
+}
+
+.successMsg {
+  color: var(--color-success-dark);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.editField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.editLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.editInput {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-input);
+  font-size: var(--font-size-base);
+  min-height: var(--input-height-md);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  width: 100%;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+.editInput:focus {
+  outline: none;
+  border-color: var(--color-primary-500);
+  box-shadow: var(--focus-ring);
+}
+
+.editActions {
+  display: flex;
+  gap: var(--space-3);
+  padding-top: var(--space-2);
 }
 
 .fieldList {
@@ -246,4 +303,107 @@
 @media (max-width: 480px) {
   .fieldRow { flex-direction: column; gap: var(--space-1); }
   .fieldLabel { min-width: 0; }
+}
+
+/* ── Appointments page ── */
+.appointmentsPage {}
+
+.pageTitle {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--space-6);
+}
+
+.errorMsg {
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.appointmentList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.appointmentCard {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+}
+
+.appointmentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.appointmentService {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.appointmentMeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.metaRow {
+  display: flex;
+  gap: var(--space-3);
+  font-size: var(--font-size-sm);
+}
+
+.metaRow dt {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  min-width: 7rem;
+  flex-shrink: 0;
+}
+
+.metaRow dd {
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+}
+
+.pagination button {
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-button);
+  background: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  min-height: var(--touch-target-min);
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+.pagination button:hover:not(:disabled) {
+  background: var(--color-primary-50);
+  border-color: var(--color-primary-300);
+  color: var(--color-primary-700);
+}
+.pagination button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.pagination span {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-tertiary);
 }

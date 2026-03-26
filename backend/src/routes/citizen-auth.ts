@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { validateSchema } from '../validation/middleware';
 import { authenticateCitizen } from '../middleware/auth/citizenAuth';
 import * as citizenAuth from './citizen-auth/citizen-auth.controller';
+import { appointmentFiltersSchema } from '../modules/domain/appointments/validators/appointment.validator';
 
 const router = express.Router();
 
@@ -21,6 +22,13 @@ const registerSchema = z.object({
 const loginSchema = z.object({
   email: z.string().email().toLowerCase(),
   password: z.string().min(1),
+});
+
+const updateProfileSchema = z.object({
+  name: z.string().trim().min(2).max(100).optional(),
+  email: z.string().email().toLowerCase().optional(),
+}).refine(d => d.name !== undefined || d.email !== undefined, {
+  message: 'Informe ao menos um campo para atualizar',
 });
 
 /**
@@ -103,5 +111,45 @@ router.post('/logout', citizenAuth.logout);
  *       401: { description: Not authenticated }
  */
 router.get('/me', authenticateCitizen, ...citizenAuth.me);
+
+/**
+ * @swagger
+ * /api/v1/citizen-auth/profile:
+ *   patch:
+ *     tags: [Citizen Auth]
+ *     summary: Update citizen profile (name and/or email)
+ *     security: [{ portalCookieAuth: [] }]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name: { type: string, minLength: 2 }
+ *               email: { type: string, format: email }
+ *     responses:
+ *       200: { description: Profile updated }
+ *       401: { description: Not authenticated }
+ *       409: { description: Email already in use }
+ */
+router.patch('/profile', authenticateCitizen, validateSchema(updateProfileSchema), citizenAuth.updateProfile);
+
+/**
+ * @swagger
+ * /api/v1/citizen-auth/appointments:
+ *   get:
+ *     tags: [Citizen Auth]
+ *     summary: List appointments for the authenticated citizen
+ *     security: [{ portalCookieAuth: [] }]
+ *     parameters:
+ *       - { in: query, name: status, schema: { type: string } }
+ *       - { in: query, name: page, schema: { type: integer, default: 1 } }
+ *       - { in: query, name: limit, schema: { type: integer, default: 10 } }
+ *     responses:
+ *       200: { description: Paginated list of citizen appointments }
+ *       401: { description: Not authenticated }
+ */
+router.get('/appointments', authenticateCitizen, validateSchema(appointmentFiltersSchema, 'query'), citizenAuth.myAppointments);
 
 export default router;

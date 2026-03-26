@@ -144,7 +144,7 @@ thead {
 @media (max-width: 767px) {
   .tableContainer {
     border: none;
-    border-radius: 0;
+    border-radius: var(--radius-none);
     box-shadow: none;
     background: transparent;
     overflow-x: visible;
@@ -185,4 +185,12 @@ thead {
 
   .toolbar { flex-direction: column; align-items: stretch; }
   .search { max-width: none; }
+}
+
+@media (prefers-contrast: high) {
+  .tableContainer { border-width: 2px; }
+  .search input { border-width: 2px; }
+  .pagination button { border-width: 2px; }
+  .tr { border-bottom-width: 2px; }
+  thead { border-bottom-width: 2px; }
 }

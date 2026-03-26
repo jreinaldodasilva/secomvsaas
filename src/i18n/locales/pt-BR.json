@@ -321,6 +321,11 @@
       "create": "Novo comunicado",
       "empty": "Nenhum comunicado encontrado",
       "tagsHint": "Separar por vírgula",
+      "savedDraft": "Comunicado salvo como rascunho",
+      "savedReview": "Comunicado enviado para revisão",
+      "savedApproved": "Comunicado aprovado",
+      "savedPublished": "Comunicado publicado",
+      "savedArchived": "Comunicado arquivado",
       "fields": {
         "title": "Título",
         "subtitle": "Subtítulo",

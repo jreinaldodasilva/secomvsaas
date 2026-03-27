@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Icon } from '@/components/UI';
+import { Container } from '@/components/UI/Layout/Container';
 import styles from './MainHeader.module.css';
 
 export function MainHeader() {
@@ -42,7 +43,7 @@ export function MainHeader() {
 
   return (
     <header className={`${styles.header} ${scrolled ? styles.scrolled : ''}`} role="banner">
-      <div className={styles.inner}>
+      <Container className={styles.inner}>
 
         {/* Brand */}
         <Link to="/" className={styles.brand} aria-label="Secom — Página inicial" onClick={handleLogoClick}>
@@ -75,7 +76,7 @@ export function MainHeader() {
             <Icon name={mobileOpen ? 'close' : 'menu'} size="1.5rem" aria-hidden />
           </button>
         </div>
-      </div>
+      </Container>
 
       {/* Mobile menu */}
       {mobileOpen && (

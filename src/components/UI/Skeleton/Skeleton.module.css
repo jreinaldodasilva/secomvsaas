@@ -14,6 +14,7 @@
 .pulse { animation: pulse 1.5s ease-in-out infinite; }
 
 .text        { height: 1.2em; margin-bottom: var(--space-2); border-radius: var(--radius-sm); }
+.lastTextLine { width: 60%; }
 .rectangular { border-radius: var(--radius-md); }
 .circular    { border-radius: var(--radius-full); }
 .avatar      { border-radius: var(--radius-full); flex-shrink: 0; }

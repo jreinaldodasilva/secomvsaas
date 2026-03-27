@@ -318,7 +318,17 @@
         "startsAt": "Starts at",
         "endsAt": "Ends at",
         "isPublic": "Public",
+        "eventType": "Type",
+        "registrationEnabled": "Allow registrations",
+        "registrationDeadline": "Registration deadline",
+        "maxParticipants": "Participant limit",
+        "registrationInstructions": "Registration instructions",
+        "participantsCount": "Registered",
         "status": "Status"
+      },
+      "types": {
+        "institutional": "Institutional",
+        "community": "Competition/Tournament"
       }
     },
     "appointments": {

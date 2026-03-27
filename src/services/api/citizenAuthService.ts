@@ -20,4 +20,15 @@ export const citizenAuthService = {
 
   myAppointments: (params?: Record<string, string | number | undefined>) =>
     http.get<ApiResult<PaginatedData<any>>>('/api/v1/citizen-auth/appointments', params),
+
+  publicEvents: (params?: Record<string, string | number | undefined>) =>
+    http.get<ApiResult<PaginatedData<any>>>('/api/v1/events/public', params),
+
+  publicEventById: (id: string) =>
+    http.get<ApiResult<any>>(`/api/v1/events/public/${id}`),
+
+  registerPublicEventParticipation: (
+    id: string,
+    data: { participantName: string; participantEmail: string; participantPhone?: string; notes?: string },
+  ) => http.post<ApiResult<{ eventId: string; participantsCount: number }>>(`/api/v1/events/public/${id}/register`, data),
 };

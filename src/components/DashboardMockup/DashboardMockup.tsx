@@ -1,10 +1,10 @@
 import styles from './DashboardMockup.module.css';
 
 const stats = [
-  { label: 'Total de Pautas', value: '3.847', color: 'var(--color-primary-500)', icon: '📰' },
-  { label: 'Eventos Hoje', value: '12', color: '#22c55e', icon: '📅' },
-  { label: 'Releases Publicados', value: '248', color: '#f59e0b', icon: '📝' },
-  { label: 'Profissionais Ativos', value: '34', color: '#3b82f6', icon: '👤' },
+  { label: 'Total de Pautas', value: '3.847', tone: 'primary', icon: '📰' },
+  { label: 'Eventos Hoje', value: '12', tone: 'success', icon: '📅' },
+  { label: 'Releases Publicados', value: '248', tone: 'warning', icon: '📝' },
+  { label: 'Profissionais Ativos', value: '34', tone: 'info', icon: '👤' },
 ];
 
 const appointments = [
@@ -29,6 +29,13 @@ const statusMap: Record<string, { label: string; cls: string }> = {
   inactive:      { label: 'Inativo',      cls: styles.statusInactive },
 };
 
+const statToneMap: Record<string, string> = {
+  primary: styles.statIconPrimary,
+  success: styles.statIconSuccess,
+  warning: styles.statIconWarning,
+  info: styles.statIconInfo,
+};
+
 export function DashboardMockup() {
   return (
     <div className={styles.mock}>
@@ -46,7 +53,7 @@ export function DashboardMockup() {
       <div className={styles.statsGrid}>
         {stats.map(s => (
           <div className={styles.stat} key={s.label}>
-            <span className={styles.statIcon} style={{ background: s.color }}>{s.icon}</span>
+            <span className={`${styles.statIcon} ${statToneMap[s.tone] ?? styles.statIconPrimary}`}>{s.icon}</span>
             <div>
               <div className={styles.statValue}>{s.value}</div>
               <div className={styles.statLabel}>{s.label}</div>

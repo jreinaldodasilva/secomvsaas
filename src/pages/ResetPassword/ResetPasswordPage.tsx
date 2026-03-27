@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { authService } from '@/services/api';
-import { PasswordInput, Button } from '@/components/UI';
+import { PasswordInput, Button, Stack } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
@@ -38,15 +38,15 @@ export function ResetPasswordPage() {
   };
 
   return (
-    <div className={s.page}>
-      <div className={s.card}>
-        <div className={s.header}>
+    <Stack className={s.page}>
+      <Stack className={s.card} gap="var(--space-0)">
+        <Stack className={s.header} gap="var(--space-0)">
           <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
           <h1 className={s.title}>{t('auth.resetPassword')}</h1>
           <p className={s.subtitle}>{t('auth.resetSubtitle')}</p>
-        </div>
+        </Stack>
 
-        <div className={s.body}>
+        <Stack className={s.body} gap="var(--space-5)">
           {!token ? (
             <>
               <div className={s.errorBanner} role="alert">
@@ -66,48 +66,46 @@ export function ResetPasswordPage() {
               </Link>
             </>
           ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <Stack as="form" onSubmit={handleSubmit} noValidate className="form-stack">
               {error && (
                 <div className={s.errorBanner} role="alert">
                   <span>⚠</span> {error}
                 </div>
               )}
 
-              <div className="form-field">
-                <PasswordInput
-                  id="password"
-                  label={t('auth.newPassword')}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  minLength={8}
-                  showStrength
-                  autoComplete="new-password"
-                  autoFocus
-                />
-              </div>
+              <PasswordInput
+                id="password"
+                label={t('auth.newPassword')}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                showStrength
+                autoComplete="new-password"
+                autoFocus
+                wrapperClassName="form-field"
+              />
 
-              <div className="form-field">
-                <PasswordInput
-                  id="confirmPassword"
-                  label={t('auth.confirmPassword')}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  autoComplete="new-password"
-                  error={confirmError ? t(confirmError) : undefined}
-                />
-              </div>
+              <PasswordInput
+                id="confirmPassword"
+                label={t('auth.confirmPassword')}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                autoComplete="new-password"
+                error={confirmError ? t(confirmError) : undefined}
+                wrapperClassName="form-field"
+              />
 
               <Button type="submit" fullWidth isLoading={loading}>{t('auth.resetPassword')}</Button>
-            </form>
+            </Stack>
           )}
-        </div>
+        </Stack>
 
-        <div className={s.footer}>
+        <Stack className={s.footer} gap="var(--space-0)">
           <Link to="/login">{t('common.backToLogin')}</Link>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

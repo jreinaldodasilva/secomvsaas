@@ -35,6 +35,8 @@
     "test:e2e": "cypress run",
     "test:e2e:open": "cypress open",
     "lint": "eslint src/",
+    "check:style-tokens": "node scripts/check-style-tokens.mjs",
+    "check:style-tokens:strict": "node scripts/check-style-tokens.mjs --strict",
     "lint:backend": "cd backend && npm run lint",
     "lint:all": "npm run lint && npm run lint:backend",
     "lint:fix": "eslint src/ --fix",

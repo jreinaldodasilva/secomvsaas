@@ -13,7 +13,7 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   height: 100%;
-  font-size: 16px;
+  font-size: 100%;
 }
 
 body {
@@ -583,7 +583,7 @@ textarea:focus-visible,
 /* ═══════════════════════════════════════════════════════════
    LEGAL PAGES
 ═══════════════════════════════════════════════════════════ */
-.legal-page { max-width: 48rem; margin: 0 auto; padding: var(--space-12) var(--space-6); }
+.legal-page { padding: var(--space-12) 0; }
 .legal-page h1 { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); margin-bottom: var(--space-2); }
 .legal-updated { color: var(--color-text-tertiary); font-size: var(--font-size-sm); margin-bottom: var(--space-8); }
 .legal-page section { margin-bottom: var(--space-6); }

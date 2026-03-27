@@ -33,9 +33,12 @@ const Skeleton = React.memo<SkeletonProps>(({
       <div className={styles.group} role="status" aria-live="polite">
         <span className="sr-only">Carregando...</span>
         {Array.from({ length: lines }, (_, i) => (
-          <div key={i} className={cls}
-            style={i === lines - 1 ? { ...style, width: '60%' } : style}
-            aria-hidden="true" />
+          <div
+            key={i}
+            className={`${cls} ${i === lines - 1 ? styles.lastTextLine : ''}`.trim()}
+            style={style}
+            aria-hidden="true"
+          />
         ))}
       </div>
     );

@@ -1,4 +1,4 @@
-import { Button, FormField } from '@/components/UI';
+import { Button, FormField, Grid, Stack } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import type { FormComponentProps } from '@/components/UI';
 import { CLIPPING_SENTIMENTS, type ClippingFormState } from '@/validation/domain';
@@ -14,21 +14,21 @@ export function ClippingForm({ form, setForm, errors, isLoading, onSubmit, onBlu
     setForm(f => ({ ...f, [k]: v }));
 
   return (
-    <form onSubmit={onSubmit} className="form-stack" noValidate>
+    <Stack as="form" onSubmit={onSubmit} className="form-stack" noValidate>
       <FormField name="title" label={t('domain.clippings.fields.title')} error={errors.title} required>
         <input id="title" type="text" value={form.title} onChange={e => set('title', e.target.value)} onBlur={() => onBlur('title')} />
       </FormField>
 
-      <div className="form-grid">
+      <Grid className="form-grid">
         <FormField name="source" label={t('domain.clippings.fields.source')} error={errors.source} required>
           <input id="source" type="text" value={form.source} onChange={e => set('source', e.target.value)} onBlur={() => onBlur('source')} />
         </FormField>
         <FormField name="sourceUrl" label={t('domain.clippings.fields.sourceUrl')} error={errors.sourceUrl}>
           <input id="sourceUrl" type="url" value={form.sourceUrl} onChange={e => set('sourceUrl', e.target.value)} onBlur={() => onBlur('sourceUrl')} />
         </FormField>
-      </div>
+      </Grid>
 
-      <div className="form-grid">
+      <Grid className="form-grid">
         <FormField name="publishedAt" label={t('domain.clippings.fields.publishedAt')}>
           <input id="publishedAt" type="date" value={form.publishedAt} onChange={e => set('publishedAt', e.target.value)} onBlur={() => onBlur('publishedAt')} />
         </FormField>
@@ -37,7 +37,7 @@ export function ClippingForm({ form, setForm, errors, isLoading, onSubmit, onBlu
             {CLIPPING_SENTIMENTS.map(s => <option key={s} value={s}>{t(`domain.clippings.sentiments.${s}`)}</option>)}
           </select>
         </FormField>
-      </div>
+      </Grid>
 
       <FormField name="summary" label={t('domain.clippings.fields.summary')}>
         <textarea id="summary" value={form.summary} onChange={e => set('summary', e.target.value)} onBlur={() => onBlur('summary')} rows={3} />
@@ -47,9 +47,9 @@ export function ClippingForm({ form, setForm, errors, isLoading, onSubmit, onBlu
         <input id="tags" type="text" value={form.tags} onChange={e => set('tags', e.target.value)} onBlur={() => onBlur('tags')} />
       </FormField>
 
-      <div className="form-actions">
+      <Stack className="form-actions" direction="row" align="center" justify="flex-end">
         <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
-      </div>
-    </form>
+      </Stack>
+    </Stack>
   );
 }

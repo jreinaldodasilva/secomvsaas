@@ -4,7 +4,7 @@ import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput, Button } from '@/components/UI';
+import { PasswordInput, Button, FormField, Stack } from '@/components/UI';
 import { passwordMatchError } from '@/validation/shared/passwordMatch';
 import { validatePassword } from '@/validation/shared/passwordRules';
 import s from '@/pages/Auth.module.css';
@@ -41,23 +41,22 @@ export function RegisterPage() {
   };
 
   return (
-    <div className={s.page}>
-      <div className={`${s.card} ${s.cardWide}`}>
-        <div className={s.header}>
+    <Stack className={s.page}>
+      <Stack className={`${s.card} ${s.cardWide}`} gap="var(--space-0)">
+        <Stack className={s.header} gap="var(--space-0)">
           <h1 className={s.title}>{t('auth.register')}</h1>
           <p className={s.subtitle}>{t('auth.registerSubtitle')}</p>
-        </div>
+        </Stack>
 
-        <div className={s.body}>
+        <Stack className={s.body} gap="var(--space-5)">
           {error && (
             <div className={s.errorBanner} role="alert">
               <span>⚠</span> {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="form-field">
-              <label htmlFor="name">{t('auth.name')}</label>
+          <Stack as="form" onSubmit={handleSubmit} noValidate className="form-stack">
+            <FormField name="name" label={t('auth.name')} required>
               <input
                 id="name"
                 type="text"
@@ -68,10 +67,9 @@ export function RegisterPage() {
                 autoComplete="name"
                 autoFocus
               />
-            </div>
+            </FormField>
 
-            <div className="form-field">
-              <label htmlFor="email">{t('auth.email')}</label>
+            <FormField name="email" label={t('auth.email')} required>
               <input
                 id="email"
                 type="email"
@@ -80,10 +78,9 @@ export function RegisterPage() {
                 required
                 autoComplete="email"
               />
-            </div>
+            </FormField>
 
-            <div className="form-field">
-              <label htmlFor="companyName">{t('auth.companyName')}</label>
+            <FormField name="companyName" label={t('auth.companyName')} required>
               <input
                 id="companyName"
                 type="text"
@@ -92,7 +89,7 @@ export function RegisterPage() {
                 required
                 minLength={2}
               />
-            </div>
+            </FormField>
 
             <PasswordInput
               id="password"
@@ -118,13 +115,13 @@ export function RegisterPage() {
             />
 
             <Button type="submit" fullWidth isLoading={loading}>{t('auth.register')}</Button>
-          </form>
-        </div>
+          </Stack>
+        </Stack>
 
-        <div className={s.footer}>
+        <Stack className={s.footer} gap="var(--space-0)">
           {t('auth.hasAccount')} <Link to="/login">{t('auth.login')}</Link>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

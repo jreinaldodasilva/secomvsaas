@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { authService } from '@/services/api';
 import { useAuth } from '@/contexts';
 import { ApiError } from '@/services/http';
-import { PasswordInput, Button } from '@/components/UI';
+import { PasswordInput, Button, FormField, Stack } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { passwordMatchError } from '@/validation/shared/passwordMatch';
@@ -48,15 +48,15 @@ export function AcceptInvitePage() {
   };
 
   return (
-    <div className={s.page}>
-      <div className={s.card}>
-        <div className={s.header}>
+    <Stack className={s.page}>
+      <Stack className={s.card} gap="var(--space-0)">
+        <Stack className={s.header} gap="var(--space-0)">
           <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
           <h1 className={s.title}>{t('auth.acceptInvite')}</h1>
           <p className={s.subtitle}>{t('auth.acceptInviteSubtitle')}</p>
-        </div>
+        </Stack>
 
-        <div className={s.body}>
+        <Stack className={s.body} gap="var(--space-5)">
           {!token || expired ? (
             <>
               <div className={s.errorBanner} role="alert">
@@ -67,15 +67,14 @@ export function AcceptInvitePage() {
               </Link>
             </>
           ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <Stack as="form" onSubmit={handleSubmit} noValidate className="form-stack">
               {error && (
                 <div className={s.errorBanner} role="alert">
                   <span>⚠</span> {error}
                 </div>
               )}
 
-              <div className="form-field">
-                <label htmlFor="name">{t('auth.name')}</label>
+              <FormField name="name" label={t('auth.name')} required>
                 <input
                   id="name"
                   type="text"
@@ -86,42 +85,40 @@ export function AcceptInvitePage() {
                   autoComplete="name"
                   autoFocus
                 />
-              </div>
+              </FormField>
 
-              <div className="form-field">
-                <PasswordInput
-                  id="password"
-                  label={t('auth.password')}
-                  value={form.password}
-                  onChange={set('password')}
-                  required
-                  minLength={8}
-                  showStrength
-                  autoComplete="new-password"
-                />
-              </div>
+              <PasswordInput
+                id="password"
+                label={t('auth.password')}
+                value={form.password}
+                onChange={set('password')}
+                required
+                minLength={8}
+                showStrength
+                autoComplete="new-password"
+                wrapperClassName="form-field"
+              />
 
-              <div className="form-field">
-                <PasswordInput
-                  id="confirmPassword"
-                  label={t('auth.confirmPassword')}
-                  value={form.confirmPassword}
-                  onChange={set('confirmPassword')}
-                  required
-                  autoComplete="new-password"
-                  error={confirmError ? t(confirmError) : undefined}
-                />
-              </div>
+              <PasswordInput
+                id="confirmPassword"
+                label={t('auth.confirmPassword')}
+                value={form.confirmPassword}
+                onChange={set('confirmPassword')}
+                required
+                autoComplete="new-password"
+                error={confirmError ? t(confirmError) : undefined}
+                wrapperClassName="form-field"
+              />
 
               <Button type="submit" fullWidth isLoading={loading}>{t('auth.acceptInvite')}</Button>
-            </form>
+            </Stack>
           )}
-        </div>
+        </Stack>
 
-        <div className={s.footer}>
+        <Stack className={s.footer} gap="var(--space-0)">
           <Link to="/login">{t('auth.login')}</Link>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

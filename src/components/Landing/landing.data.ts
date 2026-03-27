@@ -15,16 +15,6 @@ export interface Stat {
   desc: string;
 }
 
-export interface Testimonial {
-  id: string;
-  name: string;
-  role: string;
-  company: string;
-  content: string;
-  avatar: string;
-  rating: number;
-}
-
 export interface LgpdCard {
   emoji: string;
   title: string;
@@ -89,36 +79,6 @@ export const AREAS: Area[] = [
     desc: 'Cobertura de eventos, vídeos institucionais, materiais gráficos e identidade visual do governo municipal.',
     features: ['Cobertura de eventos', 'Vídeos institucionais', 'Materiais gráficos', 'Identidade visual'],
     color: 'orange',
-  },
-];
-
-export const TESTIMONIALS: Testimonial[] = [
-  {
-    id: '1',
-    name: 'Equipe de Imprensa',
-    role: 'Assessoria de Comunicação',
-    company: 'Prefeitura de Piquete — SP',
-    rating: 5,
-    avatar: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=64&h=64&fit=crop&crop=face',
-    content: 'O sistema centralizou toda a produção de conteúdo da secretaria. Releases, agenda do prefeito e cobertura de eventos agora estão organizados em um único lugar, com acesso fácil para toda a equipe.',
-  },
-  {
-    id: '2',
-    name: 'Diretoria de Mídias Digitais',
-    role: 'Gestão de Redes Sociais',
-    company: 'Secom Piquete — SP',
-    rating: 5,
-    avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=64&h=64&fit=crop&crop=face',
-    content: 'A gestão das redes sociais e do site oficial ficou muito mais ágil. Conseguimos publicar as ações da prefeitura em tempo real e manter a população de Piquete sempre bem informada.',
-  },
-  {
-    id: '3',
-    name: 'Coordenação de Cerimonial',
-    role: 'Cerimonial e Eventos',
-    company: 'Secom Piquete — SP',
-    rating: 5,
-    avatar: 'https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=64&h=64&fit=crop&crop=face',
-    content: 'O controle da agenda institucional e dos eventos oficiais do município melhorou muito. Solenidades, inaugurações e entregas de obras são registradas e divulgadas com muito mais organização.',
   },
 ];
 

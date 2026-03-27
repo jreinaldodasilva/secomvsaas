@@ -3,7 +3,7 @@ import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { useDashboard } from '@/hooks';
 import { usePageTitle } from '@/hooks';
-import { Button, StatusBadge, Skeleton, Icon } from '@/components/UI';
+import { Button, StatusBadge, Skeleton, Icon, Stack, Grid } from '@/components/UI';
 import type { IconName } from '@/components/UI';
 import { PRESS_RELEASE_STATUS_COLORS } from '@/utils/statusConfig';
 import styles from './DashboardPage.module.css';
@@ -32,10 +32,10 @@ export function DashboardPage() {
   const summary = data?.data;
 
   return (
-    <div className={styles.page}>
+    <Stack className={styles.page} gap="var(--space-6)">
 
       {/* ── Banner ── */}
-      <div className={styles.banner}>
+      <Stack className={styles.banner} direction="row" align="center" justify="space-between">
         <div className={styles.bannerText}>
           <p className={styles.bannerDate}>{TODAY}</p>
           <h1 className={styles.bannerTitle}>
@@ -43,15 +43,15 @@ export function DashboardPage() {
           </h1>
           <p className={styles.bannerSub}>Secretaria de Comunicação · Prefeitura de Piquete</p>
         </div>
-        <div className={styles.bannerActions}>
+        <Stack className={styles.bannerActions} direction="row" gap="var(--space-3)">
           <Button variant="outline" size="sm" onClick={() => refetch()}>
             <Icon name="refresh" size={14} /> Atualizar
           </Button>
           <Button variant="primary" size="sm" onClick={() => navigate('/press-releases?create=true')}>
             <Icon name="plus" size={14} /> Novo Comunicado
           </Button>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
 
       {/* ── Pending alert ── */}
       {!isLoading && (summary?.pendingAppointments ?? 0) > 0 && (
@@ -67,7 +67,7 @@ export function DashboardPage() {
       {/* ── Stat cards ── */}
       <section aria-label="Totais por módulo" className={styles.statsSection}>
         <h2 className={styles.sectionTitle}>Visão geral</h2>
-        <div className={styles.statsGrid}>
+        <Grid className={styles.statsGrid}>
           {isLoading
             ? Array.from({ length: 7 }, (_, i) => (
                 <div key={i} className={styles.statCard}>
@@ -94,14 +94,14 @@ export function DashboardPage() {
                 </button>
               ))
           }
-        </div>
+        </Grid>
       </section>
 
       {/* ── Widgets ── */}
       {!isLoading && (
-        <section aria-label="Atualizações recentes" className={styles.widgetsSection}>
+        <Stack as="section" aria-label="Atualizações recentes" className={styles.widgetsSection} gap="var(--space-2)">
           <h2 className={styles.sectionTitle}>Atualizações recentes</h2>
-          <div className={styles.widgets}>
+          <Grid className={styles.widgets}>
 
             {/* Press Releases */}
             <div className={styles.widget}>
@@ -179,11 +179,11 @@ export function DashboardPage() {
                 )}
               </div>
             </div>
-          </div>
-        </section>
+          </Grid>
+        </Stack>
 
       )}
 
-    </div>
+    </Stack>
   );
 }

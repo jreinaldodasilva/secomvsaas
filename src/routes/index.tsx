@@ -31,6 +31,8 @@ const SocialMediaPage = lazy(() => import('../pages/Domain/SocialMedia/SocialMed
 const CitizenPortalHomePage = lazy(() => import('../pages/CitizenPortal/CitizenPortalHomePage').then(m => ({ default: m.CitizenPortalHomePage })));
 const CitizenLoginPage = lazy(() => import('../pages/CitizenPortal/CitizenLoginPage').then(m => ({ default: m.CitizenLoginPage })));
 const CitizenRegisterPage = lazy(() => import('../pages/CitizenPortal/CitizenRegisterPage').then(m => ({ default: m.CitizenRegisterPage })));
+const CitizenEventsPage = lazy(() => import('../pages/CitizenPortal/CitizenEventsPage').then(m => ({ default: m.CitizenEventsPage })));
+const CitizenEventRegistrationPage = lazy(() => import('../pages/CitizenPortal/CitizenEventRegistrationPage').then(m => ({ default: m.CitizenEventRegistrationPage })));
 const CitizenDashboardPage = lazy(() => import('../pages/CitizenPortal/CitizenDashboardPage').then(m => ({ default: m.CitizenDashboardPage })));
 const CitizenProfilePage = lazy(() => import('../pages/CitizenPortal/CitizenProfilePage').then(m => ({ default: m.CitizenProfilePage })));
 const CitizenAppointmentsPage = lazy(() => import('../pages/CitizenPortal/CitizenAppointmentsPage').then(m => ({ default: m.CitizenAppointmentsPage })));
@@ -72,6 +74,8 @@ export function AppRoutes() {
         <Route path="/portal" element={<Suspense fallback={<LoadingScreen />}><CitizenPortalHomePage /></Suspense>} />
         <Route path="/portal/login" element={<Suspense fallback={<LoadingScreen />}><CitizenLoginPage /></Suspense>} />
         <Route path="/portal/register" element={<Suspense fallback={<LoadingScreen />}><CitizenRegisterPage /></Suspense>} />
+        <Route path="/portal/events" element={<Suspense fallback={<LoadingScreen />}><CitizenEventsPage /></Suspense>} />
+        <Route path="/portal/events/:id" element={<Suspense fallback={<LoadingScreen />}><CitizenEventRegistrationPage /></Suspense>} />
         {/* Protected citizen routes — explicit layout-level guard; mirrors the two-layer staff pattern */}
         <Route element={<ProtectedCitizenRoute><Outlet /></ProtectedCitizenRoute>}>
           <Route path="/portal/dashboard" element={<Suspense fallback={<LoadingScreen />}><CitizenDashboardPage /></Suspense>} />

@@ -1,7 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useAuth } from '@/contexts';
 import { authService } from '@/services/api';
-import { PasswordInput } from '@/components/UI';
+import { Button, PasswordInput, Stack } from '@/components/UI';
 import { useToast } from '@/hooks';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
@@ -37,21 +37,21 @@ export function ProfilePage() {
     name?.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() ?? '?';
 
   return (
-    <div className={styles.page}>
+    <Stack className={styles.page} gap="var(--space-6)">
       {/* Banner header */}
-      <div className={styles.banner}>
+      <Stack className={styles.banner} direction="row" align="center">
         <div className={styles.avatar}>{initials(user?.name)}</div>
-        <div className={styles.bannerInfo}>
+        <Stack className={styles.bannerInfo} gap="var(--space-1)">
           <h1 className={styles.bannerName}>{user?.name}</h1>
           <p className={styles.bannerMeta}>{user?.email}</p>
           <p className={styles.bannerMeta}>{user?.role ? t(`users.roles.${user.role}`) : '—'}</p>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
 
       {/* Info card */}
-      <div className={styles.card}>
+      <Stack className={styles.card}>
         <h2 className={styles.cardTitle}>{t('profile.title')}</h2>
-        <div className={styles.fieldList}>
+        <Stack className={styles.fieldList} gap="var(--space-5)">
           <div className={styles.fieldRow}>
             <span className={styles.fieldLabel}>{t('auth.name')}</span>
             <span className={styles.fieldValue}>{user?.name}</span>
@@ -64,22 +64,22 @@ export function ProfilePage() {
             <span className={styles.fieldLabel}>{t('users.columns.role')}</span>
             <span className={styles.fieldValue}>{user?.role ? t(`users.roles.${user.role}`) : '—'}</span>
           </div>
-        </div>
-      </div>
+        </Stack>
+      </Stack>
 
       {/* Password card */}
-      <div className={styles.card}>
+      <Stack className={styles.card}>
         <h2 className={styles.cardTitle}>{t('auth.changePassword')}</h2>
-        <form onSubmit={handleChangePassword} className="form-stack">
+        <Stack as="form" onSubmit={handleChangePassword} className="form-stack">
           <PasswordInput id="currentPassword" label={t('auth.currentPassword')} value={form.currentPassword} onChange={set('currentPassword')} required />
           <PasswordInput id="newPassword" label={t('auth.newPassword')} value={form.newPassword} onChange={set('newPassword')} required minLength={8} showStrength />
-          <div className="form-actions">
-            <button className="btn btn-primary" type="submit" disabled={loading}>
-              {loading ? t('common.saving') : t('auth.changePassword')}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+          <Stack className="form-actions" direction="row" align="center" justify="flex-end">
+            <Button type="submit" isLoading={loading}>
+              {t('auth.changePassword')}
+            </Button>
+          </Stack>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

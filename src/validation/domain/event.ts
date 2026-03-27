@@ -8,16 +8,34 @@ export const eventSchema = z.object({
   startsAt:    z.string().min(1),
   endsAt:      z.string(),
   isPublic:    z.boolean(),
+  eventType:   z.enum(['institutional', 'community']),
+  registrationEnabled: z.boolean(),
+  registrationDeadline: z.string(),
+  maxParticipants: z.string(),
+  registrationInstructions: z.string(),
 }).superRefine((data, ctx) => {
   if (data.endsAt && data.startsAt && data.endsAt <= data.startsAt) {
     ctx.addIssue({ code: 'custom', message: 'validation.endsAfterStarts', path: ['endsAt'] });
+  }
+  if (data.registrationEnabled && data.registrationDeadline && data.startsAt && data.registrationDeadline > data.startsAt) {
+    ctx.addIssue({ code: 'custom', message: 'validation.registrationBeforeStarts', path: ['registrationDeadline'] });
   }
 });
 
 export type EventFormState = z.infer<typeof eventSchema>;
 
 export const emptyEventForm: EventFormState = {
-  title: '', description: '', location: '', startsAt: '', endsAt: '', isPublic: false,
+  title: '',
+  description: '',
+  location: '',
+  startsAt: '',
+  endsAt: '',
+  isPublic: false,
+  eventType: 'institutional',
+  registrationEnabled: false,
+  registrationDeadline: '',
+  maxParticipants: '',
+  registrationInstructions: '',
 };
 
 export function validateEvent(form: EventFormState, t: (k: string, p?: Record<string, string | number>) => string): Record<string, string> {

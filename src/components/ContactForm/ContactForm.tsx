@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { z } from 'zod';
-import { FormField, Button } from '@/components/UI';
+import { FormField, Button, Stack } from '@/components/UI';
 import Input from '@/components/UI/Input/Input';
 import { isValidPhone } from '@/validation/shared/phone';
 import styles from './ContactForm.module.css';
@@ -63,7 +63,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form} noValidate>
+    <Stack as="form" onSubmit={handleSubmit} className={styles.form} noValidate>
       <FormField name="name" label="Nome completo" error={errors.name} required>
         <Input id="name" type="text" value={form.name} onChange={set('name')} disabled={submitting} autoComplete="name" />
       </FormField>
@@ -88,6 +88,6 @@ export function ContactForm() {
         Quero conhecer o Secom em Ação
       </Button>
       <p className={styles.help}>Retornaremos em até 24 horas úteis</p>
-    </form>
+    </Stack>
   );
 }

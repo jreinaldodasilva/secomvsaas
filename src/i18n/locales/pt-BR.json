@@ -312,6 +312,7 @@
     "invalidPhone": "Telefone inválido. Use o formato (00) 00000-0000",
     "invalidState": "Selecione um estado válido",
     "endsAfterStarts": "O término deve ser após o início",
+    "registrationBeforeStarts": "O prazo de inscrição deve ser antes do início",
     "scheduledInFuture": "O agendamento deve ser em uma data futura",
     "statusTransitionForbidden": "Você não tem permissão para definir este status"
   },
@@ -387,7 +388,17 @@
         "startsAt": "Início",
         "endsAt": "Término",
         "isPublic": "Público",
+        "eventType": "Tipo",
+        "registrationEnabled": "Permitir inscrições",
+        "registrationDeadline": "Prazo de inscrição",
+        "maxParticipants": "Limite de participantes",
+        "registrationInstructions": "Instruções para inscrição",
+        "participantsCount": "Inscritos",
         "status": "Status"
+      },
+      "types": {
+        "institutional": "Institucional",
+        "community": "Competição/Torneio"
       }
     },
     "appointments": {

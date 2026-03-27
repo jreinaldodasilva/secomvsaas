@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts';
 import { useTranslation } from '@/i18n';
-import { Button } from '@/components/UI';
+import { Button, Stack } from '@/components/UI';
 import { Input } from '@/components/UI/Input/Input';
 import { PasswordInput } from '@/components/UI/PasswordInput/PasswordInput';
 import { ApiError } from '@/services/http';
@@ -33,7 +33,7 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="login-form" data-testid="login-form">
+    <Stack as="form" onSubmit={handleSubmit} className="form-stack" data-testid="login-form">
       {error && <div role="alert" className="form-error">{error}</div>}
       <Input
         id="email"
@@ -53,6 +53,6 @@ export function LoginForm({ onSuccess }: LoginFormProps) {
         autoComplete="current-password"
       />
       <Button type="submit" isLoading={isLoading}>{t('auth.login')}</Button>
-    </form>
+    </Stack>
   );
 }

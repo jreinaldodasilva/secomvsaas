@@ -9,6 +9,7 @@ import { Breadcrumbs } from '@/components/UI/Breadcrumbs/Breadcrumbs';
 import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/SessionTimeoutModal';
 import { ThemeToggle } from '@/components/UI/ThemeToggle/ThemeToggle';
 import { TopLoadingBar } from '@/components/UI/TopLoadingBar/TopLoadingBar';
+import { Container } from '@/components/UI/Layout/Container';
 import { useSessionTimeout } from '@/hooks';
 import { Footer } from '@/components/Layout/Footer';
 import styles from './DashboardLayout.module.css';
@@ -48,7 +49,12 @@ export function DashboardLayout() {
 
       {/* ── App header ── */}
       <header className={styles.header} role="banner">
-        <div className={styles.headerInner}>
+        <Container
+          className={styles.headerInner}
+          paddingX="var(--space-4)"
+          paddingSm="var(--space-6)"
+          paddingLg="var(--space-6)"
+        >
 
           {/* Brand */}
           <NavLink to="/admin/dashboard" className={styles.brand} aria-label="Painel principal">
@@ -147,7 +153,7 @@ export function DashboardLayout() {
               <Icon name={mobileNavOpen ? 'close' : 'menu'} size="1.25rem" aria-hidden />
             </button>
           </div>
-        </div>
+        </Container>
 
         {/* Mobile nav drawer */}
         {mobileNavOpen && (
@@ -210,10 +216,15 @@ export function DashboardLayout() {
       {/* ── Main content ── */}
       <main className={styles.main} id="main-content">
         <ErrorBoundary>
-          <div className={styles.contentWrap}>
+          <Container
+            className={styles.contentWrap}
+            paddingX="var(--space-4)"
+            paddingSm="var(--space-6)"
+            paddingLg="var(--space-6)"
+          >
             <Breadcrumbs />
             <Outlet />
-          </div>
+          </Container>
         </ErrorBoundary>
       </main>
 

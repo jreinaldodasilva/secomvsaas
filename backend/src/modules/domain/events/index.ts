@@ -4,4 +4,11 @@ export { EventRepository } from './repositories/event.repository';
 export { eventController } from './controllers/event.controller';
 export { default as eventRoutes } from './routes/event.routes';
 export { EVENT_EVENTS } from './events/event.events';
-export type { IEvent, CreateEventDto, UpdateEventDto, EventFilters } from './types';
+export type {
+  IEvent,
+  CreateEventDto,
+  UpdateEventDto,
+  EventFilters,
+  PublicEventFilters,
+  RegisterParticipationDto,
+} from './types';

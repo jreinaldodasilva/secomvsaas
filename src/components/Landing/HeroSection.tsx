@@ -1,5 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Container } from '@/components/UI';
+import { PILLS, STATS } from './landing.data';
 import styles from './Landing.module.css';
 import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
@@ -19,9 +21,8 @@ export function HeroSection() {
   const navigate = useNavigate();
   return (
     <>
-      {/* Gov utility bar — inspired by piquete.sp.gov.br */}
       <div className={pageStyles.utilityBar}>
-        <div className={pageStyles.utilityInner}>
+        <Container className={pageStyles.utilityInner}>
           <span className={pageStyles.utilityLabel}>Prefeitura Municipal de Piquete — SP</span>
           <nav className={pageStyles.utilityLinks} aria-label="Acesso rápido">
             {QUICK_ACCESS.map(l => (
@@ -36,44 +37,56 @@ export function HeroSection() {
               </a>
             ))}
           </nav>
-        </div>
+        </Container>
       </div>
 
       <section className={`${pageStyles.hero} ${styles.animFadeIn}`}>
-        <div className={pageStyles.heroContent}>
-          <div className={pageStyles.heroText}>
-            <div className={pageStyles.heroBadge}>
-              <span>🏛️</span>
-              <span>Sistema Interno — Uso Exclusivo da Secom</span>
+        <Container className={pageStyles.heroShell}>
+          <div className={pageStyles.heroContent}>
+            <div className={pageStyles.heroText}>
+              <div className={pageStyles.heroBadge}>
+                <span>🏛️</span>
+                <span>Portal Oficial da Secretaria de Comunicação</span>
+              </div>
+              <h1 className={pageStyles.heroTitle}>
+                Secretaria Municipal de{' '}
+                <span className={pageStyles.heroHighlight}>Comunicação de Piquete</span>
+              </h1>
+              <p className={pageStyles.heroSubtitle}>
+                Acesse serviços digitais, comunicados oficiais, agenda institucional e canais de
+                atendimento da Secretaria Municipal de Comunicação de Piquete.
+              </p>
+              <div className={pageStyles.heroPills} aria-label="Temas em destaque">
+                {PILLS.slice(0, 5).map(pill => (
+                  <span key={pill} className={styles.pill}>{pill}</span>
+                ))}
+              </div>
+              <div className={pageStyles.heroActions}>
+                <button className="btn btn-primary btn-lg" onClick={() => navigate('/portal')}>
+                  Acessar Portal do Cidadão
+                </button>
+                <button className="btn btn-ghost btn-lg" onClick={() => navigate('/login')}>
+                  Área Administrativa
+                </button>
+              </div>
             </div>
-            <h1 className={pageStyles.heroTitle}>
-              Secretaria Municipal de{' '}
-              <span className={pageStyles.heroHighlight}>Comunicação de Piquete</span>
-            </h1>
-            <p className={pageStyles.heroSubtitle}>
-              Plataforma integrada de gestão da Secom — assessoria de imprensa, mídias digitais,
-              cerimonial, audiovisual e campanhas institucionais.
-            </p>
-            <div className={pageStyles.heroActions}>
-              <button className="btn btn-primary btn-lg" onClick={() => navigate('/login')}>
-                Entrar no Sistema
-              </button>
-              <a
-                href="https://www.piquete.sp.gov.br"
-                className="btn btn-ghost btn-lg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Site Oficial ↗
-              </a>
+            <div className={`${pageStyles.heroImageWrap} ${styles.animSlideInRight}`}>
+              <Suspense fallback={null}>
+                <DashboardMockup />
+              </Suspense>
             </div>
           </div>
-          <div className={`${pageStyles.heroImageWrap} ${styles.animSlideInRight}`}>
-            <Suspense fallback={null}>
-              <DashboardMockup />
-            </Suspense>
+
+          <div className={pageStyles.heroStats}>
+            {STATS.map(stat => (
+              <article key={stat.label} className={`${styles.statCard} ${pageStyles.heroStatCard}`}>
+                <p className={`${styles.statValue} ${pageStyles.heroStatValue}`}>{stat.value}</p>
+                <p className={styles.statLabel}>{stat.label}</p>
+                <p className={styles.statDesc}>{stat.desc}</p>
+              </article>
+            ))}
           </div>
-        </div>
+        </Container>
       </section>
     </>
   );

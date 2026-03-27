@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CrudPage, Modal, Button, StatusBadge } from '@/components/UI';
+import { CrudPage, Modal, Button, StatusBadge, Stack, Grid } from '@/components/UI';
 import type { Column } from '@/components/UI';
 import { useCitizenPortalList, useCreateCitizenPortal, useUpdateCitizenPortal, useDeleteCitizenPortal } from '@/hooks';
 import { useToast } from '@/hooks';
@@ -30,10 +30,10 @@ function CitizenAvatar({ name }: { name: string }) {
 
 function Field({ label, value }: { label: string; value?: string }) {
   return (
-    <div className={styles.field}>
+    <Stack className={styles.field} gap="var(--space-0-5)">
       <span className={styles.fieldLabel}>{label}</span>
       <span className={styles.fieldValue}>{value || <span className={styles.fieldEmpty}>—</span>}</span>
-    </div>
+    </Stack>
   );
 }
 
@@ -155,7 +155,7 @@ export function CitizenRecordsPage() {
         size="md"
       >
         {viewItem && (
-          <div className={styles.viewModal}>
+          <Stack className={styles.viewModal} gap="var(--space-5)">
 
             {/* Header */}
             <div className={styles.viewHeader}>
@@ -169,33 +169,33 @@ export function CitizenRecordsPage() {
             </div>
 
             {/* Identification */}
-            <div className={styles.viewSection}>
+            <Stack className={styles.viewSection} gap="var(--space-3)">
               <p className={styles.viewSectionTitle}>Identificação</p>
-              <div className={styles.viewGrid}>
+              <Grid className={styles.viewGrid}>
                 <Field label={t('domain.citizenPortal.fields.cpf')}   value={viewItem.cpf} />
                 <Field label={t('domain.citizenPortal.fields.phone')} value={viewItem.phone} />
                 <Field label={t('domain.citizenPortal.fields.email')} value={viewItem.email} />
                 <Field label={t('domain.citizenPortal.fields.userId')} value={viewItem.userId} />
-              </div>
-            </div>
+              </Grid>
+            </Stack>
 
             {/* Address */}
-            <div className={styles.viewSection}>
+            <Stack className={styles.viewSection} gap="var(--space-3)">
               <p className={styles.viewSectionTitle}>Endereço</p>
-              <div className={styles.viewGrid}>
+              <Grid className={styles.viewGrid}>
                 <Field label={t('domain.citizenPortal.fields.address')}      value={viewItem.address} />
                 <Field label={t('domain.citizenPortal.fields.neighborhood')} value={viewItem.neighborhood} />
                 <Field label={t('domain.citizenPortal.fields.city')}         value={viewItem.city} />
                 <Field label={t('domain.citizenPortal.fields.state')}        value={viewItem.state} />
-              </div>
-            </div>
+              </Grid>
+            </Stack>
 
             <div className={styles.viewActions}>
               <Button variant="ghost" size="sm" onClick={() => setViewItem(null)}>
                 Fechar
               </Button>
             </div>
-          </div>
+          </Stack>
         )}
       </Modal>
     </>

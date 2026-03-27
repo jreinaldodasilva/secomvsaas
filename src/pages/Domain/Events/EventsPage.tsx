@@ -19,6 +19,14 @@ interface EventItem {
   startsAt: string;
   endsAt?: string;
   isPublic: boolean;
+  eventType: 'institutional' | 'community';
+  participantsCount?: number;
+  registration?: {
+    enabled?: boolean;
+    deadline?: string;
+    maxParticipants?: number;
+    instructions?: string;
+  };
   status: string;
 }
 
@@ -42,7 +50,9 @@ export function EventsPage() {
   ): Column<EventItem>[] => [
     { key: 'title', header: t('domain.events.fields.title'), sortable: true },
     { key: 'location', header: t('domain.events.fields.location') },
+    { key: 'eventType', header: t('domain.events.fields.eventType'), render: (r) => t(`domain.events.types.${r.eventType}`) },
     { key: 'startsAt', header: t('domain.events.fields.startsAt'), render: (r) => formatDateTime(r.startsAt) },
+    { key: 'participantsCount', header: t('domain.events.fields.participantsCount'), render: (r) => r.participantsCount ?? 0 },
     { key: 'isPublic', header: t('domain.events.fields.isPublic'), render: (r) => r.isPublic ? '✓' : '—' },
     { key: 'status', header: t('domain.events.fields.status'), render: (r) => <StatusBadge status={r.status} colorMap={EVENT_STATUS_COLORS} /> },
     {
@@ -76,6 +86,11 @@ export function EventsPage() {
         startsAt: item.startsAt ? item.startsAt.slice(0, 16) : '',
         endsAt: item.endsAt ? item.endsAt.slice(0, 16) : '',
         isPublic: item.isPublic ?? false,
+        eventType: item.eventType ?? 'institutional',
+        registrationEnabled: Boolean(item.registration?.enabled),
+        registrationDeadline: item.registration?.deadline ? item.registration.deadline.slice(0, 16) : '',
+        maxParticipants: item.registration?.maxParticipants ? String(item.registration.maxParticipants) : '',
+        registrationInstructions: item.registration?.instructions ?? '',
       })}
       validate={(form) => validateEvent(form, t)}
       buildPayload={(form) => {
@@ -85,6 +100,19 @@ export function EventsPage() {
         else delete p.endsAt;
         if (!p.description) delete p.description;
         if (!p.location) delete p.location;
+        p.registration = {
+          enabled: p.registrationEnabled,
+        };
+        if (p.registrationEnabled && p.registrationDeadline) (p.registration as Record<string, unknown>).deadline = new Date(p.registrationDeadline as string).toISOString();
+        if (p.registrationEnabled && p.maxParticipants) (p.registration as Record<string, unknown>).maxParticipants = Number(p.maxParticipants);
+        if (p.registrationEnabled && p.registrationInstructions) (p.registration as Record<string, unknown>).instructions = p.registrationInstructions;
+
+        delete p.registrationEnabled;
+        delete p.registrationDeadline;
+        delete p.maxParticipants;
+        delete p.registrationInstructions;
+
+        if (p.eventType === 'community') p.isPublic = true;
         return p;
       }}
       listQuery={listQuery}

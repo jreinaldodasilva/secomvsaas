@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
-import { Button } from '@/components/UI';
+import { Button, FormField, Grid, Stack } from '@/components/UI';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 import { citizenAuthService } from '@/services/api';
 import { UF_CODES, UF_LABELS } from '@/validation/domain/citizenPortal';
@@ -168,72 +168,65 @@ export function CitizenProfilePage() {
       {errorMsg   && <p className={styles.errorMsg}   role="alert">{errorMsg}</p>}
 
       {editing ? (
-        <form onSubmit={handleSubmit} noValidate>
+        <Stack as="form" onSubmit={handleSubmit} noValidate gap="var(--space-5)">
           {/* Personal */}
-          <div className={styles.profileCard}>
+          <Stack className={styles.profileCard} gap="var(--space-4)">
             <h2 className={styles.profileSectionTitle}>Dados pessoais</h2>
-            <div className={styles.editGrid}>
-              <div className={styles.editField}>
-                <label htmlFor="p-name" className={styles.editLabel}>Nome completo</label>
-                <input id="p-name" type="text" value={form.name} onChange={set('name')} required minLength={2} autoComplete="name" className={styles.editInput} />
-              </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-cpf" className={styles.editLabel}>CPF</label>
-                <input id="p-cpf" type="text" value={form.cpf} onChange={set('cpf')} inputMode="numeric" placeholder="000.000.000-00" maxLength={14} className={styles.editInput} />
-              </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-birth" className={styles.editLabel}>Data de nascimento</label>
-                <input id="p-birth" type="date" value={form.birthDate} onChange={set('birthDate')} className={styles.editInput} />
-              </div>
-            </div>
-          </div>
+            <Grid className={styles.editGrid}>
+              <FormField name="p-name" label="Nome completo" required>
+                <input type="text" value={form.name} onChange={set('name')} required minLength={2} autoComplete="name" className={styles.editInput} />
+              </FormField>
+              <FormField name="p-cpf" label="CPF">
+                <input type="text" value={form.cpf} onChange={set('cpf')} inputMode="numeric" placeholder="000.000.000-00" maxLength={14} className={styles.editInput} />
+              </FormField>
+              <FormField name="p-birth" label="Data de nascimento">
+                <input type="date" value={form.birthDate} onChange={set('birthDate')} className={styles.editInput} />
+              </FormField>
+            </Grid>
+          </Stack>
 
           {/* Contact */}
-          <div className={styles.profileCard}>
+          <Stack className={styles.profileCard} gap="var(--space-4)">
             <h2 className={styles.profileSectionTitle}>Contato</h2>
-            <div className={styles.editGrid}>
-              <div className={styles.editField}>
-                <label htmlFor="p-email" className={styles.editLabel}>E-mail</label>
-                <input id="p-email" type="email" value={form.email} onChange={set('email')} required autoComplete="email" className={styles.editInput} />
-              </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-phone" className={styles.editLabel}>Telefone</label>
-                <input id="p-phone" type="text" value={form.phone} onChange={set('phone')} inputMode="tel" placeholder="(00) 00000-0000" autoComplete="tel" className={styles.editInput} />
-              </div>
-            </div>
-          </div>
+            <Grid className={styles.editGrid}>
+              <FormField name="p-email" label="E-mail" required>
+                <input type="email" value={form.email} onChange={set('email')} required autoComplete="email" className={styles.editInput} />
+              </FormField>
+              <FormField name="p-phone" label="Telefone">
+                <input type="text" value={form.phone} onChange={set('phone')} inputMode="tel" placeholder="(00) 00000-0000" autoComplete="tel" className={styles.editInput} />
+              </FormField>
+            </Grid>
+          </Stack>
 
           {/* Address */}
-          <div className={styles.profileCard}>
+          <Stack className={styles.profileCard} gap="var(--space-4)">
             <h2 className={styles.profileSectionTitle}>Endereço</h2>
-            <div className={styles.editGrid}>
-              <div className={`${styles.editField} ${styles.editFieldFull}`}>
-                <label htmlFor="p-address" className={styles.editLabel}>Logradouro</label>
-                <input id="p-address" type="text" value={form.address} onChange={set('address')} autoComplete="street-address" className={styles.editInput} />
+            <Grid className={styles.editGrid}>
+              <div className={styles.editFieldFull}>
+                <FormField name="p-address" label="Logradouro">
+                  <input type="text" value={form.address} onChange={set('address')} autoComplete="street-address" className={styles.editInput} />
+                </FormField>
               </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-neighborhood" className={styles.editLabel}>Bairro</label>
-                <input id="p-neighborhood" type="text" value={form.neighborhood} onChange={set('neighborhood')} className={styles.editInput} />
-              </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-city" className={styles.editLabel}>Cidade</label>
-                <input id="p-city" type="text" value={form.city} onChange={set('city')} autoComplete="address-level2" className={styles.editInput} />
-              </div>
-              <div className={styles.editField}>
-                <label htmlFor="p-state" className={styles.editLabel}>UF</label>
-                <select id="p-state" value={form.state} onChange={set('state')} className={styles.editInput}>
+              <FormField name="p-neighborhood" label="Bairro">
+                <input type="text" value={form.neighborhood} onChange={set('neighborhood')} className={styles.editInput} />
+              </FormField>
+              <FormField name="p-city" label="Cidade">
+                <input type="text" value={form.city} onChange={set('city')} autoComplete="address-level2" className={styles.editInput} />
+              </FormField>
+              <FormField name="p-state" label="UF">
+                <select value={form.state} onChange={set('state')} className={styles.editInput}>
                   <option value="">—</option>
                   {UF_CODES.map(uf => <option key={uf} value={uf}>{uf} — {UF_LABELS[uf]}</option>)}
                 </select>
-              </div>
-            </div>
-          </div>
+              </FormField>
+            </Grid>
+          </Stack>
 
-          <div className={styles.editActions}>
+          <Stack className={styles.editActions} direction="row" align="center">
             <Button type="submit" isLoading={mutation.isPending}>Salvar alterações</Button>
             <Button type="button" variant="ghost" onClick={handleCancel} disabled={mutation.isPending}>Cancelar</Button>
-          </div>
-        </form>
+          </Stack>
+        </Stack>
       ) : (
         <>
           {SECTIONS.map(section => (

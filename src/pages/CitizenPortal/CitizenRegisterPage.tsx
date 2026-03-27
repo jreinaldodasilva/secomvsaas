@@ -3,7 +3,7 @@ import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { useCitizenAuth } from '@/contexts';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { PasswordInput, Button } from '@/components/UI';
+import { PasswordInput, Button, FormField, Stack } from '@/components/UI';
 import { passwordMatchError } from '@/validation/shared/passwordMatch';
 import { validatePassword } from '@/validation/shared/passwordRules';
 import styles from './CitizenPortal.module.css';
@@ -55,23 +55,22 @@ export function CitizenRegisterPage() {
   };
 
   return (
-    <div className={styles.authPage}>
-      <div className={`${styles.authCard} ${styles.authCardWide}`}>
-        <div className={styles.authHeader}>
+    <Stack className={styles.authPage}>
+      <Stack className={`${styles.authCard} ${styles.authCardWide}`} gap="var(--space-0)">
+        <Stack className={styles.authHeader} gap="var(--space-0)">
           <h1 className={styles.authTitle}>Criar conta</h1>
           <p className={styles.authSubtitle}>Cadastre-se no Portal do Cidadão</p>
-        </div>
+        </Stack>
 
-        <div className={styles.authBody}>
+        <Stack className={styles.authBody} gap="var(--space-5)">
           {error && (
             <div className={styles.authError} role="alert">
               {error}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} noValidate>
-            <div className="form-field">
-              <label htmlFor="name">Nome completo</label>
+          <Stack as="form" onSubmit={handleSubmit} noValidate className="form-stack">
+            <FormField name="name" label="Nome completo" required>
               <input
                 id="name"
                 type="text"
@@ -82,9 +81,8 @@ export function CitizenRegisterPage() {
                 autoComplete="name"
                 autoFocus
               />
-            </div>
-            <div className="form-field">
-              <label htmlFor="email">E-mail</label>
+            </FormField>
+            <FormField name="email" label="E-mail" required>
               <input
                 id="email"
                 type="email"
@@ -93,7 +91,7 @@ export function CitizenRegisterPage() {
                 required
                 autoComplete="email"
               />
-            </div>
+            </FormField>
             <PasswordInput
               id="password"
               label="Senha"
@@ -131,14 +129,14 @@ export function CitizenRegisterPage() {
               </label>
             </div>
             <Button type="submit" fullWidth isLoading={loading}>Criar conta</Button>
-          </form>
-        </div>
+          </Stack>
+        </Stack>
 
-        <div className={styles.authFooter}>
+        <Stack className={styles.authFooter} gap="var(--space-0)">
           Já tem conta?{' '}
           <Link to="/portal/login">Entrar</Link>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

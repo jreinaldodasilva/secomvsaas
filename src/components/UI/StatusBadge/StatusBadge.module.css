@@ -1,8 +1,8 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 3px var(--space-2) 3px var(--space-2);
+  gap: var(--space-1);
+  padding: var(--space-0-5) var(--space-2);
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-medium);

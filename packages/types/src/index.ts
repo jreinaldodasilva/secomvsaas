@@ -300,7 +300,25 @@ export type Event = {
   startsAt: string;
   endsAt?: string;
   isPublic: boolean;
+  eventType: 'institutional' | 'community';
+  registration?: {
+    enabled: boolean;
+    deadline?: string;
+    maxParticipants?: number;
+    instructions?: string;
+  };
+  participantsCount?: number;
   status: 'scheduled' | 'ongoing' | 'completed' | 'cancelled';
+  createdAt?: string;
+};
+
+export type PublicEventParticipation = {
+  id: string;
+  eventId: string;
+  participantName: string;
+  participantEmail: string;
+  participantPhone?: string;
+  notes?: string;
   createdAt?: string;
 };
 

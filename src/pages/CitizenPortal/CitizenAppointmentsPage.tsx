@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { usePageTitle } from '@/hooks';
 import { citizenAuthService } from '@/services/api';
-import { StatusBadge, EmptyState } from '@/components/UI';
+import { StatusBadge, EmptyState, Stack } from '@/components/UI';
 import Skeleton from '@/components/UI/Skeleton/Skeleton';
 import { formatDate } from '@/utils/date';
 import styles from './CitizenPortal.module.css';
@@ -21,7 +21,7 @@ export function CitizenAppointmentsPage() {
   const totalPages = Math.ceil(total / 10);
 
   return (
-    <div className={styles.appointmentsPage}>
+    <Stack className={styles.appointmentsPage} gap="var(--space-0)">
       <h1 className={styles.pageTitle}>Meus agendamentos</h1>
 
       {isError && (
@@ -29,7 +29,7 @@ export function CitizenAppointmentsPage() {
       )}
 
       {isLoading ? (
-        <div className={styles.appointmentList}>
+        <Stack className={styles.appointmentList} gap="var(--space-4)">
           {[1, 2, 3].map((i) => (
             <div key={i} className={styles.appointmentCard}>
               <Skeleton variant="text" width="60%" height="1.25rem" />
@@ -37,7 +37,7 @@ export function CitizenAppointmentsPage() {
               <Skeleton variant="text" width="30%" />
             </div>
           ))}
-        </div>
+        </Stack>
       ) : items.length === 0 ? (
         <EmptyState title="Nenhum agendamento encontrado" />
       ) : (
@@ -91,6 +91,6 @@ export function CitizenAppointmentsPage() {
           )}
         </>
       )}
-    </div>
+    </Stack>
   );
 }

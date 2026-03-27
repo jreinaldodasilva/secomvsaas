@@ -35,14 +35,17 @@
 }
 
 .headerInner {
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: 0 var(--space-6);
   height: var(--header-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 /* ── Brand ── */
@@ -51,6 +54,22 @@
   align-items: center;
   gap: var(--space-3);
   flex-shrink: 0;
+}
+
+.brandTextGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.brandKicker {
+  margin: 0;
+  color: var(--color-primary-300);
+  font-size: var(--font-size-2xs);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-tight);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
 }
 
 .brandLogoLink {
@@ -82,7 +101,7 @@
 
 .brandPortalLink {
   color: var(--color-neutral-0);
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   text-decoration: none;
   white-space: nowrap;
@@ -102,6 +121,14 @@
   gap: var(--space-2);
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-left: var(--space-2);
+  border-left: 1px solid var(--color-sidebar-border);
+}
+
 /* On desktop, navAuthMobile groups authenticated links */
 .navAuthMobile {
   display: flex;
@@ -112,6 +139,7 @@
 .navLink {
   display: flex;
   align-items: center;
+  gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
   min-height: var(--touch-target-min);
   color: var(--color-primary-200);
@@ -119,15 +147,30 @@
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   border-radius: var(--radius-md);
-  transition: color var(--transition-fast), background var(--transition-fast);
+  border: 1px solid transparent;
+  transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
   white-space: nowrap;
 }
-.navLink:hover { color: var(--color-neutral-0); background: var(--color-sidebar-hover); }
+.navLink:hover {
+  color: var(--color-neutral-0);
+  background: color-mix(in srgb, var(--color-primary-700) 70%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary-400) 28%, transparent);
+}
 .navLink:focus-visible { outline: 2px solid var(--color-accent-400); outline-offset: 2px; }
 .navLinkActive {
   color: var(--color-neutral-0);
   font-weight: var(--font-weight-semibold);
-  background: var(--color-sidebar-active);
+  background: color-mix(in srgb, var(--color-primary-600) 82%, transparent);
+  border-color: color-mix(in srgb, var(--color-primary-300) 34%, transparent);
+}
+
+.navIcon {
+  color: currentColor;
+  flex-shrink: 0;
+}
+
+.navLabel {
+  line-height: var(--line-height-tight);
 }
 
 .navBtn {
@@ -170,27 +213,47 @@
 .navBtnPrimary:hover { background: var(--color-accent-600); }
 .navBtnPrimary:focus-visible { outline: 2px solid var(--color-accent-400); outline-offset: 2px; }
 
+.siteLink {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target-min);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  color: var(--color-primary-200);
+  text-decoration: none;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+.siteLink:hover { color: var(--color-neutral-0); background: var(--color-sidebar-hover); }
+.siteLink:focus-visible { outline: 2px solid var(--color-accent-400); outline-offset: 2px; }
+
 /* ── Citizen greeting bar ── */
 .citizenBar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-1);
   background: var(--color-primary-800);
-  padding: var(--space-1) var(--space-6);
   font-size: var(--font-size-xs);
   color: var(--color-primary-200);
   border-top: 1px solid var(--color-sidebar-border);
+}
+
+.citizenBarInner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 2rem;
 }
 .citizenBar strong { color: var(--color-neutral-0); }
 
 /* ── Main content ── */
 .main {
   flex: 1;
-  max-width: var(--container-max-width);
   width: 100%;
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
+}
+
+.mainInner {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-8);
 }
 
 /* ── Breadcrumb ── */
@@ -227,6 +290,10 @@
   display: block;
 }
 
+.sharedFooterWrap {
+  margin-top: auto;
+}
+
 /* ── Footer ── */
 .footer {
   background: var(--color-primary-900);
@@ -234,10 +301,32 @@
   margin-top: auto;
 }
 
+.footerHighlights {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-sidebar-border);
+}
+
+.footerHighlightItem {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--touch-target-min);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--color-primary-400) 36%, transparent);
+  background: color-mix(in srgb, var(--color-primary-700) 45%, transparent);
+  color: var(--color-primary-200);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+}
+
 .footerInner {
-  max-width: var(--container-max-width);
-  margin: 0 auto;
-  padding: var(--space-10) var(--space-6) var(--space-8);
+  padding-top: var(--space-10);
+  padding-bottom: var(--space-8);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
@@ -315,9 +404,8 @@
 
 .footerBottom {
   border-top: 1px solid var(--color-sidebar-border);
-  padding: var(--space-4) var(--space-6);
-  max-width: var(--container-max-width);
-  margin: 0 auto;
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
 }
 
 .footerBottom p {
@@ -333,12 +421,14 @@
 }
 
 @media (max-width: 767px) {
-  .headerInner { padding: 0 var(--space-4); }
-
-  .brandPortalLink { display: none; }
+  .brandKicker { display: none; }
   .brandDivider { display: none; }
+  .brandTextGroup { gap: 0; }
 
   .navBtnLabel { display: none; }
+  .headerRight { gap: var(--space-1); }
+  .headerActions { border-left: none; padding-left: 0; }
+  .siteLink { display: none; }
 
   .bottomNav {
     display: flex;
@@ -418,16 +508,22 @@
   .navAuthMobile { display: none; }
 
   /* Footer adjustments on mobile */
+  .footerHighlights {
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+    padding-bottom: var(--space-3);
+  }
+
   .footerInner {
     flex-direction: column;
     gap: var(--space-8);
-    padding: var(--space-8) var(--space-4) var(--space-6);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-6);
   }
 
   .footerNav { gap: var(--space-6); }
 
-  /* Add bottom padding to footer so it clears the bottom nav */
-  .footer { padding-bottom: 4rem; }
+  .sharedFooterWithBottomNav { padding-bottom: 4rem; }
 }
 
 @media (max-width: 480px) {

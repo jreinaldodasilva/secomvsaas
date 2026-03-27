@@ -47,6 +47,9 @@ jobs:
       - name: Lint
         run: npm run lint:all
 
+      - name: Style token governance
+        run: npm run check:style-tokens:strict
+
       - name: Frontend tests
         run: npm run test:frontend:coverage
 

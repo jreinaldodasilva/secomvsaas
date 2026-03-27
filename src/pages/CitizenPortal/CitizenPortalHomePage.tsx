@@ -2,7 +2,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { usePageTitle } from '@/hooks';
 import { useCitizenAuth } from '@/contexts';
 import { Icon } from '@/components/UI/Icon/Icon';
-import { Spinner } from '@/components/UI';
+import { Spinner, Stack, Grid } from '@/components/UI';
 import styles from './CitizenPortal.module.css';
 
 const SERVICES = [
@@ -27,8 +27,8 @@ const SERVICES = [
   {
     icon: 'event' as const,
     title: 'Eventos',
-    desc: 'Confira os próximos eventos públicos e institucionais.',
-    to: '/',
+    desc: 'Inscreva-se em torneios esportivos e competições culturais.',
+    to: '/portal/events',
   },
 ];
 
@@ -45,10 +45,10 @@ export function CitizenPortalHomePage() {
   }
 
   return (
-    <div className={styles.home}>
+    <Stack className={styles.home} gap="var(--space-0)">
       <section className={styles.hero} aria-labelledby="hero-title">
-        <div className={styles.heroContent}>
-          <div className={styles.heroText}>
+        <Stack className={styles.heroContent} direction="row" align="center" justify="space-between">
+          <Stack className={styles.heroText} gap="var(--space-0)">
             <p className={styles.heroEyebrow}>Secretaria de Comunicação</p>
             <h1 id="hero-title" className={styles.heroTitle}>
               Portal do Cidadão
@@ -66,18 +66,18 @@ export function CitizenPortalHomePage() {
                 Criar conta
               </Link>
             </div>
-          </div>
+          </Stack>
           <div className={styles.heroVisual} aria-hidden="true">
             <div className={styles.heroIconWrap}>
               <Icon name="home" size="4rem" aria-hidden={true} />
             </div>
           </div>
-        </div>
+        </Stack>
       </section>
 
       <section className={styles.services} aria-labelledby="services-title">
         <h2 id="services-title" className={styles.servicesTitle}>O que você pode fazer</h2>
-        <ul className={styles.serviceGrid}>
+        <Grid as="ul" className={styles.serviceGrid}>
           {SERVICES.map((s) => (
             <li key={s.title}>
               <Link to={s.to} className={styles.serviceCard}>
@@ -92,7 +92,7 @@ export function CitizenPortalHomePage() {
               </Link>
             </li>
           ))}
-        </ul>
+        </Grid>
       </section>
 
       <section className={styles.trustBanner} aria-label="Informações de segurança">
@@ -109,6 +109,6 @@ export function CitizenPortalHomePage() {
           <span>Serviço público oficial</span>
         </div>
       </section>
-    </div>
+    </Stack>
   );
 }

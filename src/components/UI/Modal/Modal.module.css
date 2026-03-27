@@ -80,7 +80,7 @@
   color: var(--color-text-secondary);
   cursor: pointer;
   transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
-  margin-top: -2px;
+  margin-top: calc(var(--space-0-5) * -1);
 }
 .close svg { width: 1rem; height: 1rem; }
 .close:hover {

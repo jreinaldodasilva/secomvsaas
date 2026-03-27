@@ -6,6 +6,7 @@ import { Modal } from '@/components/UI/Modal/Modal';
 import { Button } from '@/components/UI/Button/Button';
 import { ConfirmDialog } from '@/components/UI/ConfirmDialog/ConfirmDialog';
 import { EmptyState } from '@/components/UI/EmptyState/EmptyState';
+import { Stack } from '@/components/UI/Layout/Stack';
 import { useTranslation } from '@/i18n';
 import { useAuth } from '@/contexts';
 import { hasPermission } from '@vsaas/types';
@@ -223,18 +224,18 @@ export function CrudPage<TItem extends { id: string }, TForm>({
 
   if (isError) {
     return (
-      <div>
+      <Stack>
         <div className="page-header"><h1>{title}</h1></div>
         <EmptyState
           title={t('common.errorLoading')}
           action={listQuery.refetch ? { label: t('common.retry'), onClick: listQuery.refetch } : undefined}
         />
-      </div>
+      </Stack>
     );
   }
 
   return (
-    <div className={styles.page}>
+    <Stack className={styles.page} gap="var(--space-6)">
       <div className="page-header">
         <div>
           <h1>{title}</h1>
@@ -255,7 +256,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
           )}
         </div>
       </div>
-      <section className={styles.dataSection} aria-labelledby={sectionId}>
+      <Stack as="section" className={styles.dataSection} gap="var(--space-2)" aria-labelledby={sectionId}>
         <h2 id={sectionId} className={styles.sectionTitle}>Registros</h2>
         <div className={styles.tableSurface}>
           <DataTable
@@ -273,7 +274,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
             emptyAction={emptyAction}
           />
         </div>
-      </section>
+      </Stack>
       <Modal
         isOpen={modalOpen}
         onClose={requestClose}
@@ -307,6 +308,6 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         isLoading={isDeletePending}
         message={deleteTarget?.name ? t('common.deleteConfirmNamed', { name: deleteTarget.name }) : undefined}
       />
-    </div>
+    </Stack>
   );
 }

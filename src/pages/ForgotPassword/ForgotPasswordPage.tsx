@@ -4,7 +4,7 @@ import { authService } from '@/services/api';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ApiError } from '@/services/http';
-import { Button } from '@/components/UI';
+import { Button, FormField, Stack } from '@/components/UI';
 import s from '@/pages/Auth.module.css';
 
 export function ForgotPasswordPage() {
@@ -31,15 +31,15 @@ export function ForgotPasswordPage() {
   };
 
   return (
-    <div className={s.page}>
-      <div className={s.card}>
-        <div className={s.header}>
+    <Stack className={s.page}>
+      <Stack className={s.card} gap="var(--space-0)">
+        <Stack className={s.header} gap="var(--space-0)">
           <img src="/secom_logo.png" alt={t('common.brand')} className={s.logo} />
           <h1 className={s.title}>{t('auth.forgotPassword')}</h1>
           <p className={s.subtitle}>{t('auth.forgotSubtitle')}</p>
-        </div>
+        </Stack>
 
-        <div className={s.body}>
+        <Stack className={s.body} gap="var(--space-5)">
           {submitted ? (
             <>
               <div className={s.successIcon}>✉️</div>
@@ -50,15 +50,14 @@ export function ForgotPasswordPage() {
               </Button>
             </>
           ) : (
-            <form onSubmit={handleSubmit} noValidate>
+            <Stack as="form" onSubmit={handleSubmit} noValidate className="form-stack">
               {error && (
                 <div className={s.errorBanner} role="alert">
                   <span>⚠</span> {error}
                 </div>
               )}
 
-              <div className="form-field">
-                <label htmlFor="email">{t('auth.email')}</label>
+              <FormField name="email" label={t('auth.email')} required>
                 <input
                   id="email"
                   type="email"
@@ -68,17 +67,17 @@ export function ForgotPasswordPage() {
                   autoComplete="email"
                   autoFocus
                 />
-              </div>
+              </FormField>
 
               <Button type="submit" fullWidth isLoading={loading}>{t('auth.sendLink')}</Button>
-            </form>
+            </Stack>
           )}
-        </div>
+        </Stack>
 
-        <div className={s.footer}>
+        <Stack className={s.footer} gap="var(--space-0)">
           <Link to="/login">{t('common.backToLogin')}</Link>
-        </div>
-      </div>
-    </div>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 }

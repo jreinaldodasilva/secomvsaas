@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog, FormField, Icon } from '@/components/UI';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog, FormField, Icon, Stack } from '@/components/UI';
 import { useApiQuery, useApiMutation } from '@/hooks';
 import { useToast } from '@/hooks';
 import { useAuth } from '@/contexts';
@@ -144,23 +144,23 @@ export function UsersPage() {
   const activeCount = items.filter(u => u.isActive).length;
 
   return (
-    <div className={styles.page}>
+    <Stack className={styles.page} gap="var(--space-6)">
 
       {/* ── Header ── */}
-      <div className={styles.header}>
-        <div className={styles.headerText}>
+      <Stack as="header" className={styles.header} direction="row" align="center" justify="space-between">
+        <Stack className={styles.headerText} gap="var(--space-1)">
           <h1 className={styles.title}>{t('users.title')}</h1>
           <p className={styles.subtitle}>
             {total} {total === 1 ? 'membro' : 'membros'} · {activeCount} ativos
           </p>
-        </div>
+        </Stack>
         <Button onClick={() => setInviteOpen(true)}>
           <Icon name="plus" size="1rem" aria-hidden /> {t('users.invite')}
         </Button>
-      </div>
+      </Stack>
 
       {/* ── Table ── */}
-      <section className={styles.dataSection} aria-labelledby="users-list-title">
+      <Stack as="section" className={styles.dataSection} gap="var(--space-2)" aria-labelledby="users-list-title">
         <h2 id="users-list-title" className={styles.sectionTitle}>Lista de usuários</h2>
         <div className={styles.tableWrap}>
           <DataTable
@@ -176,38 +176,43 @@ export function UsersPage() {
             emptyMessage={t('users.empty')}
           />
         </div>
-      </section>
+      </Stack>
 
       {/* ── Invite modal ── */}
       <Modal isOpen={inviteOpen} onClose={() => setInviteOpen(false)} title={t('users.inviteTitle')} size="sm">
-        <form onSubmit={(e) => { e.preventDefault(); invite.mutate({ email: inviteEmail, role: inviteRole }); }}>
-          <div className="form-stack">
-            <FormField name="invite-email" label={t('users.inviteEmail')} required>
-              <input
-                id="invite-email"
-                type="email"
-                value={inviteEmail}
-                onChange={(e) => setInviteEmail(e.target.value)}
-                required
-                autoFocus
-              />
-            </FormField>
-            <FormField name="invite-role" label={t('users.inviteRole')} required>
-              <select
-                id="invite-role"
-                value={inviteRole}
-                onChange={(e) => setInviteRole(e.target.value)}
-              >
-                {INVITE_ROLES.map(r => (
-                  <option key={r} value={r}>{t(`users.roles.${r}`)}</option>
-                ))}
-              </select>
-            </FormField>
-            <Button type="submit" isLoading={invite.isPending}>
-              {t('users.inviteSend')}
-            </Button>
-          </div>
-        </form>
+        <Stack
+          as="form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            invite.mutate({ email: inviteEmail, role: inviteRole });
+          }}
+          className="form-stack"
+        >
+          <FormField name="invite-email" label={t('users.inviteEmail')} required>
+            <input
+              id="invite-email"
+              type="email"
+              value={inviteEmail}
+              onChange={(e) => setInviteEmail(e.target.value)}
+              required
+              autoFocus
+            />
+          </FormField>
+          <FormField name="invite-role" label={t('users.inviteRole')} required>
+            <select
+              id="invite-role"
+              value={inviteRole}
+              onChange={(e) => setInviteRole(e.target.value)}
+            >
+              {INVITE_ROLES.map(r => (
+                <option key={r} value={r}>{t(`users.roles.${r}`)}</option>
+              ))}
+            </select>
+          </FormField>
+          <Button type="submit" isLoading={invite.isPending}>
+            {t('users.inviteSend')}
+          </Button>
+        </Stack>
       </Modal>
 
       {/* ── Deactivate confirm ── */}
@@ -219,6 +224,6 @@ export function UsersPage() {
         confirmLabel={t('users.deactivate')}
         isLoading={deactivateUser.isPending}
       />
-    </div>
+    </Stack>
   );
 }

@@ -8,18 +8,36 @@
 ## Implementation Update (Updated: 2026-03-27)
 
 ### Execution Progress Snapshot
-- Quick wins completed: **13 / 14**
-- Quick wins partially completed: **1 / 14** (`#10`)
+- Quick wins completed: **14 / 14**
+- Quick wins partially completed: **0 / 14**
 - Highest-priority delivered areas:
   - Container and shell normalization improvements
   - `CrudPage` composition standardization
   - Dashboard/table/readability and CTA hierarchy improvements
   - Token-governance hardening in shared UI surfaces
   - Citizen appointments/pagination and auth-surface convergence
+  - Citizen profile edit convergence to shared `FormField` and layout primitives
+  - Reusable layout primitive layer introduced (`Stack`, `Grid`, `Container`) and applied to core admin/citizen surfaces
+  - Additional primitive rollout on citizen dashboard composition (`Stack` + `Grid`) and removal of remaining ad hoc section spacing
+  - Domain form composition standardized with shared layout primitives (`Stack`/`Grid`) in appointments, events, clippings, media contacts, press releases, and social media forms
+  - Auth and legal page composition aligned with shared primitives (`Stack`, `Container`, `FormField`) to reduce ad hoc wrapper divergence
+  - Citizen auth flows and citizen-records form migrated to shared form/layout primitives, removing remaining legacy form wrapper patterns in key workflows
+  - Admin users invite modal and settings profile password flow updated to shared primitive composition (`Stack` + `Button`) for consistent form structure in staff workflows
+  - Final legacy form wrappers removed in citizen profile edit and shared auth/contact components (`CitizenProfilePage`, `LoginForm`, `ContactForm`) to complete primitive-first composition on high-reuse forms
+  - Domain form action rows converted from legacy `div` wrappers to primitive-based `Stack` composition across all core module forms
+  - Staff and citizen auth page shells (`page/card/header/body/footer`) migrated to primitive-driven `Stack` composition for consistent macro layout structure
+  - Public landing page width governance aligned to shared `Container` primitives (utility bar, hero, and feature sections), removing duplicated local max-width container rules
+  - Legal pages moved to `Container maxWidth` governance with simplified global legal wrapper styling, eliminating mixed width control paths
+  - Remaining landing/public sections (`CtaSection`, `ContactSection`, `TestimonialsSection`, `LgpdSection`, `VisualBanner`) aligned to shared `Container` primitives and simplified section spacing rules
+  - Shared `Footer` and `CitizenPortalLayout` main content refactored to container-primitive governance, removing final manual max-width wrapper implementations in core shells
+  - Inline-style debt reduced in shared/demo surfaces (`DashboardMockup`, `Skeleton` multiline rendering)
+  - Style governance script refined from broad noise detection to actionable token debt signals (advisory baseline reduced from **31 to 0 findings**)
+  - CI governance gate added to enforce token/style compliance on every PR/push (`check:style-tokens:strict` in CI workflow)
 
 ### Remaining Immediate Focus
-- Complete full convergence of citizen profile edit form to shared form abstractions (Quick Win #10).
-- Continue systemic layout primitive work (`Stack/Grid/Container`) from P0 issue cluster for long-term scalability.
+- Continue systemic layout primitive rollout (`Stack/Grid/Container`) across remaining pages to close P0 composition debt.
+- Keep `check:style-tokens` at 0 findings as a governance baseline in shared `UI/layout/global` surfaces.
+- Advance from quick-win completion to full phase-level P0/P1 standardization (shared layout contracts, dashboard/readability governance, and token-rule enforcement).
 
 ---
 

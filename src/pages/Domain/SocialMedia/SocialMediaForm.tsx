@@ -1,4 +1,4 @@
-import { Button, FormField } from '@/components/UI';
+import { Button, FormField, Grid, Stack } from '@/components/UI';
 import { useTranslation } from '@/i18n';
 import type { FormComponentProps } from '@/components/UI';
 import {
@@ -21,8 +21,8 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
     setForm(f => ({ ...f, [k]: v }));
 
   return (
-    <form onSubmit={onSubmit} className="form-stack" noValidate>
-      <div className="form-grid">
+    <Stack as="form" onSubmit={onSubmit} className="form-stack" noValidate>
+      <Grid className="form-grid">
         <FormField name="platform" label={t('domain.socialMedia.fields.platform')}>
           <select id="platform" value={form.platform} onChange={e => set('platform', e.target.value as SocialMediaFormState['platform'])} onBlur={() => onBlur('platform')}>
             {SOCIAL_MEDIA_PLATFORMS.map(p => <option key={p} value={p}>{t(`common.platform.${p}`)}</option>)}
@@ -31,7 +31,7 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
         <FormField name="scheduledAt" label={t('domain.socialMedia.fields.scheduledAt')}>
           <input id="scheduledAt" type="datetime-local" value={form.scheduledAt} onChange={e => set('scheduledAt', e.target.value)} onBlur={() => onBlur('scheduledAt')} />
         </FormField>
-      </div>
+      </Grid>
 
       <FormField name="content" label={t('domain.socialMedia.fields.content')} error={errors.content} required>
         <textarea id="content" value={form.content} onChange={e => set('content', e.target.value)} onBlur={() => onBlur('content')} rows={4} />
@@ -52,9 +52,9 @@ export function SocialMediaForm({ form, setForm, errors, editing, editStatus = '
         </FormField>
       )}
 
-      <div className="form-actions">
+      <Stack className="form-actions" direction="row" align="center" justify="flex-end">
         <Button type="submit" isLoading={isLoading}>{t('common.saving')}</Button>
-      </div>
-    </form>
+      </Stack>
+    </Stack>
   );
 }

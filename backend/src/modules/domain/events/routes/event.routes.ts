@@ -1,15 +1,73 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { eventController } from '../controllers/event.controller';
 import { authenticate, authorizeWithPermissions } from '../../../../middleware/auth/auth';
-import { requireTenant } from '../../../../platform/tenants';
+import { resolveTenant, setTenantContext, requireTenant } from '../../../../platform/tenants';
 import { validateSchema } from '../../../../validation/middleware';
-import { createEventSchema, updateEventSchema, eventFiltersSchema } from '../validators/event.validator';
+import {
+  createEventSchema,
+  updateEventSchema,
+  eventFiltersSchema,
+  publicEventFiltersSchema,
+  registerEventParticipationSchema,
+} from '../validators/event.validator';
 import { PERMISSIONS } from '../../../../config/rbac/permissions';
+import { tenantService } from '../../../../platform/tenants/services/tenant.service';
 
 const router = Router();
+const DEFAULT_TENANT_SLUG = 'secom';
+
+const ensureTenantForPublicRoutes = async (req: Request, _res: Response, next: NextFunction) => {
+  try {
+    if ((req as any).tenant?.id) {
+      next();
+      return;
+    }
+    const tenant = await tenantService.findBySlug(DEFAULT_TENANT_SLUG);
+    if (tenant?._id) {
+      (req as any).tenant = {
+        id: tenant._id.toString(),
+        name: tenant.name,
+        slug: tenant.slug,
+        plan: tenant.plan,
+        status: tenant.status,
+        settings: tenant.settings,
+      };
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+router.get('/public',
+  resolveTenant,
+  ensureTenantForPublicRoutes,
+  requireTenant,
+  setTenantContext,
+  validateSchema(publicEventFiltersSchema, 'query'),
+  eventController.listPublic
+);
+
+router.get('/public/:id',
+  resolveTenant,
+  ensureTenantForPublicRoutes,
+  requireTenant,
+  setTenantContext,
+  eventController.findPublicById
+);
+
+router.post('/public/:id/register',
+  resolveTenant,
+  ensureTenantForPublicRoutes,
+  requireTenant,
+  setTenantContext,
+  validateSchema(registerEventParticipationSchema),
+  eventController.registerPublicParticipation
+);
 
 router.use(authenticate);
 router.use(requireTenant);
+router.use(setTenantContext);
 
 /**
  * @swagger

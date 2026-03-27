@@ -1,8 +1,8 @@
 # UI Layout & Style Quick Wins
 
 ## Implementation Status (Updated: 2026-03-27)
-- Completed quick wins: **13 / 14**
-- Partially completed quick wins: **1 / 14**
+- Completed quick wins: **14 / 14**
+- Partially completed quick wins: **0 / 14**
 - Not started quick wins: **0 / 14**
 
 | Seq | Quick Win | Status | Evidence Summary |
@@ -16,14 +16,14 @@
 | 7 | Normalize card padding/radius hierarchy across dashboard + settings + citizen pages | ✅ Completed | Card language aligned across settings/dashboard/citizen pages using shared radius/padding tokens. |
 | 8 | Reduce hardcoded spacing and color values in high-reuse surfaces (top 20% files first) | ✅ Completed | Shared surfaces further tokenized (buttons, layout gaps, typography micro-values, and repeated shadow patterns). |
 | 9 | Align citizen appointments list visual rhythm with shared data patterns | ✅ Completed | Citizen appointments list now uses explicit section hierarchy and shared list/pagination rhythm. |
-| 10 | Converge citizen profile edit form layout language with shared form conventions | 🟨 Partial | Form spacing/grouping improved, but full migration to shared form abstractions is still pending. |
+| 10 | Converge citizen profile edit form layout language with shared form conventions | ✅ Completed | Citizen profile edit migrated to shared `FormField` usage and reusable `Stack/Grid` layout composition. |
 | 11 | Harmonize pagination pattern between citizen list pages and shared table pattern | ✅ Completed | Citizen pagination pattern aligned with shared `DataTable` pagination language. |
 | 12 | Standardize heading-depth guidance on dense operational pages (H1-H3 usage consistency) | ✅ Completed | Additional dense-page subsection headings introduced (admin/crud/citizen list contexts). |
 | 13 | Consolidate duplicated auth surface styling between staff and citizen flows | ✅ Completed | Auth surfaces converged on shared sizing/border/rhythm token patterns. |
 | 14 | Replace high-friction divider usage with spacing-driven section separation in key dashboards/forms | ✅ Completed | Divider usage reduced in key dashboard/form/profile areas, replaced by spacing-driven separation. |
 
 ### Remaining Gap
-- **Quick Win #10 (partial):** citizen profile edit remains custom and is not fully converged to shared form primitives yet.
+- No open quick-win gaps. Remaining work is roadmap-level (P0-P2 structural evolution beyond quick wins).
 
 ## Scope & Ordering Logic
 - Source of truth: `docs/architecture/frontend/ui-layout-style-audit.md`

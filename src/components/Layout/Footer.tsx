@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Container } from '@/components/UI/Layout/Container';
 import styles from './Footer.module.css';
 
 export function Footer() {
@@ -6,11 +7,11 @@ export function Footer() {
 
   return (
     <footer className={styles.footer} id="footer">
-      <div className={styles.inner}>
+      <Container className={styles.inner}>
         <div className={styles.top}>
           <div className={styles.brand}>
             <span className={styles.brandName}>Secom — Secretaria Municipal de Comunicação</span>
-            <p className={styles.tagline}>Prefeitura Municipal de Piquete — SP · Sistema interno de gestão</p>
+            <p className={styles.tagline}>Prefeitura Municipal de Piquete — SP · Portal oficial de comunicação pública</p>
           </div>
           <nav className={styles.footerLinks} aria-label="Links do rodapé">
             <a href="https://www.piquete.sp.gov.br" target="_blank" rel="noopener noreferrer">Site Oficial</a>
@@ -20,10 +21,10 @@ export function Footer() {
             <Link to="/terms">Termos de Uso</Link>
           </nav>
         </div>
-      </div>
-      <div className={styles.bottom}>
-        <p>© {year} Prefeitura Municipal de Piquete — SP. Sistema de uso interno da Secom.</p>
-      </div>
+      </Container>
+      <Container className={styles.bottom}>
+        <p>© {year} Prefeitura Municipal de Piquete — SP. Secretaria Municipal de Comunicação.</p>
+      </Container>
     </footer>
   );
 }

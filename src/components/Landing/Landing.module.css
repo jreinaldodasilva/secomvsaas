@@ -40,7 +40,7 @@
 /* ── Section header ── */
 .sectionHeader        { text-align: center; margin-bottom: var(--space-10); }
 .sectionHeaderLeft    { text-align: left; margin-bottom: var(--space-6); }
-.sectionTitle         { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-primary-700); margin-bottom: var(--space-2); line-height: var(--line-height-tight); }
+.sectionTitle         { font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); color: var(--color-primary-600); margin-bottom: var(--space-2); line-height: var(--line-height-tight); }
 .sectionDesc          { font-size: var(--font-size-lg); color: var(--color-text-secondary); }
 
 /* ── Stat card ── */
@@ -66,14 +66,92 @@
 .visualLabel          { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(0,0,0,0.65)); color: #fff; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); padding: var(--space-4) var(--space-4) var(--space-3); }
 
 /* ── Module card ── */
-.moduleCard           { background: var(--color-bg-primary); border: 1px solid var(--color-border-primary); border-radius: var(--radius-2xl); box-shadow: var(--shadow-level-1); padding: var(--space-8) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
-.moduleCardHighlight  { border-color: var(--color-primary-500); box-shadow: var(--shadow-level-2); }
-.moduleBadge          { position: absolute; top: calc(-1 * var(--space-3)); left: 50%; transform: translateX(-50%); background: var(--color-primary-500); color: #fff; font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); padding: var(--space-1) var(--space-3); border-radius: var(--radius-full); white-space: nowrap; }
-.moduleEmoji          { font-size: var(--font-size-3xl); }
-.moduleName           { font-size: var(--font-size-xl); font-weight: var(--font-weight-semibold); color: var(--color-text-primary); }
-.moduleFeatures       { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
-.moduleFeatureItem    { display: flex; align-items: center; gap: var(--space-2); font-size: var(--font-size-sm); color: var(--color-text-secondary); }
-.moduleFeatureIcon    { color: var(--color-primary-500); flex-shrink: 0; }
+.moduleCard {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-level-1);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+.moduleCard::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--module-accent);
+  border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+}
+.moduleCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--module-accent) 20%, transparent);
+  border-color: color-mix(in srgb, var(--module-accent) 40%, var(--color-border-primary));
+}
+.moduleCardHighlight {
+  border-color: color-mix(in srgb, var(--module-accent) 50%, var(--color-border-primary));
+  box-shadow: var(--shadow-level-2);
+}
+.moduleBadge {
+  position: absolute;
+  top: calc(-1 * var(--space-3));
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--module-accent);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+.moduleHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.moduleIconWrap {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--module-accent) 12%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+.moduleCard:hover .moduleIconWrap {
+  background: color-mix(in srgb, var(--module-accent) 20%, transparent);
+}
+.moduleName {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+}
+.moduleFeatures {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+.moduleFeatureItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+.moduleFeatureIcon { color: var(--module-accent); flex-shrink: 0; }
 
 /* ── Testimonial card ── */
 .testimonialCard      { background: var(--color-bg-secondary); border: 1px solid var(--color-border-primary); border-radius: var(--radius-2xl); box-shadow: var(--shadow-level-1); padding: var(--space-8) var(--space-6); display: flex; flex-direction: column; gap: var(--space-4); position: relative; }
@@ -94,3 +172,194 @@
 
 /* ── Pill ── */
 .pill                 { background: var(--color-primary-100); color: var(--color-primary-700); border: 1px solid var(--color-primary-200); border-radius: var(--radius-full); font-size: var(--font-size-sm); font-weight: var(--font-weight-medium); padding: var(--space-1) var(--space-3); white-space: nowrap; }
+
+/* ── Area cards (bento) ── */
+.areaCard {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+}
+.areaCard::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  pointer-events: none;
+  transition: background 0.25s ease;
+}
+.areaCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px color-mix(in srgb, var(--module-accent) 18%, transparent);
+  border-color: color-mix(in srgb, var(--module-accent) 40%, var(--color-border-primary));
+  background: var(--color-hover-bg);
+}
+.areaCard:hover::after {
+  background: color-mix(in srgb, var(--module-accent) 6%, transparent);
+}
+
+.areaIconWrap {
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--module-accent) 14%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+  position: relative;
+  z-index: 1;
+}
+.areaCard:hover .areaIconWrap {
+  background: color-mix(in srgb, var(--module-accent) 22%, transparent);
+}
+
+.areaTitle {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+  position: relative;
+  z-index: 1;
+}
+
+.areaDesc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+/* Featured card — horizontal layout, spans 2 cols */
+.areaCardFeatured {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-primary);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-8);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.areaCardFeatured::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--module-accent) 8%, transparent) 0%,
+    transparent 60%);
+  pointer-events: none;
+}
+.areaCardFeatured:hover {
+  box-shadow: 0 8px 32px color-mix(in srgb, var(--module-accent) 20%, transparent);
+  border-color: color-mix(in srgb, var(--module-accent) 40%, var(--color-border-primary));
+}
+
+.areaFeaturedEmoji {
+  font-size: 4rem;
+  line-height: 1;
+  flex-shrink: 0;
+  width: 6rem;
+  height: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--module-accent) 12%, transparent);
+  border-radius: var(--radius-2xl);
+  position: relative;
+  z-index: 1;
+}
+
+.areaFeaturedBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  flex: 1;
+  position: relative;
+  z-index: 1;
+}
+
+.areaFeaturedTitle {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-tight);
+}
+
+.areaFeaturedDesc {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  max-width: 36rem;
+}
+
+/* Shared tag pills */
+.areaTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  position: relative;
+  z-index: 1;
+}
+
+.areaTag {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  color: color-mix(in srgb, var(--module-accent) 80%, var(--color-text-primary));
+  background: color-mix(in srgb, var(--module-accent) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--module-accent) 25%, transparent);
+  border-radius: var(--radius-full);
+  padding: var(--space-1) var(--space-3);
+  white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+  .areaCardFeatured { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
+  .areaFeaturedEmoji { width: 3.5rem; height: 3.5rem; font-size: 2rem; }
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .sectionTitle {
+  color: var(--color-primary-200);
+}
+
+[data-theme="dark"] .areaCard,
+[data-theme="dark"] .areaCardFeatured,
+[data-theme="dark"] .moduleCard {
+  background: var(--color-bg-primary);
+  border-color: var(--color-border-primary);
+}
+
+[data-theme="dark"] .areaCard:hover {
+  background: var(--color-hover-bg);
+  border-color: color-mix(in srgb, var(--module-accent) 50%, var(--color-border-primary));
+}
+
+[data-theme="dark"] .areaTag {
+  color: color-mix(in srgb, var(--module-accent) 90%, var(--color-text-primary));
+  background: color-mix(in srgb, var(--module-accent) 18%, transparent);
+  border-color: color-mix(in srgb, var(--module-accent) 35%, transparent);
+}
+
+[data-theme="dark"] .moduleIconWrap,
+[data-theme="dark"] .areaIconWrap {
+  background: color-mix(in srgb, var(--module-accent) 20%, transparent);
+}
+
+[data-theme="dark"] .moduleFeatureItem,
+[data-theme="dark"] .areaDesc {
+  color: var(--color-text-secondary);
+}

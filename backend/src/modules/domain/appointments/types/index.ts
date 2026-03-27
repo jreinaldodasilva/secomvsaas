@@ -7,6 +7,7 @@ export interface IAppointment extends Document {
   citizenName: string;
   citizenCpf?: string;
   citizenPhone?: string;
+  citizenUserId?: string;
   service: string;
   scheduledAt: Date;
   notes?: string;

@@ -218,9 +218,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   if (isError) {
     return (
       <div>
-        <div className="page-header">
-          <h1>{title}</h1>
-        </div>
+        <div className="page-header"><h1>{title}</h1></div>
         <EmptyState
           title={t('common.errorLoading')}
           action={listQuery.refetch ? { label: t('common.retry'), onClick: listQuery.refetch } : undefined}
@@ -230,7 +228,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   }
 
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
       <div className="page-header">
         <div>
           <h1>{title}</h1>
@@ -251,6 +249,13 @@ export function CrudPage<TItem extends { id: string }, TForm>({
           )}
         </div>
       </div>
+      <div style={{
+        background: 'var(--color-bg-primary)',
+        border: '1px solid var(--color-border-primary)',
+        borderRadius: 'var(--radius-xl)',
+        boxShadow: 'var(--shadow-level-1)',
+        overflow: 'hidden',
+      }}>
       <DataTable
         columns={columns(openEdit, openDelete, canWrite, canDelete)}
         data={items}
@@ -265,6 +270,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
         emptyIcon={emptyIcon}
         emptyAction={emptyAction}
       />
+      </div>
       <Modal
         isOpen={modalOpen}
         onClose={requestClose}

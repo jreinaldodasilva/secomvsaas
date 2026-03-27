@@ -499,28 +499,88 @@ async function seedDatabase(): Promise<SeededData> {
   console.log(`✅ Created ${data.appointments.length} appointments\n`);
 
   // -------------------------------------------------------------------------
-  // 9. Citizen portal users (login accounts)
+  // 9. Citizen portal users (login accounts) — with full profile fields
   // -------------------------------------------------------------------------
   console.log('👤 Creating citizen portal users...');
   const citizenUserDefs = [
-    { name: 'Maria das Graças Silva',  email: `cidadao01${EMAIL_DOMAIN}` },
-    { name: 'João Carlos Oliveira',    email: `cidadao02${EMAIL_DOMAIN}` },
-    { name: 'Ana Paula Ferreira',      email: `cidadao03${EMAIL_DOMAIN}` },
-    { name: 'Pedro Henrique Santos',   email: `cidadao04${EMAIL_DOMAIN}` },
-    { name: 'Carla Regina Souza',      email: `cidadao05${EMAIL_DOMAIN}` },
+    { name: 'Maria das Graças Silva',  email: `cidadao01${EMAIL_DOMAIN}`, cpf: generateCPF(), phone: generatePhone(), birthDate: new Date('1985-03-22'), address: 'Rua das Flores, 45',            neighborhood: 'Centro',            city: 'Piquete', state: 'SP' },
+    { name: 'João Carlos Oliveira',    email: `cidadao02${EMAIL_DOMAIN}`, cpf: generateCPF(), phone: generatePhone(), birthDate: new Date('1978-11-05'), address: 'Av. Getúlio Vargas, 210',      neighborhood: 'Cachoeira',          city: 'Piquete', state: 'SP' },
+    { name: 'Ana Paula Ferreira',      email: `cidadao03${EMAIL_DOMAIN}`, cpf: generateCPF(), phone: generatePhone(), birthDate: new Date('1992-07-14'), address: 'Rua Coronel Moreira Lima, 88', neighborhood: 'Vila Nova',          city: 'Piquete', state: 'SP' },
+    { name: 'Pedro Henrique Santos',   email: `cidadao04${EMAIL_DOMAIN}`, cpf: generateCPF(), phone: generatePhone(), birthDate: new Date('1990-01-30'), address: 'Rua São João, 12',             neighborhood: 'Bela Vista',         city: 'Piquete', state: 'SP' },
+    { name: 'Carla Regina Souza',      email: `cidadao05${EMAIL_DOMAIN}`, cpf: generateCPF(), phone: generatePhone(), birthDate: new Date('1995-09-18'), address: 'Rua das Acácias, 330',         neighborhood: 'Jardim das Flores',  city: 'Piquete', state: 'SP' },
   ];
 
   for (const def of citizenUserDefs) {
     const [cu] = await User.create([{
       tenantId,
-      name: def.name,
-      email: def.email,
-      password: TEST_PASSWORD,
-      role: 'citizen',
+      name:         def.name,
+      email:        def.email,
+      password:     TEST_PASSWORD,
+      role:         'citizen',
+      cpf:          def.cpf,
+      phone:        def.phone,
+      birthDate:    def.birthDate,
+      address:      def.address,
+      neighborhood: def.neighborhood,
+      city:         def.city,
+      state:        def.state,
     }]);
     data.citizenUsers.push(cu);
   }
   console.log(`✅ Created ${data.citizenUsers.length} citizen portal users\n`);
+
+  // -------------------------------------------------------------------------
+  // 9b. Citizen-linked appointments (visible in the citizen portal)
+  // -------------------------------------------------------------------------
+  console.log('🗓️  Creating citizen-linked appointments...');
+  const citizenServices = [
+    'Solicitação de informação — Lei de Acesso à Informação',
+    'Pedido de nota oficial',
+    'Agendamento de atendimento presencial',
+    'Solicitação de credencial de imprensa',
+    'Demanda de cobertura fotográfica',
+    'Esclarecimento sobre comunicado oficial',
+  ];
+
+  type CitizenApptStatus = 'pending' | 'confirmed' | 'completed' | 'cancelled' | 'no_show';
+  const nowC = new Date();
+
+  for (const citizenUser of data.citizenUsers) {
+    const count = randomInt(2, 4);
+    for (let i = 0; i < count; i++) {
+      let scheduledAt: Date;
+      let status: CitizenApptStatus;
+
+      if (i === 0) {
+        // Past completed
+        scheduledAt = randomDate(new Date(nowC.getTime() - 45 * 86400000), new Date(nowC.getTime() - 5 * 86400000));
+        status = 'completed';
+      } else if (i === 1) {
+        // Upcoming confirmed
+        scheduledAt = randomDate(new Date(nowC.getTime() + 2 * 86400000), new Date(nowC.getTime() + 20 * 86400000));
+        status = 'confirmed';
+      } else {
+        // Additional pending
+        scheduledAt = randomDate(new Date(nowC.getTime() + 5 * 86400000), new Date(nowC.getTime() + 40 * 86400000));
+        status = 'pending';
+      }
+      scheduledAt.setHours(randomInt(8, 17), randomInt(0, 3) * 15, 0, 0);
+
+      const [appt] = await Appointment.create([{
+        tenantId,
+        citizenName:   citizenUser.name,
+        citizenCpf:    citizenUser.cpf,
+        citizenPhone:  citizenUser.phone,
+        citizenUserId: citizenUser._id,
+        service:       randomItem(citizenServices),
+        scheduledAt,
+        status,
+        createdBy:     randomItem(atendentes)._id,
+      }]);
+      data.appointments.push(appt);
+    }
+  }
+  console.log(`✅ Created citizen-linked appointments\n`);
 
   // -------------------------------------------------------------------------
   // 10. Citizen profiles (staff-side records)

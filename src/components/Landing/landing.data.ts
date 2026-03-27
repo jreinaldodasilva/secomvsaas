@@ -1,23 +1,18 @@
 import type { IconName } from '@/components/UI/Icon/Icon';
 
-export interface Feature {
+export interface Area {
   icon: IconName;
+  emoji: string;
   title: string;
   desc: string;
-  benefits: string[];
+  features: string[];
+  color: string;
 }
 
 export interface Stat {
   value: string;
   label: string;
   desc: string;
-}
-
-export interface Module {
-  name: string;
-  emoji: string;
-  features: string[];
-  highlight: boolean;
 }
 
 export interface Testimonial {
@@ -54,39 +49,47 @@ export const STATS: Stat[] = [
   { value: '24h',  label: 'Cobertura Contínua',     desc: 'Monitoramento e publicação em tempo real' },
 ];
 
-export const FEATURES: Feature[] = [
+export const AREAS: Area[] = [
   {
     icon: 'newspaper',
+    emoji: '📰',
     title: 'Assessoria de Imprensa',
-    desc: 'Produção de releases, atendimento a jornalistas, organização de coletivas e arquivo fotográfico das ações da Prefeitura de Piquete.',
-    benefits: ['Produção de releases oficiais', 'Atendimento à imprensa local', 'Agenda de entrevistas', 'Arquivo fotográfico digital'],
-  },
-  {
-    icon: 'phone',
-    title: 'Mídias Digitais',
-    desc: 'Gestão das redes sociais e do site oficial da Prefeitura de Piquete, campanhas digitais e monitoramento do engajamento da comunidade.',
-    benefits: ['Redes sociais da prefeitura', 'Site oficial piquete.sp.gov.br', 'Campanhas de utilidade pública', 'Monitoramento de engajamento'],
+    desc: 'Produção e distribuição de releases, atendimento à mídia e arquivo das ações da Prefeitura.',
+    features: ['Releases e comunicados', 'Atendimento à imprensa', 'Agenda de entrevistas', 'Arquivo fotográfico'],
+    color: 'blue',
   },
   {
     icon: 'event',
+    emoji: '📅',
+    title: 'Agenda e Pautas',
+    desc: 'Controle centralizado da agenda do prefeito e das pautas da secretaria com notificações automáticas.',
+    features: ['Agenda do prefeito', 'Pautas da secretaria', 'Notificações automáticas', 'Histórico de eventos'],
+    color: 'indigo',
+  },
+  {
+    icon: 'phone',
+    emoji: '📱',
+    title: 'Mídias Digitais',
+    desc: 'Gestão das redes sociais e do site oficial da Prefeitura, com agendamento de publicações e monitoramento.',
+    features: ['Redes sociais da prefeitura', 'Site piquete.sp.gov.br', 'Agendamento de publicações', 'Monitoramento de engajamento'],
+    color: 'teal',
+  },
+  {
+    icon: 'schedule',
+    emoji: '🎙️',
     title: 'Cerimonial e Eventos',
-    desc: 'Organização de eventos oficiais, protocolo do prefeito, agenda institucional, solenidades e inaugurações de obras no município.',
-    benefits: ['Eventos e solenidades oficiais', 'Protocolo do prefeito', 'Agenda institucional', 'Inaugurações e entregas de obras'],
+    desc: 'Organização de solenidades, protocolo do prefeito e registro de inaugurações e entregas de obras.',
+    features: ['Solenidades e eventos oficiais', 'Protocolo do prefeito', 'Inaugurações de obras', 'Registro e divulgação'],
+    color: 'purple',
   },
   {
     icon: 'home',
-    title: 'Comunicação Institucional',
-    desc: 'Campanhas de interesse público, identidade visual do governo municipal, materiais gráficos e produção audiovisual das ações da prefeitura.',
-    benefits: ['Campanhas de saúde e educação', 'Identidade visual do governo', 'Materiais gráficos oficiais', 'Vídeos institucionais'],
+    emoji: '🎬',
+    title: 'Produção Audiovisual',
+    desc: 'Cobertura de eventos, vídeos institucionais, materiais gráficos e identidade visual do governo municipal.',
+    features: ['Cobertura de eventos', 'Vídeos institucionais', 'Materiais gráficos', 'Identidade visual'],
+    color: 'orange',
   },
-];
-
-export const MODULES: Module[] = [
-  { name: 'Assessoria de Imprensa', emoji: '📰', features: ['Releases e comunicados', 'Atendimento à mídia', 'Agenda de entrevistas', 'Arquivo fotográfico'],  highlight: false },
-  { name: 'Agenda e Pautas',        emoji: '📅', features: ['Agenda do prefeito', 'Pautas da secretaria', 'Notificações automáticas', 'Histórico de eventos'], highlight: true  },
-  { name: 'Mídias Digitais',        emoji: '📱', features: ['Redes sociais', 'Site oficial', 'Campanhas digitais', 'Monitoramento'],                           highlight: false },
-  { name: 'Cerimonial e Eventos',   emoji: '🎙️', features: ['Eventos oficiais', 'Protocolo institucional', 'Solenidades', 'Inaugurações de obras'],            highlight: false },
-  { name: 'Produção Audiovisual',   emoji: '🎬', features: ['Cobertura de eventos', 'Vídeos institucionais', 'Fotografia oficial', 'Arquivo de mídia'],        highlight: false },
 ];
 
 export const TESTIMONIALS: Testimonial[] = [

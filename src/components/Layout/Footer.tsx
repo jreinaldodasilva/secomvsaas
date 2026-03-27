@@ -1,49 +1,28 @@
 import { Link } from 'react-router-dom';
-import { useTranslation } from '@/i18n';
 import styles from './Footer.module.css';
 
 export function Footer() {
-  const { t } = useTranslation();
   const year = new Date().getFullYear();
 
   return (
     <footer className={styles.footer} id="footer">
       <div className={styles.inner}>
-
         <div className={styles.top}>
           <div className={styles.brand}>
-            <span className={styles.brandName}>{t('common.brand')}</span>
-            <p className={styles.tagline}>{t('landing.footer.tagline')}</p>
+            <span className={styles.brandName}>Secom — Secretaria Municipal de Comunicação</span>
+            <p className={styles.tagline}>Prefeitura Municipal de Piquete — SP · Sistema interno de gestão</p>
           </div>
+          <nav className={styles.footerLinks} aria-label="Links do rodapé">
+            <a href="https://www.piquete.sp.gov.br" target="_blank" rel="noopener noreferrer">Site Oficial</a>
+            <a href="https://www.piquete.sp.gov.br/transparencia" target="_blank" rel="noopener noreferrer">Transparência</a>
+            <a href="https://www.piquete.sp.gov.br/ouvidoria" target="_blank" rel="noopener noreferrer">Ouvidoria</a>
+            <Link to="/privacy">Privacidade</Link>
+            <Link to="/terms">Termos de Uso</Link>
+          </nav>
         </div>
-
-        <div className={styles.divider} />
-
-        <nav className={styles.cols} aria-label="Rodapé">
-          <div className={styles.col}>
-            <h4>{t('landing.footer.platform')}</h4>
-            <a href="/#features">{t('landing.nav.features')}</a>
-            <a href="/#modules">{t('landing.nav.modules')}</a>
-            <a href="/#lgpd">{t('landing.nav.lgpd')}</a>
-            <a href="/#contact">{t('landing.nav.contact')}</a>
-          </div>
-          <div className={styles.col}>
-            <h4>{t('landing.footer.access')}</h4>
-            <Link to="/portal">{t('landing.nav.citizenPortal')}</Link>
-            <Link to="/login">{t('auth.login')}</Link>
-            <Link to="/register">{t('auth.register')}</Link>
-          </div>
-          <div className={styles.col}>
-            <h4>{t('landing.footer.legal')}</h4>
-            <Link to="/privacy">{t('landing.footer.privacy')}</Link>
-            <Link to="/terms">{t('landing.footer.terms')}</Link>
-          </div>
-        </nav>
-
       </div>
-
       <div className={styles.bottom}>
-        <p>© {year} {t('common.brand')}. {t('landing.footer.rights')}</p>
+        <p>© {year} Prefeitura Municipal de Piquete — SP. Sistema de uso interno da Secom.</p>
       </div>
     </footer>
   );

@@ -4,6 +4,50 @@
   min-height: 100vh;
 }
 
+/* ── Gov utility bar ── */
+.utilityBar {
+  background: var(--color-primary-900);
+  border-bottom: 2px solid var(--color-primary-700);
+  padding: var(--space-2) var(--space-4);
+}
+
+.utilityInner {
+  max-width: var(--max-width-6xl);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.utilityLabel {
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-primary-200);
+  white-space: nowrap;
+}
+
+.utilityLinks {
+  display: flex;
+  gap: var(--space-1);
+  flex-wrap: wrap;
+}
+
+.utilityLink {
+  font-size: var(--font-size-xs);
+  color: var(--color-primary-300);
+  text-decoration: none;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast), background var(--transition-fast);
+  white-space: nowrap;
+}
+.utilityLink:hover {
+  color: var(--color-neutral-0);
+  background: var(--color-primary-700);
+}
+
 /* ── Hero ── */
 .hero {
   padding: var(--space-12) var(--space-4) var(--space-10);
@@ -27,6 +71,21 @@
   box-shadow: var(--shadow-xl);
 }
 
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--color-primary-100);
+  color: var(--color-primary-700);
+  border: 1px solid var(--color-primary-200);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-1) var(--space-3);
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.02em;
+}
+
 .heroTitle {
   font-size: var(--font-size-4xl);
   font-weight: var(--font-weight-bold);
@@ -45,24 +104,7 @@
   line-height: var(--line-height-relaxed);
 }
 
-.heroPills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  margin-bottom: var(--space-8);
-}
-
 .heroActions { display: flex; gap: var(--space-4); flex-wrap: wrap; }
-
-/* ── Stats grid ── */
-.statsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-6);
-  max-width: var(--max-width-6xl);
-  margin: 0 auto;
-  padding: var(--space-10) var(--space-4);
-}
 
 /* ── Section wrappers ── */
 .section {
@@ -89,147 +131,86 @@
   gap: var(--space-8);
 }
 
-/* ── Visual banner grid ── */
-.visualGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-6);
-  max-width: var(--max-width-6xl);
-  margin: 0 auto;
-}
-
 /* ── Modules grid ── */
 .gridModules {
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: start;
 }
 
-/* ── Testimonials grid ── */
-.gridTestimonials {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-/* ── LGPD layout ── */
-.lgpdLayout {
+/* ── Bento grid ── */
+.bentoGrid {
   display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: var(--space-10);
-  align-items: start;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto;
+  gap: var(--space-5);
   max-width: var(--max-width-6xl);
   margin: 0 auto;
 }
 
-.lgpdImage { position: relative; }
-
-.lgpdImg {
-  width: 100%;
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-lg);
-  display: block;
+/* Featured card spans first 2 columns */
+.bentoGrid > *:first-child {
+  grid-column: span 2;
 }
 
-.lgpdBadge {
-  position: absolute;
-  bottom: var(--space-4);
-  left: var(--space-4);
-  background: var(--color-primary-700);
-  color: var(--color-white);
-  border-radius: var(--radius-full);
-  padding: var(--space-2) var(--space-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-semibold);
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  box-shadow: var(--shadow-md);
-}
-
-.lgpdGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-4);
-}
-
-/* ── Contact ── */
-.contactWrap {
-  max-width: 42rem;
-  margin: 0 auto;
-  background: var(--color-bg-primary);
-  border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-2xl);
-  box-shadow: var(--shadow-sm);
-  padding: var(--space-8) var(--space-6);
-}
-
-/* ── CTA ── */
-.cta {
-  text-align: center;
-  padding: var(--space-16) var(--space-4);
-  background: linear-gradient(135deg, var(--color-primary-800) 0%, var(--color-primary-900) 100%);
-}
-
-.ctaTitle {
-  font-size: var(--font-size-3xl);
-  font-weight: var(--font-weight-bold);
-  color: var(--color-accent-400);
-  margin-bottom: var(--space-3);
-  line-height: var(--line-height-tight);
-}
-
-.ctaDesc {
-  font-size: var(--font-size-base);
-  color: var(--color-neutral-200);
-  margin-bottom: var(--space-8);
-}
-
-.ctaActions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; }
-
-.ctaBtnPrimary.ctaBtnPrimary {
-  background: var(--color-accent-400);
-  color: var(--color-primary-900);
-}
-.ctaBtnPrimary.ctaBtnPrimary:hover { background: var(--color-accent-300); }
-
-.ctaBtnOutline.ctaBtnOutline {
-  color: var(--color-white);
-  border: 2px solid rgba(255,255,255,0.7);
-  background: transparent;
-}
-.ctaBtnOutline.ctaBtnOutline:hover {
-  background: var(--color-on-dark-subtle-bg);
-  border-color: var(--color-white);
-}
+/* Module accent colors — matched to landing.data.ts color field */
+.moduleAccentBlue   { --module-accent: var(--color-icon-blue-from); }
+.moduleAccentIndigo { --module-accent: var(--color-icon-indigo-from); }
+.moduleAccentTeal   { --module-accent: var(--color-icon-teal-from); }
+.moduleAccentPurple { --module-accent: var(--color-icon-purple-from); }
+.moduleAccentOrange { --module-accent: var(--color-icon-orange-from); }
 
 /* ── Responsive ── */
 @media (max-width: 768px) {
+  .utilityLabel         { display: none; }
   .heroContent          { grid-template-columns: 1fr; }
   .heroImageWrap        { display: none; }
   .heroText             { text-align: center; }
-  .heroPills            { justify-content: center; }
+  .heroBadge            { margin-left: auto; margin-right: auto; }
   .heroActions          { justify-content: center; }
   .heroTitle            { font-size: var(--font-size-3xl); }
   .heroSubtitle         { font-size: var(--font-size-lg); margin-left: auto; margin-right: auto; }
-  .visualGrid           { grid-template-columns: 1fr; }
-  .lgpdLayout           { grid-template-columns: 1fr; }
-  .lgpdImage            { max-width: 20rem; margin: 0 auto; }
   .grid                 { grid-template-columns: 1fr; gap: var(--space-6); }
   .gridModules          { grid-template-columns: repeat(2, 1fr); }
-  .gridTestimonials     { grid-template-columns: 1fr; }
-  .statsGrid            { grid-template-columns: repeat(2, 1fr); }
-  .ctaTitle             { font-size: var(--font-size-2xl); }
-}
-
-@media (min-width: 480px) and (max-width: 767px) {
-  .visualGrid           { grid-template-columns: repeat(2, 1fr); }
+  .bentoGrid            { grid-template-columns: repeat(2, 1fr); }
+  .bentoGrid > *:first-child { grid-column: span 2; }
 }
 
 @media (max-width: 480px) {
-  .statsGrid            { grid-template-columns: 1fr; }
   .gridModules          { grid-template-columns: 1fr; }
   .heroActions          { flex-direction: column; align-items: stretch; }
-  .ctaActions           { flex-direction: column; align-items: center; }
+  .utilityLinks         { display: none; }
+  .bentoGrid            { grid-template-columns: 1fr; }
+  .bentoGrid > *:first-child { grid-column: span 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .heroImageWrap { box-shadow: var(--shadow-md); }
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] .main {
+  background: var(--color-bg-secondary);
+}
+
+[data-theme="dark"] .utilityBar {
+  background: #141c2c;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .hero {
+  background: linear-gradient(135deg, #1a2840 0%, var(--color-bg-primary) 100%);
+}
+
+[data-theme="dark"] .heroBadge {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-primary-200);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+[data-theme="dark"] .heroHighlight {
+  color: var(--color-primary-300);
+}
+
+[data-theme="dark"] .sectionAlt {
+  background: var(--color-bg-primary);
 }

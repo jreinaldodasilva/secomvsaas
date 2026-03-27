@@ -178,9 +178,9 @@ select:focus-visible {
 .btn-success   { background: var(--color-success); color: var(--color-white); }
 .btn-success:hover:not(:disabled)   { background: var(--color-success-700); }
 .btn-outline   { background: transparent; color: var(--color-text-primary); border-color: var(--color-border-primary); }
-.btn-outline:hover:not(:disabled)   { background: var(--color-neutral-100); border-color: var(--color-neutral-300); }
+.btn-outline:hover:not(:disabled)   { background: var(--color-hover-bg); border-color: var(--color-primary-300); }
 .btn-ghost     { background: transparent; color: var(--color-text-secondary); }
-.btn-ghost:hover:not(:disabled)     { background: var(--color-neutral-100); color: var(--color-text-primary); }
+.btn-ghost:hover:not(:disabled)     { background: var(--color-hover-bg); color: var(--color-text-primary); }
 .btn-destructive { background: var(--color-error-50); color: var(--color-error-700); border-color: var(--color-error-200); }
 .btn-destructive:hover:not(:disabled) { background: var(--color-error-100); }
 
@@ -215,7 +215,7 @@ select:focus-visible {
 .form-field select,
 .form-field textarea {
   padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border-primary);
+  border: 1.5px solid var(--color-border-primary);
   border-radius: var(--radius-input);
   font-size: var(--font-size-base);
   min-height: var(--input-height-md);
@@ -240,7 +240,7 @@ select:focus-visible {
 .form-stack textarea {
   width: 100%;
   padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border-primary);
+  border: 1.5px solid var(--color-border-primary);
   border-radius: var(--radius-input);
   font-size: var(--font-size-base);
   min-height: var(--input-height-md);
@@ -276,16 +276,16 @@ select:focus-visible {
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5);
-  background: var(--color-neutral-50);
-  border: 1px solid var(--color-border-primary);
+  background: var(--color-bg-primary);
+  border: 1.5px solid var(--color-border-primary);
   border-radius: var(--radius-lg);
 }
 .form-section-title {
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
-  color: var(--color-text-secondary);
+  color: var(--color-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   margin: 0 0 var(--space-1);
 }
 
@@ -355,42 +355,27 @@ select:focus-visible {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-6);
+  gap: var(--space-4);
   margin-bottom: var(--space-6);
-  background: linear-gradient(135deg, var(--color-primary-900) 0%, var(--color-primary-800) 100%);
-  padding: var(--space-6) var(--space-6);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-level-1);
-  border: 1px solid var(--color-primary-700);
 }
 .page-header h1 {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
-  color: var(--color-accent-400);
+  color: var(--color-text-primary);
   margin: 0 0 var(--space-1);
   line-height: var(--line-height-tight);
 }
 .page-header-meta {
   font-size: var(--font-size-sm);
-  color: var(--color-neutral-300);
+  color: var(--color-text-secondary);
   margin: 0;
 }
 .actions-row { display: flex; gap: var(--space-2); align-items: center; flex-shrink: 0; }
-.actions-row .btn-outline {
-  color: var(--color-on-dark-text);
-  border-color: var(--color-on-dark-border);
-}
-.actions-row .btn-outline:hover:not(:disabled) {
-  background: var(--color-on-dark-hover-bg);
-  color: var(--color-white);
-  border-color: var(--color-on-dark-hover-border);
-}
 
 @media (max-width: 767px) {
   .page-header {
     flex-direction: column;
     align-items: flex-start;
-    padding: var(--space-5) var(--space-4);
   }
   .actions-row { width: 100%; }
   .actions-row > * { flex: 1; }

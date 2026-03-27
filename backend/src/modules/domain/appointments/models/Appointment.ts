@@ -8,6 +8,7 @@ const AppointmentSchema = new Schema<IAppointment>({
   citizenName: { type: String, required: true, trim: true, minlength: 2, maxlength: 200 },
   citizenCpf: { type: String, trim: true },
   citizenPhone: { type: String, trim: true },
+  citizenUserId: { type: Schema.Types.ObjectId, ref: 'User', index: true },
   service: { type: String, required: true, trim: true, maxlength: 200 },
   scheduledAt: { type: Date, required: true },
   notes: { type: String, maxlength: 2000 },

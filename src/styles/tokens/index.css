@@ -1,16 +1,16 @@
 /* Design tokens — aligned with eSecom */
 :root {
-  /* Primary — Azul Petróleo */
-  --color-primary-50:  #eef2f7;
-  --color-primary-100: #d5dff0;
-  --color-primary-200: #aabfe0;
-  --color-primary-300: #7a9acb;
-  --color-primary-400: #4e75b0;
-  --color-primary-500: #1e3a5f;
-  --color-primary-600: #162e4d;
-  --color-primary-700: #10233b;
-  --color-primary-800: #0a1828;
-  --color-primary-900: #0F172A;
+  /* Primary — Azul Institucional (softer slate-blue) */
+  --color-primary-50:  #f0f4f8;
+  --color-primary-100: #dce8f0;
+  --color-primary-200: #b9d1e3;
+  --color-primary-300: #8ab0cb;
+  --color-primary-400: #5a8aad;
+  --color-primary-500: #2d6a9f;
+  --color-primary-600: #1f5480;
+  --color-primary-700: #164068;
+  --color-primary-800: #0e2d4d;
+  --color-primary-900: #0a1f36;
 
   /* Secondary — Verde Institucional */
   --color-secondary-50:  #f0fdf4;
@@ -112,11 +112,15 @@
   --color-icon-pink-to:     #be185d;
   --color-bg-primary:     #ffffff;
   --color-bg-secondary:   #F9FAFB;
+
+  /* Hover backgrounds — use these instead of raw primary-50/neutral-100 */
+  --color-hover-bg:        #e8f0f7;
+  --color-hover-bg-strong: #d0e4f0;
   --color-text-primary:   #0F172A;
   --color-text-secondary: #374151;
   --color-text-tertiary:  #60646C;
   --color-border-primary: #D1D5DB;
-  --color-border-focus:   #1e3a5f;
+  --color-border-focus:   #2d6a9f;
 
   /* Spacing */
   --space-0:  0;
@@ -214,7 +218,7 @@
   --z-toast:          1080;
 
   /* Focus rings */
-  --focus-ring:       0 0 0 3px rgba(30,58,95,0.15);
+  --focus-ring:       0 0 0 3px rgba(45,106,159,0.2);
   --focus-ring-error: 0 0 0 3px rgba(211,47,47,0.15);
 
   /* Component heights */
@@ -247,9 +251,9 @@
   --color-sidebar-text-muted:       rgba(255, 255, 255, 0.6);
   --color-sidebar-text-dim:         rgba(255, 255, 255, 0.4);
   --color-sidebar-text-section:     rgba(255, 255, 255, 0.75);
-  --color-sidebar-hover:            rgba(255, 255, 255, 0.08);
-  --color-sidebar-active:           rgba(255, 255, 255, 0.12);
-  --color-sidebar-active-collapsed: rgba(255, 255, 255, 0.15);
+  --color-sidebar-hover:            rgba(255, 255, 255, 0.22);
+  --color-sidebar-active:           rgba(255, 255, 255, 0.28);
+  --color-sidebar-active-collapsed: rgba(255, 255, 255, 0.22);
   --color-sidebar-scrollbar:        rgba(255, 255, 255, 0.2);
 
   /* Frosted-glass header */
@@ -264,7 +268,7 @@
   /* On-dark button outline states (used on gradient banners) */
   --color-on-dark-text:         rgba(255, 255, 255, 0.8);
   --color-on-dark-border:       rgba(255, 255, 255, 0.3);
-  --color-on-dark-hover-bg:     rgba(255, 255, 255, 0.1);
+  --color-on-dark-hover-bg:     rgba(255, 255, 255, 0.18);
   --color-on-dark-hover-border: rgba(255, 255, 255, 0.6);
   --color-on-dark-subtle-bg:    rgba(255, 255, 255, 0.15);
 
@@ -300,29 +304,43 @@
    Activated by useTheme() in src/hooks/useTheme.ts.
    ─────────────────────────────────────────────────────────────────────── */
 [data-theme="dark"] {
-  --color-bg-primary:     #0F172A;
-  --color-bg-secondary:   #1E293B;
-  --color-text-primary:   #F1F5F9;
-  --color-text-secondary: #CBD5E1;
-  --color-text-tertiary:  #94A3B8;
-  --color-border-primary: #334155;
+  /* Surfaces — lifted dark greys, not near-black */
+  --color-bg-primary:     #1c2333;
+  --color-bg-secondary:   #242d3d;
+
+  /* Text — softer, not pure white */
+  --color-text-primary:   #e2e8f0;
+  --color-text-secondary: #a8b8cc;
+  --color-text-tertiary:  #6e8099;
+
+  /* Borders — subtle, not harsh */
+  --color-border-primary: #2e3d52;
   --color-border-focus:   #60A5FA;
 
-  /* Frosted-glass header — dark variant */
-  --color-header-bg: rgba(15, 23, 42, 0.95);
+  /* Primary scale overrides for dark surfaces */
+  --color-primary-50:  #1a2d45;
+  --color-primary-100: #1e3554;
+  --color-primary-200: #254468;
 
-  /* Backdrop / overlay — slightly deeper in dark mode */
-  --color-backdrop: rgba(0, 0, 0, 0.7);
-  --color-overlay:  rgba(0, 0, 0, 0.6);
+  /* Hover — gentle tint */
+  --color-hover-bg:        #253348;
+  --color-hover-bg-strong: #2d3f58;
 
-  /* Focus rings — adjusted for dark backgrounds */
-  --focus-ring:       0 0 0 3px rgba(96, 165, 250, 0.35);
-  --focus-ring-error: 0 0 0 3px rgba(239, 68, 68, 0.35);
-  --focus-ring-error-field: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  /* Header — slightly darker than bg-primary */
+  --color-header-bg: rgba(20, 28, 44, 0.97);
 
-  /* Shadows — more pronounced on dark backgrounds */
-  --shadow-level-1: 0 1px 3px rgba(0,0,0,0.3);
-  --shadow-level-2: 0 4px 12px rgba(0,0,0,0.4);
-  --shadow-level-3: 0 8px 24px rgba(0,0,0,0.5);
-  --shadow-level-4: 0 16px 48px rgba(0,0,0,0.6);
+  /* Backdrop */
+  --color-backdrop: rgba(0, 0, 0, 0.55);
+  --color-overlay:  rgba(0, 0, 0, 0.5);
+
+  /* Focus rings */
+  --focus-ring:       0 0 0 3px rgba(96, 165, 250, 0.25);
+  --focus-ring-error: 0 0 0 3px rgba(239, 68, 68, 0.3);
+  --focus-ring-error-field: 0 0 0 3px rgba(239, 68, 68, 0.2);
+
+  /* Shadows — softer */
+  --shadow-level-1: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-level-2: 0 4px 12px rgba(0,0,0,0.28);
+  --shadow-level-3: 0 8px 24px rgba(0,0,0,0.35);
+  --shadow-level-4: 0 16px 48px rgba(0,0,0,0.45);
 }

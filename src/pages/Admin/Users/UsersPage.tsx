@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog, FormField } from '@/components/UI';
+import { DataTable, Column, Modal, Button, StatusBadge, ConfirmDialog, FormField, Icon } from '@/components/UI';
 import { useApiQuery, useApiMutation } from '@/hooks';
 import { useToast } from '@/hooks';
 import { useAuth } from '@/contexts';
@@ -7,6 +7,7 @@ import { useTenant } from '@/contexts';
 import { useTranslation } from '@/i18n';
 import { usePageTitle } from '@/hooks';
 import { ROLES } from '@vsaas/types';
+import styles from './UsersPage.module.css';
 
 interface UserItem {
   id: string;
@@ -24,6 +25,11 @@ interface UsersResponse {
 
 const INVITE_ROLES = [ROLES.ADMIN, ROLES.ASSESSOR, ROLES.SOCIAL_MEDIA, ROLES.ATENDENTE] as const;
 
+function UserAvatar({ name }: { name: string }) {
+  const initials = name.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase();
+  return <span className={styles.avatar} aria-hidden>{initials}</span>;
+}
+
 export function UsersPage() {
   const { user: currentUser } = useAuth();
   const { tenant } = useTenant();
@@ -36,7 +42,7 @@ export function UsersPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState<string>(ROLES.ASSESSOR);
-  const [deactivateTarget, setDeactivateTarget] = useState<string | null>(null);
+  const [deactivateTarget, setDeactivateTarget] = useState<UserItem | null>(null);
 
   const { data, isLoading, refetch } = useApiQuery<UsersResponse>(
     ['users', String(page), search],
@@ -57,7 +63,7 @@ export function UsersPage() {
     'delete',
     (vars) => `/api/v1/users/${vars.id}`,
     {
-      onSuccess: () => { toast.success(t('users.deactivateSuccess')); refetch(); },
+      onSuccess: () => { toast.success(t('users.deactivateSuccess')); refetch(); setDeactivateTarget(null); },
       onError: (err) => toast.error(err.message),
     },
   );
@@ -77,63 +83,99 @@ export function UsersPage() {
   );
 
   const columns: Column<UserItem>[] = [
-    { key: 'name', header: t('users.columns.name'), sortable: true },
-    { key: 'email', header: t('users.columns.email'), sortable: true },
     {
-      key: 'role', header: t('users.columns.role'), sortable: true,
+      key: 'name',
+      header: t('users.columns.name'),
+      sortable: true,
+      render: (u) => (
+        <div className={styles.nameCell}>
+          <UserAvatar name={u.name} />
+          <div className={styles.nameCellText}>
+            <span className={styles.nameText}>{u.name}</span>
+            <span className={styles.emailText}>{u.email}</span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      key: 'role',
+      header: t('users.columns.role'),
+      sortable: true,
       render: (u) => u.id === currentUser?.id ? (
-        <StatusBadge status={u.role} />
+        <StatusBadge status={u.role} labelMap={Object.fromEntries(INVITE_ROLES.map(r => [r, t(`users.roles.${r}`)]))} />
       ) : (
         <select
+          className={styles.roleSelect}
           value={u.role}
           onChange={(e) => updateUser.mutate({ id: u.id, role: e.target.value })}
           aria-label={t('users.roleLabel', { name: u.name })}
         >
-          {INVITE_ROLES.map(r => <option key={r} value={r}>{t(`users.roles.${r}`)}</option>)}
+          {INVITE_ROLES.map(r => (
+            <option key={r} value={r}>{t(`users.roles.${r}`)}</option>
+          ))}
         </select>
       ),
     },
     {
-      key: 'isActive', header: t('users.columns.status'),
+      key: 'isActive',
+      header: t('users.columns.status'),
       render: (u) => <StatusBadge status={u.isActive ? 'active' : 'inactive'} />,
     },
     {
-      key: 'actions', header: '',
-      render: (u) => u.id === currentUser?.id ? null : (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setDeactivateTarget(u.id)}
+      key: 'actions',
+      header: '',
+      render: (u) => u.id === currentUser?.id ? (
+        <span className={styles.youBadge}>Você</span>
+      ) : (
+        <button
+          className={styles.deactivateBtn}
+          onClick={() => setDeactivateTarget(u)}
+          aria-label={`Desativar ${u.name}`}
         >
+          <Icon name="delete" size="1rem" aria-hidden />
           {t('users.deactivate')}
-        </Button>
+        </button>
       ),
     },
   ];
 
   const items = data?.data?.items ?? [];
   const total = data?.data?.total ?? 0;
+  const activeCount = items.filter(u => u.isActive).length;
 
   return (
-    <div className="page-users">
-      <div className="page-header">
-        <h1>{t('users.title')}</h1>
-        <Button onClick={() => setInviteOpen(true)}>{t('users.invite')}</Button>
+    <div className={styles.page}>
+
+      {/* ── Header ── */}
+      <div className={styles.header}>
+        <div className={styles.headerText}>
+          <h1 className={styles.title}>{t('users.title')}</h1>
+          <p className={styles.subtitle}>
+            {total} {total === 1 ? 'membro' : 'membros'} · {activeCount} ativos
+          </p>
+        </div>
+        <Button onClick={() => setInviteOpen(true)}>
+          <Icon name="plus" size="1rem" aria-hidden /> {t('users.invite')}
+        </Button>
       </div>
 
-      <DataTable
-        columns={columns}
-        data={items}
-        total={total}
-        page={page}
-        limit={10}
-        isLoading={isLoading}
-        onPageChange={setPage}
-        onSearch={setSearch}
-        searchPlaceholder={t('users.searchPlaceholder')}
-        emptyMessage={t('users.empty')}
-      />
+      {/* ── Table ── */}
+      <div className={styles.tableWrap}>
+        <DataTable
+          columns={columns}
+          data={items}
+          total={total}
+          page={page}
+          limit={10}
+          isLoading={isLoading}
+          onPageChange={setPage}
+          onSearch={setSearch}
+          searchPlaceholder={t('users.searchPlaceholder')}
+          emptyMessage={t('users.empty')}
+        />
+      </div>
 
+      {/* ── Invite modal ── */}
       <Modal isOpen={inviteOpen} onClose={() => setInviteOpen(false)} title={t('users.inviteTitle')} size="sm">
         <form onSubmit={(e) => { e.preventDefault(); invite.mutate({ email: inviteEmail, role: inviteRole }); }}>
           <div className="form-stack">
@@ -153,7 +195,9 @@ export function UsersPage() {
                 value={inviteRole}
                 onChange={(e) => setInviteRole(e.target.value)}
               >
-                {INVITE_ROLES.map(r => <option key={r} value={r}>{t(`users.roles.${r}`)}</option>)}
+                {INVITE_ROLES.map(r => (
+                  <option key={r} value={r}>{t(`users.roles.${r}`)}</option>
+                ))}
               </select>
             </FormField>
             <Button type="submit" isLoading={invite.isPending}>
@@ -163,11 +207,12 @@ export function UsersPage() {
         </form>
       </Modal>
 
+      {/* ── Deactivate confirm ── */}
       <ConfirmDialog
         isOpen={!!deactivateTarget}
         onClose={() => setDeactivateTarget(null)}
-        onConfirm={() => { if (deactivateTarget) deactivateUser.mutate({ id: deactivateTarget }, { onSuccess: () => setDeactivateTarget(null) }); }}
-        title={t('users.deactivateConfirm')}
+        onConfirm={() => { if (deactivateTarget) deactivateUser.mutate({ id: deactivateTarget.id }); }}
+        title={t('common.deleteConfirmNamed', { name: deactivateTarget?.name ?? '' })}
         confirmLabel={t('users.deactivate')}
         isLoading={deactivateUser.isPending}
       />

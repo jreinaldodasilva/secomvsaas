@@ -1,7 +1,6 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Outlet, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useCallback } from 'react';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts';
-import { useUIStore } from '@/store/uiStore';
 import { useTranslation } from '@/i18n';
 import { PermissionGate } from '@/components/Auth/PermissionGate/PermissionGate';
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary';
@@ -11,15 +10,15 @@ import { SessionTimeoutModal } from '@/components/UI/SessionTimeoutModal/Session
 import { ThemeToggle } from '@/components/UI/ThemeToggle/ThemeToggle';
 import { TopLoadingBar } from '@/components/UI/TopLoadingBar/TopLoadingBar';
 import { useSessionTimeout } from '@/hooks';
+import { Footer } from '@/components/Layout/Footer';
 import styles from './DashboardLayout.module.css';
 
 export function DashboardLayout() {
   const { user, logout } = useAuth();
-  const { sidebarOpen, toggleSidebar, setSidebarOpen } = useUIStore();
   const navigate = useNavigate();
-  const location = useLocation();
   const { t } = useTranslation();
   const [showTimeoutWarning, setShowTimeoutWarning] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
   const handleLogout = useCallback(async () => {
     await logout();
@@ -32,107 +31,197 @@ export function DashboardLayout() {
     navigate('/login', { state: { reason: 'session_expired' } });
   }, [logout, navigate]);
 
-  const handleContinue = useCallback(() => setShowTimeoutWarning(false), []);
-
-  // Close the mobile drawer on route change (no-op on desktop)
-  useEffect(() => {
-    if (!window.matchMedia('(min-width: 768px)').matches) setSidebarOpen(false);
-  }, [location.pathname, setSidebarOpen]);
-
-  // Close the mobile drawer on viewport resize below the mobile breakpoint
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 768px)');
-    const handleChange = (e: MediaQueryListEvent) => { if (!e.matches) setSidebarOpen(false); };
-    mq.addEventListener('change', handleChange);
-    return () => mq.removeEventListener('change', handleChange);
-  }, [setSidebarOpen]);
-
   useSessionTimeout({
     onWarning: () => setShowTimeoutWarning(true),
     onTimeout: handleTimeoutLogout,
     enabled: !!user,
   });
 
-  // When collapsed, add title for tooltip; when expanded, title is redundant
-  const navProps = (label: string) => ({ isActive }: { isActive: boolean }) => ({
-    className: isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink,
-    'aria-current': isActive ? ('page' as const) : undefined,
-    title: !sidebarOpen ? label : undefined,
-  });
+  const navLinkClass = ({ isActive }: { isActive: boolean }) =>
+    isActive ? `${styles.navLink} ${styles.navLinkActive}` : styles.navLink;
+
+  const initials = user?.name?.split(' ').slice(0, 2).map(w => w[0]).join('').toUpperCase() ?? '?';
 
   return (
-    <div className={`${styles.layout} ${sidebarOpen ? styles.sidebarOpen : styles.sidebarClosed}`}>
+    <div className={styles.layout}>
       <TopLoadingBar />
-      {/* Mobile overlay — closes drawer on tap */}
-      <div
-        className={styles.overlay}
-        aria-hidden="true"
-        onClick={() => setSidebarOpen(false)}
-      />
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <img src="/secom_logo.png" alt={t('common.brand')} className={styles.brandLogo} />
-          <button className={styles.sidebarToggle} onClick={toggleSidebar} aria-label={t('nav.toggleSidebar')}>
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="currentColor">
-              <rect x="1" y="3" width="16" height="2" rx="1" />
-              <rect x="1" y="8" width="16" height="2" rx="1" />
-              <rect x="1" y="13" width="16" height="2" rx="1" />
-            </svg>
-          </button>
-        </div>
-        <nav className={styles.sidebarNav} aria-label={t('nav.main')}>
-          <NavLink to="/admin/dashboard" {...navProps(t('nav.dashboard'))}><Icon name="dashboard" /><span>{t('nav.dashboard')}</span></NavLink>
 
-          <PermissionGate permissions={['users:read']}>
-            <NavLink to="/admin/users" {...navProps(t('nav.users'))}><Icon name="people" /><span>{t('nav.users')}</span></NavLink>
-          </PermissionGate>
+      {/* ── App header ── */}
+      <header className={styles.header} role="banner">
+        <div className={styles.headerInner}>
 
-          <NavLink to="/settings/profile" {...navProps(t('nav.profile'))}><Icon name="person" /><span>{t('nav.profile')}</span></NavLink>
+          {/* Brand */}
+          <NavLink to="/admin/dashboard" className={styles.brand} aria-label="Painel principal">
+            <img src="/secom_logo_white.png" alt={t('common.brand')} className={styles.brandLogo} />
+          </NavLink>
 
-          <div className={styles.navSectionLabel}>{t('nav.modules')}</div>
+          {/* Desktop nav */}
+          <nav className={styles.nav} aria-label={t('nav.main')}>
+            <NavLink to="/admin/dashboard" className={navLinkClass}>
+              <Icon name="dashboard" size="1rem" aria-hidden />
+              {t('nav.dashboard')}
+            </NavLink>
 
-          <PermissionGate permissions={['press-releases:read']}>
-            <NavLink to="/press-releases" {...navProps(t('nav.pressReleases'))}><Icon name="article" /><span>{t('nav.pressReleases')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['media-contacts:read']}>
-            <NavLink to="/media-contacts" {...navProps(t('nav.mediaContacts'))}><Icon name="contacts" /><span>{t('nav.mediaContacts')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['clippings:read']}>
-            <NavLink to="/clippings" {...navProps(t('nav.clippings'))}><Icon name="clipping" /><span>{t('nav.clippings')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['events:read']}>
-            <NavLink to="/events" {...navProps(t('nav.events'))}><Icon name="event" /><span>{t('nav.events')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['appointments:read']}>
-            <NavLink to="/appointments" {...navProps(t('nav.appointments'))}><Icon name="schedule" /><span>{t('nav.appointments')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['citizen-portal:read']}>
-            <NavLink to="/citizen-portal" {...navProps(t('nav.citizenPortal'))}><Icon name="citizen" /><span>{t('nav.citizenPortal')}</span></NavLink>
-          </PermissionGate>
-          <PermissionGate permissions={['social-media:read']}>
-            <NavLink to="/social-media" {...navProps(t('nav.socialMedia'))}><Icon name="social" /><span>{t('nav.socialMedia')}</span></NavLink>
-          </PermissionGate>
-        </nav>
-        <div className={styles.sidebarFooter}>
-          <div className={styles.sidebarUserInfo}>
-            <span className={styles.sidebarUser}>{user?.name}</span>
-            {user?.role && <span className={styles.sidebarRole}>{t(`users.roles.${user.role}`)}</span>}
+            <PermissionGate permissions={['press-releases:read']}>
+              <NavLink to="/press-releases" className={navLinkClass}>
+                <Icon name="article" size="1rem" aria-hidden />
+                {t('nav.pressReleases')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['media-contacts:read']}>
+              <NavLink to="/media-contacts" className={navLinkClass}>
+                <Icon name="contacts" size="1rem" aria-hidden />
+                {t('nav.mediaContacts')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['clippings:read']}>
+              <NavLink to="/clippings" className={navLinkClass}>
+                <Icon name="clipping" size="1rem" aria-hidden />
+                {t('nav.clippings')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['events:read']}>
+              <NavLink to="/events" className={navLinkClass}>
+                <Icon name="event" size="1rem" aria-hidden />
+                {t('nav.events')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['appointments:read']}>
+              <NavLink to="/appointments" className={navLinkClass}>
+                <Icon name="schedule" size="1rem" aria-hidden />
+                {t('nav.appointments')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['citizen-portal:read']}>
+              <NavLink to="/citizen-portal" className={navLinkClass}>
+                <Icon name="citizen" size="1rem" aria-hidden />
+                {t('nav.citizenPortal')}
+              </NavLink>
+            </PermissionGate>
+
+            <PermissionGate permissions={['social-media:read']}>
+              <NavLink to="/social-media" className={navLinkClass}>
+                <Icon name="social" size="1rem" aria-hidden />
+                {t('nav.socialMedia')}
+              </NavLink>
+            </PermissionGate>
+          </nav>
+
+          {/* Right actions */}
+          <div className={styles.actions}>
+            <ThemeToggle className={styles.iconBtn} />
+
+            <PermissionGate permissions={['users:read']}>
+              <NavLink to="/admin/users" className={navLinkClass} title={t('nav.users')}>
+                <Icon name="people" size="1rem" aria-hidden />
+                <span className={styles.hideOnMobile}>{t('nav.users')}</span>
+              </NavLink>
+            </PermissionGate>
+
+            {/* User menu */}
+            <div className={styles.userMenu}>
+              <NavLink to="/settings/profile" className={styles.userBtn} title={t('nav.profile')}>
+                <span className={styles.avatar}>{initials}</span>
+                <div className={styles.userInfo}>
+                  <span className={styles.userName}>{user?.name}</span>
+                  {user?.role && <span className={styles.userRole}>{t(`users.roles.${user.role}`)}</span>}
+                </div>
+              </NavLink>
+              <button className={styles.logoutBtn} onClick={handleLogout} title={t('auth.logout')}>
+                <Icon name="logout" size="1rem" aria-hidden />
+              </button>
+            </div>
+
+            {/* Mobile hamburger */}
+            <button
+              className={`${styles.iconBtn} ${styles.showOnMobile}`}
+              onClick={() => setMobileNavOpen(o => !o)}
+              aria-label={mobileNavOpen ? 'Fechar menu' : 'Abrir menu'}
+              aria-expanded={mobileNavOpen}
+            >
+              <Icon name={mobileNavOpen ? 'close' : 'menu'} size="1.25rem" aria-hidden />
+            </button>
           </div>
-          <ThemeToggle className={styles.sidebarToggle} />
-          <button className="btn btn-ghost btn-sm" onClick={handleLogout}>{t('auth.logout')}</button>
         </div>
-      </aside>
-      <main className={styles.mainContent} id="main-content">
+
+        {/* Mobile nav drawer */}
+        {mobileNavOpen && (
+          <nav className={styles.mobileNav} aria-label="Menu mobile">
+            <NavLink to="/admin/dashboard" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+              <Icon name="dashboard" size="1rem" aria-hidden />{t('nav.dashboard')}
+            </NavLink>
+            <PermissionGate permissions={['press-releases:read']}>
+              <NavLink to="/press-releases" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="article" size="1rem" aria-hidden />{t('nav.pressReleases')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['media-contacts:read']}>
+              <NavLink to="/media-contacts" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="contacts" size="1rem" aria-hidden />{t('nav.mediaContacts')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['clippings:read']}>
+              <NavLink to="/clippings" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="clipping" size="1rem" aria-hidden />{t('nav.clippings')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['events:read']}>
+              <NavLink to="/events" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="event" size="1rem" aria-hidden />{t('nav.events')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['appointments:read']}>
+              <NavLink to="/appointments" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="schedule" size="1rem" aria-hidden />{t('nav.appointments')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['citizen-portal:read']}>
+              <NavLink to="/citizen-portal" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="citizen" size="1rem" aria-hidden />{t('nav.citizenPortal')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['social-media:read']}>
+              <NavLink to="/social-media" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="social" size="1rem" aria-hidden />{t('nav.socialMedia')}
+              </NavLink>
+            </PermissionGate>
+            <PermissionGate permissions={['users:read']}>
+              <NavLink to="/admin/users" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="people" size="1rem" aria-hidden />{t('nav.users')}
+              </NavLink>
+            </PermissionGate>
+            <div className={styles.mobileNavFooter}>
+              <NavLink to="/settings/profile" className={navLinkClass} onClick={() => setMobileNavOpen(false)}>
+                <Icon name="person" size="1rem" aria-hidden />{t('nav.profile')}
+              </NavLink>
+              <button className={`${styles.navLink} ${styles.logoutMobile}`} onClick={handleLogout}>
+                <Icon name="logout" size="1rem" aria-hidden />{t('auth.logout')}
+              </button>
+            </div>
+          </nav>
+        )}
+      </header>
+
+      {/* ── Main content ── */}
+      <main className={styles.main} id="main-content">
         <ErrorBoundary>
-          <Breadcrumbs />
-          <div className={styles.pageContent}>
+          <div className={styles.contentWrap}>
+            <Breadcrumbs />
             <Outlet />
           </div>
         </ErrorBoundary>
       </main>
+
+      <Footer />
+
       <SessionTimeoutModal
         show={showTimeoutWarning}
-        onContinue={handleContinue}
+        onContinue={() => setShowTimeoutWarning(false)}
         onLogout={handleTimeoutLogout}
       />
     </div>

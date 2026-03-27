@@ -5,19 +5,22 @@ import { useDashboard } from '@/hooks';
 import { usePageTitle } from '@/hooks';
 import { Button, StatusBadge, Skeleton, Icon } from '@/components/UI';
 import type { IconName } from '@/components/UI';
-import { formatDate } from '@/utils/date';
 import { PRESS_RELEASE_STATUS_COLORS } from '@/utils/statusConfig';
 import styles from './DashboardPage.module.css';
 
 const STAT_CARDS: { key: string; nav: string; label: string; icon: IconName; color: string }[] = [
-  { key: 'pressReleases', nav: '/press-releases',  label: 'nav.pressReleases',  icon: 'article',  color: 'blue'   },
-  { key: 'mediaContacts', nav: '/media-contacts',  label: 'nav.mediaContacts',  icon: 'contacts', color: 'teal'   },
-  { key: 'clippings',     nav: '/clippings',        label: 'nav.clippings',      icon: 'clipping', color: 'purple' },
-  { key: 'events',        nav: '/events',           label: 'nav.events',         icon: 'event',    color: 'orange' },
-  { key: 'appointments',  nav: '/appointments',     label: 'nav.appointments',   icon: 'schedule', color: 'green'  },
-  { key: 'citizens',      nav: '/citizen-portal',   label: 'nav.citizenPortal',  icon: 'citizen',  color: 'indigo' },
-  { key: 'socialMedia',   nav: '/social-media',     label: 'nav.socialMedia',    icon: 'social',   color: 'pink'   },
+  { key: 'pressReleases', nav: '/press-releases', label: 'nav.pressReleases', icon: 'article',  color: 'blue'   },
+  { key: 'mediaContacts', nav: '/media-contacts', label: 'nav.mediaContacts', icon: 'contacts', color: 'teal'   },
+  { key: 'clippings',     nav: '/clippings',      label: 'nav.clippings',     icon: 'clipping', color: 'purple' },
+  { key: 'events',        nav: '/events',          label: 'nav.events',        icon: 'event',    color: 'orange' },
+  { key: 'appointments',  nav: '/appointments',    label: 'nav.appointments',  icon: 'schedule', color: 'green'  },
+  { key: 'citizens',      nav: '/citizen-portal',  label: 'nav.citizenPortal', icon: 'citizen',  color: 'indigo' },
+  { key: 'socialMedia',   nav: '/social-media',    label: 'nav.socialMedia',   icon: 'social',   color: 'pink'   },
 ];
+
+const TODAY = new Date().toLocaleDateString('pt-BR', {
+  weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+});
 
 export function DashboardPage() {
   const { user } = useAuth();
@@ -31,127 +34,149 @@ export function DashboardPage() {
   return (
     <div className={styles.page}>
 
-      {/* ── Banner header ─────────────────────────────── */}
+      {/* ── Banner ── */}
       <div className={styles.banner}>
         <div className={styles.bannerText}>
-          <h1 className={styles.bannerTitle}>{t('dashboard.welcome', { name: user?.name ?? '' })}</h1>
-          <p className={styles.bannerSub}>Secretaria de Comunicação — visão geral do sistema</p>
+          <p className={styles.bannerDate}>{TODAY}</p>
+          <h1 className={styles.bannerTitle}>
+            {t('dashboard.welcome', { name: user?.name?.split(' ')[0] ?? '' })}
+          </h1>
+          <p className={styles.bannerSub}>Secretaria de Comunicação · Prefeitura de Piquete</p>
         </div>
         <div className={styles.bannerActions}>
           <Button variant="outline" size="sm" onClick={() => refetch()}>
-            <Icon name="refresh" size={16} /> Atualizar
+            <Icon name="refresh" size={14} /> Atualizar
           </Button>
           <Button variant="primary" size="sm" onClick={() => navigate('/press-releases?create=true')}>
-            <Icon name="plus" size={16} /> Novo Comunicado
+            <Icon name="plus" size={14} /> Novo Comunicado
           </Button>
         </div>
       </div>
 
-      {/* ── Stat cards ────────────────────────────────── */}
-      <div className={styles.stats}>
-        {isLoading
-          ? Array.from({ length: 7 }, (_, i) => (
-              <div key={i} className={styles.statCard}>
-                <Skeleton variant="circular" width={48} height={48} />
-                <div style={{ flex: 1 }}>
-                  <Skeleton variant="text" width="60%" height={14} />
-                  <Skeleton variant="text" width="40%" height={22} />
-                </div>
-              </div>
-            ))
-          : STAT_CARDS.map(({ key, nav, label, icon, color }) => (
-              <button
-                key={key}
-                className={styles.statCard}
-                onClick={() => navigate(nav)}
-              >
-                <div className={`${styles.statIcon} ${styles[`icon_${color}`]}`}>
-                  <Icon name={icon} />
-                </div>
-                <div className={styles.statContent}>
-                  <span className={styles.statValue}>
-                    {summary?.counts[key as keyof typeof summary.counts] ?? 0}
-                  </span>
-                  <span className={styles.statLabel}>{t(label)}</span>
-                </div>
-              </button>
-            ))
-        }
-      </div>
-
-      {/* ── Pending alert ─────────────────────────────── */}
+      {/* ── Pending alert ── */}
       {!isLoading && (summary?.pendingAppointments ?? 0) > 0 && (
         <div className={styles.alert} role="alert">
-          <Icon name="warning" size={16} />
-          {t('dashboard.pendingAppointments', { count: summary!.pendingAppointments })}
+          <Icon name="warning" size={16} className={styles.alertIcon} />
+          <span>{t('dashboard.pendingAppointments', { count: summary!.pendingAppointments })}</span>
+          <button className={styles.alertAction} onClick={() => navigate('/appointments')}>
+            Ver agendamentos →
+          </button>
         </div>
       )}
 
-      {/* ── Widgets ───────────────────────────────────── */}
+      {/* ── Stat cards ── */}
+      <section aria-label="Totais por módulo" className={styles.statsSection}>
+        <div className={styles.statsGrid}>
+          {isLoading
+            ? Array.from({ length: 7 }, (_, i) => (
+                <div key={i} className={styles.statCard}>
+                  <Skeleton variant="text" width="40%" height={36} />
+                  <Skeleton variant="text" width="65%" height={13} />
+                </div>
+              ))
+            : STAT_CARDS.map(({ key, nav, label, icon, color }) => (
+                <button
+                  key={key}
+                  className={`${styles.statCard} ${styles[`card_${color}`]}`}
+                  onClick={() => navigate(nav)}
+                >
+                  <div className={styles.statTop}>
+                    <span className={styles.statValue}>
+                      {summary?.counts[key as keyof typeof summary.counts] ?? 0}
+                    </span>
+                    <div className={`${styles.statIcon} ${styles[`icon_${color}`]}`}>
+                      <Icon name={icon} />
+                    </div>
+                  </div>
+                  <span className={styles.statLabel}>{t(label)}</span>
+                  <div className={`${styles.statBar} ${styles[`bar_${color}`]}`} />
+                </button>
+              ))
+          }
+        </div>
+      </section>
+
+      {/* ── Widgets ── */}
       {!isLoading && (
         <div className={styles.widgets}>
 
-          {/* Press Releases recentes */}
+          {/* Press Releases */}
           <div className={styles.widget}>
             <div className={styles.widgetHeader}>
-              <h2 className={styles.widgetTitle}>{t('dashboard.recentPressReleases')}</h2>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/press-releases')}>Ver todos</Button>
+              <div className={styles.widgetTitleWrap}>
+                <div className={`${styles.widgetIcon} ${styles.iconBlue}`}>
+                  <Icon name="article" size="0.9rem" aria-hidden />
+                </div>
+                <h2 className={styles.widgetTitle}>{t('dashboard.recentPressReleases')}</h2>
+              </div>
+              <button className={styles.widgetLink} onClick={() => navigate('/press-releases')}>
+                Ver todos →
+              </button>
             </div>
             <div className={styles.widgetBody}>
               {summary?.recentPressReleases.length ? (
                 <ul className={styles.list}>
                   {summary.recentPressReleases.map((pr, i) => (
-                    <li key={i} className={styles.listItem}>
+                    <li key={i} className={styles.prItem}>
+                      <div className={`${styles.prAccent} ${styles[`prAccent_${pr.status}`]}`} />
                       <span className={styles.listItemTitle}>{pr.title}</span>
                       <StatusBadge status={pr.status} colorMap={PRESS_RELEASE_STATUS_COLORS} />
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className={styles.empty}>{t('dashboard.noRecent')}</p>
+                <div className={styles.emptyState}>
+                  <Icon name="article" size="2rem" className={styles.emptyIcon} aria-hidden />
+                  <p className={styles.empty}>{t('dashboard.noRecent')}</p>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Eventos próximos */}
+          {/* Events */}
           <div className={styles.widget}>
             <div className={styles.widgetHeader}>
-              <h2 className={styles.widgetTitle}>{t('dashboard.upcomingEvents')}</h2>
-              <Button variant="ghost" size="sm" onClick={() => navigate('/events')}>Ver todos</Button>
+              <div className={styles.widgetTitleWrap}>
+                <div className={`${styles.widgetIcon} ${styles.iconOrange}`}>
+                  <Icon name="event" size="0.9rem" aria-hidden />
+                </div>
+                <h2 className={styles.widgetTitle}>{t('dashboard.upcomingEvents')}</h2>
+              </div>
+              <button className={styles.widgetLink} onClick={() => navigate('/events')}>
+                Ver todos →
+              </button>
             </div>
             <div className={styles.widgetBody}>
               {summary?.upcomingEvents.length ? (
                 <ul className={styles.list}>
                   {summary.upcomingEvents.map((ev, i) => (
-                    <li key={i} className={styles.listItem}>
-                      <span className={styles.listItemTitle}>{ev.title}</span>
-                      <span className={styles.listItemMeta}>
-                        {formatDate(ev.startsAt)}
-                        {ev.location && ` · ${ev.location}`}
-                      </span>
+                    <li key={i} className={styles.evItem}>
+                      <div className={styles.evDateChip}>
+                        <span className={styles.evDay}>
+                          {new Date(ev.startsAt).toLocaleDateString('pt-BR', { day: '2-digit' })}
+                        </span>
+                        <span className={styles.evMonth}>
+                          {new Date(ev.startsAt).toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')}
+                        </span>
+                      </div>
+                      <div className={styles.evBody}>
+                        <span className={styles.listItemTitle}>{ev.title}</span>
+                        {ev.location && (
+                          <span className={styles.listItemLocation}>📍 {ev.location}</span>
+                        )}
+                      </div>
                     </li>
                   ))}
                 </ul>
               ) : (
-                <p className={styles.empty}>{t('dashboard.noUpcoming')}</p>
+                <div className={styles.emptyState}>
+                  <Icon name="event" size="2rem" className={styles.emptyIcon} aria-hidden />
+                  <p className={styles.empty}>{t('dashboard.noUpcoming')}</p>
+                </div>
               )}
             </div>
           </div>
 
-        </div>
-      )}
-
-      {/* ── Quick actions ─────────────────────────────── */}
-      {!isLoading && (
-        <div className={styles.quickActions}>
-          <h3 className={styles.quickTitle}>Ações Rápidas</h3>
-          <div className={styles.quickGrid}>
-            {STAT_CARDS.map(({ key, nav, label, icon }) => (
-              <button key={key} className={`btn btn-outline ${styles.quickBtn}`} onClick={() => navigate(nav)}>
-                <Icon name={icon} /> {t(label)}
-              </button>
-            ))}
-          </div>
         </div>
       )}
 

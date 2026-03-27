@@ -1,32 +1,59 @@
-import { Icon } from '@/components/UI/Icon/Icon';
-import { SectionHeader, AnimatedGrid, AnimatedItem } from './LandingShared';
-import { FEATURES } from './landing.data';
+import { AnimatedGrid, AnimatedItem, SectionHeader } from './LandingShared';
+import { AREAS } from './landing.data';
 import styles from './Landing.module.css';
 import pageStyles from '@/pages/Landing/LandingPage.module.css';
 
-export function FeaturesSection() {
+const accentClass: Record<string, string> = {
+  blue:   pageStyles.moduleAccentBlue,
+  indigo: pageStyles.moduleAccentIndigo,
+  teal:   pageStyles.moduleAccentTeal,
+  purple: pageStyles.moduleAccentPurple,
+  orange: pageStyles.moduleAccentOrange,
+};
+
+export function AreasSection() {
+  const [featured, ...rest] = AREAS;
+
   return (
-    <section className={pageStyles.section} id="features">
+    <section className={pageStyles.sectionAlt} id="features">
       <SectionHeader
         title="Áreas de Atuação da Secom"
-        desc="A Secretaria Municipal de Comunicação de Piquete atua em quatro frentes para manter a população informada"
+        desc="Módulos integrados para a gestão completa da comunicação municipal de Piquete"
       />
-      <AnimatedGrid className={pageStyles.grid}>
-        {FEATURES.map((f, i) => (
-          <AnimatedItem key={f.title} className={styles.featureCard} index={i}>
-            <div className={styles.featureIcon}>
-              <Icon name={f.icon} size="1.75rem" aria-hidden />
-            </div>
-            <h3 className={styles.featureTitle}>{f.title}</h3>
-            <p className={styles.featureDesc}>{f.desc}</p>
-            <ul className={styles.benefitList}>
-              {f.benefits.map(b => (
-                <li key={b} className={styles.benefitItem}>
-                  <Icon name="check" size="1rem" className={styles.benefitIcon} aria-hidden />
-                  {b}
-                </li>
+      <AnimatedGrid className={pageStyles.bentoGrid}>
+        {/* Featured card — spans 2 columns */}
+        <AnimatedItem
+          key={featured.title}
+          className={`${styles.areaCardFeatured} ${accentClass[featured.color] ?? ''}`}
+          index={0}
+        >
+          <div className={styles.areaFeaturedEmoji}>{featured.emoji}</div>
+          <div className={styles.areaFeaturedBody}>
+            <h3 className={styles.areaFeaturedTitle}>{featured.title}</h3>
+            <p className={styles.areaFeaturedDesc}>{featured.desc}</p>
+            <div className={styles.areaTags}>
+              {featured.features.map(f => (
+                <span key={f} className={styles.areaTag}>{f}</span>
               ))}
-            </ul>
+            </div>
+          </div>
+        </AnimatedItem>
+
+        {/* Remaining 4 cards */}
+        {rest.map((area, i) => (
+          <AnimatedItem
+            key={area.title}
+            className={`${styles.areaCard} ${accentClass[area.color] ?? ''}`}
+            index={i + 1}
+          >
+            <div className={styles.areaIconWrap}>{area.emoji}</div>
+            <h3 className={styles.areaTitle}>{area.title}</h3>
+            <p className={styles.areaDesc}>{area.desc}</p>
+            <div className={styles.areaTags}>
+              {area.features.map(f => (
+                <span key={f} className={styles.areaTag}>{f}</span>
+              ))}
+            </div>
           </AnimatedItem>
         ))}
       </AnimatedGrid>

@@ -9,7 +9,7 @@ export class AppointmentRepository extends BaseRepository<IAppointment> {
 
   async findWithFilters(filters: AppointmentFilters, citizenUserId?: string) {
     const query: any = { isDeleted: false };
-    if (citizenUserId) query.createdBy = citizenUserId;
+    if (citizenUserId) query.citizenUserId = citizenUserId;
     if (filters.status) query.status = filters.status;
     if (filters.service) query.service = { $regex: filters.service, $options: 'i' };
     if (filters.search) {
@@ -26,7 +26,7 @@ export class AppointmentRepository extends BaseRepository<IAppointment> {
   }
 
   async findByIdForCitizen(id: string, citizenUserId: string): Promise<IAppointment | null> {
-    return this.findOne({ _id: id, createdBy: citizenUserId, isDeleted: false } as any);
+    return this.findOne({ _id: id, citizenUserId, isDeleted: false } as any);
   }
 
   async countPending() {

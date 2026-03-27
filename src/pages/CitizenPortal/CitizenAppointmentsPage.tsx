@@ -42,28 +42,33 @@ export function CitizenAppointmentsPage() {
         <EmptyState title="Nenhum agendamento encontrado" />
       ) : (
         <>
-          <ul className={styles.appointmentList} aria-label="Lista de agendamentos">
-            {items.map((item) => (
-              <li key={item._id ?? item.id} className={styles.appointmentCard}>
-                <div className={styles.appointmentHeader}>
-                  <span className={styles.appointmentService}>{item.service}</span>
-                  <StatusBadge status={item.status} />
-                </div>
-                <dl className={styles.appointmentMeta}>
-                  <div className={styles.metaRow}>
-                    <dt>Data</dt>
-                    <dd>{formatDate(item.scheduledAt)}</dd>
+          <section className={styles.appointmentSection} aria-labelledby="appointments-list-title">
+            <h2 id="appointments-list-title" className={styles.appointmentSectionTitle}>
+              Lista de agendamentos
+            </h2>
+            <ul className={styles.appointmentList} aria-label="Lista de agendamentos">
+              {items.map((item) => (
+                <li key={item._id ?? item.id} className={styles.appointmentCard}>
+                  <div className={styles.appointmentHeader}>
+                    <span className={styles.appointmentService}>{item.service}</span>
+                    <StatusBadge status={item.status} />
                   </div>
-                  {item.notes && (
+                  <dl className={styles.appointmentMeta}>
                     <div className={styles.metaRow}>
-                      <dt>Observações</dt>
-                      <dd>{item.notes}</dd>
+                      <dt>Data</dt>
+                      <dd>{formatDate(item.scheduledAt)}</dd>
                     </div>
-                  )}
-                </dl>
-              </li>
-            ))}
-          </ul>
+                    {item.notes && (
+                      <div className={styles.metaRow}>
+                        <dt>Observações</dt>
+                        <dd>{item.notes}</dd>
+                      </div>
+                    )}
+                  </dl>
+                </li>
+              ))}
+            </ul>
+          </section>
 
           {totalPages > 1 && (
             <nav className={styles.pagination} aria-label="Paginação">

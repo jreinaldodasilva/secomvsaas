@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useId } from 'react';
 import type { ReactNode } from 'react';
-import { DataTable, Modal, Button, ConfirmDialog, EmptyState } from '@/components/UI/index';
+import { DataTable } from '@/components/UI/Table/DataTable';
 import type { Column } from '@/components/UI/Table/DataTable';
+import { Modal } from '@/components/UI/Modal/Modal';
+import { Button } from '@/components/UI/Button/Button';
+import { ConfirmDialog } from '@/components/UI/ConfirmDialog/ConfirmDialog';
+import { EmptyState } from '@/components/UI/EmptyState/EmptyState';
 import { useTranslation } from '@/i18n';
 import { useAuth } from '@/contexts';
 import { hasPermission } from '@vsaas/types';
+import styles from './CrudPage.module.css';
 
 export interface CrudPageProps<TItem extends { id: string }, TForm> {
   title: string;
@@ -127,6 +132,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   const [discardOpen, setDiscardOpen] = useState(false);
   const [touched, setTouched] = useState<Set<string>>(new Set());
   const [submitted, setSubmitted] = useState(false);
+  const sectionId = useId();
 
   const handleBlur = (field: string) => {
     setTouched(prev => {
@@ -228,7 +234,7 @@ export function CrudPage<TItem extends { id: string }, TForm>({
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)' }}>
+    <div className={styles.page}>
       <div className="page-header">
         <div>
           <h1>{title}</h1>
@@ -249,28 +255,25 @@ export function CrudPage<TItem extends { id: string }, TForm>({
           )}
         </div>
       </div>
-      <div style={{
-        background: 'var(--color-bg-primary)',
-        border: '1px solid var(--color-border-primary)',
-        borderRadius: 'var(--radius-xl)',
-        boxShadow: 'var(--shadow-level-1)',
-        overflow: 'hidden',
-      }}>
-      <DataTable
-        columns={columns(openEdit, openDelete, canWrite, canDelete)}
-        data={items}
-        total={total}
-        page={page}
-        limit={10}
-        isLoading={listQuery.isLoading}
-        onPageChange={onPageChange}
-        onSearch={onSearch}
-        searchPlaceholder={searchPlaceholder}
-        emptyMessage={emptyMessage}
-        emptyIcon={emptyIcon}
-        emptyAction={emptyAction}
-      />
-      </div>
+      <section className={styles.dataSection} aria-labelledby={sectionId}>
+        <h2 id={sectionId} className={styles.sectionTitle}>Registros</h2>
+        <div className={styles.tableSurface}>
+          <DataTable
+            columns={columns(openEdit, openDelete, canWrite, canDelete)}
+            data={items}
+            total={total}
+            page={page}
+            limit={10}
+            isLoading={listQuery.isLoading}
+            onPageChange={onPageChange}
+            onSearch={onSearch}
+            searchPlaceholder={searchPlaceholder}
+            emptyMessage={emptyMessage}
+            emptyIcon={emptyIcon}
+            emptyAction={emptyAction}
+          />
+        </div>
+      </section>
       <Modal
         isOpen={modalOpen}
         onClose={requestClose}

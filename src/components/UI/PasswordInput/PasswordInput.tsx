@@ -18,6 +18,10 @@ const STRENGTH_LABEL_CLASSES = [
 ] as const;
 
 const STRENGTH_BAR_CLASSES = [
+  styles.strengthBar0,
+  styles.strengthBar1,
+  styles.strengthBar2,
+  styles.strengthBar3,
   styles.strengthBarWeak,
   styles.strengthBarFair,
   styles.strengthBarGood,
@@ -77,8 +81,7 @@ export function PasswordInput({ showStrength = false, label, value, wrapperClass
         <div className={styles.strength} aria-live="polite">
           <div className={styles.strengthTrack}>
             <div
-              className={`${styles.strengthBar} ${STRENGTH_BAR_CLASSES[score]}`}
-              style={{ width: `${(score / PASSWORD_RULES.length) * 100}%` }}
+              className={`${styles.strengthBar} ${STRENGTH_BAR_CLASSES[score]} ${STRENGTH_BAR_CLASSES[score + 4]}`}
             />
           </div>
           <span className={`${styles.strengthLabel} ${STRENGTH_LABEL_CLASSES[score]}`}>

@@ -7,12 +7,12 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
 }
 
 .scrolled {
   border-bottom-color: var(--color-border-primary);
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: var(--shadow-level-2);
 }
 
 .inner {
@@ -56,7 +56,7 @@
   display: flex;
   flex-direction: column;
   line-height: 1;
-  gap: 2px;
+  gap: var(--space-0-5);
 }
 
 .brandName {
@@ -70,7 +70,7 @@
   font-size: var(--font-size-xs);
   color: var(--color-text-secondary);
   font-weight: var(--font-weight-medium);
-  letter-spacing: 0.02em;
+  letter-spacing: var(--letter-spacing-wide);
 }
 
 /* ── Nav ── */
@@ -197,7 +197,7 @@
   border-bottom-color: rgba(255, 255, 255, 0.08);
 }
 [data-theme="dark"] .scrolled {
-  box-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--shadow-level-3);
 }
 [data-theme="dark"] .brandLogo {
   filter: invert(1) brightness(2);

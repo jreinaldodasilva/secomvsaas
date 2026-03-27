@@ -102,9 +102,11 @@
   gap: var(--space-2);
 }
 
-/* On desktop, navAuthMobile is a transparent flex wrapper */
+/* On desktop, navAuthMobile groups authenticated links */
 .navAuthMobile {
-  display: contents;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 .navLink {
@@ -290,7 +292,7 @@
   font-size: var(--font-size-xs);
   font-weight: var(--font-weight-semibold);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--letter-spacing-widest);
   color: var(--color-primary-400);
   margin: 0 0 var(--space-1);
 }

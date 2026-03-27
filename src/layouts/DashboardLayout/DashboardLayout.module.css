@@ -12,15 +12,15 @@
   top: 0;
   z-index: var(--z-sticky);
   background: var(--color-primary-900);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--color-sidebar-border);
+  box-shadow: var(--shadow-level-2);
 }
 
 .headerInner {
-  max-width: 1400px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   padding: 0 var(--space-6);
-  height: 3.5rem;
+  height: var(--header-height);
   display: flex;
   align-items: center;
   gap: var(--space-4);
@@ -50,7 +50,7 @@
 .nav {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-0-5);
   flex: 1;
   overflow-x: auto;
   scrollbar-width: none;
@@ -130,7 +130,7 @@
 .userMenu {
   display: flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-0-5);
   margin-left: var(--space-2);
   padding-left: var(--space-2);
   border-left: 1px solid rgba(255, 255, 255, 0.1);
@@ -155,19 +155,19 @@
   border-radius: var(--radius-full);
   background: linear-gradient(135deg, var(--color-primary-400), var(--color-accent-500));
   color: var(--color-white);
-  font-size: 0.65rem;
+  font-size: var(--font-size-2xs);
   font-weight: var(--font-weight-bold);
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--letter-spacing-wider);
   user-select: none;
 }
 
 .userInfo {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: var(--space-px);
   min-width: 0;
 }
 
@@ -181,7 +181,7 @@
 }
 
 .userRole {
-  font-size: 0.65rem;
+  font-size: var(--font-size-2xs);
   color: var(--color-sidebar-text-secondary);
   white-space: nowrap;
   overflow: hidden;
@@ -211,7 +211,7 @@
   flex-direction: column;
   padding: var(--space-2) var(--space-3) var(--space-3);
   border-top: 1px solid rgba(255, 255, 255, 0.07);
-  gap: 2px;
+  gap: var(--space-0-5);
   animation: slideDown 0.18s ease-out;
 }
 
@@ -221,7 +221,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.07);
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0-5);
 }
 
 .logoutMobile {
@@ -236,7 +236,7 @@
 }
 
 .contentWrap {
-  max-width: 1400px;
+  max-width: var(--container-max-width);
   margin: 0 auto;
   padding: var(--space-6) var(--space-6) var(--space-10);
 }
@@ -273,8 +273,8 @@
 /* ── Dark mode ── */
 [data-theme="dark"] .header {
   background: #1a2333;
-  border-bottom-color: rgba(255, 255, 255, 0.07);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  border-bottom-color: var(--color-sidebar-border);
+  box-shadow: var(--shadow-level-3);
 }
 [data-theme="dark"] .mobileNav {
   background: #1a2333;

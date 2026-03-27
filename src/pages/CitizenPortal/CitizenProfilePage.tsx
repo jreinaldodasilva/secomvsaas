@@ -109,7 +109,7 @@ export function CitizenProfilePage() {
         {[1, 2, 3].map(i => (
           <div key={i} className={styles.profileCard}>
             <Skeleton variant="text" width="10rem" height="1.25rem" />
-            <div className={styles.fieldList} style={{ marginTop: 'var(--space-4)' }}>
+            <div className={`${styles.fieldList} ${styles.fieldListSkeleton}`}>
               {[1, 2].map(j => (
                 <div key={j} className={styles.fieldRow}>
                   <Skeleton variant="text" width="8rem" />

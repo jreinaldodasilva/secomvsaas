@@ -160,20 +160,23 @@ export function UsersPage() {
       </div>
 
       {/* ── Table ── */}
-      <div className={styles.tableWrap}>
-        <DataTable
-          columns={columns}
-          data={items}
-          total={total}
-          page={page}
-          limit={10}
-          isLoading={isLoading}
-          onPageChange={setPage}
-          onSearch={setSearch}
-          searchPlaceholder={t('users.searchPlaceholder')}
-          emptyMessage={t('users.empty')}
-        />
-      </div>
+      <section className={styles.dataSection} aria-labelledby="users-list-title">
+        <h2 id="users-list-title" className={styles.sectionTitle}>Lista de usuários</h2>
+        <div className={styles.tableWrap}>
+          <DataTable
+            columns={columns}
+            data={items}
+            total={total}
+            page={page}
+            limit={10}
+            isLoading={isLoading}
+            onPageChange={setPage}
+            onSearch={setSearch}
+            searchPlaceholder={t('users.searchPlaceholder')}
+            emptyMessage={t('users.empty')}
+          />
+        </div>
+      </section>
 
       {/* ── Invite modal ── */}
       <Modal isOpen={inviteOpen} onClose={() => setInviteOpen(false)} title={t('users.inviteTitle')} size="sm">

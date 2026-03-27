@@ -66,6 +66,7 @@ export function DashboardPage() {
 
       {/* ── Stat cards ── */}
       <section aria-label="Totais por módulo" className={styles.statsSection}>
+        <h2 className={styles.sectionTitle}>Visão geral</h2>
         <div className={styles.statsGrid}>
           {isLoading
             ? Array.from({ length: 7 }, (_, i) => (
@@ -98,86 +99,89 @@ export function DashboardPage() {
 
       {/* ── Widgets ── */}
       {!isLoading && (
-        <div className={styles.widgets}>
+        <section aria-label="Atualizações recentes" className={styles.widgetsSection}>
+          <h2 className={styles.sectionTitle}>Atualizações recentes</h2>
+          <div className={styles.widgets}>
 
-          {/* Press Releases */}
-          <div className={styles.widget}>
-            <div className={styles.widgetHeader}>
-              <div className={styles.widgetTitleWrap}>
-                <div className={`${styles.widgetIcon} ${styles.iconBlue}`}>
-                  <Icon name="article" size="0.9rem" aria-hidden />
+            {/* Press Releases */}
+            <div className={styles.widget}>
+              <div className={styles.widgetHeader}>
+                <div className={styles.widgetTitleWrap}>
+                  <div className={`${styles.widgetIcon} ${styles.iconBlue}`}>
+                    <Icon name="article" size="0.9rem" aria-hidden />
+                  </div>
+                  <h3 className={styles.widgetTitle}>{t('dashboard.recentPressReleases')}</h3>
                 </div>
-                <h2 className={styles.widgetTitle}>{t('dashboard.recentPressReleases')}</h2>
+                <button className={styles.widgetLink} onClick={() => navigate('/press-releases')}>
+                  Ver todos →
+                </button>
               </div>
-              <button className={styles.widgetLink} onClick={() => navigate('/press-releases')}>
-                Ver todos →
-              </button>
+              <div className={styles.widgetBody}>
+                {summary?.recentPressReleases.length ? (
+                  <ul className={styles.list}>
+                    {summary.recentPressReleases.map((pr, i) => (
+                      <li key={i} className={styles.prItem}>
+                        <div className={`${styles.prAccent} ${styles[`prAccent_${pr.status}`]}`} />
+                        <span className={styles.listItemTitle}>{pr.title}</span>
+                        <StatusBadge status={pr.status} colorMap={PRESS_RELEASE_STATUS_COLORS} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className={styles.emptyState}>
+                    <Icon name="article" size="2rem" className={styles.emptyIcon} aria-hidden />
+                    <p className={styles.empty}>{t('dashboard.noRecent')}</p>
+                  </div>
+                )}
+              </div>
             </div>
-            <div className={styles.widgetBody}>
-              {summary?.recentPressReleases.length ? (
-                <ul className={styles.list}>
-                  {summary.recentPressReleases.map((pr, i) => (
-                    <li key={i} className={styles.prItem}>
-                      <div className={`${styles.prAccent} ${styles[`prAccent_${pr.status}`]}`} />
-                      <span className={styles.listItemTitle}>{pr.title}</span>
-                      <StatusBadge status={pr.status} colorMap={PRESS_RELEASE_STATUS_COLORS} />
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className={styles.emptyState}>
-                  <Icon name="article" size="2rem" className={styles.emptyIcon} aria-hidden />
-                  <p className={styles.empty}>{t('dashboard.noRecent')}</p>
+
+            {/* Events */}
+            <div className={styles.widget}>
+              <div className={styles.widgetHeader}>
+                <div className={styles.widgetTitleWrap}>
+                  <div className={`${styles.widgetIcon} ${styles.iconOrange}`}>
+                    <Icon name="event" size="0.9rem" aria-hidden />
+                  </div>
+                  <h3 className={styles.widgetTitle}>{t('dashboard.upcomingEvents')}</h3>
                 </div>
-              )}
+                <button className={styles.widgetLink} onClick={() => navigate('/events')}>
+                  Ver todos →
+                </button>
+              </div>
+              <div className={styles.widgetBody}>
+                {summary?.upcomingEvents.length ? (
+                  <ul className={styles.list}>
+                    {summary.upcomingEvents.map((ev, i) => (
+                      <li key={i} className={styles.evItem}>
+                        <div className={styles.evDateChip}>
+                          <span className={styles.evDay}>
+                            {new Date(ev.startsAt).toLocaleDateString('pt-BR', { day: '2-digit' })}
+                          </span>
+                          <span className={styles.evMonth}>
+                            {new Date(ev.startsAt).toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')}
+                          </span>
+                        </div>
+                        <div className={styles.evBody}>
+                          <span className={styles.listItemTitle}>{ev.title}</span>
+                          {ev.location && (
+                            <span className={styles.listItemLocation}>📍 {ev.location}</span>
+                          )}
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <div className={styles.emptyState}>
+                    <Icon name="event" size="2rem" className={styles.emptyIcon} aria-hidden />
+                    <p className={styles.empty}>{t('dashboard.noUpcoming')}</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
+        </section>
 
-          {/* Events */}
-          <div className={styles.widget}>
-            <div className={styles.widgetHeader}>
-              <div className={styles.widgetTitleWrap}>
-                <div className={`${styles.widgetIcon} ${styles.iconOrange}`}>
-                  <Icon name="event" size="0.9rem" aria-hidden />
-                </div>
-                <h2 className={styles.widgetTitle}>{t('dashboard.upcomingEvents')}</h2>
-              </div>
-              <button className={styles.widgetLink} onClick={() => navigate('/events')}>
-                Ver todos →
-              </button>
-            </div>
-            <div className={styles.widgetBody}>
-              {summary?.upcomingEvents.length ? (
-                <ul className={styles.list}>
-                  {summary.upcomingEvents.map((ev, i) => (
-                    <li key={i} className={styles.evItem}>
-                      <div className={styles.evDateChip}>
-                        <span className={styles.evDay}>
-                          {new Date(ev.startsAt).toLocaleDateString('pt-BR', { day: '2-digit' })}
-                        </span>
-                        <span className={styles.evMonth}>
-                          {new Date(ev.startsAt).toLocaleDateString('pt-BR', { month: 'short' }).replace('.', '')}
-                        </span>
-                      </div>
-                      <div className={styles.evBody}>
-                        <span className={styles.listItemTitle}>{ev.title}</span>
-                        {ev.location && (
-                          <span className={styles.listItemLocation}>📍 {ev.location}</span>
-                        )}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <div className={styles.emptyState}>
-                  <Icon name="event" size="2rem" className={styles.emptyIcon} aria-hidden />
-                  <p className={styles.empty}>{t('dashboard.noUpcoming')}</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-        </div>
       )}
 
     </div>

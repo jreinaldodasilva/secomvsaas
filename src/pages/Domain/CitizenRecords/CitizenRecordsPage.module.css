@@ -34,14 +34,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--letter-spacing-wider);
   user-select: none;
 }
 
 .nameCellText {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  gap: var(--space-px);
   min-width: 0;
 }
 
@@ -74,8 +74,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  padding-bottom: var(--space-5);
-  border-bottom: 1px solid var(--color-border-primary);
+  padding-bottom: var(--space-2);
 }
 
 .viewAvatar {
@@ -90,7 +89,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--letter-spacing-wider);
   user-select: none;
 }
 
@@ -121,14 +120,14 @@
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--letter-spacing-widest);
   margin: 0;
 }
 
 .viewGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-1) var(--space-6);
+  gap: var(--space-3) var(--space-6);
   background: var(--color-bg-secondary);
   border: 1px solid var(--color-border-primary);
   border-radius: var(--radius-lg);
@@ -139,12 +138,8 @@
 .field {
   display: flex;
   flex-direction: column;
-  gap: 2px;
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--color-border-primary);
-}
-.field:nth-last-child(-n+2) {
-  border-bottom: none;
+  gap: var(--space-0-5);
+  padding: var(--space-1) 0;
 }
 
 .fieldLabel {
@@ -152,7 +147,7 @@
   font-weight: var(--font-weight-medium);
   color: var(--color-text-tertiary);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--letter-spacing-wider);
 }
 
 .fieldValue {
@@ -172,13 +167,10 @@
   display: flex;
   justify-content: flex-end;
   padding-top: var(--space-2);
-  border-top: 1px solid var(--color-border-primary);
 }
 
 /* ── Responsive ── */
 @media (max-width: 640px) {
   .viewGrid { grid-template-columns: 1fr; }
-  .field:nth-last-child(-n+2) { border-bottom: 1px solid var(--color-border-primary); }
-  .field:last-child { border-bottom: none; }
   .emailText { display: none; }
 }

@@ -91,8 +91,18 @@
 .errorIcon   { color: var(--color-error-600);   width: 1.25em; height: 1.25em; flex-shrink: 0; }
 .spinner     { color: var(--color-primary-500);  width: 1.25em; height: 1.25em; flex-shrink: 0;
                animation: inputSpin 1s linear infinite; }
+.spinnerCircle {
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+  animation: inputSpinnerDash 1.5s ease-in-out infinite;
+}
 
 @keyframes inputSpin { to { transform: rotate(360deg); } }
+@keyframes inputSpinnerDash {
+  0% { stroke-dashoffset: 50; }
+  50% { stroke-dashoffset: 15; }
+  100% { stroke-dashoffset: 50; }
+}
 
 .clearBtn {
   display: flex; align-items: center; justify-content: center;

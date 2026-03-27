@@ -51,25 +51,23 @@
 .card {
   background: var(--color-bg-primary);
   border: 1px solid var(--color-border-primary);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-level-1);
-  padding: var(--space-6);
+  padding: var(--card-padding-lg);
 }
 
 .cardTitle {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
-  margin: 0 0 var(--space-5);
-  padding-bottom: var(--space-4);
-  border-bottom: 1px solid var(--color-border-primary);
+  margin: 0 0 var(--space-4);
 }
 
 /* ── Field list ── */
 .fieldList {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
 }
 
 .fieldRow {

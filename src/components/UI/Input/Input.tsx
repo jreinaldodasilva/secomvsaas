@@ -17,9 +17,15 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 
 const SpinnerIcon = () => (
   <svg className={styles.spinner} viewBox="0 0 20 20" fill="none">
-    <circle cx="10" cy="10" r="8" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
-      strokeDasharray="50" strokeDashoffset="50"
-      style={{ animation: 'inputSpinnerDash 1.5s ease-in-out infinite' }} />
+    <circle
+      cx="10"
+      cy="10"
+      r="8"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      className={styles.spinnerCircle}
+    />
   </svg>
 );
 

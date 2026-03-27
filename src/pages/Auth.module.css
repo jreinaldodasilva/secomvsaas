@@ -13,12 +13,12 @@
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-level-4);
   width: 100%;
-  max-width: 440px;
+  max-width: var(--auth-card-max-width);
   overflow: hidden;
 }
 
 .cardWide {
-  max-width: 520px;
+  max-width: var(--auth-card-wide-max-width);
 }
 
 .header {
@@ -101,7 +101,7 @@
 }
 
 .consent input[type="checkbox"] {
-  margin-top: 2px;
+  margin-top: var(--space-0-5);
   flex-shrink: 0;
   accent-color: var(--color-primary-600);
 }
@@ -168,7 +168,7 @@
 .footer {
   text-align: center;
   padding: var(--space-5) var(--space-8) var(--space-6);
-  border-top: 1px solid var(--color-neutral-100);
+  border-top: 1px solid var(--color-border-primary);
   font-size: var(--font-size-sm);
   color: var(--color-text-tertiary);
 }
